@@ -1,0 +1,744 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║                     CykClasses - classes.yml                     ║
+# ╚══════════════════════════════════════════════════════════════════╝
+#
+# STATISTIQUES (stats) — les sous-classes héritent de leur parent et ne
+# redéfinissent que les valeurs voulues :
+#   health / health-per-level      PV bonus (demi-cœurs, 20 = base vanilla)
+#   mana / mana-per-level          mana maximum
+#   mana-regen / mana-regen-per-level   mana par seconde
+#   melee-damage / ranged-damage / magic-damage   multiplicateurs (1.2 = +20%)
+#   damage-taken                   multiplicateur des dégâts subis (0.8 = -20%)
+#   speed                          vitesse (+0.1 = +10%)
+#   armor                          points d'armure bonus
+#   attack-speed                   vitesse d'attaque (+0.1 = +10%)
+#   crit-chance / crit-multiplier  coups critiques de mêlée
+#
+# DÉFAUTS (flaws) — types disponibles :
+#   DAMAGE_TAKEN       causes: [FIRE, FIRE_TICK, LAVA, FALL, MAGIC, POISON, PROJECTILE, ENTITY_ATTACK, ...] + multiplier
+#   FORBIDDEN_ARMOR    materials: [DIAMOND_*, NETHERITE_CHESTPLATE, SHIELD] (armure et main secondaire)
+#   WEAPON_PENALTY     materials + multiplier (dégâts quand l'objet est tenu)
+#   WATER_WEAKNESS     lent et faible dans l'eau
+#   SUNLIGHT_WEAKNESS  faible en plein soleil
+#   HUNGER             multiplier de la faim
+#   HEALING_REDUCTION  multiplier des soins reçus
+#   DARKNESS_MANA_BLOCK  pas de régénération de mana dans le noir
+#   inherit-flaws: false sur une sous-classe pour ne pas hériter des défauts du parent.
+#
+# CONDITIONS des sous-classes (requirements) :
+#   LEVEL (amount) · KILLS (target: zombie|player|any, amount) · SKILL_USES (target: id|any, amount)
+#   COUNTER (target: blocks_mined|damage_dealt|damage_taken|healing_done|mana_spent, amount)
+#   PERMISSION (target: permission.node)
+#
+# COMPÉTENCES (skills) : type = implémentation Java, params = réglages.
+#   mana, cooldown (s), unlock-level, health-cost (demi-cœurs), icon, name, description.
+#   Les sous-classes gardent les compétences de leur classe parente.
+
+classes:
+
+  # ═══════════════════════════════ GUERRIER ═══════════════════════════════
+  guerrier:
+    name: "<red><bold>Guerrier"
+    icon: IRON_SWORD
+    description:
+      - "<gray>Combattant robuste en première ligne."
+      - "<gray>Encaisse les coups et frappe fort au corps à corps."
+    stats:
+      health: 8
+      health-per-level: 0.3
+      mana: 50
+      mana-per-level: 0.5
+      mana-regen: 1.5
+      melee-damage: 1.25
+      ranged-damage: 0.75
+      magic-damage: 0.6
+      damage-taken: 0.85
+      armor: 2
+      crit-chance: 0.05
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [MAGIC, POISON, WITHER]
+        multiplier: 1.3
+        description: "+30% de dégâts magiques et de poison"
+      - type: WEAPON_PENALTY
+        materials: [BOW, CROSSBOW]
+        multiplier: 0.6
+        description: "Arcs et arbalètes : -40% de dégâts"
+      - type: HUNGER
+        multiplier: 1.3
+        description: "A faim 30% plus vite"
+    skills:
+      charge:
+        type: CHARGE
+        name: "<red>Charge"
+        icon: IRON_HORSE_ARMOR
+        description: ["<gray>Fonce droit devant et percute", "<gray>les ennemis sur ton passage."]
+        mana: 15
+        cooldown: 8
+        unlock-level: 1
+        params: {damage: 6, power: 1.6, radius: 1.8}
+      cri_de_guerre:
+        type: WAR_CRY
+        name: "<red>Cri de guerre"
+        icon: GOAT_HORN
+        description: ["<gray>Donne Force et Résistance", "<gray>à toi et aux alliés proches."]
+        mana: 25
+        cooldown: 30
+        unlock-level: 5
+        params: {radius: 8, duration: 10, strength-level: 1, resistance-level: 1}
+      tourbillon:
+        type: WHIRLWIND
+        name: "<red>Tourbillon"
+        icon: IRON_AXE
+        description: ["<gray>Tournoie et frappe 3 fois", "<gray>tous les ennemis autour."]
+        mana: 30
+        cooldown: 14
+        unlock-level: 10
+        params: {damage: 5, radius: 4, knockback: 0.8, hits: 3}
+    subclasses:
+      berserker:
+        name: "<dark_red><bold>Berserker"
+        icon: NETHERITE_AXE
+        description:
+          - "<gray>Guerrier enragé qui sacrifie sa défense"
+          - "<gray>pour une puissance destructrice."
+        stats:
+          health: 6
+          melee-damage: 1.5
+          damage-taken: 1.0
+          armor: 0
+          speed: 0.05
+          crit-chance: 0.15
+          crit-multiplier: 1.75
+        flaws:
+          - type: FORBIDDEN_ARMOR
+            materials: [SHIELD]
+            description: "Ne peut pas utiliser de bouclier"
+          - type: HEALING_REDUCTION
+            multiplier: 0.7
+            description: "Soins reçus -30%"
+        requirements:
+          - {type: LEVEL, amount: 20}
+          - {type: KILLS, target: any, amount: 200, description: "Tuer 200 créatures"}
+          - {type: COUNTER, target: damage_dealt, amount: 5000, description: "Infliger 5000 dégâts"}
+        skills:
+          rage_sanguinaire:
+            type: BLOOD_RAGE
+            name: "<dark_red>Rage sanguinaire"
+            icon: REDSTONE
+            description: ["<gray>Sacrifie de la vie : +30% dégâts", "<gray>et 25% de vol de vie pendant 10s."]
+            mana: 0
+            health-cost: 6
+            cooldown: 35
+            unlock-level: 20
+            params: {duration: 10, lifesteal: 0.25, damage-bonus: 0.3}
+          frappe_devastatrice:
+            type: SHATTERING_BLOW
+            name: "<dark_red>Frappe dévastatrice"
+            icon: MACE
+            description: ["<gray>Ta prochaine attaque", "<gray>inflige x2.5 dégâts."]
+            mana: 20
+            cooldown: 12
+            unlock-level: 25
+            params: {multiplier: 2.5, window: 6}
+      paladin:
+        name: "<gold><bold>Paladin"
+        icon: GOLDEN_SWORD
+        description:
+          - "<gray>Chevalier sacré qui protège ses alliés"
+          - "<gray>et châtie les morts-vivants."
+        stats:
+          health: 10
+          mana: 90
+          mana-per-level: 1.5
+          mana-regen: 2
+          melee-damage: 1.15
+          magic-damage: 1.0
+          damage-taken: 0.8
+          armor: 3
+        inherit-flaws: false
+        flaws:
+          - type: HUNGER
+            multiplier: 1.25
+            description: "Armure lourde : a faim 25% plus vite"
+          - type: WEAPON_PENALTY
+            materials: [BOW, CROSSBOW, TRIDENT]
+            multiplier: 0.5
+            description: "Armes à distance : -50% de dégâts"
+          - type: DAMAGE_TAKEN
+            causes: [FALL]
+            multiplier: 1.5
+            description: "Armure lourde : +50% de dégâts de chute"
+        requirements:
+          - {type: LEVEL, amount: 20}
+          - {type: KILLS, target: zombie, amount: 100, description: "Purifier 100 zombies"}
+          - {type: KILLS, target: skeleton, amount: 50, description: "Purifier 50 squelettes"}
+        skills:
+          bouclier_sacre:
+            type: HOLY_SHIELD
+            name: "<gold>Bouclier sacré"
+            icon: SHIELD
+            description: ["<gray>Absorption III pour toi", "<gray>et tes alliés proches."]
+            mana: 35
+            cooldown: 40
+            unlock-level: 20
+            params: {radius: 8, duration: 15, absorption-level: 3}
+          jugement:
+            type: JUDGMENT
+            name: "<gold>Jugement"
+            icon: LIGHTNING_ROD
+            description: ["<gray>Un éclair sacré frappe ta cible.", "<gray>x1.5 contre les morts-vivants."]
+            mana: 25
+            cooldown: 10
+            unlock-level: 25
+            params: {damage: 9, range: 20, undead-multiplier: 1.5}
+
+  # ═══════════════════════════════ MAGE ═══════════════════════════════
+  mage:
+    name: "<light_purple><bold>Mage"
+    icon: BLAZE_ROD
+    description:
+      - "<gray>Lanceur de sorts fragile mais redoutable."
+      - "<gray>Un grand réservoir de mana."
+    stats:
+      health: -4
+      health-per-level: 0.15
+      mana: 150
+      mana-per-level: 3
+      mana-regen: 4
+      mana-regen-per-level: 0.05
+      melee-damage: 0.6
+      ranged-damage: 0.8
+      magic-damage: 1.3
+      damage-taken: 1.1
+    flaws:
+      - type: FORBIDDEN_ARMOR
+        materials: [IRON_CHESTPLATE, IRON_LEGGINGS, DIAMOND_CHESTPLATE, DIAMOND_LEGGINGS, NETHERITE_CHESTPLATE, NETHERITE_LEGGINGS, SHIELD]
+        description: "Pas de plastron/jambières lourds ni de bouclier"
+      - type: WEAPON_PENALTY
+        materials: ["*_SWORD", "*_AXE", MACE]
+        multiplier: 0.7
+        description: "Épées, haches et masses : -30% de dégâts"
+      - type: DAMAGE_TAKEN
+        causes: [ENTITY_ATTACK, ENTITY_SWEEP_ATTACK]
+        multiplier: 1.15
+        description: "+15% de dégâts au corps à corps"
+    skills:
+      projectile_arcanique:
+        type: ARCANE_BOLT
+        name: "<light_purple>Projectile arcanique"
+        icon: AMETHYST_SHARD
+        description: ["<gray>Projette une sphère d'énergie", "<gray>arcanique sur ta cible."]
+        mana: 10
+        cooldown: 1.5
+        unlock-level: 1
+        params: {damage: 6, range: 25, speed: 1.5}
+      transfert:
+        type: BLINK
+        name: "<light_purple>Transfert"
+        icon: ENDER_PEARL
+        description: ["<gray>Te téléporte jusqu'à 8 blocs", "<gray>dans la direction visée."]
+        mana: 20
+        cooldown: 8
+        unlock-level: 5
+        params: {distance: 8}
+      bouclier_de_mana:
+        type: MANA_SHIELD
+        name: "<light_purple>Bouclier de mana"
+        icon: LAPIS_LAZULI
+        description: ["<gray>50% des dégâts subis sont", "<gray>absorbés par ton mana (10s)."]
+        mana: 25
+        cooldown: 30
+        unlock-level: 10
+        params: {duration: 10, absorb-ratio: 0.5}
+    subclasses:
+      pyromancien:
+        name: "<gold><bold>Pyromancien"
+        icon: FIRE_CHARGE
+        description:
+          - "<gray>Maître des flammes, inflige de lourds"
+          - "<gray>dégâts de zone et enflamme ses ennemis."
+        stats:
+          magic-damage: 1.45
+          mana-regen: 3.5
+        flaws:
+          - type: WATER_WEAKNESS
+            description: "Lent et affaibli dans l'eau"
+          - type: DAMAGE_TAKEN
+            causes: [FREEZE, DROWNING]
+            multiplier: 1.5
+            description: "+50% de dégâts de gel et de noyade"
+        requirements:
+          - {type: LEVEL, amount: 20}
+          - {type: SKILL_USES, target: projectile_arcanique, amount: 300, description: "Lancer 300 projectiles arcaniques"}
+          - {type: KILLS, target: blaze, amount: 15, description: "Vaincre 15 blazes"}
+        skills:
+          boule_de_feu:
+            type: FIREBALL
+            name: "<gold>Boule de feu"
+            icon: FIRE_CHARGE
+            description: ["<gray>Explose à l'impact et", "<gray>enflamme les ennemis proches."]
+            mana: 20
+            cooldown: 4
+            unlock-level: 20
+            params: {damage: 9, radius: 2.5, burn-seconds: 4, speed: 1.2, range: 30}
+          pluie_de_meteores:
+            type: METEOR_SHOWER
+            name: "<gold>Pluie de météores"
+            icon: MAGMA_BLOCK
+            description: ["<gray>Fait pleuvoir 8 météores", "<gray>sur la zone visée."]
+            mana: 60
+            cooldown: 45
+            unlock-level: 30
+            params: {count: 8, area: 5, radius: 2.5, damage: 7, range: 30}
+          aura_ardente:
+            type: FLAME_AURA
+            name: "<gold>Aura ardente"
+            icon: BLAZE_POWDER
+            description: ["<gray>Brûle les ennemis autour de toi", "<gray>pendant 8 secondes."]
+            mana: 35
+            cooldown: 25
+            unlock-level: 35
+            params: {radius: 3.5, damage-per-second: 2, duration: 8}
+      cryomancien:
+        name: "<aqua><bold>Cryomancien"
+        icon: BLUE_ICE
+        description:
+          - "<gray>Contrôle le champ de bataille en gelant"
+          - "<gray>et ralentissant ses adversaires."
+        stats:
+          health: -2
+          magic-damage: 1.3
+          damage-taken: 1.0
+        flaws:
+          - type: DAMAGE_TAKEN
+            causes: [FIRE, FIRE_TICK, LAVA, HOT_FLOOR]
+            multiplier: 1.6
+            description: "+60% de dégâts de feu"
+          - type: DARKNESS_MANA_BLOCK
+            description: "Pas de régénération de mana dans le noir"
+        requirements:
+          - {type: LEVEL, amount: 20}
+          - {type: KILLS, target: stray, amount: 30, description: "Vaincre 30 vagabonds"}
+          - {type: COUNTER, target: mana_spent, amount: 5000, description: "Dépenser 5000 mana"}
+        skills:
+          nova_de_givre:
+            type: FROST_NOVA
+            name: "<aqua>Nova de givre"
+            icon: SNOWBALL
+            description: ["<gray>Gèle et ralentit fortement", "<gray>les ennemis autour de toi."]
+            mana: 30
+            cooldown: 15
+            unlock-level: 20
+            params: {radius: 5, damage: 4, slow-seconds: 4, slow-level: 3, freeze-seconds: 6}
+          lance_de_glace:
+            type: ICE_LANCE
+            name: "<aqua>Lance de glace"
+            icon: PRISMARINE_SHARD
+            description: ["<gray>Projectile rapide. x1.8 dégâts", "<gray>sur une cible ralentie ou gelée."]
+            mana: 15
+            cooldown: 3
+            unlock-level: 25
+            params: {damage: 7, slowed-multiplier: 1.8, speed: 2.2, range: 30}
+
+  # ═══════════════════════════════ ARCHER ═══════════════════════════════
+  archer:
+    name: "<green><bold>Archer"
+    icon: BOW
+    description:
+      - "<gray>Tireur agile qui garde ses distances."
+      - "<gray>Mortel à l'arc, fragile au contact."
+    stats:
+      health: 0
+      health-per-level: 0.2
+      mana: 80
+      mana-per-level: 1
+      mana-regen: 2.5
+      melee-damage: 0.75
+      ranged-damage: 1.35
+      magic-damage: 0.8
+      damage-taken: 1.0
+      speed: 0.08
+    flaws:
+      - type: FORBIDDEN_ARMOR
+        materials: [DIAMOND_CHESTPLATE, NETHERITE_CHESTPLATE, DIAMOND_LEGGINGS, NETHERITE_LEGGINGS]
+        description: "Pas de plastron/jambières en diamant ou netherite"
+      - type: WEAPON_PENALTY
+        materials: ["*_AXE", MACE]
+        multiplier: 0.6
+        description: "Haches et masses : -40% de dégâts"
+      - type: DAMAGE_TAKEN
+        causes: [ENTITY_EXPLOSION, BLOCK_EXPLOSION]
+        multiplier: 1.3
+        description: "+30% de dégâts d'explosion"
+    skills:
+      fleche_percante:
+        type: PIERCING_ARROW
+        name: "<green>Flèche perçante"
+        icon: SPECTRAL_ARROW
+        description: ["<gray>Une flèche sans gravité qui", "<gray>transperce 4 ennemis."]
+        mana: 15
+        cooldown: 6
+        unlock-level: 1
+        params: {damage: 9, pierce: 4, speed: 3.5}
+      volee:
+        type: VOLLEY
+        name: "<green>Volée"
+        icon: ARROW
+        description: ["<gray>Tire 7 flèches en éventail."]
+        mana: 25
+        cooldown: 12
+        unlock-level: 5
+        params: {arrows: 7, spread: 30, damage: 5, speed: 2.5}
+      bond_arriere:
+        type: DISENGAGE
+        name: "<green>Bond arrière"
+        icon: FEATHER
+        description: ["<gray>Saute en arrière pour", "<gray>reprendre tes distances."]
+        mana: 10
+        cooldown: 8
+        unlock-level: 10
+        params: {power: 1.4, height: 0.6}
+    subclasses:
+      chasseur:
+        name: "<dark_green><bold>Chasseur"
+        icon: CROSSBOW
+        description:
+          - "<gray>Traqueur patient : marque ses proies"
+          - "<gray>et les piège avant de les achever."
+        stats:
+          ranged-damage: 1.4
+          speed: 0.1
+        flaws:
+          - type: HUNGER
+            multiplier: 1.4
+            description: "A faim 40% plus vite"
+        requirements:
+          - {type: LEVEL, amount: 20}
+          - {type: KILLS, target: any, amount: 300, description: "Chasser 300 créatures"}
+        skills:
+          marque_du_chasseur:
+            type: HUNTERS_MARK
+            name: "<dark_green>Marque du chasseur"
+            icon: TARGET
+            description: ["<gray>La cible brille et subit", "<gray>+25% de dégâts pendant 12s."]
+            mana: 15
+            cooldown: 15
+            unlock-level: 20
+            params: {range: 30, duration: 12, damage-bonus: 0.25}
+          piege_a_loup:
+            type: BEAR_TRAP
+            name: "<dark_green>Piège à loup"
+            icon: TRIPWIRE_HOOK
+            description: ["<gray>Pose un piège qui immobilise", "<gray>et blesse le premier ennemi."]
+            mana: 20
+            cooldown: 18
+            unlock-level: 25
+            params: {lifetime: 30, radius: 1.5, root-seconds: 3, damage: 6}
+      rodeur:
+        name: "<yellow><bold>Rôdeur"
+        icon: TIPPED_ARROW
+        description:
+          - "<gray>Spécialiste de la destruction de zone"
+          - "<gray>à distance."
+        stats:
+          ranged-damage: 1.45
+          health: -2
+        flaws:
+          - type: DAMAGE_TAKEN
+            causes: [ENTITY_ATTACK]
+            multiplier: 1.2
+            description: "+20% de dégâts au corps à corps"
+        requirements:
+          - {type: LEVEL, amount: 20}
+          - {type: SKILL_USES, target: volee, amount: 150, description: "Utiliser Volée 150 fois"}
+          - {type: KILLS, target: creeper, amount: 40, description: "Abattre 40 creepers"}
+        skills:
+          pluie_de_fleches:
+            type: ARROW_RAIN
+            name: "<yellow>Pluie de flèches"
+            icon: DISPENSER
+            description: ["<gray>5 vagues de flèches s'abattent", "<gray>sur la zone visée."]
+            mana: 45
+            cooldown: 30
+            unlock-level: 20
+            params: {area: 4, waves: 5, arrows-per-wave: 6, damage: 3, range: 30}
+          fleche_explosive:
+            type: EXPLOSIVE_ARROW
+            name: "<yellow>Flèche explosive"
+            icon: TNT
+            description: ["<gray>Explose à l'impact", "<gray>(ne détruit pas les blocs)."]
+            mana: 30
+            cooldown: 15
+            unlock-level: 25
+            params: {damage: 6, power: 2.5, speed: 3}
+
+  # ═══════════════════════════════ ASSASSIN ═══════════════════════════════
+  assassin:
+    name: "<dark_gray><bold>Assassin"
+    icon: IRON_SWORD
+    description:
+      - "<gray>Rapide et sournois, frappe vite et fort"
+      - "<gray>puis disparaît dans l'ombre."
+    stats:
+      health: -2
+      health-per-level: 0.2
+      mana: 70
+      mana-per-level: 1
+      mana-regen: 2.5
+      melee-damage: 1.15
+      ranged-damage: 0.9
+      magic-damage: 0.8
+      damage-taken: 1.1
+      speed: 0.12
+      attack-speed: 0.15
+      crit-chance: 0.2
+      crit-multiplier: 1.8
+    flaws:
+      - type: FORBIDDEN_ARMOR
+        materials: ["IRON_CHESTPLATE", "DIAMOND_CHESTPLATE", "NETHERITE_CHESTPLATE", "IRON_LEGGINGS", "DIAMOND_LEGGINGS", "NETHERITE_LEGGINGS", SHIELD]
+        description: "Armure légère uniquement, pas de bouclier"
+      - type: SUNLIGHT_WEAKNESS
+        description: "Affaibli en plein soleil"
+    skills:
+      pas_de_l_ombre:
+        type: SHADOW_STEP
+        name: "<dark_gray>Pas de l'ombre"
+        icon: BLACK_DYE
+        description: ["<gray>Apparais dans le dos de ta", "<gray>cible et frappe-la."]
+        mana: 20
+        cooldown: 10
+        unlock-level: 1
+        params: {range: 15, damage: 6}
+      disparition:
+        type: VANISH
+        name: "<dark_gray>Disparition"
+        icon: GLASS
+        description: ["<gray>Invisibilité et vitesse 6s.", "<gray>Les monstres perdent ta trace."]
+        mana: 25
+        cooldown: 30
+        unlock-level: 5
+        params: {duration: 6, speed-level: 2, radius: 16}
+      lame_empoisonnee:
+        type: POISON_BLADE
+        name: "<dark_gray>Lame empoisonnée"
+        icon: SPIDER_EYE
+        description: ["<gray>Tes 3 prochaines attaques", "<gray>empoisonnent la cible."]
+        mana: 15
+        cooldown: 15
+        unlock-level: 10
+        params: {hits: 3, poison-seconds: 5, poison-level: 2}
+    subclasses:
+      ombre:
+        name: "<dark_purple><bold>Ombre"
+        icon: WITHER_ROSE
+        description:
+          - "<gray>Assassin des ténèbres qui aveugle"
+          - "<gray>et exécute les blessés."
+        stats:
+          melee-damage: 1.3
+          crit-chance: 0.25
+        flaws:
+          - type: HEALING_REDUCTION
+            multiplier: 0.75
+            description: "Soins reçus -25%"
+        requirements:
+          - {type: LEVEL, amount: 20}
+          - {type: KILLS, target: player, amount: 10, description: "Éliminer 10 joueurs"}
+          - {type: SKILL_USES, target: pas_de_l_ombre, amount: 100, description: "Utiliser Pas de l'ombre 100 fois"}
+        skills:
+          voile_d_ombre:
+            type: SHADOW_VEIL
+            name: "<dark_purple>Voile d'ombre"
+            icon: INK_SAC
+            description: ["<gray>Aveugle et ralentit les", "<gray>ennemis proches."]
+            mana: 30
+            cooldown: 25
+            unlock-level: 20
+            params: {radius: 6, duration: 5}
+          execution:
+            type: EXECUTION
+            name: "<dark_purple>Exécution"
+            icon: NETHERITE_SWORD
+            description: ["<gray>Dégâts augmentés selon les", "<gray>PV manquants de la cible."]
+            mana: 25
+            cooldown: 12
+            unlock-level: 25
+            params: {range: 4, damage: 5, missing-health-multiplier: 3}
+      duelliste:
+        name: "<white><bold>Duelliste"
+        icon: GOLDEN_SWORD
+        description:
+          - "<gray>Escrimeur d'élite : pare, riposte"
+          - "<gray>et transperce ses adversaires."
+        stats:
+          health: 2
+          damage-taken: 1.0
+          attack-speed: 0.25
+        inherit-flaws: false
+        flaws:
+          - type: WEAPON_PENALTY
+            materials: [BOW, CROSSBOW, TRIDENT, "*_AXE"]
+            multiplier: 0.5
+            description: "Arcs, tridents et haches : -50% de dégâts"
+          - type: FORBIDDEN_ARMOR
+            materials: [SHIELD, "NETHERITE_*"]
+            description: "Pas de bouclier ni d'armure en netherite"
+        requirements:
+          - {type: LEVEL, amount: 20}
+          - {type: COUNTER, target: damage_taken, amount: 2000, description: "Encaisser 2000 dégâts"}
+          - {type: KILLS, target: vindicator, amount: 10, description: "Vaincre 10 vindicateurs"}
+        skills:
+          parade:
+            type: PARRY
+            name: "<white>Parade"
+            icon: SHIELD
+            description: ["<gray>Annule le prochain coup reçu", "<gray>(1.5s) et riposte."]
+            mana: 10
+            cooldown: 6
+            unlock-level: 20
+            params: {window: 1.5, counter-damage: 8}
+          fente:
+            type: LUNGE
+            name: "<white>Fente"
+            icon: TRIDENT
+            description: ["<gray>Bondis en avant et", "<gray>transperce les ennemis."]
+            mana: 15
+            cooldown: 7
+            unlock-level: 25
+            params: {power: 1.3, damage: 7}
+
+  # ═══════════════════════════════ CLERC ═══════════════════════════════
+  clerc:
+    name: "<yellow><bold>Clerc"
+    icon: GOLDEN_APPLE
+    description:
+      - "<gray>Soigneur dévoué, indispensable"
+      - "<gray>à tout groupe d'aventuriers."
+    stats:
+      health: 0
+      health-per-level: 0.2
+      mana: 120
+      mana-per-level: 2
+      mana-regen: 3.5
+      melee-damage: 0.8
+      ranged-damage: 0.7
+      magic-damage: 1.1
+      damage-taken: 0.95
+    flaws:
+      - type: WEAPON_PENALTY
+        materials: ["*_SWORD", BOW, CROSSBOW]
+        multiplier: 0.6
+        description: "Épées et arcs : -40% de dégâts"
+      - type: FORBIDDEN_ARMOR
+        materials: ["NETHERITE_*"]
+        description: "Ne peut pas porter de netherite"
+    skills:
+      soin:
+        type: HEAL
+        name: "<yellow>Soin"
+        icon: GLISTERING_MELON_SLICE
+        description: ["<gray>Soigne l'allié visé,", "<gray>ou toi-même."]
+        mana: 20
+        cooldown: 5
+        unlock-level: 1
+        params: {amount: 8, range: 15}
+      benediction:
+        type: BLESSING
+        name: "<yellow>Bénédiction"
+        icon: HONEY_BOTTLE
+        description: ["<gray>Régénération II pour toi", "<gray>et les alliés proches."]
+        mana: 30
+        cooldown: 25
+        unlock-level: 5
+        params: {radius: 8, duration: 10, regeneration-level: 2}
+      purification:
+        type: PURIFY
+        name: "<yellow>Purification"
+        icon: MILK_BUCKET
+        description: ["<gray>Retire les effets négatifs,", "<gray>le feu et le gel des alliés."]
+        mana: 25
+        cooldown: 20
+        unlock-level: 10
+        params: {radius: 8}
+    subclasses:
+      pretre:
+        name: "<white><bold>Prêtre"
+        icon: TOTEM_OF_UNDYING
+        description:
+          - "<gray>Serviteur de la lumière aux soins"
+          - "<gray>massifs, fléau des morts-vivants."
+        stats:
+          mana: 160
+          mana-regen: 4.5
+          magic-damage: 1.2
+          health: -2
+        flaws:
+          - type: DAMAGE_TAKEN
+            causes: [ENTITY_ATTACK, PROJECTILE]
+            multiplier: 1.15
+            description: "+15% de dégâts physiques"
+        requirements:
+          - {type: LEVEL, amount: 20}
+          - {type: COUNTER, target: healing_done, amount: 1500, description: "Soigner 1500 PV"}
+        skills:
+          grace_divine:
+            type: DIVINE_GRACE
+            name: "<white>Grâce divine"
+            icon: BEACON
+            description: ["<gray>Gros soin de zone et", "<gray>absorption pour les alliés."]
+            mana: 60
+            cooldown: 45
+            unlock-level: 20
+            params: {radius: 10, amount: 12, absorption-seconds: 10}
+          lumiere_sacree:
+            type: HOLY_LIGHT
+            name: "<white>Lumière sacrée"
+            icon: GLOWSTONE_DUST
+            description: ["<gray>Explosion de lumière.", "<gray>x2.5 contre les morts-vivants."]
+            mana: 35
+            cooldown: 12
+            unlock-level: 25
+            params: {radius: 6, damage: 5, undead-multiplier: 2.5}
+      druide:
+        name: "<dark_green><bold>Druide"
+        icon: OAK_SAPLING
+        description:
+          - "<gray>Gardien de la nature qui entrave ses"
+          - "<gray>ennemis et prend une forme sauvage."
+        stats:
+          health: 4
+          melee-damage: 1.0
+          magic-damage: 1.15
+        inherit-flaws: false
+        flaws:
+          - type: FORBIDDEN_ARMOR
+            materials: ["IRON_*", "DIAMOND_*", "NETHERITE_*"]
+            description: "Armure en cuir, maille ou or uniquement"
+          - type: DAMAGE_TAKEN
+            causes: [FIRE, FIRE_TICK, LAVA]
+            multiplier: 1.4
+            description: "+40% de dégâts de feu"
+        requirements:
+          - {type: LEVEL, amount: 20}
+          - {type: COUNTER, target: blocks_mined, amount: 2000, description: "Récolter/miner 2000 blocs"}
+          - {type: KILLS, target: any, amount: 150, description: "Tuer 150 créatures"}
+        skills:
+          racines:
+            type: ENTANGLING_ROOTS
+            name: "<dark_green>Racines"
+            icon: VINE
+            description: ["<gray>Immobilise et blesse les", "<gray>ennemis autour de toi."]
+            mana: 30
+            cooldown: 18
+            unlock-level: 20
+            params: {radius: 6, duration: 4, damage-per-second: 1.5}
+          esprit_sauvage:
+            type: WILD_SPIRIT
+            name: "<dark_green>Esprit sauvage"
+            icon: RABBIT_FOOT
+            description: ["<gray>+8 PV max, Force et", "<gray>Résistance pendant 15s."]
+            mana: 45
+            cooldown: 50
+            unlock-level: 25
+            params: {duration: 15, bonus-health: 8, strength-level: 1, resistance-level: 1}

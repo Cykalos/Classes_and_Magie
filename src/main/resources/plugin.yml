@@ -1,0 +1,31 @@
+name: CykClasses
+version: '${version}'
+main: fr.cykalos.cykclasses.CykClasses
+api-version: '26.1'
+description: Système de classes RPG avec sous-classes, compétences uniques, statistiques, défauts et mana.
+authors: [Cykalos]
+website: https://github.com/Cykalos/CykClasses_and_Magie
+softdepend: [PlaceholderAPI]
+libraries:
+  - org.xerial:sqlite-jdbc:3.46.1.3
+
+commands:
+  classe:
+    description: Ouvre le menu des classes et gère sa classe.
+    usage: /classe [info|choisir|sous-classe|competences|reset|admin]
+    aliases: [class, classes]
+  competence:
+    description: Lance une compétence de sa classe.
+    usage: /competence <id>
+    aliases: [skill, cast]
+
+permissions:
+  cykclasses.use:
+    description: Utiliser le système de classes.
+    default: true
+  cykclasses.reset:
+    description: Réinitialiser sa propre classe.
+    default: true
+  cykclasses.admin:
+    description: Commandes d'administration.
+    default: op
