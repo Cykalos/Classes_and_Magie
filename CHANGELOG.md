@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0](https://github.com/Cykalos/CykClasses_and_Magie/compare/v1.1.0...v1.2.0) (2026-10-10)
+
+### ✨ Nouveautés
+
+- races, traits, métiers, arbre de compétences, attributs, kits et chat de groupe ([`9279ad9`](https://github.com/Cykalos/CykClasses_and_Magie/commit/9279ad9e40da6b33d42997b891cfd260605485b2))
+  - corrige le HUD (PV, mana, niveau, XP) caché en mode compétences
+  - corrige l'affichage 21/20 des PV (arrondi incohérent du maximum)
+  - races avec bonus, défauts, effets et malus si la race ne convient pas à la classe
+  - traits aléatoires positifs / négatifs / mixtes, traits uniques (un seul joueur), relances configurables
+  - métier unique par joueur, actions réservées (minerais, forge, alambic, enchantement, pêche...)
+  - arbre de compétences par classe avec branches de sous-classe et arbre commun
+  - points d'attributs (Force, Dextérité, Intelligence, Vitalité, Sagesse, Agilité, Endurance)
+  - kits de départ configurables, objets CraftEngine / ExecutableItems / MythicMobs via UniItem
+  - restrictions d'objets par classe, race, métier, niveau et attributs
+  - /gc bascule le chat sur le groupe, /global revient au chat public
+  - classe et niveau dans le chat et le panneau du groupe
+
+
 ## [1.1.0](https://github.com/Cykalos/CykClasses_and_Magie/compare/v1.0.0...v1.1.0) (2026-10-10)
 
 ### ✨ Nouveautés
