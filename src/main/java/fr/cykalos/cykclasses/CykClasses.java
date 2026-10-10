@@ -221,6 +221,7 @@ public final class CykClasses extends JavaPlugin {
 
     public void reload() {
         reloadConfig();
+        migrateConfig();
         skillBar.exitAll();
         messages.load();
         hud.load();
@@ -268,6 +269,11 @@ public final class CykClasses extends JavaPlugin {
         if (oldTag.equals(c.getString("chat.class-tag"))) {
             c.set("chat.class-tag", "<dark_gray>[</dark_gray><class> <gray>Niv. <level></gray><dark_gray>]</dark_gray>");
             saveConfig();
+        }
+        // Options ajoutées dans une nouvelle version : valeur par défaut en mémoire
+        if (c.getDefaults() != null) {
+            fr.cykalos.cykclasses.config.ConfigDefaults.fill(c, c.getDefaults(),
+                    java.util.Set.of("leveling.mob-xp", "mythicmobs.mob-xp"));
         }
     }
 }

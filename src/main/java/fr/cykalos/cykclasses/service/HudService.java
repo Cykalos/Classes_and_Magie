@@ -32,8 +32,6 @@ import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
 import java.io.File;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -93,10 +91,7 @@ public final class HudService {
             plugin.saveResource("hud.yml", false);
         }
         cfg = YamlConfiguration.loadConfiguration(file);
-        var stream = plugin.getResource("hud.yml");
-        if (stream != null) {
-            cfg.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(stream, StandardCharsets.UTF_8)));
-        }
+        fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, cfg, "hud.yml", java.util.Set.of());
     }
 
     public YamlConfiguration config() {

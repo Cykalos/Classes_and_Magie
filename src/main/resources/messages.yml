@@ -230,6 +230,7 @@ job:
   action-smelt: "Cuire"
   action-enchant: "Enchanter"
   action-brew: "Distiller"
+  action-refine: "Tailler"
 
 tree:
   none: "<red>Aucun arbre de compétences pour ta classe."

@@ -92,11 +92,11 @@ public final class GearService {
             plugin.saveResource(name, false);
         }
         YamlConfiguration y = YamlConfiguration.loadConfiguration(file);
-        // Sections ajoutées dans une nouvelle version : valeurs par défaut du plugin.
-        var stream = plugin.getResource(name);
-        if (stream != null) {
-            y.setDefaults(YamlConfiguration.loadConfiguration(new java.io.InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8)));
-        }
+        // Clés ajoutées dans une nouvelle version : valeurs par défaut du plugin.
+        // Les listes (gemmes, raretés, objets uniques…) ne sont complétées que si elles sont absentes.
+        fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, y, name, java.util.Set.of(
+                "gems", "uniques", "rarities", "refining.rarities", "crafters", "stat-pool",
+                "refining.always-pure", "drops.targets", "drops.jobs", "refining.jobs"));
         return y;
     }
 
