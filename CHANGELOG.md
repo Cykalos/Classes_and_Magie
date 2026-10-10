@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.0](https://github.com/Cykalos/CykClasses_and_Magie/compare/v1.2.0...v1.3.0) (2026-10-10)
+
+### ✨ Nouveautés
+
+- niveaux de métier, forge avec raretés et objets uniques, gemmes ([`e5c738e`](https://github.com/Cykalos/CykClasses_and_Magie/commit/e5c738ec0c8e188535379555519ab5d9b7c9b4c0))
+  - niveaux et XP de métier (jusqu'au niveau 50), barre d'XP de métier
+  - recettes et actions de métier débloquées par niveau (min-level)
+  - forge : rareté Commun à Légendaire selon le niveau du forgeron, stats aléatoires positives ou négatives
+  - objets uniques : un seul exemplaire de chacun sur tout le serveur (forge-uniques.yml)
+  - gemmes trouvées en minant, incrustées par glisser-déposer sur les objets forgés
+  - stats de l'équipement forgé appliquées quand il est porté
+  - « Niv. » devant le niveau dans le chat et le panneau du groupe
+  - menu des métiers plus lisible (texte court par action, niveau requis)
+  - libellés « Ton métier actuel » / « Ta race actuelle »
+  - ancien jobs.yml sauvegardé et remplacé automatiquement par le nouveau format
+
+
 ## [1.2.0](https://github.com/Cykalos/CykClasses_and_Magie/compare/v1.1.0...v1.2.0) (2026-10-10)
 
 ### ✨ Nouveautés
