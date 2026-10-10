@@ -36,8 +36,13 @@ jobs:
             exit 1
           }
 
+      - name: Contenu du jar
+        run: |
+          JAR=$(ls build/libs/CykClasses-*.jar | grep -v plain | head -1)
+          echo "::notice::$JAR $(du -h "$JAR" | cut -f1) - $(unzip -l "$JAR" | tail -1) - uniitem: $(unzip -l "$JAR" | grep -c 'libs/uniitem')"
+
       - name: Artefact
         uses: actions/upload-artifact@v4
         with:
           name: CykClasses-paper-${{ strategy.job-index }}
-          path: build/libs/*.jar
+          path: build/libs/CykClasses-*[0-9T].jar

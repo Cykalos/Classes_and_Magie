@@ -45,6 +45,28 @@ public final class MythicHook {
         }).orElse(null);
     }
 
+    /** Objet MythicMobs (MythicCrucible compris) par son nom interne, ou null. */
+    public org.bukkit.inventory.ItemStack item(String name, int amount) {
+        try {
+            org.bukkit.inventory.ItemStack it = MythicBukkit.inst().getItemManager().getItemStack(name);
+            if (it != null) {
+                it.setAmount(Math.max(1, amount));
+            }
+            return it;
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    /** Nom interne de l'objet MythicMobs, ou null. */
+    public String itemId(org.bukkit.inventory.ItemStack item) {
+        try {
+            return MythicBukkit.inst().getItemManager().getMythicTypeFromItem(item);
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
     public boolean castSkill(Player caster, String skill, float power) {
         try {
             return MythicBukkit.inst().getAPIHelper().castSkill(caster, skill, power);

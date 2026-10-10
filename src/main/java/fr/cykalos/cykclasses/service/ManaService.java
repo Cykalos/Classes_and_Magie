@@ -61,7 +61,7 @@ public final class ManaService {
             if (profile.getMana() >= max) {
                 continue;
             }
-            ClassStats s = rc.stats;
+            ClassStats s = plugin.stats().stats(profile);
             double amount = s.regen(profile.getLevel()) * (intervalTicks / 20.0);
             if (now - profile.getLastCombat() < 5000) {
                 if (!inCombatRegen) {
@@ -69,7 +69,7 @@ public final class ManaService {
                 }
                 amount *= combatMult;
             }
-            for (Flaw f : rc.flaws()) {
+            for (Flaw f : plugin.stats().flaws(profile)) {
                 if (f.type == Flaw.Type.DARKNESS_MANA_BLOCK && player.getLocation().getBlock().getLightLevel() < 8) {
                     amount = 0;
                 }
@@ -90,32 +90,33 @@ public final class ManaService {
             if (rc == null) {
                 continue;
             }
-            if (plugin.skillBar().isActive(player)) {
+            boolean casting = plugin.skillBar().isActive(player);
+            if (casting) {
                 long timeout = plugin.getConfig().getLong("casting.timeout-seconds", 15) * 1000L;
                 if (timeout > 0 && now - profile.getLastCastActivity() > timeout) {
                     plugin.skillBar().exit(player, true);
+                    casting = false;
                 } else {
                     plugin.skillBar().refresh(player);
-                    player.sendActionBar(castBar(player, profile, rc));
-                    continue;
                 }
             }
+            Component prefix = casting ? Text.mm(plugin.getConfig().getString("hud.cast-mode-prefix", "<light_purple>✦ ")) : Component.empty();
             Component xpBar = plugin.hud().xpActionbar(player);
             if (xpBar != null) {
-                player.sendActionBar(xpBar);
+                player.sendActionBar(prefix.append(xpBar));
                 continue;
             }
             AttributeInstance maxHealth = player.getAttribute(Attribute.MAX_HEALTH);
             double xpReq = plugin.levels().xpRequired(profile.getLevel());
             int pct = profile.getLevel() >= plugin.levels().maxLevel() ? 100 : (int) Math.floor(profile.getXp() / xpReq * 100);
-            player.sendActionBar(Text.mm(format,
+            player.sendActionBar(prefix.append(Text.mm(format,
                     Text.ph("health", (int) Math.ceil(player.getHealth())),
-                    Text.ph("max_health", maxHealth == null ? 20 : (int) Math.round(maxHealth.getValue())),
+                    Text.ph("max_health", maxHealth == null ? 20 : (int) Math.ceil(maxHealth.getValue() - 1e-6)),
                     Text.ph("mana", (int) Math.floor(profile.getMana())),
                     Text.ph("max_mana", (int) Math.round(plugin.stats().maxMana(profile))),
                     Text.ph("level", profile.getLevel()),
                     Text.ph("xp_percent", pct),
-                    Text.ph("class", rc.name)));
+                    Text.ph("class", rc.name))));
         }
     }
 

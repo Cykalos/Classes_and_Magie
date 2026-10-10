@@ -40,6 +40,17 @@ public final class GroupeCommand implements TabExecutor {
         if (command.getName().equalsIgnoreCase("gc")) {
             if (args.length > 0) {
                 plugin.parties().chat(player, String.join(" ", args));
+            } else {
+                plugin.parties().togglePartyChat(player);
+            }
+            return true;
+        }
+        if (command.getName().equalsIgnoreCase("global")) {
+            if (args.length > 0) {
+                plugin.chat().sendGlobalOnce(player, String.join(" ", args));
+            } else {
+                plugin.profiles().get(player).setPartyChat(false);
+                plugin.messages().send(player, "party.chat-off");
             }
             return true;
         }
@@ -135,7 +146,7 @@ public final class GroupeCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        if (command.getName().equalsIgnoreCase("gc")) {
+        if (command.getName().equalsIgnoreCase("gc") || command.getName().equalsIgnoreCase("global")) {
             return List.of();
         }
         List<String> options = new ArrayList<>();

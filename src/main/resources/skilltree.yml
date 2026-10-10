@@ -1,0 +1,497 @@
+# ╔══════════════════════════════════════════════╗
+# ║            CykClasses - skilltree.yml        ║
+# ╚══════════════════════════════════════════════╝
+# Un arbre par classe de base (clé = id de classe) + l'arbre "commun" accessible à tous.
+# Points gagnés par niveau : config.yml → progression.
+#
+# Nœud :
+#   x (0-8), y (0-4)    position dans le menu
+#   max-rank, cost      rangs max et coût en points par rang
+#   requires            nœuds à débloquer avant (au moins 1 rang)
+#   required-level      niveau minimum
+#   required-subclass   sous-classe requise (branches de spécialisation)
+#   stats               bonus PAR RANG (mêmes clés que classes.yml)
+#   skills              bonus PAR RANG sur une compétence :
+#                         damage: 0.1 (+10 % dégâts/soins) · cooldown: -0.1 (-10 % recharge) · mana: -0.1 (-10 % coût)
+
+trees:
+  commun:
+    title: "Arbre commun"
+    nodes:
+      vigueur:
+        name: "<red>Vigueur"
+        icon: APPLE
+        x: 2
+        y: 0
+        max-rank: 5
+        cost: 1
+        description: ["<gray>Plus de points de vie."]
+        stats: {health: 1}
+      meditation:
+        name: "<aqua>Méditation"
+        icon: LAPIS_LAZULI
+        x: 6
+        y: 0
+        max-rank: 5
+        cost: 1
+        description: ["<gray>Plus de mana et de régénération."]
+        stats: {mana: 5, mana-regen: 0.1}
+      seconde_peau:
+        name: "<gray>Seconde peau"
+        icon: LEATHER_CHESTPLATE
+        x: 2
+        y: 2
+        max-rank: 3
+        cost: 2
+        requires: [vigueur]
+        required-level: 10
+        description: ["<gray>Réduit les dégâts subis."]
+        stats: {damage-taken: 0.97}
+      concentration:
+        name: "<light_purple>Concentration"
+        icon: CLOCK
+        x: 6
+        y: 2
+        max-rank: 3
+        cost: 2
+        requires: [meditation]
+        required-level: 10
+        description: ["<gray>Coups critiques plus fréquents."]
+        stats: {crit-chance: 0.02}
+      maitrise:
+        name: "<gold>Maîtrise"
+        icon: NETHER_STAR
+        x: 4
+        y: 4
+        max-rank: 1
+        cost: 5
+        requires: [seconde_peau, concentration]
+        required-level: 40
+        description: ["<gray>L'aboutissement de l'entraînement."]
+        stats: {melee-damage: 1.05, ranged-damage: 1.05, magic-damage: 1.05}
+
+  guerrier:
+    title: "Arbre du Guerrier"
+    nodes:
+      charge_brutale:
+        name: "<red>Charge brutale"
+        icon: IRON_HORSE_ARMOR
+        x: 4
+        y: 0
+        max-rank: 3
+        description: ["<gray>Charge plus puissante."]
+        skills: {charge: {damage: 0.15}}
+      voix_de_commandant:
+        name: "<red>Voix de commandant"
+        icon: GOAT_HORN
+        x: 4
+        y: 1
+        max-rank: 3
+        requires: [charge_brutale]
+        description: ["<gray>Cri de guerre plus souvent."]
+        skills: {cri_de_guerre: {cooldown: -0.1}}
+      maitre_lame:
+        name: "<red>Maître de la lame"
+        icon: IRON_SWORD
+        x: 4
+        y: 2
+        max-rank: 5
+        requires: [voix_de_commandant]
+        required-level: 10
+        description: ["<gray>Dégâts de mêlée accrus."]
+        stats: {melee-damage: 1.03}
+      tornade:
+        name: "<red>Tornade d'acier"
+        icon: IRON_AXE
+        x: 4
+        y: 3
+        max-rank: 3
+        requires: [maitre_lame]
+        required-level: 15
+        description: ["<gray>Tourbillon plus dévastateur et moins coûteux."]
+        skills: {tourbillon: {damage: 0.12, mana: -0.1}}
+      soif_de_sang:
+        name: "<dark_red>Soif de sang"
+        icon: REDSTONE
+        x: 1
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [maitre_lame]
+        required-subclass: berserker
+        description: ["<gray>Rage sanguinaire plus puissante."]
+        skills: {rage_sanguinaire: {damage: 0.2, cooldown: -0.1}}
+      aneantissement:
+        name: "<dark_red>Anéantissement"
+        icon: MACE
+        x: 1
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [soif_de_sang]
+        required-subclass: berserker
+        description: ["<gray>Frappe dévastatrice plus fréquente."]
+        skills: {frappe_devastatrice: {cooldown: -0.15}}
+      rempart:
+        name: "<gold>Rempart sacré"
+        icon: SHIELD
+        x: 7
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [maitre_lame]
+        required-subclass: paladin
+        description: ["<gray>Encaisse mieux les coups."]
+        stats: {damage-taken: 0.96, health: 2}
+      chatiment:
+        name: "<gold>Châtiment"
+        icon: LIGHTNING_ROD
+        x: 7
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [rempart]
+        required-subclass: paladin
+        description: ["<gray>Jugement plus puissant."]
+        skills: {jugement: {damage: 0.15}}
+
+  mage:
+    title: "Arbre du Mage"
+    nodes:
+      focalisation:
+        name: "<light_purple>Focalisation"
+        icon: AMETHYST_SHARD
+        x: 4
+        y: 0
+        max-rank: 3
+        description: ["<gray>Projectile arcanique plus puissant."]
+        skills: {projectile_arcanique: {damage: 0.15}}
+      pas_eclair:
+        name: "<light_purple>Pas éclair"
+        icon: ENDER_PEARL
+        x: 4
+        y: 1
+        max-rank: 3
+        requires: [focalisation]
+        description: ["<gray>Transfert plus souvent."]
+        skills: {transfert: {cooldown: -0.12}}
+      puits_de_mana:
+        name: "<light_purple>Puits de mana"
+        icon: LAPIS_BLOCK
+        x: 4
+        y: 2
+        max-rank: 5
+        requires: [pas_eclair]
+        required-level: 10
+        description: ["<gray>Réserve de mana accrue."]
+        stats: {mana: 10, mana-regen: 0.2}
+      puissance_arcanique:
+        name: "<light_purple>Puissance arcanique"
+        icon: END_CRYSTAL
+        x: 4
+        y: 3
+        max-rank: 5
+        requires: [puits_de_mana]
+        required-level: 15
+        description: ["<gray>Tous les sorts frappent plus fort."]
+        stats: {magic-damage: 1.03}
+      combustion:
+        name: "<gold>Combustion"
+        icon: FIRE_CHARGE
+        x: 1
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [puissance_arcanique]
+        required-subclass: pyromancien
+        description: ["<gray>Boule de feu plus puissante et moins chère."]
+        skills: {boule_de_feu: {damage: 0.15, mana: -0.1}}
+      apocalypse:
+        name: "<gold>Apocalypse"
+        icon: MAGMA_BLOCK
+        x: 1
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [combustion]
+        required-subclass: pyromancien
+        description: ["<gray>Pluie de météores dévastatrice."]
+        skills: {pluie_de_meteores: {damage: 0.15, cooldown: -0.1}}
+      hiver_eternel:
+        name: "<aqua>Hiver éternel"
+        icon: BLUE_ICE
+        x: 7
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [puissance_arcanique]
+        required-subclass: cryomancien
+        description: ["<gray>Nova de givre plus fréquente."]
+        skills: {nova_de_givre: {cooldown: -0.12, damage: 0.1}}
+      eclat_de_glace:
+        name: "<aqua>Éclat de glace"
+        icon: PRISMARINE_SHARD
+        x: 7
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [hiver_eternel]
+        required-subclass: cryomancien
+        description: ["<gray>Lance de glace plus puissante."]
+        skills: {lance_de_glace: {damage: 0.15}}
+
+  archer:
+    title: "Arbre de l'Archer"
+    nodes:
+      pointe_d_acier:
+        name: "<green>Pointe d'acier"
+        icon: SPECTRAL_ARROW
+        x: 4
+        y: 0
+        max-rank: 3
+        description: ["<gray>Flèche perçante plus puissante."]
+        skills: {fleche_percante: {damage: 0.15}}
+      carquois_garni:
+        name: "<green>Carquois garni"
+        icon: ARROW
+        x: 4
+        y: 1
+        max-rank: 3
+        requires: [pointe_d_acier]
+        description: ["<gray>Volée plus souvent et moins chère."]
+        skills: {volee: {cooldown: -0.1, mana: -0.1}}
+      tireur_d_elite:
+        name: "<green>Tireur d'élite"
+        icon: BOW
+        x: 4
+        y: 2
+        max-rank: 5
+        requires: [carquois_garni]
+        required-level: 10
+        description: ["<gray>Dégâts à distance accrus."]
+        stats: {ranged-damage: 1.03}
+      pied_leger:
+        name: "<green>Pied léger"
+        icon: FEATHER
+        x: 4
+        y: 3
+        max-rank: 3
+        requires: [tireur_d_elite]
+        required-level: 15
+        description: ["<gray>Plus rapide, bond arrière plus souvent."]
+        stats: {speed: 0.02}
+        skills: {bond_arriere: {cooldown: -0.1}}
+      predateur:
+        name: "<dark_green>Prédateur"
+        icon: TARGET
+        x: 1
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [tireur_d_elite]
+        required-subclass: chasseur
+        description: ["<gray>Marque du chasseur plus souvent."]
+        skills: {marque_du_chasseur: {cooldown: -0.12}}
+      pieges_affutes:
+        name: "<dark_green>Pièges affûtés"
+        icon: TRIPWIRE_HOOK
+        x: 1
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [predateur]
+        required-subclass: chasseur
+        description: ["<gray>Piège à loup plus puissant."]
+        skills: {piege_a_loup: {damage: 0.2}}
+      deluge:
+        name: "<yellow>Déluge"
+        icon: DISPENSER
+        x: 7
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [tireur_d_elite]
+        required-subclass: rodeur
+        description: ["<gray>Pluie de flèches plus puissante."]
+        skills: {pluie_de_fleches: {damage: 0.15}}
+      artificier:
+        name: "<yellow>Artificier"
+        icon: TNT
+        x: 7
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [deluge]
+        required-subclass: rodeur
+        description: ["<gray>Flèche explosive plus souvent."]
+        skills: {fleche_explosive: {cooldown: -0.15}}
+
+  assassin:
+    title: "Arbre de l'Assassin"
+    nodes:
+      ombre_fugace:
+        name: "<dark_gray>Ombre fugace"
+        icon: BLACK_DYE
+        x: 4
+        y: 0
+        max-rank: 3
+        description: ["<gray>Pas de l'ombre plus souvent."]
+        skills: {pas_de_l_ombre: {cooldown: -0.1}}
+      venin:
+        name: "<dark_gray>Venin"
+        icon: SPIDER_EYE
+        x: 4
+        y: 1
+        max-rank: 3
+        requires: [ombre_fugace]
+        description: ["<gray>Lame empoisonnée moins chère."]
+        skills: {lame_empoisonnee: {mana: -0.15}}
+      lames_jumelles:
+        name: "<dark_gray>Lames jumelles"
+        icon: IRON_SWORD
+        x: 4
+        y: 2
+        max-rank: 5
+        requires: [venin]
+        required-level: 10
+        description: ["<gray>Critiques plus fréquents."]
+        stats: {crit-chance: 0.015}
+      evanescence:
+        name: "<dark_gray>Évanescence"
+        icon: GLASS
+        x: 4
+        y: 3
+        max-rank: 3
+        requires: [lames_jumelles]
+        required-level: 15
+        description: ["<gray>Disparition plus souvent."]
+        skills: {disparition: {cooldown: -0.12}}
+      coup_de_grace:
+        name: "<dark_purple>Coup de grâce"
+        icon: NETHERITE_SWORD
+        x: 1
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [lames_jumelles]
+        required-subclass: ombre
+        description: ["<gray>Exécution plus mortelle."]
+        skills: {execution: {damage: 0.15}}
+      tenebres:
+        name: "<dark_purple>Ténèbres"
+        icon: INK_SAC
+        x: 1
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [coup_de_grace]
+        required-subclass: ombre
+        description: ["<gray>Voile d'ombre plus souvent."]
+        skills: {voile_d_ombre: {cooldown: -0.12}}
+      riposte:
+        name: "<white>Riposte"
+        icon: SHIELD
+        x: 7
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [lames_jumelles]
+        required-subclass: duelliste
+        description: ["<gray>Parade plus puissante."]
+        skills: {parade: {damage: 0.2, cooldown: -0.1}}
+      botte_secrete:
+        name: "<white>Botte secrète"
+        icon: TRIDENT
+        x: 7
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [riposte]
+        required-subclass: duelliste
+        description: ["<gray>Fente plus puissante."]
+        skills: {fente: {damage: 0.15}}
+
+  clerc:
+    title: "Arbre du Clerc"
+    nodes:
+      mains_guerisseuses:
+        name: "<yellow>Mains guérisseuses"
+        icon: GLISTERING_MELON_SLICE
+        x: 4
+        y: 0
+        max-rank: 3
+        description: ["<gray>Soin plus efficace."]
+        skills: {soin: {damage: 0.15}}
+      ferveur:
+        name: "<yellow>Ferveur"
+        icon: HONEY_BOTTLE
+        x: 4
+        y: 1
+        max-rank: 3
+        requires: [mains_guerisseuses]
+        description: ["<gray>Bénédiction plus souvent."]
+        skills: {benediction: {cooldown: -0.12}}
+      foi:
+        name: "<yellow>Foi inébranlable"
+        icon: TOTEM_OF_UNDYING
+        x: 4
+        y: 2
+        max-rank: 5
+        requires: [ferveur]
+        required-level: 10
+        description: ["<gray>Mana et vie accrus."]
+        stats: {mana: 8, health: 1}
+      sanctuaire:
+        name: "<yellow>Sanctuaire"
+        icon: MILK_BUCKET
+        x: 4
+        y: 3
+        max-rank: 3
+        requires: [foi]
+        required-level: 15
+        description: ["<gray>Purification moins chère et plus fréquente."]
+        skills: {purification: {mana: -0.15, cooldown: -0.1}}
+      miracle:
+        name: "<white>Miracle"
+        icon: BEACON
+        x: 1
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [foi]
+        required-subclass: pretre
+        description: ["<gray>Grâce divine plus puissante."]
+        skills: {grace_divine: {damage: 0.15, cooldown: -0.1}}
+      aube:
+        name: "<white>Aube"
+        icon: GLOWSTONE_DUST
+        x: 1
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [miracle]
+        required-subclass: pretre
+        description: ["<gray>Lumière sacrée plus puissante."]
+        skills: {lumiere_sacree: {damage: 0.15}}
+      ronces:
+        name: "<dark_green>Ronces"
+        icon: VINE
+        x: 7
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [foi]
+        required-subclass: druide
+        description: ["<gray>Racines plus douloureuses."]
+        skills: {racines: {damage: 0.2}}
+      forme_bestiale:
+        name: "<dark_green>Forme bestiale"
+        icon: RABBIT_FOOT
+        x: 7
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [ronces]
+        required-subclass: druide
+        description: ["<gray>Esprit sauvage plus fort et plus fréquent."]
+        skills: {esprit_sauvage: {damage: 0.15, cooldown: -0.1}}

@@ -346,7 +346,8 @@ public final class SkillBar {
         }
         ItemStack icon = player.getInventory().getItem(index);
         if (isIcon(icon)) {
-            player.setCooldown(icon, (int) Math.round(s.cooldown * 20));
+            double mult = plugin.stats().skillMod(profile, s.id).cooldownMultiplier();
+            player.setCooldown(icon, (int) Math.round(s.cooldown * mult * 20));
         }
     }
 

@@ -1,0 +1,57 @@
+# ╔══════════════════════════════════════════════╗
+# ║             CykClasses - items.yml           ║
+# ╚══════════════════════════════════════════════╝
+# Conditions d'utilisation des objets. Les stats des objets eux-mêmes se gèrent dans
+# CraftEngine / MythicCrucible / ExecutableItems ; ici on décide QUI peut s'en servir.
+#
+# match (au moins un critère doit correspondre) :
+#   materials    : ["DIAMOND_SWORD", "NETHERITE_*"]
+#   custom-ids   : ["craftengine:monpack:epee_*", "mythic:excalibur", "executableitems:grimoire"]
+#   name-contains / lore-contains : texte présent dans le nom / la description
+# conditions (toutes doivent être remplies) :
+#   classes      : classes ou sous-classes autorisées
+#   races, jobs  : races / métiers autorisés
+#   min-level    : niveau minimum
+#   attributes   : points d'attributs minimum {force: 15}
+# block : usages bloqués si les conditions ne sont pas remplies (par défaut : tous)
+#   ATTACK (frapper), SHOOT (arc/arbalète), USE (clic droit), WEAR (porter en armure / main secondaire)
+# message : texte personnalisé (sinon les conditions sont affichées)
+# Permission cykclasses.bypass.items : ignore toutes ces règles.
+
+rules:
+  armes_lourdes:
+    match:
+      materials: ["NETHERITE_AXE", "MACE"]
+    conditions:
+      classes: [guerrier, berserker, paladin]
+    block: [ATTACK]
+  arcs:
+    match:
+      materials: ["BOW", "CROSSBOW"]
+    conditions:
+      classes: [archer, chasseur, rodeur]
+      min-level: 1
+    block: [SHOOT]
+  armure_de_netherite:
+    match:
+      materials: ["NETHERITE_HELMET", "NETHERITE_CHESTPLATE", "NETHERITE_LEGGINGS", "NETHERITE_BOOTS"]
+    conditions:
+      min-level: 30
+      attributes: {endurance: 10}
+    block: [WEAR]
+  trident:
+    match:
+      materials: ["TRIDENT"]
+    conditions:
+      min-level: 15
+    block: [ATTACK, USE]
+
+  # Exemple d'objet custom réservé (décommente et adapte) :
+  # baton_de_feu:
+  #   match:
+  #     custom-ids: ["craftengine:monpack:baton_de_feu"]
+  #   conditions:
+  #     classes: [pyromancien]
+  #     min-level: 20
+  #     attributes: {intelligence: 10}
+  #   message: "Seul un pyromancien expérimenté peut manier ce bâton."

@@ -203,6 +203,59 @@ public final class ClasseCommand implements TabExecutor {
                 profile.setLastReset(0);
                 plugin.messages().send(sender, "admin-reset", Text.ph("player", target.getName()));
             }
+            case "setrace" -> {
+                var race = args.length > 3 ? plugin.content().race(args[3]) : null;
+                if (race == null) {
+                    plugin.messages().send(sender, "unknown-class", Text.ph("class", args.length > 3 ? args[3] : "?"));
+                    return;
+                }
+                profile.setRaceId(race.id());
+                plugin.stats().apply(target);
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "resetrace" -> {
+                profile.setRaceId(null);
+                plugin.stats().apply(target);
+                plugin.character().continueCreation(target);
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "resettraits" -> {
+                plugin.character().resetTraits(target);
+                plugin.character().continueCreation(target);
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "setjob" -> {
+                var job = args.length > 3 ? plugin.content().job(args[3]) : null;
+                profile.setJobId(job == null ? null : job.id());
+                profile.setJobPromptDone(true);
+                plugin.stats().apply(target);
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "addpoints" -> {
+                // /classe admin addpoints <joueur> <competence|stats> <n>
+                String type = args.length > 3 ? args[3].toLowerCase(Locale.ROOT) : "";
+                int n = parseInt(args, 4, 1);
+                if (type.startsWith("comp") || type.startsWith("skill") || type.startsWith("arbre")) {
+                    profile.setBonusSkillPoints(profile.getBonusSkillPoints() + n);
+                } else {
+                    profile.setBonusAttributePoints(profile.getBonusAttributePoints() + n);
+                }
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "resettree" -> {
+                plugin.character().resetTree(target, true);
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "resetstats" -> {
+                plugin.character().resetAttributes(target, true);
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "kit" -> {
+                String cls = args.length > 3 ? args[3] : profile.getClassId();
+                profile.kitsReceived().remove(cls == null ? "" : cls.toLowerCase(Locale.ROOT));
+                plugin.character().giveKit(target, cls);
+                plugin.messages().send(sender, "admin-done");
+            }
             case "mana" -> {
                 profile.setMana(plugin.stats().maxMana(profile));
                 profile.clearCooldowns();
@@ -245,7 +298,8 @@ public final class ClasseCommand implements TabExecutor {
                 case "info" -> Bukkit.getOnlinePlayers().forEach(p -> options.add(p.getName()));
                 case "admin" -> {
                     if (sender.hasPermission("cykclasses.admin")) {
-                        options.addAll(List.of("setlevel", "addxp", "setclass", "reset", "mana", "reload"));
+                        options.addAll(List.of("setlevel", "addxp", "setclass", "reset", "mana", "reload", "setrace",
+                                "resetrace", "resettraits", "setjob", "addpoints", "resettree", "resetstats", "kit"));
                     }
                 }
                 default -> {
@@ -253,8 +307,15 @@ public final class ClasseCommand implements TabExecutor {
             }
         } else if (args.length == 3 && args[0].equalsIgnoreCase("admin")) {
             Bukkit.getOnlinePlayers().forEach(p -> options.add(p.getName()));
-        } else if (args.length == 4 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("setclass")) {
-            plugin.classes().all().forEach(c -> options.add(c.id));
+        } else if (args.length == 4 && args[0].equalsIgnoreCase("admin")) {
+            switch (args[1].toLowerCase(Locale.ROOT)) {
+                case "setclass", "kit" -> plugin.classes().all().forEach(c -> options.add(c.id));
+                case "setrace" -> plugin.content().races().forEach(r -> options.add(r.id()));
+                case "setjob" -> plugin.content().jobs().forEach(j -> options.add(j.id()));
+                case "addpoints" -> options.addAll(List.of("competences", "stats"));
+                default -> {
+                }
+            }
         }
         String last = args[args.length - 1].toLowerCase(Locale.ROOT);
         return options.stream().filter(o -> o.toLowerCase(Locale.ROOT).startsWith(last)).collect(Collectors.toList());

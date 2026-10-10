@@ -2,7 +2,6 @@ package fr.cykalos.cykclasses.listener;
 
 import fr.cykalos.cykclasses.CykClasses;
 import fr.cykalos.cykclasses.data.PlayerProfile;
-import fr.cykalos.cykclasses.gui.ClassSelectGui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -57,12 +56,15 @@ public final class ConnectionListener implements Listener {
         plugin.skillBar().recover(player);
         plugin.stats().apply(player);
 
-        if (!profile.hasClass() && plugin.getConfig().getBoolean("force-class-selection", true)) {
+        if (plugin.getConfig().getBoolean("force-class-selection", true)) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                if (player.isOnline() && !plugin.profiles().get(player).hasClass()) {
-                    plugin.messages().send(player, "must-choose-class");
-                    new ClassSelectGui(plugin, player).open();
+                if (!player.isOnline()) {
+                    return;
                 }
+                if (!plugin.profiles().get(player).hasClass()) {
+                    plugin.messages().send(player, "must-choose-class");
+                }
+                plugin.character().continueCreation(player);
             }, 40L);
         }
     }

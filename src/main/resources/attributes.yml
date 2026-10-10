@@ -1,0 +1,49 @@
+# ╔══════════════════════════════════════════════╗
+# ║           CykClasses - attributes.yml        ║
+# ╚══════════════════════════════════════════════╝
+# Points d'attributs (/stats) : gagnés en montant de niveau (config.yml → progression).
+# per-point : effet de CHAQUE point (les multiplicateurs se cumulent : 1.01 = +1 % par point).
+
+attributes:
+  force:
+    name: "<red><bold>Force"
+    icon: IRON_SWORD
+    description: ["<gray>Puissance au corps à corps."]
+    max: 50
+    per-point: {melee-damage: 1.01}
+  dexterite:
+    name: "<green><bold>Dextérité"
+    icon: BOW
+    description: ["<gray>Précision à distance et coups critiques."]
+    max: 50
+    per-point: {ranged-damage: 1.01, crit-chance: 0.002}
+  intelligence:
+    name: "<light_purple><bold>Intelligence"
+    icon: ENCHANTED_BOOK
+    description: ["<gray>Puissance des sorts et réserve de mana."]
+    max: 50
+    per-point: {magic-damage: 1.01, mana: 3}
+  vitalite:
+    name: "<dark_red><bold>Vitalité"
+    icon: GOLDEN_APPLE
+    description: ["<gray>Points de vie supplémentaires."]
+    max: 50
+    per-point: {health: 0.5}
+  sagesse:
+    name: "<aqua><bold>Sagesse"
+    icon: LAPIS_LAZULI
+    description: ["<gray>Régénération du mana."]
+    max: 50
+    per-point: {mana-regen: 0.08}
+  agilite:
+    name: "<yellow><bold>Agilité"
+    icon: FEATHER
+    description: ["<gray>Vitesse de déplacement et d'attaque."]
+    max: 30
+    per-point: {speed: 0.004, attack-speed: 0.005}
+  endurance:
+    name: "<gray><bold>Endurance"
+    icon: IRON_CHESTPLATE
+    description: ["<gray>Réduit les dégâts subis."]
+    max: 30
+    per-point: {damage-taken: 0.995, armor: 0.1}

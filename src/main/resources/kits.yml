@@ -1,0 +1,91 @@
+# ╔══════════════════════════════════════════════╗
+# ║              CykClasses - kits.yml           ║
+# ╚══════════════════════════════════════════════╝
+# Kit donné au choix d'une classe (et d'une sous-classe si un kit porte son id).
+#
+# item :
+#   "minecraft:iron_sword"            objet vanilla
+#   "craftengine:monpack:epee"         objet CraftEngine
+#   "executableitems:mon_epee"         objet ExecutableItems
+#   "mythic:EpeeRecrue"                objet MythicMobs / MythicCrucible
+#   "itemsadder:ns:id", "oraxen:id", "nexo:id", "mmoitems:TYPE:ID"...
+#   (la liste des préfixes reconnus est affichée dans la console au démarrage)
+# Options : amount, slot (HEAD, CHEST, LEGS, FEET, OFFHAND ou numéro 0-35), name, lore,
+#           enchants {sharpness: 1}, unbreakable, item-model (vanilla uniquement)
+# commands : commandes console, %player% = nom du joueur
+
+# Le kit n'est donné qu'une fois par classe (même après un reset)
+give-once: true
+
+kits:
+  guerrier:
+    items:
+      - item: "minecraft:iron_sword"
+        name: "<red>Épée de recrue"
+        lore: ["<gray>Fidèle compagne des premiers combats."]
+        slot: 0
+      - item: "minecraft:shield"
+        slot: OFFHAND
+      - item: "minecraft:iron_chestplate"
+        slot: CHEST
+      - item: "minecraft:chainmail_leggings"
+        slot: LEGS
+      - item: "minecraft:cooked_beef"
+        amount: 16
+  mage:
+    items:
+      - item: "minecraft:blaze_rod"
+        name: "<light_purple>Bâton d'apprenti"
+        lore: ["<gray>Un simple bâton... pour l'instant."]
+        enchants: {knockback: 1}
+        slot: 0
+      - item: "minecraft:leather_chestplate"
+        name: "<light_purple>Robe d'apprenti"
+        slot: CHEST
+      - item: "minecraft:bread"
+        amount: 16
+  archer:
+    items:
+      - item: "minecraft:bow"
+        name: "<green>Arc de chasse"
+        enchants: {infinity: 1}
+        slot: 0
+      - item: "minecraft:arrow"
+        amount: 1
+      - item: "minecraft:leather_chestplate"
+        slot: CHEST
+      - item: "minecraft:leather_boots"
+        slot: FEET
+      - item: "minecraft:cooked_chicken"
+        amount: 16
+  assassin:
+    items:
+      - item: "minecraft:iron_sword"
+        name: "<dark_gray>Dague effilée"
+        slot: 0
+      - item: "minecraft:leather_chestplate"
+        slot: CHEST
+      - item: "minecraft:leather_boots"
+        slot: FEET
+      - item: "minecraft:cooked_porkchop"
+        amount: 16
+  clerc:
+    items:
+      - item: "minecraft:golden_shovel"
+        name: "<yellow>Masse cérémonielle"
+        slot: 0
+      - item: "minecraft:golden_chestplate"
+        slot: CHEST
+      - item: "minecraft:golden_apple"
+        amount: 2
+      - item: "minecraft:bread"
+        amount: 16
+
+  # Exemple de kit de sous-classe avec objets custom (décommente et adapte) :
+  # pyromancien:
+  #   items:
+  #     - item: "craftengine:monpack:baton_de_feu"
+  #     - item: "mythic:RobeDeFeu"
+  #       slot: CHEST
+  #   commands:
+  #     - "ei give %player% grimoire_feu 1"

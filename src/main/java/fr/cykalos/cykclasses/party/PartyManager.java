@@ -27,7 +27,7 @@ public final class PartyManager {
     }
 
     private final CykClasses plugin;
-    private final Map<UUID, Party> byPlayer = new HashMap<>();
+    private final Map<UUID, Party> byPlayer = new java.util.concurrent.ConcurrentHashMap<>();
     /** invité -> (groupe -> invitation) */
     private final Map<UUID, Map<UUID, Invite>> invites = new HashMap<>();
 
@@ -256,6 +256,10 @@ public final class PartyManager {
         broadcast(party, "party.disbanded");
         for (UUID uuid : new ArrayList<>(party.members())) {
             byPlayer.remove(uuid);
+            var prof = plugin.profiles().getIfLoaded(uuid);
+            if (prof != null) {
+                prof.setPartyChat(false);
+            }
             Player p = Bukkit.getPlayer(uuid);
             if (p != null) {
                 plugin.hud().removePartyBoard(p);
@@ -269,12 +273,20 @@ public final class PartyManager {
             plugin.messages().send(sender, "party.not-in");
             return;
         }
-        Component line = plugin.messages().get("party.chat-format", Text.ph("player", sender.getName()))
-                .append(Component.text(message));
-        for (Player p : party.onlineMembers()) {
-            p.sendMessage(line);
+        plugin.chat().sendParty(sender, party, message);
+    }
+
+    /** /gc sans argument : bascule le chat du joueur sur le groupe. */
+    public void togglePartyChat(Player player) {
+        Party party = get(player);
+        var profile = plugin.profiles().get(player);
+        if (party == null) {
+            profile.setPartyChat(false);
+            plugin.messages().send(player, "party.not-in");
+            return;
         }
-        plugin.getLogger().info("[Groupe] " + sender.getName() + ": " + message);
+        profile.setPartyChat(!profile.isPartyChat());
+        plugin.messages().send(player, profile.isPartyChat() ? "party.chat-on" : "party.chat-off");
     }
 
     public void onQuit(Player player) {
@@ -298,6 +310,10 @@ public final class PartyManager {
     private void removeMember(Party party, UUID uuid, String messageKey, String name) {
         party.remove(uuid);
         byPlayer.remove(uuid);
+        var prof = plugin.profiles().getIfLoaded(uuid);
+        if (prof != null) {
+            prof.setPartyChat(false);
+        }
         Player p = Bukkit.getPlayer(uuid);
         if (p != null) {
             plugin.hud().removePartyBoard(p);

@@ -87,9 +87,41 @@ mythicmobs:
   mob-xp:
     ExempleBoss: 500
 
+# Points gagnés en montant de niveau
+progression:
+  # Points d'arbre de compétences (/arbre)
+  starting-skill-points: 1
+  skill-points-per-level: 1
+  # Points d'attributs (/stats)
+  starting-attribute-points: 3
+  attribute-points-per-level: 2
+  # Délai entre deux réinitialisations gratuites (heures)
+  tree-reset-cooldown-hours: 24
+  attribute-reset-cooldown-hours: 24
+
+# Création du personnage : classe -> race -> traits -> métier
+character:
+  # La race peut-elle être changée après coup avec /race ?
+  race-can-change: false
+
+# Chat
+chat:
+  # Formate le chat global avec la classe et le niveau (désactive si un autre plugin gère le chat :
+  # utilise alors les placeholders %cykclasses_class%, %cykclasses_level%...)
+  format-enabled: true
+  # Placeholders : <class_tag>, <name>, <message>
+  global-format: "<class_tag> <white><name></white><dark_gray> » </dark_gray><gray><message>"
+  party-format: "<dark_aqua>[Groupe]</dark_aqua> <class_tag> <aqua><name></aqua><dark_gray> » </dark_gray><white><message>"
+  # Placeholders : <class>, <level>, <race>
+  class-tag: "<dark_gray>[</dark_gray><class> <gray><level></gray><dark_gray>]</dark_gray>"
+  no-class-tag: "<dark_gray>[<gray>Novice</gray>]</dark_gray>"
+  spy-prefix: "<dark_gray>[Espion] "
+
 # Affichage (barre d'action)
 hud:
   enabled: true
+  # Préfixe affiché devant le HUD quand le mode compétences est actif
+  cast-mode-prefix: "<light_purple>✦ </light_purple>"
   interval-ticks: 10
   format: "<red>❤ <health>/<max_health></red>  <aqua>✦ <mana>/<max_mana></aqua>  <gold>Niv. <level></gold> <gray>(<xp_percent>%)</gray>"
 
@@ -100,6 +132,8 @@ reset:
   keep-level: false
   # Délai entre deux resets (en minutes)
   cooldown-minutes: 60
+  # Garder la race lors d'un reset de classe ? (les traits sont toujours gardés)
+  keep-race: true
 
 # Choisir une classe est-il obligatoire ? (ouvre le menu à la connexion)
 force-class-selection: true

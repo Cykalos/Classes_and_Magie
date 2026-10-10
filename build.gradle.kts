@@ -1,5 +1,6 @@
 plugins {
     java
+    id("com.gradleup.shadow") version "9.2.2"
 }
 
 group = "fr.cykalos"
@@ -16,6 +17,8 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:${findProperty("paperVersion") ?: "26.1.2.build.+"}")
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("io.lumine:Mythic-Dist:5.12.1")
+    // Embarqué et relocalisé dans le jar (objets CraftEngine, ExecutableItems, ItemsAdder, Oraxen, Nexo, MMOItems...)
+    implementation("io.github.projectunified:uni-item-all:2.7.2")
 }
 
 java {
@@ -37,6 +40,19 @@ tasks.processResources {
 }
 
 tasks.jar {
+    archiveClassifier.set("plain")
+}
+
+tasks.shadowJar {
     archiveBaseName.set("CykClasses")
+    archiveClassifier.set("")
+    dependencies {
+        include(dependency("io.github.projectunified:.*"))
+    }
+    relocate("io.github.projectunified.uniitem", "fr.cykalos.cykclasses.libs.uniitem")
     from("LICENSE")
+}
+
+tasks.build {
+    dependsOn(tasks.shadowJar)
 }

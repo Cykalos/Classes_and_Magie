@@ -90,7 +90,7 @@ public final class CombatListener implements Listener {
                 CombatService.Status st = plugin.combat().statusIfPresent(attacker.getUniqueId());
                 long now = System.currentTimeMillis();
                 if (!skill) {
-                    ClassStats s = rc.stats;
+                    ClassStats s = plugin.stats().stats(profile);
                     damage *= kind == DamageKind.MELEE ? s.meleeDamage : s.rangedDamage;
                     damage *= weaponPenalty(attacker, rc);
                     if (kind == DamageKind.MELEE && s.critChance > 0 && ThreadLocalRandom.current().nextDouble() < s.critChance) {
@@ -130,7 +130,7 @@ public final class CombatListener implements Listener {
     private double weaponPenalty(Player attacker, RpgClass rc) {
         ItemStack hand = attacker.getInventory().getItemInMainHand();
         double mult = 1.0;
-        for (Flaw f : rc.flaws()) {
+        for (Flaw f : plugin.stats().flaws(plugin.profiles().get(attacker))) {
             if (f.type == Flaw.Type.WEAPON_PENALTY && f.matches(hand.getType())) {
                 mult *= f.multiplier;
             }
@@ -183,8 +183,8 @@ public final class CombatListener implements Listener {
         }
 
         String cause = event.getCause().name();
-        double damage = event.getDamage() * rc.stats.damageTaken;
-        for (Flaw f : rc.flaws()) {
+        double damage = event.getDamage() * plugin.stats().stats(profile).damageTaken;
+        for (Flaw f : plugin.stats().flaws(profile)) {
             if (f.type == Flaw.Type.DAMAGE_TAKEN && f.matchesCause(cause)) {
                 damage *= f.multiplier;
             }
@@ -233,11 +233,11 @@ public final class CombatListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        RpgClass rc = plugin.classes().effective(plugin.profiles().getIfLoaded(player.getUniqueId()));
-        if (rc == null) {
+        var prof = plugin.profiles().getIfLoaded(player.getUniqueId());
+        if (prof == null || !prof.hasClass()) {
             return;
         }
-        for (Flaw f : rc.flaws()) {
+        for (Flaw f : plugin.stats().flaws(prof)) {
             if (f.type == Flaw.Type.HEALING_REDUCTION) {
                 event.setAmount(event.getAmount() * f.multiplier);
             }
@@ -249,11 +249,11 @@ public final class CombatListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        RpgClass rc = plugin.classes().effective(plugin.profiles().getIfLoaded(player.getUniqueId()));
-        if (rc == null) {
+        var prof = plugin.profiles().getIfLoaded(player.getUniqueId());
+        if (prof == null || !prof.hasClass()) {
             return;
         }
-        for (Flaw f : rc.flaws()) {
+        for (Flaw f : plugin.stats().flaws(prof)) {
             if (f.type == Flaw.Type.HUNGER) {
                 event.setExhaustion(event.getExhaustion() * (float) f.multiplier);
             }

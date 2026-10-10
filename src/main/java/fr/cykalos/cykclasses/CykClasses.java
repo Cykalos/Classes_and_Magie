@@ -1,6 +1,13 @@
 package fr.cykalos.cykclasses;
 
+import fr.cykalos.cykclasses.command.CharacterCommand;
 import fr.cykalos.cykclasses.command.ClasseCommand;
+import fr.cykalos.cykclasses.content.ContentRegistry;
+import fr.cykalos.cykclasses.listener.ChatListener;
+import fr.cykalos.cykclasses.listener.JobListener;
+import fr.cykalos.cykclasses.service.CharacterService;
+import fr.cykalos.cykclasses.service.ItemFactory;
+import fr.cykalos.cykclasses.service.ItemRestrictionService;
 import fr.cykalos.cykclasses.command.CompetenceCommand;
 import fr.cykalos.cykclasses.command.GroupeCommand;
 import fr.cykalos.cykclasses.config.ClassRegistry;
@@ -54,6 +61,11 @@ public final class CykClasses extends JavaPlugin {
     private PartyManager parties;
     private HudService hud;
     private MythicHook mythic;
+    private ContentRegistry content;
+    private CharacterService character;
+    private ItemFactory itemFactory;
+    private ItemRestrictionService items;
+    private ChatListener chat;
 
     public static CykClasses instance() {
         return instance;
@@ -69,6 +81,8 @@ public final class CykClasses extends JavaPlugin {
         messages = new Messages(this);
         messages.load();
         skills = new SkillService(this);
+        content = new ContentRegistry(this);
+        content.load();
         classes = new ClassRegistry(this);
         classes.load();
         profiles = new ProfileManager(this);
@@ -89,6 +103,11 @@ public final class CykClasses extends JavaPlugin {
         parties = new PartyManager(this);
         hud = new HudService(this);
         hud.load();
+        character = new CharacterService(this);
+        character.loadUniques();
+        itemFactory = new ItemFactory(this);
+        items = new ItemRestrictionService(this);
+        chat = new ChatListener(this);
 
         var pm = Bukkit.getPluginManager();
         pm.registerEvents(new ConnectionListener(this), this);
@@ -97,12 +116,20 @@ public final class CykClasses extends JavaPlugin {
         pm.registerEvents(new CastingListener(this), this);
         pm.registerEvents(new GuiListener(), this);
         pm.registerEvents(new HudListener(this), this);
+        pm.registerEvents(new JobListener(this), this);
+        pm.registerEvents(items, this);
+        pm.registerEvents(chat, this);
 
         registerCommand("classe", new ClasseCommand(this));
         registerCommand("competence", new CompetenceCommand(this));
         GroupeCommand groupe = new GroupeCommand(this);
         registerCommand("groupe", groupe);
         registerCommand("gc", groupe);
+        registerCommand("global", groupe);
+        CharacterCommand charCmd = new CharacterCommand(this);
+        for (String c : new String[]{"race", "traits", "metier", "arbre", "stats"}) {
+            registerCommand(c, charCmd);
+        }
 
         mana.start();
         flaws.start();
@@ -117,6 +144,9 @@ public final class CykClasses extends JavaPlugin {
                 getLogger().log(Level.WARNING, "Intégration MythicMobs impossible (version incompatible ?)", t);
             }
         }
+
+        // Les plugins d'objets (CraftEngine, ExecutableItems...) peuvent se charger après nous.
+        Bukkit.getScheduler().runTask(this, () -> itemFactory.init());
 
         if (pm.isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderHook(this).register();
@@ -179,7 +209,9 @@ public final class CykClasses extends JavaPlugin {
         skillBar.exitAll();
         messages.load();
         hud.load();
+        content.load();
         classes.load();
+        stats.invalidateAll();
         hud.start();
         mana.start();
         flaws.start();
@@ -203,4 +235,9 @@ public final class CykClasses extends JavaPlugin {
     public HudService hud() { return hud; }
     /** @return le pont MythicMobs, ou null si MythicMobs n'est pas installé. */
     public MythicHook mythic() { return mythic; }
+    public ContentRegistry content() { return content; }
+    public CharacterService character() { return character; }
+    public ItemFactory itemFactory() { return itemFactory; }
+    public ItemRestrictionService items() { return items; }
+    public ChatListener chat() { return chat; }
 }

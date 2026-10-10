@@ -110,7 +110,8 @@ public final class SkillService {
             fail(player);
             return false;
         }
-        SkillCastEvent event = new SkillCastEvent(player, def, def.manaCost);
+        var skillMod = plugin.stats().skillMod(profile, def.id);
+        SkillCastEvent event = new SkillCastEvent(player, def, def.manaCost * skillMod.manaMultiplier());
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return false;
@@ -148,7 +149,7 @@ public final class SkillService {
         if (def.healthCost > 0) {
             player.setHealth(Math.max(1, player.getHealth() - def.healthCost));
         }
-        profile.setCooldownEnd(def.id, now + (long) (def.cooldown * 1000));
+        profile.setCooldownEnd(def.id, now + (long) (def.cooldown * skillMod.cooldownMultiplier() * 1000));
         var before = plugin.levels().availableSubclasses(player, profile);
         profile.addSkillUse(def.id);
         plugin.levels().checkNewSubclasses(player, profile, before);

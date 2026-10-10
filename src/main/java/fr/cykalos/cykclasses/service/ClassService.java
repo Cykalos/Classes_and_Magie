@@ -83,6 +83,10 @@ public final class ClassService {
         profile.clearCooldowns();
         plugin.stats().apply(player);
         profile.setMana(plugin.stats().maxMana(profile));
+        plugin.character().giveKit(player, rc.id);
+        if (!rc.isSubclass()) {
+            plugin.character().continueCreation(player);
+        }
         player.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, player.getLocation().add(0, 1, 0), 50, 0.5, 1, 0.5, 0.3);
         return true;
     }
@@ -113,6 +117,9 @@ public final class ClassService {
             return false;
         }
         profile.resetClass(plugin.getConfig().getBoolean("reset.keep-level", false));
+        if (!plugin.getConfig().getBoolean("reset.keep-race", true)) {
+            profile.setRaceId(null);
+        }
         profile.setLastReset(System.currentTimeMillis());
         plugin.combat().clear(player.getUniqueId());
         plugin.stats().apply(player);

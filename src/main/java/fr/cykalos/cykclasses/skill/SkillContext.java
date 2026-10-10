@@ -21,8 +21,16 @@ public record SkillContext(CykClasses plugin, Player player, PlayerProfile profi
         return plugin.combat();
     }
 
+    /** Les paramètres de puissance (damage, amount...) incluent les bonus de l'arbre de compétences. */
+    private static final java.util.Set<String> POWER_KEYS = java.util.Set.of(
+            "damage", "amount", "damage-per-second", "counter-damage", "bonus-health");
+
     public double d(String key, double def) {
-        return this.def.d(key, def);
+        double v = this.def.d(key, def);
+        if (POWER_KEYS.contains(key)) {
+            v *= plugin.stats().skillMod(profile, this.def.id).damageMultiplier();
+        }
+        return v;
     }
 
     public int i(String key, int def) {

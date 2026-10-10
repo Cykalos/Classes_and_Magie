@@ -1,9 +1,19 @@
 package fr.cykalos.cykclasses.service;
 
 import fr.cykalos.cykclasses.CykClasses;
+import fr.cykalos.cykclasses.content.AttributeDef;
+import fr.cykalos.cykclasses.content.Job;
+import fr.cykalos.cykclasses.content.PermanentEffect;
+import fr.cykalos.cykclasses.content.Race;
+import fr.cykalos.cykclasses.content.SkillMod;
+import fr.cykalos.cykclasses.content.SkillTree;
+import fr.cykalos.cykclasses.content.Trait;
+import fr.cykalos.cykclasses.content.TreeNode;
 import fr.cykalos.cykclasses.data.PlayerProfile;
 import fr.cykalos.cykclasses.model.ClassStats;
+import fr.cykalos.cykclasses.model.Flaw;
 import fr.cykalos.cykclasses.model.RpgClass;
+import fr.cykalos.cykclasses.model.StatModifier;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -11,11 +21,23 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlotGroup;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
- * Applique les statistiques de classe sous forme de modificateurs d'attributs transitoires
- * (ils ne sont jamais sauvegardés dans les données du joueur).
+ * Statistiques effectives d'un joueur = classe + race (+ pénalité de classe) + traits + métier
+ * + points d'attributs + arbre de compétences. Appliquées en modificateurs d'attributs transitoires.
  */
 public final class StatsService {
+
+    /** Arbre commun à toutes les classes. */
+    public static final String COMMON_TREE = "commun";
+
+    private record Computed(ClassStats stats, List<Flaw> flaws, List<PermanentEffect> effects, Map<String, SkillMod> skillMods) {
+    }
 
     private final CykClasses plugin;
     private final NamespacedKey healthKey;
@@ -23,6 +45,7 @@ public final class StatsService {
     private final NamespacedKey armorKey;
     private final NamespacedKey attackSpeedKey;
     private final NamespacedKey buffKey;
+    private final Map<UUID, Computed> cache = new HashMap<>();
 
     public StatsService(CykClasses plugin) {
         this.plugin = plugin;
@@ -33,9 +56,102 @@ public final class StatsService {
         this.buffKey = new NamespacedKey(plugin, "skill_health_buff");
     }
 
-    public ClassStats stats(PlayerProfile profile) {
+    // ------------------------------------------------------------ Calcul
+
+    private Computed compute(PlayerProfile profile) {
         RpgClass rc = plugin.classes().effective(profile);
-        return rc == null ? ClassStats.DEFAULT : rc.stats;
+        if (rc == null) {
+            return new Computed(ClassStats.DEFAULT, List.of(), List.of(), Map.of());
+        }
+        StatModifier mod = new StatModifier();
+        List<Flaw> flaws = new ArrayList<>(rc.flaws());
+        List<PermanentEffect> effects = new ArrayList<>();
+        Map<String, SkillMod> skillMods = new HashMap<>();
+
+        Race race = plugin.content().race(profile.getRaceId());
+        if (race != null) {
+            mod.add(race.modifiers());
+            flaws.addAll(race.flaws());
+            effects.addAll(race.effects());
+            Race.Affinity penalty = race.penaltyFor(profile.getClassId(), profile.getSubclassId());
+            if (penalty != null) {
+                mod.add(penalty.modifiers());
+                flaws.addAll(penalty.flaws());
+            }
+        }
+        for (String id : profile.getTraits()) {
+            Trait t = plugin.content().trait(id);
+            if (t != null) {
+                mod.add(t.modifiers());
+                flaws.addAll(t.flaws());
+                effects.addAll(t.effects());
+            }
+        }
+        Job job = plugin.content().job(profile.getJobId());
+        if (job != null) {
+            mod.add(job.modifiers());
+            effects.addAll(job.effects());
+        }
+        for (AttributeDef a : plugin.content().attributes()) {
+            mod.add(a.perPoint(), profile.getAttribute(a.id()));
+        }
+        for (SkillTree tree : treesOf(profile)) {
+            for (TreeNode node : tree.nodes().values()) {
+                int rank = profile.getNodeRank(tree.classId() + ":" + node.id());
+                if (rank > 0) {
+                    mod.add(node.modifiers(), rank);
+                    node.skillMods().forEach((skill, sm) -> skillMods.computeIfAbsent(skill, k -> new SkillMod()).add(sm, rank));
+                }
+            }
+        }
+        return new Computed(rc.stats.apply(mod), flaws, effects, skillMods);
+    }
+
+    private Computed computed(PlayerProfile profile) {
+        if (profile == null) {
+            return new Computed(ClassStats.DEFAULT, List.of(), List.of(), Map.of());
+        }
+        return cache.computeIfAbsent(profile.getUuid(), k -> compute(profile));
+    }
+
+    /** Arbres disponibles : celui de la classe de base puis l'arbre commun. */
+    public List<SkillTree> treesOf(PlayerProfile profile) {
+        List<SkillTree> out = new ArrayList<>();
+        SkillTree own = plugin.content().tree(profile.getClassId());
+        if (own != null) {
+            out.add(own);
+        }
+        SkillTree common = plugin.content().tree(COMMON_TREE);
+        if (common != null) {
+            out.add(common);
+        }
+        return out;
+    }
+
+    public void invalidate(UUID uuid) {
+        cache.remove(uuid);
+    }
+
+    public void invalidateAll() {
+        cache.clear();
+    }
+
+    public ClassStats stats(PlayerProfile profile) {
+        return computed(profile).stats();
+    }
+
+    public List<Flaw> flaws(PlayerProfile profile) {
+        return computed(profile).flaws();
+    }
+
+    public List<PermanentEffect> effects(PlayerProfile profile) {
+        return computed(profile).effects();
+    }
+
+    /** Bonus cumulés de l'arbre pour une compétence (jamais nul). */
+    public SkillMod skillMod(PlayerProfile profile, String skillId) {
+        SkillMod m = computed(profile).skillMods().get(skillId.toLowerCase(java.util.Locale.ROOT));
+        return m == null ? new SkillMod() : m;
     }
 
     public double maxMana(PlayerProfile profile) {
@@ -45,14 +161,49 @@ public final class StatsService {
         return stats(profile).maxMana(profile.getLevel());
     }
 
+    // ------------------------------------------------------------ Points
+
+    public int totalSkillPoints(PlayerProfile p) {
+        var c = plugin.getConfig();
+        return c.getInt("progression.starting-skill-points", 1)
+                + c.getInt("progression.skill-points-per-level", 1) * (p.getLevel() - 1) + p.getBonusSkillPoints();
+    }
+
+    public int spentSkillPoints(PlayerProfile p) {
+        int spent = 0;
+        for (SkillTree tree : treesOf(p)) {
+            for (TreeNode node : tree.nodes().values()) {
+                spent += p.getNodeRank(tree.classId() + ":" + node.id()) * node.cost();
+            }
+        }
+        return spent;
+    }
+
+    public int availableSkillPoints(PlayerProfile p) {
+        return Math.max(0, totalSkillPoints(p) - spentSkillPoints(p));
+    }
+
+    public int totalAttributePoints(PlayerProfile p) {
+        var c = plugin.getConfig();
+        return c.getInt("progression.starting-attribute-points", 3)
+                + c.getInt("progression.attribute-points-per-level", 2) * (p.getLevel() - 1) + p.getBonusAttributePoints();
+    }
+
+    public int availableAttributePoints(PlayerProfile p) {
+        return Math.max(0, totalAttributePoints(p) - p.spentAttributePoints());
+    }
+
+    // ------------------------------------------------------------ Application
+
     public void apply(Player player) {
         PlayerProfile profile = plugin.profiles().get(player);
+        invalidate(player.getUniqueId());
         RpgClass rc = plugin.classes().effective(profile);
         if (rc == null) {
             clear(player);
             return;
         }
-        ClassStats s = rc.stats;
+        ClassStats s = stats(profile);
         int level = profile.getLevel();
         set(player, Attribute.MAX_HEALTH, healthKey, s.bonusHealth(level), AttributeModifier.Operation.ADD_NUMBER);
         set(player, Attribute.MOVEMENT_SPEED, speedKey, s.speed, AttributeModifier.Operation.ADD_SCALAR);
@@ -70,6 +221,7 @@ public final class StatsService {
     }
 
     public void clear(Player player) {
+        invalidate(player.getUniqueId());
         remove(player, Attribute.MAX_HEALTH, healthKey);
         remove(player, Attribute.MAX_HEALTH, buffKey);
         remove(player, Attribute.MOVEMENT_SPEED, speedKey);

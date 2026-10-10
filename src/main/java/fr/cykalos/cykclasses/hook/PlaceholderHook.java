@@ -66,6 +66,27 @@ public final class PlaceholderHook extends PlaceholderExpansion {
             case "xp_percent" -> String.valueOf((int) (profile.getXp() / plugin.levels().xpRequired(profile.getLevel()) * 100));
             case "mana" -> String.valueOf((int) profile.getMana());
             case "max_mana" -> String.valueOf((int) plugin.stats().maxMana(profile));
+            case "race" -> {
+                var race = plugin.content().race(profile.getRaceId());
+                yield race == null ? "" : Text.plain(race.name());
+            }
+            case "job" -> {
+                var job = plugin.content().job(profile.getJobId());
+                yield job == null ? "" : Text.plain(job.name());
+            }
+            case "traits" -> {
+                java.util.List<String> names = new java.util.ArrayList<>();
+                for (String id : profile.getTraits()) {
+                    var t = plugin.content().trait(id);
+                    if (t != null) {
+                        names.add(Text.plain(t.name()));
+                    }
+                }
+                yield String.join(", ", names);
+            }
+            case "skill_points" -> String.valueOf(plugin.stats().availableSkillPoints(profile));
+            case "attribute_points" -> String.valueOf(plugin.stats().availableAttributePoints(profile));
+            case "party_chat" -> profile.isPartyChat() ? "groupe" : "global";
             default -> null;
         };
     }

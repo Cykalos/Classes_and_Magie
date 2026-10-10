@@ -1,0 +1,173 @@
+# ╔══════════════════════════════════════════════╗
+# ║              CykClasses - races.yml          ║
+# ╚══════════════════════════════════════════════╝
+# Choisie après la classe. Chaque race a :
+#   stats       : modificateurs (mêmes clés que classes.yml ; les dégâts sont des multiplicateurs, 1.1 = +10 %)
+#   flaws       : défauts (mêmes types que classes.yml)
+#   effects     : effets permanents ("night_vision:1", "speed:1"...)
+#   recommended-classes : affichées comme recommandées
+#   class-penalties : malus si la race joue une classe (ou sous-classe) pour laquelle elle n'est pas faite
+
+races:
+  humain:
+    name: "<white><bold>Humain"
+    icon: PLAYER_HEAD
+    description:
+      - "<gray>Polyvalent et adaptable."
+      - "<gray>Aucune faiblesse, aucun grand talent."
+    stats:
+      health: 2
+      mana: 10
+    recommended-classes: [guerrier, mage, archer, assassin, clerc]
+
+  elfe:
+    name: "<green><bold>Elfe"
+    icon: OAK_SAPLING
+    description:
+      - "<gray>Gracieux et lié à la magie."
+      - "<gray>Fragile mais agile et précis."
+    stats:
+      health: -2
+      mana: 30
+      mana-regen: 0.5
+      ranged-damage: 1.1
+      magic-damage: 1.05
+      speed: 0.05
+    effects: ["night_vision:1"]
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [ENTITY_ATTACK]
+        multiplier: 1.1
+        description: "+10% de dégâts au corps à corps"
+    recommended-classes: [archer, mage, clerc]
+    class-penalties:
+      guerrier:
+        description: "Trop frêle pour l'armure lourde du guerrier."
+        stats: {melee-damage: 0.9, armor: -2}
+      berserker:
+        description: "La rage aveugle n'est pas dans la nature elfique."
+        stats: {melee-damage: 0.85}
+
+  nain:
+    name: "<gold><bold>Nain"
+    icon: IRON_PICKAXE
+    description:
+      - "<gray>Robuste, têtu et forgeron dans l'âme."
+      - "<gray>Lent, mais presque inébranlable."
+    stats:
+      health: 6
+      armor: 2
+      damage-taken: 0.92
+      speed: -0.05
+      mana: -20
+    effects: ["haste:1"]
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [DROWNING]
+        multiplier: 1.5
+        description: "Nage mal : +50% de dégâts de noyade"
+    recommended-classes: [guerrier, clerc]
+    class-penalties:
+      mage:
+        description: "Les nains se méfient de la magie pure."
+        stats: {magic-damage: 0.85, mana-regen: -1}
+      archer:
+        description: "Trop petit pour les grands arcs."
+        stats: {ranged-damage: 0.9}
+      assassin:
+        description: "Pas vraiment discret."
+        stats: {speed: -0.05, crit-chance: -0.05}
+
+  orc:
+    name: "<dark_green><bold>Orc"
+    icon: ZOMBIE_HEAD
+    description:
+      - "<gray>Brutal et endurant."
+      - "<gray>Frappe fort, réfléchit peu."
+    stats:
+      health: 8
+      melee-damage: 1.15
+      magic-damage: 0.85
+      mana: -30
+    flaws:
+      - type: HUNGER
+        multiplier: 1.3
+        description: "A faim 30% plus vite"
+      - type: SUNLIGHT_WEAKNESS
+        description: "Affaibli en plein soleil"
+    recommended-classes: [guerrier, assassin]
+    class-penalties:
+      mage:
+        description: "La magie résiste à l'esprit orc."
+        stats: {magic-damage: 0.8, mana: -30}
+        flaws:
+          - type: DARKNESS_MANA_BLOCK
+            description: "Pas de régénération de mana dans le noir"
+      clerc:
+        description: "Les dieux n'écoutent guère les orcs."
+        stats: {magic-damage: 0.85}
+      pretre:
+        description: "Les dieux n'écoutent guère les orcs."
+        stats: {magic-damage: 0.8, mana-regen: -1}
+
+  demon:
+    name: "<dark_red><bold>Tieffelin"
+    icon: BLAZE_POWDER
+    description:
+      - "<gray>Sang démoniaque : feu dans les veines."
+      - "<gray>Craint l'eau et la lumière sacrée."
+    stats:
+      magic-damage: 1.15
+      mana: 20
+      crit-chance: 0.03
+    effects: ["fire_resistance:1"]
+    flaws:
+      - type: WATER_WEAKNESS
+        description: "Lent et affaibli dans l'eau"
+      - type: HEALING_REDUCTION
+        multiplier: 0.8
+        description: "Soins reçus -20%"
+    recommended-classes: [mage, assassin]
+    class-penalties:
+      clerc:
+        description: "La magie sacrée brûle le sang démoniaque."
+        stats: {health: -4}
+        flaws:
+          - type: DAMAGE_TAKEN
+            causes: [MAGIC]
+            multiplier: 1.3
+            description: "+30% de dégâts magiques"
+      paladin:
+        description: "Un paladin démon ? Les dieux s'y opposent."
+        stats: {magic-damage: 0.8, health: -4}
+      cryomancien:
+        description: "Le froid éteint le feu intérieur."
+        stats: {magic-damage: 0.85}
+
+  felin:
+    name: "<yellow><bold>Félys"
+    icon: RABBIT_FOOT
+    description:
+      - "<gray>Peuple félin, vif et silencieux."
+      - "<gray>Retombe toujours sur ses pattes."
+    stats:
+      speed: 0.1
+      attack-speed: 0.1
+      crit-chance: 0.05
+      health: -2
+    effects: ["jump_boost:1"]
+    flaws:
+      - type: WATER_WEAKNESS
+        description: "Déteste l'eau : lent et affaibli"
+      - type: DAMAGE_TAKEN
+        causes: [FALL]
+        multiplier: 0.5
+        description: "Bonus : -50% de dégâts de chute"
+    recommended-classes: [assassin, archer]
+    class-penalties:
+      guerrier:
+        description: "Trop léger pour encaisser en première ligne."
+        stats: {damage-taken: 1.1}
+      paladin:
+        description: "L'armure lourde entrave la souplesse féline."
+        stats: {speed: -0.1}

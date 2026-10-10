@@ -50,10 +50,38 @@ public final class ClassSelectGui extends Gui {
         }
         int last = getInventory().getSize() - 9;
         if (profile.hasClass()) {
-            set(last + 3, new ItemBuilder(Material.NETHER_STAR).name(plugin.messages().raw("gui.subclasses-button")).build(),
+            set(last, new ItemBuilder(Material.OAK_SAPLING).name(plugin.messages().raw("gui.tree-button"))
+                    .lore(plugin.messages().raw("gui.points-line").replace("<points>", String.valueOf(plugin.stats().availableSkillPoints(profile))))
+                    .glow(plugin.stats().availableSkillPoints(profile) > 0).build(),
+                    e -> new SkillTreeGui(plugin, viewer, 0).open());
+            set(last + 1, new ItemBuilder(Material.ANVIL).name(plugin.messages().raw("gui.attributes-button"))
+                    .lore(plugin.messages().raw("gui.points-line").replace("<points>", String.valueOf(plugin.stats().availableAttributePoints(profile))))
+                    .glow(plugin.stats().availableAttributePoints(profile) > 0).build(),
+                    e -> new AttributesGui(plugin, viewer).open());
+            set(last + 2, new ItemBuilder(Material.NETHER_STAR).name(plugin.messages().raw("gui.subclasses-button")).build(),
                     e -> new SubclassGui(plugin, viewer).open());
-            set(last + 5, new ItemBuilder(Material.ENCHANTED_BOOK).name(plugin.messages().raw("gui.skills-button")).build(),
+            set(last + 3, new ItemBuilder(Material.ENCHANTED_BOOK).name(plugin.messages().raw("gui.skills-button")).build(),
                     e -> new SkillsGui(plugin, viewer).open());
+            var race = plugin.content().race(profile.getRaceId());
+            if (!plugin.content().races().isEmpty()) {
+                set(last + 4, new ItemBuilder(race == null ? Material.PLAYER_HEAD : race.icon())
+                        .name(plugin.messages().raw("gui.race-button") + (race == null ? "" : " <white>" + Text.plain(race.name()))).build(),
+                        e -> new RaceGui(plugin, viewer).open());
+            }
+            if (!plugin.content().traits().isEmpty()) {
+                set(last + 5, new ItemBuilder(Material.AMETHYST_SHARD).name(plugin.messages().raw("gui.traits-button")).build(), e -> {
+                    if (!plugin.profiles().get(viewer).isTraitsRolled()) {
+                        plugin.character().rollTraits(viewer, plugin.profiles().get(viewer), false);
+                    }
+                    new TraitsGui(plugin, viewer).open();
+                });
+            }
+            var job = plugin.content().job(profile.getJobId());
+            if (!plugin.content().jobs().isEmpty()) {
+                set(last + 6, new ItemBuilder(job == null ? Material.WOODEN_PICKAXE : job.icon())
+                        .name(plugin.messages().raw("gui.job-button") + (job == null ? "" : " <white>" + Text.plain(job.name()))).build(),
+                        e -> new JobGui(plugin, viewer).open());
+            }
         }
         set(last + 8, new ItemBuilder(Material.BARRIER).name(plugin.messages().raw("gui.close")).build(), e -> viewer.closeInventory());
         fill();

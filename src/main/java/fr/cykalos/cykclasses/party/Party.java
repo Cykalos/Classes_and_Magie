@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashSet;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -25,7 +25,7 @@ public final class Party {
 
     private final UUID id = UUID.randomUUID();
     private UUID leader;
-    private final Set<UUID> members = new LinkedHashSet<>();
+    private final Set<UUID> members = new CopyOnWriteArraySet<>();
     private final XpMode xpMode;
     private final boolean friendlyFire;
     private final long createdAt = System.currentTimeMillis();

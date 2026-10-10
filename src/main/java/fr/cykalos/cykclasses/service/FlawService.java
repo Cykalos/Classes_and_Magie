@@ -1,6 +1,7 @@
 package fr.cykalos.cykclasses.service;
 
 import fr.cykalos.cykclasses.CykClasses;
+import fr.cykalos.cykclasses.content.PermanentEffect;
 import fr.cykalos.cykclasses.data.PlayerProfile;
 import fr.cykalos.cykclasses.model.Flaw;
 import fr.cykalos.cykclasses.model.RpgClass;
@@ -55,7 +56,11 @@ public final class FlawService {
             if (rc == null) {
                 continue;
             }
-            for (Flaw f : rc.flaws()) {
+            for (PermanentEffect e : plugin.stats().effects(profile)) {
+                player.addPotionEffect(new PotionEffect(e.type(), 100, e.amplifier(), true, false, true));
+            }
+            plugin.items().enforceArmor(player, profile);
+            for (Flaw f : plugin.stats().flaws(profile)) {
                 switch (f.type) {
                     case FORBIDDEN_ARMOR -> enforceArmor(player, f);
                     case WATER_WEAKNESS -> {

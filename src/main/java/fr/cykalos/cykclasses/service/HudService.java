@@ -553,19 +553,29 @@ public final class HudService {
             double max = maxHealth(p);
             double hp = p.isDead() ? 0 : p.getHealth();
             ConfigurationSection th = cfg.getConfigurationSection("target-health");
-            lines.add(Text.mm(s.getString("line", "<name> <health>"),
+            var race = plugin.content().race(prof.getRaceId());
+            TagResolver[] r = {
                     Text.ph("leader", leader),
                     Text.ph("name", p.getName()),
                     Text.ph("health", (int) Math.ceil(hp)),
-                    Text.ph("max_health", (int) Math.round(max)),
+                    Text.ph("max_health", (int) Math.ceil(max - 1e-6)),
                     Text.ph("mana", (int) prof.getMana()),
                     Text.ph("max_mana", (int) plugin.stats().maxMana(prof)),
-                    Text.ph("class", rc == null ? "-" : Text.plain(rc.name)),
+                    Text.ph("class", rc == null ? "<gray>-" : rc.name),
+                    Text.ph("race", race == null ? "" : race.name()),
                     Text.ph("level", prof.getLevel()),
                     Text.ph("bar", bar(hp / max, s.getInt("bar-length", 6), th.getString("above-head.bar-char", "▌"),
                             th.getString("above-head.bar-full", "<green>"), th.getString("above-head.bar-medium", "<yellow>"),
                             th.getString("above-head.bar-low", "<red>"), th.getString("above-head.bar-empty", "<dark_gray>"),
-                            th.getInt("medium-threshold", 60), th.getInt("low-threshold", 30)))));
+                            th.getInt("medium-threshold", 60), th.getInt("low-threshold", 30)))
+            };
+            List<String> memberLines = s.getStringList("member-lines");
+            if (memberLines.isEmpty()) {
+                memberLines = List.of(s.getString("line", "<name> <health>"));
+            }
+            for (String ml : memberLines) {
+                lines.add(Text.mm(ml, r));
+            }
         }
         String footer = s.getString("footer", "");
         if (footer != null && !footer.isBlank()) {

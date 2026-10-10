@@ -78,6 +78,29 @@ public final class ClassStats {
         );
     }
 
+    /** Statistiques résultant de l'application d'un modificateur (race, traits, points, arbre...). */
+    public ClassStats apply(StatModifier m) {
+        if (m == null || m.isEmpty()) {
+            return this;
+        }
+        return new ClassStats(
+                health + m.health,
+                healthPerLevel + m.healthPerLevel,
+                mana + m.mana,
+                manaPerLevel + m.manaPerLevel,
+                manaRegen + m.manaRegen,
+                manaRegenPerLevel + m.manaRegenPerLevel,
+                meleeDamage * m.meleeDamage,
+                rangedDamage * m.rangedDamage,
+                magicDamage * m.magicDamage,
+                damageTaken * m.damageTaken,
+                speed + m.speed,
+                armor + m.armor,
+                attackSpeed + m.attackSpeed,
+                Math.max(0, Math.min(1, critChance + m.critChance)),
+                Math.max(1, critMultiplier + m.critMultiplier));
+    }
+
     public double maxMana(int level) {
         return Math.max(0, mana + manaPerLevel * (level - 1));
     }

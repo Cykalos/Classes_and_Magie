@@ -1,0 +1,82 @@
+# ╔══════════════════════════════════════════════╗
+# ║              CykClasses - jobs.yml           ║
+# ╚══════════════════════════════════════════════╝
+# Un seul métier par joueur. Proposé après la classe, la race et les traits (ou plus tard avec /metier).
+
+# Le métier peut-il être changé ? Délai entre deux changements (heures)
+allow-change: true
+change-cooldown-hours: 24
+
+jobs:
+  mineur:
+    name: "<gray><bold>Mineur"
+    icon: IRON_PICKAXE
+    description: ["<gray>Seul capable d'extraire les minerais précieux."]
+    effects: ["haste:1"]
+  forgeron:
+    name: "<dark_gray><bold>Forgeron"
+    icon: ANVIL
+    description: ["<gray>Fabrique armes et armures, répare à l'enclume."]
+    stats: {armor: 1}
+  bucheron:
+    name: "<gold><bold>Bûcheron"
+    icon: IRON_AXE
+    description: ["<gray>Abat les arbres sombres et exotiques."]
+    stats: {health: 2}
+  fermier:
+    name: "<green><bold>Fermier"
+    icon: WHEAT
+    description: ["<gray>Élève les animaux et cultive les plantes rares."]
+    stats: {health: 2}
+  alchimiste:
+    name: "<light_purple><bold>Alchimiste"
+    icon: BREWING_STAND
+    description: ["<gray>Seul à maîtriser l'alambic."]
+    stats: {mana: 20}
+  enchanteur:
+    name: "<aqua><bold>Enchanteur"
+    icon: ENCHANTING_TABLE
+    description: ["<gray>Seul à savoir utiliser la table d'enchantement."]
+    stats: {mana-regen: 0.5}
+  pecheur:
+    name: "<blue><bold>Pêcheur"
+    icon: FISHING_ROD
+    description: ["<gray>Seul à savoir pêcher."]
+    effects: ["luck:1"]
+  dresseur:
+    name: "<yellow><bold>Dresseur"
+    icon: LEAD
+    description: ["<gray>Apprivoise loups, chats, chevaux et perroquets."]
+    stats: {speed: 0.03}
+
+# Actions réservées. Actions : BREAK, PLACE, CRAFT, INTERACT_BLOCK, FISH, BREED, TAME, SMELT
+# targets : matériaux / entités ("*" = joker, "(A|B)" = A ou B). Sans targets : toutes les cibles.
+# message : texte personnalisé (sinon message par défaut).
+restrictions:
+  - action: BREAK
+    targets: ["*DIAMOND_ORE", "*EMERALD_ORE", "*GOLD_ORE", "ANCIENT_DEBRIS", "*LAPIS_ORE", "*REDSTONE_ORE"]
+    jobs: [mineur]
+  - action: CRAFT
+    targets: ["(IRON|DIAMOND|GOLDEN)_(SWORD|AXE|PICKAXE|SHOVEL|HOE|HELMET|CHESTPLATE|LEGGINGS|BOOTS)", "SHIELD", "CROSSBOW", "MACE"]
+    jobs: [forgeron]
+  - action: INTERACT_BLOCK
+    targets: ["ANVIL", "CHIPPED_ANVIL", "DAMAGED_ANVIL", "SMITHING_TABLE", "GRINDSTONE"]
+    jobs: [forgeron]
+  - action: BREAK
+    targets: ["DARK_OAK_LOG", "JUNGLE_LOG", "ACACIA_LOG", "MANGROVE_LOG", "CHERRY_LOG", "PALE_OAK_LOG", "CRIMSON_STEM", "WARPED_STEM"]
+    jobs: [bucheron]
+  - action: BREED
+    jobs: [fermier, dresseur]
+  - action: BREAK
+    targets: ["PUMPKIN", "MELON", "COCOA", "NETHER_WART", "SWEET_BERRY_BUSH"]
+    jobs: [fermier]
+  - action: INTERACT_BLOCK
+    targets: ["BREWING_STAND"]
+    jobs: [alchimiste]
+  - action: INTERACT_BLOCK
+    targets: ["ENCHANTING_TABLE"]
+    jobs: [enchanteur]
+  - action: FISH
+    jobs: [pecheur]
+  - action: TAME
+    jobs: [dresseur]

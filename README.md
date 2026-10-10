@@ -49,6 +49,31 @@ Les soins et bonus (Soin, Bénédiction, Cri de guerre, Bouclier sacré…) ne t
 
 `/groupe inviter|accepter|refuser|quitter|expulser|chef|dissoudre|info`, `/gc <message>` pour le chat de groupe.
 
+## Création du personnage
+
+Classe → **race** → **traits** → **métier**, chaque étape s'ouvre automatiquement.
+
+- **Races** (`races.yml`) : Humain, Elfe, Nain, Orc, Tieffelin, Félys. Bonus, défauts, effets permanents, et **malus si la race n'est pas faite pour la classe** (ex. Nain mage, Orc prêtre).
+- **Traits** (`traits.yml`) : 3 traits tirés au hasard, positifs, négatifs ou mixtes, avec rareté. **Traits uniques** : un seul joueur du serveur peut les obtenir (1 % de chance). Relances limitées (3 par défaut), `/traits relancer`.
+- **Métier** (`jobs.yml`) : un seul par joueur (Mineur, Forgeron, Bûcheron, Fermier, Alchimiste, Enchanteur, Pêcheur, Dresseur). Certaines actions sont réservées : miner le diamant, fabriquer des armures, utiliser l'alambic, l'enclume, pêcher…
+
+## Progression
+
+- **Arbre de compétences** (`/arbre`, `skilltree.yml`) : un arbre par classe avec des branches réservées à chaque sous-classe, plus un arbre commun. Les nœuds améliorent les stats ou une compétence précise (puissance, recharge, coût en mana).
+- **Attributs** (`/stats`, `attributes.yml`) : Force, Dextérité, Intelligence, Vitalité, Sagesse, Agilité, Endurance. Points gagnés à chaque niveau.
+- Réinitialisation gratuite toutes les 24 h (`/arbre reset`, `/stats reset`).
+
+## Objets
+
+- **Kits de départ** (`kits.yml`) donnés au choix de la classe ou de la sous-classe.
+- **Restrictions** (`items.yml`) : classe, race, métier, niveau et attributs requis pour frapper, tirer, utiliser ou porter un objet.
+- Objets custom reconnus via [UniItem](https://github.com/ProjectUnified/UniItem) : **CraftEngine**, **ExecutableItems**, **MythicMobs/MythicCrucible**, ItemsAdder, Oraxen, Nexo, MMOItems… (`craftengine:pack:id`, `executableitems:id`, `mythic:Nom`).
+
+## Chat
+
+- `/gc` bascule ton chat sur le groupe, `/global` revient au chat public. `/gc <message>` et `/global <message>` pour un seul message.
+- Classe et niveau affichés devant le nom (désactivable si un autre plugin gère le chat : placeholders `%cykclasses_*%`).
+
 ## HUD (`hud.yml`)
 
 - **XP gagnée** en bossbar pendant 5 s, avec cumul des gains successifs.
@@ -71,6 +96,9 @@ Les soins et bonus (Soin, Bénédiction, Cri de guerre, Bouclier sacré…) ne t
 | `/classe sous-classe [id]` | Menu / choix de sous-classe |
 | `/classe competences` | Liste des compétences |
 | `/classe reset` | Réinitialiser sa classe (délai configurable) |
+| `/arbre` · `/stats` | Arbre de compétences · attributs |
+| `/race` · `/traits [relancer]` · `/metier` | Personnage |
+| `/groupe` · `/gc` · `/global` | Groupe et chat |
 | `/competence <id\|n°>` | Lancer une compétence |
 | `/classe admin setlevel\|addxp\|setclass\|reset\|mana <joueur> …` | Administration |
 | `/classe admin reload` | Recharger la configuration |
@@ -79,7 +107,7 @@ Permissions : `cykclasses.use`, `cykclasses.reset` (tout le monde), `cykclasses.
 
 ## Placeholders
 
-`%cykclasses_class%`, `%cykclasses_subclass%`, `%cykclasses_display%`, `%cykclasses_class_id%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`
+`%cykclasses_class%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`, `%cykclasses_class_id%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`
 
 ## Configuration
 

@@ -88,8 +88,11 @@ target-health:
 party-board:
   enabled: true
   title: "<gradient:#f5a623:#e8432e><bold>Groupe</bold></gradient>"
-  # Placeholders : <leader> (★ ou vide), <name>, <health>, <max_health>, <bar>, <mana>, <max_mana>, <class>, <level>
-  line: "<leader><white><name></white> <bar> <red><health></red>"
+  # Lignes affichées pour chaque membre.
+  # Placeholders : <leader> (★ ou vide), <name>, <health>, <max_health>, <bar>, <mana>, <max_mana>, <class>, <race>, <level>
+  member-lines:
+    - "<leader><white><name></white> <class> <gray><level>"
+    - "  <bar> <red><health></red><gray>/<max_health> <aqua><mana>✦"
   offline-line: "<dark_gray><name> (absent)"
   leader-symbol: "<gold>★ "
   bar-length: 6

@@ -5,7 +5,7 @@ api-version: '26.1'
 description: Système de classes RPG avec sous-classes, compétences uniques, statistiques, défauts et mana.
 authors: [Cykalos]
 website: https://github.com/Cykalos/CykClasses_and_Magie
-softdepend: [PlaceholderAPI, MythicMobs]
+softdepend: [PlaceholderAPI, MythicMobs, CraftEngine, ExecutableItems, ItemsAdder, Oraxen, Nexo, MMOItems]
 libraries:
   - org.xerial:sqlite-jdbc:3.46.1.3
 
@@ -23,8 +23,31 @@ commands:
     usage: /groupe [creer|inviter|accepter|refuser|quitter|expulser|chef|dissoudre|info|chat]
     aliases: [party, grp]
   gc:
-    description: Chat de groupe.
-    usage: /gc <message>
+    description: Chat de groupe (sans message = bascule le chat sur le groupe).
+    usage: /gc [message]
+    aliases: [pc]
+  global:
+    description: Revient au chat global (ou envoie un message global).
+    usage: /global [message]
+    aliases: [all]
+  race:
+    description: Race de ton personnage.
+    usage: /race
+  traits:
+    description: Tes traits (et relance).
+    usage: /traits [relancer]
+  metier:
+    description: Choisir ou voir ton métier.
+    usage: /metier
+    aliases: [job, metiers]
+  arbre:
+    description: Arbre de compétences.
+    usage: /arbre [reset]
+    aliases: [skilltree, talents]
+  stats:
+    description: Points d'attributs.
+    usage: /stats [reset]
+    aliases: [attributs]
 
 permissions:
   cykclasses.use:
@@ -33,6 +56,15 @@ permissions:
   cykclasses.reset:
     description: Réinitialiser sa propre classe.
     default: true
+  cykclasses.bypass.items:
+    description: Ignore les restrictions d'objets.
+    default: false
+  cykclasses.bypass.jobs:
+    description: Ignore les restrictions de métier.
+    default: false
+  cykclasses.chat.spy:
+    description: Voir les chats de groupe.
+    default: false
   cykclasses.admin:
     description: Commandes d'administration.
     default: op

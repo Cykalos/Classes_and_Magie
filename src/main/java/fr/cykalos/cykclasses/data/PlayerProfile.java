@@ -1,6 +1,8 @@
 package fr.cykalos.cykclasses.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -21,12 +23,29 @@ public final class PlayerProfile {
     private Map<String, Integer> kills = new HashMap<>();
     private Map<String, Integer> skillUses = new HashMap<>();
     private Map<String, Double> counters = new HashMap<>();
+    private String raceId;
+    private List<String> traits = new ArrayList<>();
+    private boolean traitsRolled;
+    private int rerollsUsed;
+    private String jobId;
+    private long jobChangedAt;
+    private boolean jobPromptDone;
+    /** Points investis par attribut. */
+    private Map<String, Integer> attributes = new HashMap<>();
+    /** Rangs des nœuds d'arbre, clé « arbre:nœud ». */
+    private Map<String, Integer> treeNodes = new HashMap<>();
+    private int bonusSkillPoints;
+    private int bonusAttributePoints;
+    private long lastTreeReset;
+    private long lastAttributeReset;
+    private List<String> kitsReceived = new ArrayList<>();
 
     private transient Map<String, Long> cooldowns = new HashMap<>();
     private transient boolean castMode;
     private transient long lastCastActivity;
     private transient long lastCombat;
     private transient boolean dirty;
+    private transient boolean partyChat;
 
     /** Requis par Gson. */
     @SuppressWarnings("unused")
@@ -43,6 +62,10 @@ public final class PlayerProfile {
         if (skillUses == null) skillUses = new HashMap<>();
         if (counters == null) counters = new HashMap<>();
         if (cooldowns == null) cooldowns = new HashMap<>();
+        if (traits == null) traits = new ArrayList<>();
+        if (attributes == null) attributes = new HashMap<>();
+        if (treeNodes == null) treeNodes = new HashMap<>();
+        if (kitsReceived == null) kitsReceived = new ArrayList<>();
         if (level < 1) level = 1;
         return this;
     }
@@ -82,6 +105,46 @@ public final class PlayerProfile {
     public void addCounter(String key, double amount) { counters.merge(key.toLowerCase(Locale.ROOT), amount, Double::sum); markDirty(); }
     public Map<String, Double> counters() { return counters; }
 
+    public String getRaceId() { return raceId; }
+    public void setRaceId(String raceId) { this.raceId = raceId; markDirty(); }
+    public List<String> getTraits() { return traits; }
+    public void setTraits(List<String> traits) { this.traits = new ArrayList<>(traits); markDirty(); }
+    public boolean isTraitsRolled() { return traitsRolled; }
+    public void setTraitsRolled(boolean rolled) { this.traitsRolled = rolled; markDirty(); }
+    public int getRerollsUsed() { return rerollsUsed; }
+    public void setRerollsUsed(int used) { this.rerollsUsed = Math.max(0, used); markDirty(); }
+    public String getJobId() { return jobId; }
+    public void setJobId(String jobId) { this.jobId = jobId; this.jobChangedAt = System.currentTimeMillis(); markDirty(); }
+    public long getJobChangedAt() { return jobChangedAt; }
+    public boolean isJobPromptDone() { return jobPromptDone; }
+    public void setJobPromptDone(boolean done) { this.jobPromptDone = done; markDirty(); }
+
+    public int getAttribute(String id) { return attributes.getOrDefault(id.toLowerCase(Locale.ROOT), 0); }
+    public void setAttribute(String id, int value) { attributes.put(id.toLowerCase(Locale.ROOT), Math.max(0, value)); markDirty(); }
+    public Map<String, Integer> attributes() { return attributes; }
+    public int spentAttributePoints() { return attributes.values().stream().mapToInt(Integer::intValue).sum(); }
+    public void clearAttributes() { attributes.clear(); markDirty(); }
+
+    public int getNodeRank(String key) { return treeNodes.getOrDefault(key.toLowerCase(Locale.ROOT), 0); }
+    public void setNodeRank(String key, int rank) { treeNodes.put(key.toLowerCase(Locale.ROOT), Math.max(0, rank)); markDirty(); }
+    public Map<String, Integer> treeNodes() { return treeNodes; }
+    public void clearTree() { treeNodes.clear(); markDirty(); }
+
+    public int getBonusSkillPoints() { return bonusSkillPoints; }
+    public void setBonusSkillPoints(int v) { this.bonusSkillPoints = v; markDirty(); }
+    public int getBonusAttributePoints() { return bonusAttributePoints; }
+    public void setBonusAttributePoints(int v) { this.bonusAttributePoints = v; markDirty(); }
+    public long getLastTreeReset() { return lastTreeReset; }
+    public void setLastTreeReset(long t) { this.lastTreeReset = t; markDirty(); }
+    public long getLastAttributeReset() { return lastAttributeReset; }
+    public void setLastAttributeReset(long t) { this.lastAttributeReset = t; markDirty(); }
+    public boolean hasReceivedKit(String id) { return kitsReceived.contains(id.toLowerCase(Locale.ROOT)); }
+    public List<String> kitsReceived() { return kitsReceived; }
+    public void addReceivedKit(String id) { kitsReceived.add(id.toLowerCase(Locale.ROOT)); markDirty(); }
+
+    public boolean isPartyChat() { return partyChat; }
+    public void setPartyChat(boolean partyChat) { this.partyChat = partyChat; }
+
     public long getCooldownEnd(String skill) { return cooldowns.getOrDefault(skill, 0L); }
     public void setCooldownEnd(String skill, long end) { cooldowns.put(skill, end); }
     public void clearCooldowns() { cooldowns.clear(); }
@@ -109,6 +172,7 @@ public final class PlayerProfile {
         mana = 0;
         cooldowns.clear();
         castMode = false;
+        treeNodes.clear();
         markDirty();
     }
 
@@ -127,6 +191,20 @@ public final class PlayerProfile {
         map.put("kills", new HashMap<>(kills));
         map.put("skill-uses", new HashMap<>(skillUses));
         map.put("counters", new HashMap<>(counters));
+        map.put("race", raceId);
+        map.put("traits", new ArrayList<>(traits));
+        map.put("traits-rolled", traitsRolled);
+        map.put("rerolls-used", rerollsUsed);
+        map.put("job", jobId);
+        map.put("job-changed-at", jobChangedAt);
+        map.put("job-prompt-done", jobPromptDone);
+        map.put("attributes", new HashMap<>(attributes));
+        map.put("tree", new HashMap<>(treeNodes));
+        map.put("bonus-skill-points", bonusSkillPoints);
+        map.put("bonus-attribute-points", bonusAttributePoints);
+        map.put("last-tree-reset", lastTreeReset);
+        map.put("last-attribute-reset", lastAttributeReset);
+        map.put("kits-received", new ArrayList<>(kitsReceived));
         return map;
     }
 
@@ -147,6 +225,28 @@ public final class PlayerProfile {
         }
         if (map.get("counters") instanceof Map<?, ?> m) {
             m.forEach((k, v) -> { if (v instanceof Number n) p.counters.put(String.valueOf(k), n.doubleValue()); });
+        }
+        p.raceId = (String) map.get("race");
+        if (map.get("traits") instanceof List<?> l) {
+            l.forEach(o -> p.traits.add(String.valueOf(o)));
+        }
+        p.traitsRolled = Boolean.TRUE.equals(map.get("traits-rolled"));
+        p.rerollsUsed = map.get("rerolls-used") instanceof Number n ? n.intValue() : 0;
+        p.jobId = (String) map.get("job");
+        p.jobChangedAt = map.get("job-changed-at") instanceof Number n ? n.longValue() : 0;
+        p.jobPromptDone = Boolean.TRUE.equals(map.get("job-prompt-done"));
+        if (map.get("attributes") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v instanceof Number n) p.attributes.put(String.valueOf(k), n.intValue()); });
+        }
+        if (map.get("tree") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v instanceof Number n) p.treeNodes.put(String.valueOf(k), n.intValue()); });
+        }
+        p.bonusSkillPoints = map.get("bonus-skill-points") instanceof Number n ? n.intValue() : 0;
+        p.bonusAttributePoints = map.get("bonus-attribute-points") instanceof Number n ? n.intValue() : 0;
+        p.lastTreeReset = map.get("last-tree-reset") instanceof Number n ? n.longValue() : 0;
+        p.lastAttributeReset = map.get("last-attribute-reset") instanceof Number n ? n.longValue() : 0;
+        if (map.get("kits-received") instanceof List<?> l) {
+            l.forEach(o -> p.kitsReceived.add(String.valueOf(o)));
         }
         return p.normalize();
     }

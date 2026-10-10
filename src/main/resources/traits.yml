@@ -1,0 +1,197 @@
+# ╔══════════════════════════════════════════════╗
+# ║             CykClasses - traits.yml          ║
+# ╚══════════════════════════════════════════════╝
+# Traits tirés au hasard après le choix de la race.
+#   rarity : COMMON, UNCOMMON, RARE, EPIC, UNIQUE (un seul joueur du serveur peut l'avoir)
+#   kind   : POSITIVE, NEGATIVE, MIXED
+#   weight : chance relative (par défaut : roll.rarity-weights selon la rareté)
+#   stats / flaws / effects : comme races.yml
+#   conflicts : traits incompatibles (jamais tirés ensemble)
+
+roll:
+  # Nombre de traits tirés
+  count: 3
+  # Au maximum X traits négatifs, au minimum Y positifs
+  max-negative: 1
+  min-positive: 1
+  # Chance de recevoir en plus un trait UNIQUE encore libre (0.01 = 1 %)
+  unique-chance: 0.01
+  # Nombre de relances autorisées par joueur
+  rerolls: 3
+  rarity-weights:
+    COMMON: 60
+    UNCOMMON: 25
+    RARE: 10
+    EPIC: 3
+
+traits:
+  # ─────────── Positifs ───────────
+  robuste:
+    name: "<green>Robuste"
+    rarity: COMMON
+    kind: POSITIVE
+    description: ["<gray>Une constitution solide."]
+    stats: {health: 2}
+    conflicts: [fragile]
+  vif:
+    name: "<green>Vif"
+    rarity: COMMON
+    kind: POSITIVE
+    description: ["<gray>Toujours en mouvement."]
+    stats: {speed: 0.05}
+    conflicts: [lent]
+  erudit:
+    name: "<green>Érudit"
+    rarity: COMMON
+    kind: POSITIVE
+    description: ["<gray>Des années de lecture."]
+    stats: {mana: 20}
+  costaud:
+    name: "<green>Costaud"
+    rarity: UNCOMMON
+    kind: POSITIVE
+    description: ["<gray>Des bras comme des troncs."]
+    stats: {melee-damage: 1.07}
+    conflicts: [chetif]
+  oeil_de_lynx:
+    name: "<green>Œil de lynx"
+    rarity: UNCOMMON
+    kind: POSITIVE
+    description: ["<gray>Rien n'échappe à ton regard."]
+    stats: {ranged-damage: 1.08}
+  esprit_vif:
+    name: "<green>Esprit vif"
+    rarity: UNCOMMON
+    kind: POSITIVE
+    description: ["<gray>Le mana coule en toi."]
+    stats: {mana-regen: 0.7}
+  peau_epaisse:
+    name: "<aqua>Peau épaisse"
+    rarity: RARE
+    kind: POSITIVE
+    description: ["<gray>Les coups glissent sur toi."]
+    stats: {damage-taken: 0.93, armor: 1}
+  chanceux:
+    name: "<aqua>Chanceux"
+    rarity: RARE
+    kind: POSITIVE
+    description: ["<gray>La chance te sourit au combat."]
+    stats: {crit-chance: 0.07}
+    effects: ["luck:1"]
+  arcaniste_ne:
+    name: "<light_purple>Arcaniste né"
+    rarity: EPIC
+    kind: POSITIVE
+    description: ["<gray>Un talent magique hors du commun."]
+    stats: {magic-damage: 1.12, mana: 30}
+  sang_de_titan:
+    name: "<light_purple>Sang de titan"
+    rarity: EPIC
+    kind: POSITIVE
+    description: ["<gray>Un lointain ancêtre géant."]
+    stats: {health: 6, melee-damage: 1.05}
+
+  # ─────────── Négatifs ───────────
+  fragile:
+    name: "<red>Fragile"
+    rarity: COMMON
+    kind: NEGATIVE
+    description: ["<gray>Une santé délicate."]
+    stats: {health: -2}
+    conflicts: [robuste]
+  lent:
+    name: "<red>Lent"
+    rarity: COMMON
+    kind: NEGATIVE
+    description: ["<gray>Jamais pressé."]
+    stats: {speed: -0.05}
+    conflicts: [vif]
+  chetif:
+    name: "<red>Chétif"
+    rarity: COMMON
+    kind: NEGATIVE
+    description: ["<gray>Pas très musclé."]
+    stats: {melee-damage: 0.93}
+    conflicts: [costaud]
+  glouton:
+    name: "<red>Glouton"
+    rarity: COMMON
+    kind: NEGATIVE
+    description: ["<gray>Toujours affamé."]
+    flaws:
+      - type: HUNGER
+        multiplier: 1.3
+        description: "A faim 30% plus vite"
+  hemophile:
+    name: "<red>Hémophile"
+    rarity: UNCOMMON
+    kind: NEGATIVE
+    description: ["<gray>Les blessures guérissent mal."]
+    flaws:
+      - type: HEALING_REDUCTION
+        multiplier: 0.8
+        description: "Soins reçus -20%"
+  vertige:
+    name: "<red>Sujet au vertige"
+    rarity: UNCOMMON
+    kind: NEGATIVE
+    description: ["<gray>Les hauteurs te terrifient."]
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [FALL]
+        multiplier: 1.5
+        description: "+50% de dégâts de chute"
+
+  # ─────────── Mixtes ───────────
+  berserk_ne:
+    name: "<gold>Tête brûlée"
+    rarity: UNCOMMON
+    kind: MIXED
+    description: ["<gray>Frappe fort, oublie de se protéger."]
+    stats: {melee-damage: 1.1, damage-taken: 1.08}
+  insomniaque:
+    name: "<gold>Insomniaque"
+    rarity: RARE
+    kind: MIXED
+    description: ["<gray>Voit dans le noir, mais fatigué."]
+    effects: ["night_vision:1"]
+    stats: {mana-regen: -0.3}
+  sang_froid:
+    name: "<gold>Sang-froid"
+    rarity: RARE
+    kind: MIXED
+    description: ["<gray>Précis mais distant."]
+    stats: {crit-chance: 0.08, health: -2}
+
+  # ─────────── Uniques (un seul joueur sur tout le serveur) ───────────
+  elu_des_dieux:
+    name: "<gold><bold>Élu des dieux"
+    rarity: UNIQUE
+    kind: POSITIVE
+    description:
+      - "<gray>Les dieux ont posé leur regard sur toi."
+      - "<gold>Un seul joueur peut porter ce trait."
+    stats: {health: 8, magic-damage: 1.15, mana: 50, mana-regen: 1}
+    effects: ["regeneration:1"]
+  maitre_d_armes:
+    name: "<gold><bold>Maître d'armes légendaire"
+    rarity: UNIQUE
+    kind: POSITIVE
+    description:
+      - "<gray>Aucune arme n'a de secret pour toi."
+      - "<gold>Un seul joueur peut porter ce trait."
+    stats: {melee-damage: 1.15, ranged-damage: 1.15, crit-chance: 0.1, attack-speed: 0.1}
+  maudit_immortel:
+    name: "<dark_purple><bold>Maudit immortel"
+    rarity: UNIQUE
+    kind: MIXED
+    description:
+      - "<gray>Une malédiction ancienne : la mort te refuse."
+      - "<gold>Un seul joueur peut porter ce trait."
+    stats: {health: 14, damage-taken: 0.85}
+    flaws:
+      - type: SUNLIGHT_WEAKNESS
+        description: "Affaibli en plein soleil"
+      - type: HEALING_REDUCTION
+        multiplier: 0.5
+        description: "Soins reçus -50%"
