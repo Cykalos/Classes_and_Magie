@@ -9,23 +9,35 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        paper: ['26.1.2.build.+', '26.2.build.+']
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Java 25
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '25'
 
       - name: Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
-      - name: Compilation
-        run: ./gradlew build --no-daemon
+      - name: Compilation (Paper ${{ matrix.paper }})
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew build --no-daemon "-PpaperVersion=${{ matrix.paper }}" 2>&1 | tee build.log || {
+            grep -E "\.java:[0-9]+: (error|erreur)|What went wrong|Could not" -A2 build.log | head -60 | while IFS= read -r line; do
+              echo "::error::${line}"
+            done
+            exit 1
+          }
 
       - name: Artefact
         uses: actions/upload-artifact@v4
         with:
-          name: CykClasses-dev
+          name: CykClasses-paper-${{ strategy.job-index }}
           path: build/libs/*.jar
