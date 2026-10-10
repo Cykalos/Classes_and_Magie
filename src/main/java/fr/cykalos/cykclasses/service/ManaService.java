@@ -90,14 +90,20 @@ public final class ManaService {
             if (rc == null) {
                 continue;
             }
-            if (profile.isCastMode()) {
-                long timeout = plugin.getConfig().getLong("casting.timeout-seconds", 8) * 1000L;
-                if (now - profile.getLastCastActivity() > timeout) {
-                    plugin.skills().setCastMode(player, false);
+            if (plugin.skillBar().isActive(player)) {
+                long timeout = plugin.getConfig().getLong("casting.timeout-seconds", 15) * 1000L;
+                if (timeout > 0 && now - profile.getLastCastActivity() > timeout) {
+                    plugin.skillBar().exit(player, true);
                 } else {
+                    plugin.skillBar().refresh(player);
                     player.sendActionBar(castBar(player, profile, rc));
                     continue;
                 }
+            }
+            Component xpBar = plugin.hud().xpActionbar(player);
+            if (xpBar != null) {
+                player.sendActionBar(xpBar);
+                continue;
             }
             AttributeInstance maxHealth = player.getAttribute(Attribute.MAX_HEALTH);
             double xpReq = plugin.levels().xpRequired(profile.getLevel());

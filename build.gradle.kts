@@ -9,11 +9,13 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.extendedclip.com/releases/")
+    maven("https://mvn.lumine.io/repository/maven-public/")
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:${findProperty("paperVersion") ?: "26.1.2.build.+"}")
     compileOnly("me.clip:placeholderapi:2.11.6")
+    compileOnly("io.lumine:Mythic-Dist:5.12.1")
 }
 
 java {

@@ -131,6 +131,7 @@ public final class CombatService {
         target.setHealth(healed);
         if (healed > before) {
             plugin.profiles().get(caster).addCounter("healing_done", healed - before);
+            plugin.hud().heal(target, caster, healed - before);
         }
     }
 
@@ -145,7 +146,10 @@ public final class CombatService {
             return false;
         }
         if (entity instanceof Player p) {
-            if (!plugin.getConfig().getBoolean("casting.pvp", true)) {
+            if (plugin.parties().isProtectedAlly(caster, p)) {
+                return false;
+            }
+            if (!plugin.parties().sameParty(caster, p) && !plugin.getConfig().getBoolean("casting.pvp", true)) {
                 return false;
             }
             return p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE;
@@ -163,17 +167,12 @@ public final class CombatService {
         return out;
     }
 
+    /**
+     * Cibles des compétences de soutien : le lanceur et les membres de son groupe dans le rayon.
+     * Sans groupe, seul le lanceur est concerné.
+     */
     public Collection<Player> alliesAround(Player caster, double radius) {
-        List<Player> out = new ArrayList<>();
-        out.add(caster);
-        if (plugin.getConfig().getBoolean("casting.support-affects-all-players", true)) {
-            for (Player p : caster.getLocation().getNearbyPlayers(radius)) {
-                if (!p.equals(caster) && p.getGameMode() != GameMode.SPECTATOR) {
-                    out.add(p);
-                }
-            }
-        }
-        return out;
+        return plugin.parties().membersNear(caster, radius);
     }
 
     /** Première entité valide dans la ligne de mire (les blocs bloquent la vue). */
@@ -188,11 +187,11 @@ public final class CombatService {
         return null;
     }
 
-    /** Joueur allié dans la ligne de mire, ou {@code null}. */
+    /** Membre du groupe dans la ligne de mire, ou {@code null}. */
     public Player allyInSight(Player caster, double range) {
         Location eye = caster.getEyeLocation();
         RayTraceResult result = caster.getWorld().rayTrace(eye, eye.getDirection(), range, FluidCollisionMode.NEVER, true, 0.6,
-                e -> e instanceof Player && !e.equals(caster));
+                e -> e instanceof Player p && !e.equals(caster) && plugin.parties().sameParty(caster, p));
         if (result != null && result.getHitEntity() instanceof Player p) {
             return p;
         }

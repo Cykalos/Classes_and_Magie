@@ -54,6 +54,7 @@ public final class ConnectionListener implements Listener {
         }
         profile.setName(player.getName());
         plugin.profiles().put(profile);
+        plugin.skillBar().recover(player);
         plugin.stats().apply(player);
 
         if (!profile.hasClass() && plugin.getConfig().getBoolean("force-class-selection", true)) {
@@ -69,6 +70,9 @@ public final class ConnectionListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(PlayerQuitEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
+        plugin.skillBar().exit(event.getPlayer(), false);
+        plugin.parties().onQuit(event.getPlayer());
+        plugin.hud().clear(event.getPlayer());
         plugin.combat().clear(uuid);
         plugin.profiles().unload(uuid);
         pending.remove(uuid);

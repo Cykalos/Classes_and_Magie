@@ -23,15 +23,43 @@ Plugin **Paper 26.x** (Minecraft Java Edition) de classes RPG : classes, sous-cl
 - **Niveaux et XP** gagnés en tuant des monstres (barème par créature configurable).
 - **Menus** : choix de classe, sous-classes avec progression des conditions, liste des compétences.
 - **Stockage** au choix : `YAML`, `JSON` ou `SQLITE`.
+- **Groupes** avec règles d'XP et de dégâts alliés, **HUD** de dégâts et de PV, intégration **MythicMobs**.
 - **PlaceholderAPI** (optionnel) et **API Java** pour les autres plugins.
 
 ## Lancer une compétence
 
-1. Appuie sur **F** (échange de main) pour passer en *mode compétences*.
-2. Appuie sur **1 à 9** pour lancer la compétence correspondante (l'objet tenu ne change pas).
-3. **F** à nouveau (ou 8 s d'inactivité) pour quitter.
+1. Appuie sur **F** (échange de main) : ta barre d'objets affiche les **icônes de tes compétences** (slots 1 à 8) et ton arme reste en main (slot 9).
+2. Appuie sur **1 à 8** pour lancer la compétence correspondante. L'icône affiche la recharge (animation + secondes restantes), passe en bleu si le mana manque, en gris si elle n'est pas débloquée.
+3. **F** à nouveau, ouvrir l'inventaire ou 15 s d'inactivité pour retrouver ta barre normale.
 
-Alternatives : `/competence <id|numéro>` (pratique pour les macros) ou clic dans `/classe competences`.
+Tes objets sont sauvegardés pendant le mode compétences (même en cas de crash ou de mort). La molette lance aussi les compétences dans ce mode.
+
+Icônes personnalisables par compétence dans `classes.yml` : `icon`, `icon-model` (modèle de resource pack) ou `custom-model-data`.
+
+Alternatives : `/competence <id|numéro>` ou clic dans `/classe competences`.
+
+## Groupes
+
+`/groupe` ouvre le menu de création, où l'on fixe les **règles du groupe** (elles ne changent plus ensuite) :
+
+- **XP** : *partagée* (divisée entre les membres proches, +10 % par membre) ou *égale* (chacun reçoit l'XP complète de l'élimination).
+- **Dégâts alliés** : activés (les compétences offensives comme Charge et les coups touchent aussi les alliés) ou désactivés.
+
+Les soins et bonus (Soin, Bénédiction, Cri de guerre, Bouclier sacré…) ne touchent **que les membres du groupe** (ou toi seul sans groupe). Un panneau latéral affiche les PV des membres.
+
+`/groupe inviter|accepter|refuser|quitter|expulser|chef|dissoudre|info`, `/gc <message>` pour le chat de groupe.
+
+## HUD (`hud.yml`)
+
+- **XP gagnée** en bossbar pendant 5 s, avec cumul des gains successifs.
+- **Dégâts flottants** au-dessus des mobs et des joueurs : normaux, critiques, compétences, soins — formats, taille, durée et visibilité réglables.
+- **PV de la cible** en bossbar (couleur selon les PV) et/ou au-dessus de sa tête, avec le nom et le niveau des mobs MythicMobs.
+
+## MythicMobs (optionnel)
+
+- Noms et niveaux des mobs custom dans les affichages ; dégâts des compétences MythicMobs affichés.
+- XP par mob (`mythicmobs.mob-xp` dans `config.yml`, + bonus par niveau).
+- Compétences de classe de type `MYTHIC` qui lancent une compétence MythicMobs (`params: {skill: "NomMythic"}`).
 
 ## Commandes
 
@@ -57,6 +85,7 @@ Permissions : `cykclasses.use`, `cykclasses.reset` (tout le monde), `cykclasses.
 
 - `config.yml` — stockage, courbe d'XP, XP par monstre, mana, mode compétences, HUD, reset.
 - `classes.yml` — classes, sous-classes, stats, défauts, conditions et compétences (le haut du fichier documente tous les types disponibles).
+- `hud.yml` — XP gagnée, dégâts flottants, PV des cibles, panneau du groupe.
 - `messages.yml` — tous les textes au format [MiniMessage](https://docs.advntr.dev/minimessage/format.html).
 
 ## API

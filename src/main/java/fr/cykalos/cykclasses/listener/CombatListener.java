@@ -66,6 +66,13 @@ public final class CombatListener implements Listener {
             kind = DamageKind.RANGED;
         }
 
+        // Groupe sans dégâts alliés : aucun coup entre membres.
+        if (attacker != null && event.getEntity() instanceof Player victimPlayer
+                && plugin.parties().isProtectedAlly(attacker, victimPlayer)) {
+            event.setCancelled(true);
+            return;
+        }
+
         double damage = event.getDamage();
 
         // Marque du chasseur : bonus quel que soit l'attaquant.
@@ -88,6 +95,7 @@ public final class CombatListener implements Listener {
                     damage *= weaponPenalty(attacker, rc);
                     if (kind == DamageKind.MELEE && s.critChance > 0 && ThreadLocalRandom.current().nextDouble() < s.critChance) {
                         damage *= s.critMultiplier;
+                        plugin.hud().markCritical(event.getEntity());
                         Fx.particle(event.getEntity().getLocation().add(0, 1, 0), Particle.CRIT, 12, 0.3, 0.2);
                     }
                     if (st != null && kind == DamageKind.MELEE) {

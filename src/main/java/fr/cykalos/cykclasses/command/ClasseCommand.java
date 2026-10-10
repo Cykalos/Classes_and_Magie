@@ -29,7 +29,7 @@ public final class ClasseCommand implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0) {
             if (!(sender instanceof Player player)) {
                 plugin.messages().sendList(sender, "help");
@@ -224,7 +224,7 @@ public final class ClasseCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String @NotNull [] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> options = new ArrayList<>();
         if (args.length == 1) {
             options.addAll(List.of("aide", "info", "choisir", "sous-classe", "competences", "reset"));

@@ -78,11 +78,11 @@ public final class LevelService {
             xp = 0;
         }
         profile.setXp(xp);
-        player.sendActionBar(plugin.messages().get("xp-gain", Text.ph("xp", Text.format(amount)), Text.ph("class", rc.name)));
         if (level != oldLevel) {
             profile.setLevel(level);
             onLevelUp(player, profile, rc, oldLevel, level);
         }
+        plugin.hud().showXp(player, amount, rc, profile);
         checkNewSubclasses(player, profile, unlockedBefore);
     }
 

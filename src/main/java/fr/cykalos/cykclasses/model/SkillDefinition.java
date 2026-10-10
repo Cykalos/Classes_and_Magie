@@ -26,11 +26,15 @@ public final class SkillDefinition {
     public final int unlockLevel;
     /** Coût en PV (en demi-cœurs) au lieu ou en plus du mana. */
     public final double healthCost;
+    /** Modèle d'objet (composant item_model, ex. "monpack:skills/charge") pour l'icône, ou null. */
+    public final String iconModel;
+    /** Custom model data (float) pour l'icône, ou null. */
+    public final Float customModelData;
     private final Map<String, Object> params;
 
     public SkillDefinition(String id, String type, String name, List<String> description, Material icon,
                            double manaCost, double cooldown, int unlockLevel, double healthCost,
-                           Map<String, Object> params) {
+                           String iconModel, Float customModelData, Map<String, Object> params) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -40,6 +44,8 @@ public final class SkillDefinition {
         this.cooldown = cooldown;
         this.unlockLevel = unlockLevel;
         this.healthCost = healthCost;
+        this.iconModel = iconModel;
+        this.customModelData = customModelData;
         this.params = params;
     }
 
@@ -60,6 +66,8 @@ public final class SkillDefinition {
                 s.getDouble("cooldown", 5),
                 s.getInt("unlock-level", 1),
                 s.getDouble("health-cost", 0),
+                s.getString("icon-model"),
+                s.isSet("custom-model-data") ? (float) s.getDouble("custom-model-data") : null,
                 params
         );
     }
@@ -72,6 +80,11 @@ public final class SkillDefinition {
     public int i(String key, int def) {
         Object o = params.get(key);
         return o instanceof Number n ? n.intValue() : def;
+    }
+
+    public String s(String key, String def) {
+        Object o = params.get(key);
+        return o == null ? def : String.valueOf(o);
     }
 
     public boolean b(String key, boolean def) {

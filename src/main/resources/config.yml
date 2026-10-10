@@ -48,17 +48,44 @@ mana:
 
 # Lancement des compétences
 casting:
-  # Appuyer sur F (échange de main) pour entrer/sortir du mode sorts,
-  # puis les touches 1 à 9 lancent les compétences.
+  # Appuyer sur F (échange de main) active le mode compétences :
+  # la barre d'objets affiche les icônes des compétences (slots 1 à 8),
+  # ton arme reste en main dans le slot 9. Les touches 1 à 8 lancent les compétences.
+  # F à nouveau (ou ouvrir l'inventaire) pour revenir à ta barre normale.
   swap-hands-toggle: true
-  # Faut-il être accroupi pour activer le mode sorts avec F ?
+  # Faut-il être accroupi pour activer le mode compétences avec F ?
   require-sneak: false
-  # Sortie automatique du mode sorts après X secondes d'inactivité
-  timeout-seconds: 8
-  # Les compétences offensives peuvent-elles toucher les joueurs ?
+  # Sortie automatique après X secondes sans lancer de compétence (0 = jamais)
+  timeout-seconds: 15
+  # Icône des compétences pas encore débloquées
+  locked-icon: GRAY_DYE
+  # Les compétences offensives peuvent-elles toucher les joueurs hors de ton groupe ?
   pvp: true
-  # Les compétences de soutien affectent-elles tous les joueurs proches ?
-  support-affects-all-players: true
+
+# Groupes
+party:
+  max-size: 5
+  invite-timeout-seconds: 60
+  # Les membres (et pas seulement le chef) peuvent-ils inviter ?
+  members-can-invite: false
+  # Dissoudre le groupe quand il ne reste qu'un membre
+  disband-when-alone: true
+  # Rayon dans lequel les membres reçoivent l'XP d'une élimination
+  xp-share-range: 40
+  # Mode PARTAGE : bonus d'XP total par membre supplémentaire (0.1 = +10 %)
+  shared-bonus-per-member: 0.1
+  # Valeurs proposées par défaut dans le menu de création (SHARED ou EQUAL)
+  default-xp-mode: SHARED
+  default-friendly-fire: true
+
+# MythicMobs (si installé)
+mythicmobs:
+  # XP par mob MythicMobs (nom interne). Absent = default-xp
+  default-xp: 15
+  # XP ajoutée par niveau du mob au-delà du niveau 1
+  xp-per-level: 2
+  mob-xp:
+    ExempleBoss: 500
 
 # Affichage (barre d'action)
 hud:

@@ -32,7 +32,22 @@
 #
 # COMPÉTENCES (skills) : type = implémentation Java, params = réglages.
 #   mana, cooldown (s), unlock-level, health-cost (demi-cœurs), icon, name, description.
-#   Les sous-classes gardent les compétences de leur classe parente.
+#   Les sous-classes gardent les compétences de leur classe parente (8 compétences max par classe
+#   dans la barre : slots 1 à 8).
+#
+# ICÔNES (barre de compétences, touche F) :
+#   icon: MATERIAL                       objet de base
+#   icon-model: "monpack:skills/charge"  modèle de ton resource pack (composant item_model, 1.21.4+)
+#   custom-model-data: 1001              alternative : custom model data (float)
+#
+# COMPÉTENCES MYTHICMOBS : type MYTHIC + params.skill = nom de la compétence MythicMobs
+#   boule_ombre:
+#     type: MYTHIC
+#     name: "<dark_purple>Boule d'ombre"
+#     icon: ECHO_SHARD
+#     mana: 25
+#     cooldown: 8
+#     params: {skill: "MaCompetenceMythic", power: 1.0}
 
 classes:
 
@@ -72,6 +87,7 @@ classes:
         type: CHARGE
         name: "<red>Charge"
         icon: IRON_HORSE_ARMOR
+        # icon-model: "cykclasses:skills/charge"   # <- ton modèle de resource pack
         description: ["<gray>Fonce droit devant et percute", "<gray>les ennemis sur ton passage."]
         mana: 15
         cooldown: 8

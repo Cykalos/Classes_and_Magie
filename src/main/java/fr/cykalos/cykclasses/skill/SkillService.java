@@ -9,6 +9,7 @@ import fr.cykalos.cykclasses.skill.impl.ArcherSkills;
 import fr.cykalos.cykclasses.skill.impl.AssassinSkills;
 import fr.cykalos.cykclasses.skill.impl.ClericSkills;
 import fr.cykalos.cykclasses.skill.impl.MageSkills;
+import fr.cykalos.cykclasses.skill.impl.MythicSkills;
 import fr.cykalos.cykclasses.skill.impl.WarriorSkills;
 import fr.cykalos.cykclasses.util.Text;
 import net.kyori.adventure.key.Key;
@@ -39,6 +40,7 @@ public final class SkillService {
         ArcherSkills.register(this);
         AssassinSkills.register(this);
         ClericSkills.register(this);
+        MythicSkills.register(this);
     }
 
     /** Permet à d'autres plugins d'ajouter leurs propres types de compétences. */
@@ -151,6 +153,8 @@ public final class SkillService {
         profile.addSkillUse(def.id);
         plugin.levels().checkNewSubclasses(player, profile, before);
         profile.touchCastActivity();
+        plugin.skillBar().showCooldown(player, def);
+        plugin.skillBar().refresh(player);
         return true;
     }
 
@@ -158,33 +162,17 @@ public final class SkillService {
         player.playSound(Sound.sound(Key.key("block.note_block.bass"), Sound.Source.PLAYER, 0.6f, 0.6f));
     }
 
-    // --- Mode compétences (F puis 1-9) ---
+    // --- Mode compétences (F puis 1-8) : délégué à SkillBar ---
 
     public void toggleCastMode(Player player) {
-        PlayerProfile profile = plugin.profiles().get(player);
-        setCastMode(player, !profile.isCastMode());
+        plugin.skillBar().toggle(player);
     }
 
     public void setCastMode(Player player, boolean on) {
-        PlayerProfile profile = plugin.profiles().get(player);
-        if (on && !profile.hasClass()) {
-            plugin.messages().send(player, "no-class");
-            return;
-        }
-        if (profile.isCastMode() == on) {
-            return;
-        }
-        profile.setCastMode(on);
         if (on) {
-            plugin.messages().send(player, "cast-mode-on");
-            player.playSound(Sound.sound(Key.key("block.amethyst_block.chime"), Sound.Source.PLAYER, 1f, 1.4f));
-            RpgClass rc = plugin.classes().effective(profile);
-            if (rc != null) {
-                player.sendActionBar(plugin.mana().castBar(player, profile, rc));
-            }
+            plugin.skillBar().enter(player);
         } else {
-            plugin.messages().actionBar(player, "cast-mode-off");
-            player.playSound(Sound.sound(Key.key("block.amethyst_block.chime"), Sound.Source.PLAYER, 1f, 0.7f));
+            plugin.skillBar().exit(player, true);
         }
     }
 }

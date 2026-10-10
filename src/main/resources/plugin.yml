@@ -5,7 +5,7 @@ api-version: '26.1'
 description: Système de classes RPG avec sous-classes, compétences uniques, statistiques, défauts et mana.
 authors: [Cykalos]
 website: https://github.com/Cykalos/CykClasses_and_Magie
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, MythicMobs]
 libraries:
   - org.xerial:sqlite-jdbc:3.46.1.3
 
@@ -18,6 +18,13 @@ commands:
     description: Lance une compétence de sa classe.
     usage: /competence <id>
     aliases: [skill, cast]
+  groupe:
+    description: Crée et gère un groupe (règles fixées à la création).
+    usage: /groupe [creer|inviter|accepter|refuser|quitter|expulser|chef|dissoudre|info|chat]
+    aliases: [party, grp]
+  gc:
+    description: Chat de groupe.
+    usage: /gc <message>
 
 permissions:
   cykclasses.use:

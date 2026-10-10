@@ -1,0 +1,97 @@
+# ╔══════════════════════════════════════════════╗
+# ║               CykClasses - hud.yml           ║
+# ╚══════════════════════════════════════════════╝
+# Textes au format MiniMessage : https://docs.advntr.dev/minimessage/format.html
+# Couleurs de bossbar : PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+# Styles de bossbar   : PROGRESS, NOTCHED_6, NOTCHED_10, NOTCHED_12, NOTCHED_20
+
+# ───────────────────────── XP gagnée ─────────────────────────
+xp-display:
+  # BOSSBAR, ACTIONBAR, BOTH ou NONE
+  mode: BOSSBAR
+  # Durée d'affichage après le dernier gain (secondes)
+  duration-seconds: 5
+  # Additionne les gains successifs tant que l'affichage est visible
+  combo: true
+  bossbar:
+    format: "<aqua>+<xp> XP</aqua> <dark_gray>|</dark_gray> <class> <gray>niv. <white><level></white> <dark_gray>(<percent>%)"
+    color: BLUE
+    style: NOTCHED_10
+  actionbar:
+    format: "<aqua>+<xp> XP <gray>(<class><gray>, <percent>%)"
+
+# ───────────────────── Dégâts flottants ─────────────────────
+damage-indicators:
+  enabled: true
+  # Qui voit les nombres : ALL (tout le monde), INVOLVED (attaquant + victime), ATTACKER (attaquant seulement)
+  visible-to: INVOLVED
+  show-on-mobs: true
+  show-on-players: true
+  # Dégâts sans attaquant (chute, feu, lave...)
+  show-environmental: false
+  # Durée de vie (ticks) et vitesse de montée (blocs/tick)
+  duration-ticks: 22
+  rise-per-tick: 0.035
+  # Taille du texte (1.0 = normal)
+  scale: 1.0
+  critical-scale: 1.4
+  decimals: 1
+  # Placeholders : <damage>
+  formats:
+    normal: "<#ff5555>-<damage>"
+    critical: "<gold><bold>✦ -<damage> ✦</bold>"
+    skill: "<#d68cff>-<damage>"
+    # Dégâts reçus par un joueur
+    player-hit: "<red>-<damage> ❤"
+    # Soins des compétences, placeholder <amount>
+    heal: "<green>+<amount> ❤"
+
+# ───────────────────── PV de la cible ─────────────────────
+target-health:
+  enabled: true
+  # BOSSBAR (haut de l'écran), ABOVE_HEAD (au-dessus de la cible), BOTH ou NONE
+  mode: BOTH
+  show-for-mobs: true
+  show-for-players: true
+  # Disparaît X secondes après le dernier coup
+  duration-seconds: 5
+  # Format du niveau (mobs MythicMobs avec niveau), placeholder <level>
+  level-format: " <gray>[Niv. <white><level></white>]"
+  # Placeholders : <name>, <level_tag>, <health>, <max_health>, <percent>, <bar>
+  bossbar:
+    format: "<name><level_tag> <dark_gray>|</dark_gray> <red><health></red><gray>/<max_health> ❤"
+    style: PROGRESS
+    # Couleur selon les PV restants
+    color-high: GREEN
+    color-medium: YELLOW
+    color-low: RED
+  above-head:
+    format: "<name><level_tag>\n<bar> <white><health></white><gray>/<max_health>"
+    # Qui voit l'affichage : ALL ou DAMAGERS (les joueurs ayant frappé la cible)
+    visible-to: DAMAGERS
+    height-offset: 0.45
+    scale: 0.9
+    # Barre de vie
+    bar-length: 10
+    bar-char: "▌"
+    bar-full: "<green>"
+    bar-medium: "<yellow>"
+    bar-low: "<red>"
+    bar-empty: "<dark_gray>"
+    # Fond du texte (ARGB hexadécimal, 00000000 = transparent)
+    background: "40000000"
+  # Seuils (en % de PV) pour les couleurs
+  medium-threshold: 60
+  low-threshold: 30
+
+# ───────────────────── Panneau du groupe ─────────────────────
+party-board:
+  enabled: true
+  title: "<gradient:#f5a623:#e8432e><bold>Groupe</bold></gradient>"
+  # Placeholders : <leader> (★ ou vide), <name>, <health>, <max_health>, <bar>, <mana>, <max_mana>, <class>, <level>
+  line: "<leader><white><name></white> <bar> <red><health></red>"
+  offline-line: "<dark_gray><name> (absent)"
+  leader-symbol: "<gold>★ "
+  bar-length: 6
+  # Ligne d'information sous la liste (vide pour masquer). Placeholders : <xp_mode>, <friendly_fire>
+  footer: "<gray>XP : <white><xp_mode></white>"

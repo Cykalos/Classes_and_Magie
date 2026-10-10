@@ -70,7 +70,7 @@ public final class PlayerProfile {
 
     public int getKills(String type) { return kills.getOrDefault(type.toLowerCase(Locale.ROOT), 0); }
     public void addKill(String type) { kills.merge(type.toLowerCase(Locale.ROOT), 1, Integer::sum); markDirty(); }
-    public int totalKills() { return kills.entrySet().stream().filter(e -> !e.getKey().equals("player")).mapToInt(Map.Entry::getValue).sum(); }
+    public int totalKills() { return kills.entrySet().stream().filter(e -> !e.getKey().equals("player") && !e.getKey().startsWith("mythic:")).mapToInt(Map.Entry::getValue).sum(); }
     public Map<String, Integer> kills() { return kills; }
 
     public int getSkillUses(String id) { return skillUses.getOrDefault(id.toLowerCase(Locale.ROOT), 0); }

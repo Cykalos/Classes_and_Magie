@@ -2,22 +2,28 @@ package fr.cykalos.cykclasses;
 
 import fr.cykalos.cykclasses.command.ClasseCommand;
 import fr.cykalos.cykclasses.command.CompetenceCommand;
+import fr.cykalos.cykclasses.command.GroupeCommand;
 import fr.cykalos.cykclasses.config.ClassRegistry;
 import fr.cykalos.cykclasses.config.Messages;
 import fr.cykalos.cykclasses.data.PlayerProfile;
 import fr.cykalos.cykclasses.data.ProfileManager;
+import fr.cykalos.cykclasses.hook.MythicHook;
 import fr.cykalos.cykclasses.hook.PlaceholderHook;
 import fr.cykalos.cykclasses.listener.CastingListener;
 import fr.cykalos.cykclasses.listener.CombatListener;
 import fr.cykalos.cykclasses.listener.ConnectionListener;
 import fr.cykalos.cykclasses.listener.GuiListener;
+import fr.cykalos.cykclasses.listener.HudListener;
 import fr.cykalos.cykclasses.listener.ProgressListener;
 import fr.cykalos.cykclasses.service.ClassService;
 import fr.cykalos.cykclasses.service.CombatService;
+import fr.cykalos.cykclasses.party.PartyManager;
 import fr.cykalos.cykclasses.service.FlawService;
+import fr.cykalos.cykclasses.service.HudService;
 import fr.cykalos.cykclasses.service.LevelService;
 import fr.cykalos.cykclasses.service.ManaService;
 import fr.cykalos.cykclasses.service.StatsService;
+import fr.cykalos.cykclasses.skill.SkillBar;
 import fr.cykalos.cykclasses.skill.SkillService;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -44,6 +50,10 @@ public final class CykClasses extends JavaPlugin {
     private CombatService combat;
     private FlawService flaws;
     private ClassService classService;
+    private SkillBar skillBar;
+    private PartyManager parties;
+    private HudService hud;
+    private MythicHook mythic;
 
     public static CykClasses instance() {
         return instance;
@@ -75,6 +85,10 @@ public final class CykClasses extends JavaPlugin {
         combat = new CombatService(this);
         flaws = new FlawService(this);
         classService = new ClassService(this);
+        skillBar = new SkillBar(this);
+        parties = new PartyManager(this);
+        hud = new HudService(this);
+        hud.load();
 
         var pm = Bukkit.getPluginManager();
         pm.registerEvents(new ConnectionListener(this), this);
@@ -82,12 +96,27 @@ public final class CykClasses extends JavaPlugin {
         pm.registerEvents(new ProgressListener(this), this);
         pm.registerEvents(new CastingListener(this), this);
         pm.registerEvents(new GuiListener(), this);
+        pm.registerEvents(new HudListener(this), this);
 
         registerCommand("classe", new ClasseCommand(this));
         registerCommand("competence", new CompetenceCommand(this));
+        GroupeCommand groupe = new GroupeCommand(this);
+        registerCommand("groupe", groupe);
+        registerCommand("gc", groupe);
 
         mana.start();
         flaws.start();
+        hud.start();
+
+        if (pm.isPluginEnabled("MythicMobs")) {
+            try {
+                mythic = new MythicHook();
+                getLogger().info("MythicMobs détecté : mobs custom, XP par mob et compétences de type MYTHIC activés.");
+            } catch (Throwable t) {
+                mythic = null;
+                getLogger().log(Level.WARNING, "Intégration MythicMobs impossible (version incompatible ?)", t);
+            }
+        }
 
         if (pm.isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderHook(this).register();
@@ -100,6 +129,7 @@ public final class CykClasses extends JavaPlugin {
             if (p != null) {
                 p.setName(player.getName());
                 profiles.put(p);
+                skillBar.recover(player);
                 stats.apply(player);
             }
         }
@@ -118,6 +148,15 @@ public final class CykClasses extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (skillBar != null) {
+            skillBar.exitAll();
+        }
+        if (hud != null) {
+            hud.shutdown();
+        }
+        if (parties != null) {
+            parties.disbandAll();
+        }
         if (mana != null) {
             mana.stop();
         }
@@ -137,8 +176,11 @@ public final class CykClasses extends JavaPlugin {
 
     public void reload() {
         reloadConfig();
+        skillBar.exitAll();
         messages.load();
+        hud.load();
         classes.load();
+        hud.start();
         mana.start();
         flaws.start();
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -156,4 +198,9 @@ public final class CykClasses extends JavaPlugin {
     public CombatService combat() { return combat; }
     public FlawService flaws() { return flaws; }
     public ClassService classService() { return classService; }
+    public SkillBar skillBar() { return skillBar; }
+    public PartyManager parties() { return parties; }
+    public HudService hud() { return hud; }
+    /** @return le pont MythicMobs, ou null si MythicMobs n'est pas installé. */
+    public MythicHook mythic() { return mythic; }
 }
