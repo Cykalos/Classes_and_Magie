@@ -74,6 +74,7 @@ public final class HudService {
     private BukkitTask task;
     private BukkitTask followTask;
     private final Map<UUID, XpState> xp = new HashMap<>();
+    private final Map<UUID, XpState> jobXp = new HashMap<>();
     private final Map<UUID, TargetState> targets = new HashMap<>();
     private final Map<UUID, HeadState> heads = new HashMap<>();
     private final Map<UUID, Boolean> pendingCrit = new HashMap<>();
@@ -140,6 +141,10 @@ public final class HudService {
         if (x != null && x.bar != null) {
             player.hideBossBar(x.bar);
         }
+        XpState jx = jobXp.remove(player.getUniqueId());
+        if (jx != null && jx.bar != null) {
+            player.hideBossBar(jx.bar);
+        }
         TargetState t = targets.remove(player.getUniqueId());
         if (t != null && t.bar != null) {
             player.hideBossBar(t.bar);
@@ -157,6 +162,16 @@ public final class HudService {
         tickCount++;
         // XP
         for (Iterator<Map.Entry<UUID, XpState>> it = xp.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<UUID, XpState> e = it.next();
+            if (e.getValue().until < now) {
+                Player p = Bukkit.getPlayer(e.getKey());
+                if (p != null && e.getValue().bar != null) {
+                    p.hideBossBar(e.getValue().bar);
+                }
+                it.remove();
+            }
+        }
+        for (Iterator<Map.Entry<UUID, XpState>> it = jobXp.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<UUID, XpState> e = it.next();
             if (e.getValue().until < now) {
                 Player p = Bukkit.getPlayer(e.getKey());
@@ -249,6 +264,29 @@ public final class HudService {
             player.sendActionBar(st.actionbar);
         } else {
             st.actionbar = null;
+        }
+    }
+
+    /** XP de métier : barre de boss séparée (hud.yml → job-xp-display). */
+    public void showJobXp(Player player, double amount, fr.cykalos.cykclasses.content.Job job, int level, float progress) {
+        if (!cfg.getBoolean("job-xp-display.enabled", true)) {
+            return;
+        }
+        long now = System.currentTimeMillis();
+        XpState st = jobXp.computeIfAbsent(player.getUniqueId(), k -> new XpState());
+        boolean combo = st.until >= now;
+        st.combo = combo ? st.combo + amount : amount;
+        st.until = now + (long) (cfg.getDouble("job-xp-display.duration-seconds", 4) * 1000);
+        Component title = Text.mm(cfg.getString("job-xp-display.format", "<gold>+<xp> XP <job> Niv. <level>"),
+                Text.ph("xp", Text.format(Math.round(st.combo * 10) / 10.0)), Text.ph("job", job.name()),
+                Text.ph("level", level), Text.ph("percent", (int) Math.floor(progress * 100)));
+        if (st.bar == null) {
+            st.bar = BossBar.bossBar(title, progress, color(cfg.getString("job-xp-display.color"), BossBar.Color.YELLOW),
+                    overlay(cfg.getString("job-xp-display.style"), BossBar.Overlay.NOTCHED_10));
+            player.showBossBar(st.bar);
+        } else {
+            st.bar.name(title);
+            st.bar.progress(progress);
         }
     }
 

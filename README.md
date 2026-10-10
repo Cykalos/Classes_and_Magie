@@ -63,6 +63,14 @@ Classe → **race** → **traits** → **métier**, chaque étape s'ouvre automa
 - **Attributs** (`/stats`, `attributes.yml`) : Force, Dextérité, Intelligence, Vitalité, Sagesse, Agilité, Endurance. Points gagnés à chaque niveau.
 - Réinitialisation gratuite toutes les 24 h (`/arbre reset`, `/stats reset`).
 
+## Métiers, forge et gemmes
+
+- **Niveaux de métier** (`jobs.yml`) : XP gagnée en faisant son métier (miner, forger, pêcher, enchanter, distiller…), jusqu'au niveau 50. Les recettes et actions se débloquent par niveau (ex. équipement en diamant au niveau 15 du forgeron).
+- **Forge** (`forge.yml`) : les objets fabriqués par un forgeron reçoivent une rareté (Commun → Légendaire, et Unique), des stats aléatoires positives ou négatives, et des emplacements de gemmes. Plus le métier est haut, meilleure est la qualité. Chaque objet **unique** n'existe qu'une fois sur le serveur.
+- **Gemmes** (`gems.yml`) : trouvées en minant, à incruster en cliquant avec la gemme sur un objet forgé.
+
+Documentation complète avec exemples : voir la doc partagée du projet.
+
 ## Objets
 
 - **Kits de départ** (`kits.yml`) donnés au choix de la classe ou de la sous-classe.

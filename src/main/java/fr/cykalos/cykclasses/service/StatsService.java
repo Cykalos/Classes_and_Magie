@@ -95,6 +95,10 @@ public final class StatsService {
         for (AttributeDef a : plugin.content().attributes()) {
             mod.add(a.perPoint(), profile.getAttribute(a.id()));
         }
+        Player online = org.bukkit.Bukkit.getPlayer(profile.getUuid());
+        if (online != null && plugin.gear() != null) {
+            mod.add(plugin.gear().equipped(online));
+        }
         for (SkillTree tree : treesOf(profile)) {
             for (TreeNode node : tree.nodes().values()) {
                 int rank = profile.getNodeRank(tree.classId() + ":" + node.id());

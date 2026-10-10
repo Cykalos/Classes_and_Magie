@@ -39,6 +39,9 @@ public final class PlayerProfile {
     private long lastTreeReset;
     private long lastAttributeReset;
     private List<String> kitsReceived = new ArrayList<>();
+    /** Niveau et XP par métier (conservés si le joueur change de métier). */
+    private Map<String, Integer> jobLevels = new HashMap<>();
+    private Map<String, Double> jobXp = new HashMap<>();
 
     private transient Map<String, Long> cooldowns = new HashMap<>();
     private transient boolean castMode;
@@ -66,6 +69,8 @@ public final class PlayerProfile {
         if (attributes == null) attributes = new HashMap<>();
         if (treeNodes == null) treeNodes = new HashMap<>();
         if (kitsReceived == null) kitsReceived = new ArrayList<>();
+        if (jobLevels == null) jobLevels = new HashMap<>();
+        if (jobXp == null) jobXp = new HashMap<>();
         if (level < 1) level = 1;
         return this;
     }
@@ -142,6 +147,11 @@ public final class PlayerProfile {
     public List<String> kitsReceived() { return kitsReceived; }
     public void addReceivedKit(String id) { kitsReceived.add(id.toLowerCase(Locale.ROOT)); markDirty(); }
 
+    public int getJobLevel(String job) { return job == null ? 0 : jobLevels.getOrDefault(job, 1); }
+    public void setJobLevel(String job, int level) { jobLevels.put(job, Math.max(1, level)); markDirty(); }
+    public double getJobXp(String job) { return job == null ? 0 : jobXp.getOrDefault(job, 0.0); }
+    public void setJobXp(String job, double xp) { jobXp.put(job, Math.max(0, xp)); markDirty(); }
+
     public boolean isPartyChat() { return partyChat; }
     public void setPartyChat(boolean partyChat) { this.partyChat = partyChat; }
 
@@ -205,6 +215,8 @@ public final class PlayerProfile {
         map.put("last-tree-reset", lastTreeReset);
         map.put("last-attribute-reset", lastAttributeReset);
         map.put("kits-received", new ArrayList<>(kitsReceived));
+        map.put("job-levels", new HashMap<>(jobLevels));
+        map.put("job-xp", new HashMap<>(jobXp));
         return map;
     }
 
@@ -247,6 +259,12 @@ public final class PlayerProfile {
         p.lastAttributeReset = map.get("last-attribute-reset") instanceof Number n ? n.longValue() : 0;
         if (map.get("kits-received") instanceof List<?> l) {
             l.forEach(o -> p.kitsReceived.add(String.valueOf(o)));
+        }
+        if (map.get("job-levels") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v instanceof Number n) p.jobLevels.put(String.valueOf(k), n.intValue()); });
+        }
+        if (map.get("job-xp") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v instanceof Number n) p.jobXp.put(String.valueOf(k), n.doubleValue()); });
         }
         return p.normalize();
     }

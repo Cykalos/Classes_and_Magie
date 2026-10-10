@@ -157,6 +157,16 @@ public final class ClasseCommand implements TabExecutor {
             return;
         }
         String action = args[1].toLowerCase(Locale.ROOT);
+        if (action.equals("libererunique")) {
+            if (args.length < 3) {
+                plugin.messages().sendList(sender, "admin-help");
+            } else if (plugin.gear().releaseUnique(args[2])) {
+                plugin.messages().send(sender, "admin-done");
+            } else {
+                plugin.messages().send(sender, "forge.unique-not-taken");
+            }
+            return;
+        }
         if (action.equals("reload")) {
             plugin.reload();
             plugin.messages().send(sender, "reloaded",
@@ -256,6 +266,44 @@ public final class ClasseCommand implements TabExecutor {
                 plugin.character().giveKit(target, cls);
                 plugin.messages().send(sender, "admin-done");
             }
+            case "gemme" -> {
+                var gem = args.length > 3 ? plugin.gear().gems().get(args[3].toLowerCase(Locale.ROOT)) : null;
+                if (gem == null) {
+                    plugin.messages().send(sender, "unknown-class", Text.ph("class", args.length > 3 ? args[3] : "?"));
+                    return;
+                }
+                target.getInventory().addItem(plugin.gear().createGem(gem, parseInt(args, 4, 1)));
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "forge" -> {
+                // /classe admin forge <joueur> <rareté> : applique une rareté à l'objet en main (tests)
+                var hand = target.getInventory().getItemInMainHand();
+                if (hand.getType().isAir() || args.length < 4) {
+                    plugin.messages().sendList(sender, "admin-help");
+                    return;
+                }
+                target.getInventory().setItemInMainHand(plugin.gear().forge(hand, target, plugin.jobs().level(profile), args[3]));
+                plugin.stats().apply(target);
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "jobxp" -> {
+                var job = plugin.content().job(profile.getJobId());
+                if (job == null) {
+                    plugin.messages().send(sender, "job.none");
+                    return;
+                }
+                plugin.jobs().addXp(target, profile, job, parseInt(args, 3, 100));
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "setjoblevel" -> {
+                if (profile.getJobId() == null) {
+                    plugin.messages().send(sender, "job.none");
+                    return;
+                }
+                profile.setJobLevel(profile.getJobId(), Math.min(plugin.jobs().maxLevel(), parseInt(args, 3, 1)));
+                profile.setJobXp(profile.getJobId(), 0);
+                plugin.messages().send(sender, "admin-done");
+            }
             case "mana" -> {
                 profile.setMana(plugin.stats().maxMana(profile));
                 profile.clearCooldowns();
@@ -299,20 +347,27 @@ public final class ClasseCommand implements TabExecutor {
                 case "admin" -> {
                     if (sender.hasPermission("cykclasses.admin")) {
                         options.addAll(List.of("setlevel", "addxp", "setclass", "reset", "mana", "reload", "setrace",
-                                "resetrace", "resettraits", "setjob", "addpoints", "resettree", "resetstats", "kit"));
+                                "resetrace", "resettraits", "setjob", "addpoints", "resettree", "resetstats", "kit", "gemme", "forge",
+                                "jobxp", "setjoblevel", "libererunique"));
                     }
                 }
                 default -> {
                 }
             }
         } else if (args.length == 3 && args[0].equalsIgnoreCase("admin")) {
-            Bukkit.getOnlinePlayers().forEach(p -> options.add(p.getName()));
+            if (args[1].equalsIgnoreCase("libererunique")) {
+                options.addAll(plugin.gear().uniqueTaken().keySet());
+            } else {
+                Bukkit.getOnlinePlayers().forEach(p -> options.add(p.getName()));
+            }
         } else if (args.length == 4 && args[0].equalsIgnoreCase("admin")) {
             switch (args[1].toLowerCase(Locale.ROOT)) {
                 case "setclass", "kit" -> plugin.classes().all().forEach(c -> options.add(c.id));
                 case "setrace" -> plugin.content().races().forEach(r -> options.add(r.id()));
                 case "setjob" -> plugin.content().jobs().forEach(j -> options.add(j.id()));
                 case "addpoints" -> options.addAll(List.of("competences", "stats"));
+                case "gemme" -> options.addAll(plugin.gear().gems().keySet());
+                case "forge" -> plugin.gear().rarities().forEach(r -> options.add(r.id().toLowerCase(Locale.ROOT)));
                 default -> {
                 }
             }

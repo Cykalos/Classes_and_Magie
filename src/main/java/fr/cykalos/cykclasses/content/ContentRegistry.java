@@ -65,6 +65,15 @@ public final class ContentRegistry {
         traitsConfig = yaml("traits.yml");
         loadTraits(traitsConfig);
         jobsConfig = yaml("jobs.yml");
+        if (!jobsConfig.contains("leveling")) {
+            // Ancien format (avant les niveaux de métier) : sauvegarde puis nouveau fichier par défaut.
+            File old = new File(plugin.getDataFolder(), "jobs.yml");
+            File backup = new File(plugin.getDataFolder(), "jobs-ancien.yml");
+            if (old.renameTo(backup)) {
+                plugin.getLogger().warning("jobs.yml mis à jour (niveaux de métier). L'ancien fichier est conservé : jobs-ancien.yml");
+                jobsConfig = yaml("jobs.yml");
+            }
+        }
         loadJobs(jobsConfig);
         treeConfig = yaml("skilltree.yml");
         loadTrees(treeConfig);
@@ -192,9 +201,20 @@ public final class ContentRegistry {
             for (String id : root.getKeys(false)) {
                 ConfigurationSection s = root.getConfigurationSection(id);
                 if (s != null) {
+                    List<Job.XpSource> sources = new ArrayList<>();
+                    for (Map<?, ?> m : s.getMapList("xp-sources")) {
+                        try {
+                            JobRule.Action action = JobRule.Action.valueOf(String.valueOf(m.get("action")).toUpperCase(Locale.ROOT));
+                            double xp = m.get("xp") instanceof Number n ? n.doubleValue() : 1;
+                            sources.add(new Job.XpSource(action, patterns(PermanentEffect.strings(m, "targets")), xp));
+                        } catch (IllegalArgumentException e) {
+                            plugin.getLogger().warning("Source d'XP invalide (métier " + id + ") : " + m);
+                        }
+                    }
                     jobs.put(id.toLowerCase(Locale.ROOT), new Job(id.toLowerCase(Locale.ROOT), s.getString("name", id),
                             ItemBuilder.material(s.getString("icon"), Material.WOODEN_PICKAXE), s.getStringList("description"),
-                            StatModifier.load(s.getConfigurationSection("stats")), PermanentEffect.parse(s.getStringList("effects"))));
+                            StatModifier.load(s.getConfigurationSection("stats")), PermanentEffect.parse(s.getStringList("effects")),
+                            sources));
                 }
             }
         }
@@ -203,7 +223,9 @@ public final class ContentRegistry {
                 JobRule.Action action = JobRule.Action.valueOf(String.valueOf(m.get("action")).toUpperCase(Locale.ROOT));
                 List<String> jobsAllowed = lower(PermanentEffect.strings(m, "jobs"));
                 String message = m.containsKey("message") ? String.valueOf(m.get("message")) : null;
-                jobRules.add(new JobRule(action, patterns(PermanentEffect.strings(m, "targets")), jobsAllowed, message));
+                int minLevel = m.get("min-level") instanceof Number n ? n.intValue() : 0;
+                String display = m.containsKey("display") ? String.valueOf(m.get("display")) : null;
+                jobRules.add(new JobRule(action, patterns(PermanentEffect.strings(m, "targets")), jobsAllowed, message, minLevel, display));
             } catch (IllegalArgumentException e) {
                 plugin.getLogger().warning("Restriction de métier invalide : " + m);
             }

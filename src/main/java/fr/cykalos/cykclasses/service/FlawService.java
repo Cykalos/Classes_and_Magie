@@ -60,6 +60,7 @@ public final class FlawService {
                 player.addPotionEffect(new PotionEffect(e.type(), 100, e.amplifier(), true, false, true));
             }
             plugin.items().enforceArmor(player, profile);
+            plugin.gearListener().checkEquipment(player);
             for (Flaw f : plugin.stats().flaws(profile)) {
                 switch (f.type) {
                     case FORBIDDEN_ARMOR -> enforceArmor(player, f);

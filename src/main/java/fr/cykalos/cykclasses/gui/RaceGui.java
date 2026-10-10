@@ -64,7 +64,7 @@ public final class RaceGui extends Gui {
                 b.lore(plugin.messages().raw("race.recommended").replace("<class>", Text.plain(rc.root().name)));
             }
             b.lore("");
-            b.lore(plugin.messages().raw(current ? "gui.current" : "gui.click-choose"));
+            b.lore(plugin.messages().raw(current ? "race.current-label" : "gui.click-choose"));
             set(slot++, b.build(), e -> {
                 if (plugin.character().chooseRace(viewer, race)) {
                     viewer.closeInventory();

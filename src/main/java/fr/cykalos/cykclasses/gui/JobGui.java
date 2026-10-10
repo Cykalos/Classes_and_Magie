@@ -2,7 +2,6 @@ package fr.cykalos.cykclasses.gui;
 
 import fr.cykalos.cykclasses.CykClasses;
 import fr.cykalos.cykclasses.content.Job;
-import fr.cykalos.cykclasses.content.JobRule;
 import fr.cykalos.cykclasses.data.PlayerProfile;
 import fr.cykalos.cykclasses.util.ItemBuilder;
 import fr.cykalos.cykclasses.util.Text;
@@ -38,13 +37,21 @@ public final class JobGui extends Gui {
                 mods.forEach(l -> b.lore("<gray>• " + l));
                 job.effects().forEach(e -> b.lore("<gray>• <aqua>" + e.type().getKey().getKey().replace('_', ' ') + " " + (e.amplifier() + 1)));
             }
-            long exclusive = plugin.content().jobRules().stream().filter(r -> r.jobs().contains(job.id())).count();
-            if (exclusive > 0) {
-                b.lore("").lore(plugin.messages().raw("job.exclusive").replace("<count>", String.valueOf(exclusive)));
-                plugin.content().jobRules().stream().filter(r -> r.jobs().contains(job.id())).limit(6)
-                        .forEach(r -> b.lore("<gray>• " + actionName(r)));
+            int level = p.getJobLevel(job.id());
+            b.lore("").lore(plugin.messages().raw("job.level-line").replace("<level>", String.valueOf(level))
+                    .replace("<max>", String.valueOf(plugin.jobs().maxLevel())));
+            var rules = plugin.content().jobRules().stream().filter(r -> r.jobs().contains(job.id())).toList();
+            if (!rules.isEmpty()) {
+                b.lore("").lore(plugin.messages().raw("job.exclusive").replace("<count>", String.valueOf(rules.size())));
+                rules.stream().limit(8).forEach(r -> {
+                    String lvl = r.minLevel() > 1 ? (level >= r.minLevel() ? " <green>(niv. " : " <red>(niv. ") + r.minLevel() + ")" : "";
+                    b.lore("<gray>• " + plugin.jobDescriptions().describe(r) + lvl);
+                });
             }
-            b.lore("").lore(plugin.messages().raw(current ? "gui.current" : "gui.click-choose"));
+            if (plugin.gear().isQualityCraft(job.id(), Material.IRON_SWORD) || plugin.gear().isQualityCraft(job.id(), Material.IRON_CHESTPLATE)) {
+                b.lore(plugin.messages().raw("job.quality-line"));
+            }
+            b.lore("").lore(plugin.messages().raw(current ? "job.current" : "gui.click-choose"));
             set(slot++, b.build(), e -> {
                 if (plugin.character().chooseJob(viewer, job)) {
                     viewer.closeInventory();
@@ -61,13 +68,5 @@ public final class JobGui extends Gui {
         }
         set(last + 8, new ItemBuilder(Material.BARRIER).name(plugin.messages().raw("gui.close")).build(), e -> viewer.closeInventory());
         fill();
-    }
-
-    private String actionName(JobRule r) {
-        String key = "job.action-" + r.action().name().toLowerCase(java.util.Locale.ROOT);
-        String targets = r.targets().isEmpty() ? "" : " <dark_gray>(" + r.targets().stream().limit(3)
-                .map(pt -> pt.pattern().replace(".*", "*").replace("\\.", ".").toLowerCase(java.util.Locale.ROOT))
-                .reduce((a, c) -> a + ", " + c).orElse("") + (r.targets().size() > 3 ? "…" : "") + ")";
-        return plugin.messages().raw(key) + targets;
     }
 }

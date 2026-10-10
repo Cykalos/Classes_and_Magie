@@ -82,6 +82,9 @@ admin-help:
   - "<red>/classe admin addpoints <joueur> <competences|stats> <n>"
   - "<red>/classe admin resettree|resetstats <joueur>"
   - "<red>/classe admin kit <joueur> [classe]"
+  - "<red>/classe admin gemme <joueur> <gemme> [n] · forge <joueur> <rareté>"
+  - "<red>/classe admin jobxp <joueur> <xp> · setjoblevel <joueur> <niv>"
+  - "<red>/classe admin libererunique <objet>"
   - "<red>/classe admin reload"
 
 gui:
@@ -184,6 +187,7 @@ race:
   already: "<red>Tu as déjà choisi ta race."
   penalty: "<red>⚠ Ta race n'est pas faite pour ta classe : <gray><description>"
   unsuited: "<red>⚠ Inadaptée à la classe <class> :"
+  current-label: "<aqua>✔ Ta race actuelle"
   recommended: "<green>✔ Recommandée pour la classe <class>"
 
 traits:
@@ -206,6 +210,15 @@ job:
   no-change: "<red>Le métier ne peut pas être changé."
   cooldown: "<red>Tu dois attendre encore <white><time></white> avant de changer de métier."
   restricted: "<red>Action réservée au(x) métier(s) : <white><jobs>"
+  level-suffix: "(niv. <level>)"
+  need-level: "<red>Ton métier doit être niveau <white><level></white> pour ça <gray>(actuel : <current>)."
+  current: "<aqua>✔ Ton métier actuel"
+  none: "<red>Ce joueur n'a pas de métier."
+  level-line: "<gray>Ton niveau : <white><level></white>/<max>"
+  quality-line: "<light_purple>✦ Fabrique des objets de qualité (rareté et stats aléatoires)"
+  level-up: "<gold>⬆ <job> <gold>niveau <white><level></white> !"
+  level-up-title: "<gold>Métier niv. <level>"
+  unlocked: "<green>✦ Débloqué : <white><what>"
   action-break: "Récolter/miner"
   action-place: "Poser"
   action-craft: "Fabriquer"
@@ -213,7 +226,9 @@ job:
   action-fish: "Pêcher"
   action-breed: "Élever"
   action-tame: "Apprivoiser"
-  action-smelt: "XP de cuisson"
+  action-smelt: "Cuire"
+  action-enchant: "Enchanter"
+  action-brew: "Distiller"
 
 tree:
   none: "<red>Aucun arbre de compétences pour ta classe."
@@ -242,3 +257,22 @@ attributes:
   no-points: "<red>Pas assez de points."
   reset-button: "<red>Réinitialiser les attributs"
   reset: "<yellow>Attributs réinitialisés, tes points t'ont été rendus."
+
+forge:
+  crafted-by: "<dark_gray>Forgé par <player>"
+  one-at-a-time: "<yellow>Les objets de qualité se fabriquent un par un (clic simple, curseur vide)."
+  empty-cursor: "<yellow>Vide ton curseur pour récupérer l'objet forgé."
+  unique-broadcast: "<gold>✦ <player> a forgé l'objet unique <item><gold> ! Il n'en existera jamais d'autre."
+  unique-not-taken: "<red>Cet objet unique n'a pas encore été forgé."
+
+gems:
+  socketed: "<green>Gemme incrustée !"
+  no-socket: "<red>Cet objet n'a plus d'emplacement de gemme libre."
+  wrong-type: "<red>Cette gemme ne s'incruste pas sur ce type d'objet."
+  no-creative: "<red>L'incrustation ne fonctionne pas en mode créatif."
+  found: "<aqua>✦ Tu as trouvé une gemme : <gem><aqua> !"
+  applies: "<gray>S'incruste sur : <white><types>"
+  how: "<dark_gray>Prends-la avec la souris et clique sur l'objet."
+  category-weapon: "armes"
+  category-ranged: "arcs/arbalètes/tridents"
+  category-armor: "armures/boucliers"

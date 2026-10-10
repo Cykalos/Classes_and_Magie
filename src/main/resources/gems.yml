@@ -1,0 +1,72 @@
+# ╔══════════════════════════════════════════════╗
+# ║              CykClasses - gems.yml           ║
+# ╚══════════════════════════════════════════════╝
+# Gemmes à incruster dans les objets FORGÉS qui ont des emplacements libres (voir forge.yml → sockets).
+# Incrustation : prends la gemme avec la souris et clique sur l'objet dans ton inventaire.
+# Une gemme incrustée est définitive (elle ne peut pas être retirée).
+
+socket-empty: "<dark_gray>◇ Emplacement de gemme libre"
+socket-filled: "<white>◆ "
+
+# Gemmes trouvées en minant (blocs non posés par un joueur)
+drops:
+  # Métiers qui peuvent en trouver (vide = tout le monde)
+  jobs: [mineur]
+  targets: ["*_ORE", "ANCIENT_DEBRIS"]
+  # Chance par bloc = base-chance + chance-per-job-level × niveau du métier
+  base-chance: 0.01
+  chance-per-job-level: 0.001
+
+# applies-to : WEAPON (armes de mêlée), RANGED (arcs, arbalètes, tridents), ARMOR (armures, bouclier)
+# weight : chance relative d'être trouvée · stats : mêmes clés que classes.yml
+# material / item-model : apparence (item-model pour ton resource pack)
+gems:
+  rubis:
+    name: "<red>Rubis"
+    material: RED_DYE
+    weight: 30
+    description: ["<gray>Une pierre rouge sang."]
+    applies-to: [WEAPON]
+    stats: {melee-damage: 1.04}
+  saphir:
+    name: "<blue>Saphir"
+    material: LAPIS_LAZULI
+    weight: 30
+    description: ["<gray>Imprégné de magie."]
+    applies-to: [WEAPON, ARMOR]
+    stats: {magic-damage: 1.04, mana: 10}
+  emeraude:
+    name: "<green>Émeraude"
+    material: EMERALD
+    weight: 25
+    description: ["<gray>Vibrante de vie."]
+    applies-to: [ARMOR]
+    stats: {health: 2}
+  topaze:
+    name: "<yellow>Topaze"
+    material: GOLD_NUGGET
+    weight: 25
+    description: ["<gray>Elle guide les coups vers les points faibles."]
+    applies-to: [WEAPON, RANGED]
+    stats: {crit-chance: 0.03}
+  onyx:
+    name: "<dark_gray>Onyx"
+    material: COAL
+    weight: 20
+    description: ["<gray>Dure comme la roche."]
+    applies-to: [ARMOR]
+    stats: {damage-taken: 0.97, armor: 0.5}
+  oeil_de_faucon:
+    name: "<gold>Œil de faucon"
+    material: RAW_GOLD
+    weight: 15
+    description: ["<gray>Pour les tireurs d'élite."]
+    applies-to: [RANGED]
+    stats: {ranged-damage: 1.05}
+  diamant_pur:
+    name: "<aqua><bold>Diamant pur"
+    material: DIAMOND
+    weight: 4
+    description: ["<gray>Une pierre parfaite, d'une rareté extrême."]
+    applies-to: [WEAPON, RANGED, ARMOR]
+    stats: {melee-damage: 1.03, ranged-damage: 1.03, magic-damage: 1.03, health: 2}

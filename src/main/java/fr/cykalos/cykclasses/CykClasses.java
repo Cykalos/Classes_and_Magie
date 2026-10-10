@@ -4,6 +4,10 @@ import fr.cykalos.cykclasses.command.CharacterCommand;
 import fr.cykalos.cykclasses.command.ClasseCommand;
 import fr.cykalos.cykclasses.content.ContentRegistry;
 import fr.cykalos.cykclasses.listener.ChatListener;
+import fr.cykalos.cykclasses.listener.GearListener;
+import fr.cykalos.cykclasses.service.GearService;
+import fr.cykalos.cykclasses.service.JobDescriptions;
+import fr.cykalos.cykclasses.service.JobService;
 import fr.cykalos.cykclasses.listener.JobListener;
 import fr.cykalos.cykclasses.service.CharacterService;
 import fr.cykalos.cykclasses.service.ItemFactory;
@@ -66,6 +70,10 @@ public final class CykClasses extends JavaPlugin {
     private ItemFactory itemFactory;
     private ItemRestrictionService items;
     private ChatListener chat;
+    private GearService gear;
+    private GearListener gearListener;
+    private JobService jobs;
+    private JobDescriptions jobDescriptions;
 
     public static CykClasses instance() {
         return instance;
@@ -75,6 +83,7 @@ public final class CykClasses extends JavaPlugin {
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        migrateConfig();
         getConfig().options().copyDefaults(true);
         saveConfig();
 
@@ -108,6 +117,11 @@ public final class CykClasses extends JavaPlugin {
         itemFactory = new ItemFactory(this);
         items = new ItemRestrictionService(this);
         chat = new ChatListener(this);
+        gear = new GearService(this);
+        gear.load();
+        gearListener = new GearListener(this);
+        jobs = new JobService(this);
+        jobDescriptions = new JobDescriptions(this);
 
         var pm = Bukkit.getPluginManager();
         pm.registerEvents(new ConnectionListener(this), this);
@@ -119,6 +133,7 @@ public final class CykClasses extends JavaPlugin {
         pm.registerEvents(new JobListener(this), this);
         pm.registerEvents(items, this);
         pm.registerEvents(chat, this);
+        pm.registerEvents(gearListener, this);
 
         registerCommand("classe", new ClasseCommand(this));
         registerCommand("competence", new CompetenceCommand(this));
@@ -210,6 +225,7 @@ public final class CykClasses extends JavaPlugin {
         messages.load();
         hud.load();
         content.load();
+        gear.load();
         classes.load();
         stats.invalidateAll();
         hud.start();
@@ -240,4 +256,18 @@ public final class CykClasses extends JavaPlugin {
     public ItemFactory itemFactory() { return itemFactory; }
     public ItemRestrictionService items() { return items; }
     public ChatListener chat() { return chat; }
+    public GearService gear() { return gear; }
+    public GearListener gearListener() { return gearListener; }
+    public JobService jobs() { return jobs; }
+    public JobDescriptions jobDescriptions() { return jobDescriptions; }
+
+    /** Met à jour les anciennes valeurs par défaut copiées dans config.yml par les versions précédentes. */
+    private void migrateConfig() {
+        var c = getConfig();
+        String oldTag = "<dark_gray>[</dark_gray><class> <gray><level></gray><dark_gray>]</dark_gray>";
+        if (oldTag.equals(c.getString("chat.class-tag"))) {
+            c.set("chat.class-tag", "<dark_gray>[</dark_gray><class> <gray>Niv. <level></gray><dark_gray>]</dark_gray>");
+            saveConfig();
+        }
+    }
 }

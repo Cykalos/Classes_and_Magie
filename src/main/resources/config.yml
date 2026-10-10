@@ -113,7 +113,7 @@ chat:
   global-format: "<class_tag> <white><name></white><dark_gray> » </dark_gray><gray><message>"
   party-format: "<dark_aqua>[Groupe]</dark_aqua> <class_tag> <aqua><name></aqua><dark_gray> » </dark_gray><white><message>"
   # Placeholders : <class>, <level>, <race>
-  class-tag: "<dark_gray>[</dark_gray><class> <gray><level></gray><dark_gray>]</dark_gray>"
+  class-tag: "<dark_gray>[</dark_gray><class> <gray>Niv. <level></gray><dark_gray>]</dark_gray>"
   no-class-tag: "<dark_gray>[<gray>Novice</gray>]</dark_gray>"
   spy-prefix: "<dark_gray>[Espion] "
 

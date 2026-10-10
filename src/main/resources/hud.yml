@@ -20,6 +20,15 @@ xp-display:
   actionbar:
     format: "<aqua>+<xp> XP <gray>(<class><gray>, <percent>%)"
 
+# ───────────────────────── XP de métier ─────────────────────────
+job-xp-display:
+  enabled: true
+  duration-seconds: 4
+  # Placeholders : <xp>, <job>, <level>, <percent>
+  format: "<gold>+<xp> XP</gold> <dark_gray>|</dark_gray> <job> <gray>Niv. <white><level></white> <dark_gray>(<percent>%)"
+  color: YELLOW
+  style: NOTCHED_10
+
 # ───────────────────── Dégâts flottants ─────────────────────
 damage-indicators:
   enabled: true
@@ -91,7 +100,7 @@ party-board:
   # Lignes affichées pour chaque membre.
   # Placeholders : <leader> (★ ou vide), <name>, <health>, <max_health>, <bar>, <mana>, <max_mana>, <class>, <race>, <level>
   member-lines:
-    - "<leader><white><name></white> <class> <gray><level>"
+    - "<leader><white><name></white> <class> <gray>Niv. <level>"
     - "  <bar> <red><health></red><gray>/<max_health> <aqua><mana>✦"
   offline-line: "<dark_gray><name> (absent)"
   leader-symbol: "<gold>★ "

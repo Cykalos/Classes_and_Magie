@@ -9,11 +9,12 @@ import java.util.regex.Pattern;
 
 /**
  * Action réservée à certains métiers.
- * Actions : BREAK, PLACE, CRAFT, INTERACT_BLOCK, FISH, BREED, TAME, SMELT.
+ * Actions : BREAK, PLACE, CRAFT, INTERACT_BLOCK, FISH, BREED, TAME, SMELT, ENCHANT, BREW.
+ * {@code minLevel} : niveau de métier requis (recette débloquée à ce niveau).
  */
-public record JobRule(Action action, List<Pattern> targets, List<String> jobs, String message) {
+public record JobRule(Action action, List<Pattern> targets, List<String> jobs, String message, int minLevel, String display) {
 
-    public enum Action { BREAK, PLACE, CRAFT, INTERACT_BLOCK, FISH, BREED, TAME, SMELT }
+    public enum Action { BREAK, PLACE, CRAFT, INTERACT_BLOCK, FISH, BREED, TAME, SMELT, ENCHANT, BREW }
 
     public boolean matches(Material material) {
         return material != null && matches(material.name());

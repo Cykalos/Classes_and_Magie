@@ -2,81 +2,179 @@
 # ║              CykClasses - jobs.yml           ║
 # ╚══════════════════════════════════════════════╝
 # Un seul métier par joueur. Proposé après la classe, la race et les traits (ou plus tard avec /metier).
+# Le niveau de chaque métier est conservé si le joueur en change puis revient.
 
 # Le métier peut-il être changé ? Délai entre deux changements (heures)
 allow-change: true
 change-cooldown-hours: 24
 
+# Niveaux de métier : XP requise = base-xp × niveau ^ exponent
+leveling:
+  max-level: 50
+  base-xp: 50
+  exponent: 1.5
+
+# Actions : BREAK (casser), PLACE (poser), CRAFT (fabriquer), INTERACT_BLOCK (utiliser un bloc),
+#           FISH (pêcher), BREED (élever), TAME (apprivoiser), SMELT (retirer d'un four),
+#           ENCHANT (enchanter), BREW (distiller à l'alambic)
+# targets : matériaux / entités ("*" = joker, "(A|B)" = A ou B). Sans targets : toutes les cibles.
+#
+# xp-sources : ce qui fait gagner de l'XP de métier (pas d'XP pour un bloc posé par un joueur).
+#   ENCHANT donne xp × niveaux dépensés, BREW donne xp × potions, SMELT donne xp × objets.
+
 jobs:
   mineur:
     name: "<gray><bold>Mineur"
     icon: IRON_PICKAXE
-    description: ["<gray>Seul capable d'extraire les minerais précieux."]
+    description: ["<gray>Extrait les minerais précieux.", "<gray>Trouve parfois des gemmes."]
     effects: ["haste:1"]
+    xp-sources:
+      - {action: BREAK, targets: ["*COAL_ORE", "*COPPER_ORE"], xp: 2}
+      - {action: BREAK, targets: ["*IRON_ORE", "*REDSTONE_ORE", "*LAPIS_ORE"], xp: 4}
+      - {action: BREAK, targets: ["*GOLD_ORE"], xp: 6}
+      - {action: BREAK, targets: ["*DIAMOND_ORE", "*EMERALD_ORE"], xp: 15}
+      - {action: BREAK, targets: ["ANCIENT_DEBRIS"], xp: 30}
+      - {action: BREAK, targets: ["STONE", "DEEPSLATE", "TUFF"], xp: 0.2}
   forgeron:
     name: "<dark_gray><bold>Forgeron"
     icon: ANVIL
-    description: ["<gray>Fabrique armes et armures, répare à l'enclume."]
+    description: ["<gray>Forge armes et armures de qualité.", "<gray>Plus il progresse, meilleure est la qualité."]
     stats: {armor: 1}
+    xp-sources:
+      - {action: CRAFT, targets: ["IRON_*", "CHAINMAIL_*", "SHIELD"], xp: 8}
+      - {action: CRAFT, targets: ["GOLDEN_*"], xp: 10}
+      - {action: CRAFT, targets: ["DIAMOND_*", "CROSSBOW", "MACE"], xp: 25}
+      - {action: SMELT, targets: ["IRON_INGOT", "GOLD_INGOT", "COPPER_INGOT"], xp: 1}
   bucheron:
     name: "<gold><bold>Bûcheron"
     icon: IRON_AXE
     description: ["<gray>Abat les arbres sombres et exotiques."]
     stats: {health: 2}
+    xp-sources:
+      - {action: BREAK, targets: ["*_LOG", "*_STEM"], xp: 1}
   fermier:
     name: "<green><bold>Fermier"
     icon: WHEAT
     description: ["<gray>Élève les animaux et cultive les plantes rares."]
     stats: {health: 2}
+    xp-sources:
+      - {action: BREAK, targets: ["WHEAT", "CARROTS", "POTATOES", "BEETROOTS"], xp: 1}
+      - {action: BREAK, targets: ["PUMPKIN", "MELON", "COCOA", "NETHER_WART"], xp: 2}
+      - {action: BREED, xp: 5}
   alchimiste:
     name: "<light_purple><bold>Alchimiste"
     icon: BREWING_STAND
     description: ["<gray>Seul à maîtriser l'alambic."]
     stats: {mana: 20}
+    xp-sources:
+      - {action: BREW, xp: 6}
   enchanteur:
     name: "<aqua><bold>Enchanteur"
     icon: ENCHANTING_TABLE
     description: ["<gray>Seul à savoir utiliser la table d'enchantement."]
     stats: {mana-regen: 0.5}
+    xp-sources:
+      - {action: ENCHANT, xp: 4}
   pecheur:
     name: "<blue><bold>Pêcheur"
     icon: FISHING_ROD
     description: ["<gray>Seul à savoir pêcher."]
     effects: ["luck:1"]
+    xp-sources:
+      - {action: FISH, xp: 5}
   dresseur:
     name: "<yellow><bold>Dresseur"
     icon: LEAD
     description: ["<gray>Apprivoise loups, chats, chevaux et perroquets."]
     stats: {speed: 0.03}
+    xp-sources:
+      - {action: TAME, xp: 20}
+      - {action: BREED, xp: 3}
 
-# Actions réservées. Actions : BREAK, PLACE, CRAFT, INTERACT_BLOCK, FISH, BREED, TAME, SMELT
-# targets : matériaux / entités ("*" = joker, "(A|B)" = A ou B). Sans targets : toutes les cibles.
-# message : texte personnalisé (sinon message par défaut).
+# Actions réservées. Champs :
+#   jobs      : métiers autorisés
+#   min-level : niveau de métier requis (= recette ou action débloquée à ce niveau)
+#   display   : texte court affiché dans le menu des métiers (sinon généré depuis targets)
+#   message   : message personnalisé quand l'action est bloquée
 restrictions:
+  # Mineur
   - action: BREAK
-    targets: ["*DIAMOND_ORE", "*EMERALD_ORE", "*GOLD_ORE", "ANCIENT_DEBRIS", "*LAPIS_ORE", "*REDSTONE_ORE"]
+    targets: ["*IRON_ORE", "*GOLD_ORE", "*LAPIS_ORE", "*REDSTONE_ORE"]
     jobs: [mineur]
-  - action: CRAFT
-    targets: ["(IRON|DIAMOND|GOLDEN)_(SWORD|AXE|PICKAXE|SHOVEL|HOE|HELMET|CHESTPLATE|LEGGINGS|BOOTS)", "SHIELD", "CROSSBOW", "MACE"]
-    jobs: [forgeron]
-  - action: INTERACT_BLOCK
-    targets: ["ANVIL", "CHIPPED_ANVIL", "DAMAGED_ANVIL", "SMITHING_TABLE", "GRINDSTONE"]
-    jobs: [forgeron]
+    display: "Minerais de fer, or, lapis, redstone"
   - action: BREAK
-    targets: ["DARK_OAK_LOG", "JUNGLE_LOG", "ACACIA_LOG", "MANGROVE_LOG", "CHERRY_LOG", "PALE_OAK_LOG", "CRIMSON_STEM", "WARPED_STEM"]
+    targets: ["*DIAMOND_ORE", "*EMERALD_ORE"]
+    jobs: [mineur]
+    min-level: 10
+    display: "Minerais de diamant et d'émeraude"
+  - action: BREAK
+    targets: ["ANCIENT_DEBRIS"]
+    jobs: [mineur]
+    min-level: 25
+    display: "Débris antiques"
+
+  # Forgeron : les recettes se débloquent avec le niveau
+  - action: CRAFT
+    targets: ["(IRON|CHAINMAIL)_(SWORD|AXE|PICKAXE|SHOVEL|HOE|HELMET|CHESTPLATE|LEGGINGS|BOOTS)", "SHIELD"]
+    jobs: [forgeron]
+    display: "Armes et armures en fer, bouclier"
+  - action: CRAFT
+    targets: ["GOLDEN_(SWORD|AXE|PICKAXE|SHOVEL|HOE|HELMET|CHESTPLATE|LEGGINGS|BOOTS)", "CROSSBOW"]
+    jobs: [forgeron]
+    min-level: 5
+    display: "Équipement en or, arbalète"
+  - action: CRAFT
+    targets: ["DIAMOND_(SWORD|AXE|PICKAXE|SHOVEL|HOE|HELMET|CHESTPLATE|LEGGINGS|BOOTS)", "MACE"]
+    jobs: [forgeron]
+    min-level: 15
+    display: "Équipement en diamant, masse"
+  - action: INTERACT_BLOCK
+    targets: ["ANVIL", "CHIPPED_ANVIL", "DAMAGED_ANVIL", "GRINDSTONE"]
+    jobs: [forgeron]
+    display: "Enclume et meule"
+  - action: INTERACT_BLOCK
+    targets: ["SMITHING_TABLE"]
+    jobs: [forgeron]
+    min-level: 30
+    display: "Table de forgeron (netherite)"
+
+  # Bûcheron
+  - action: BREAK
+    targets: ["DARK_OAK_LOG", "JUNGLE_LOG", "ACACIA_LOG", "MANGROVE_LOG", "CHERRY_LOG", "PALE_OAK_LOG"]
     jobs: [bucheron]
+    display: "Bois sombre, jungle, acacia, palétuvier, cerisier"
+  - action: BREAK
+    targets: ["CRIMSON_STEM", "WARPED_STEM"]
+    jobs: [bucheron]
+    min-level: 10
+    display: "Tiges du Nether"
+
+  # Fermier / dresseur
   - action: BREED
     jobs: [fermier, dresseur]
+    display: "Faire se reproduire les animaux"
   - action: BREAK
-    targets: ["PUMPKIN", "MELON", "COCOA", "NETHER_WART", "SWEET_BERRY_BUSH"]
+    targets: ["PUMPKIN", "MELON", "COCOA", "SWEET_BERRY_BUSH"]
     jobs: [fermier]
+    display: "Citrouilles, melons, cacao, baies"
+  - action: BREAK
+    targets: ["NETHER_WART"]
+    jobs: [fermier]
+    min-level: 10
+    display: "Verrues du Nether"
+
+  # Alchimiste / enchanteur / pêcheur / dresseur
   - action: INTERACT_BLOCK
     targets: ["BREWING_STAND"]
     jobs: [alchimiste]
+    display: "Alambic"
   - action: INTERACT_BLOCK
     targets: ["ENCHANTING_TABLE"]
     jobs: [enchanteur]
+    display: "Table d'enchantement"
   - action: FISH
     jobs: [pecheur]
+    display: "Pêche"
   - action: TAME
     jobs: [dresseur]
+    display: "Apprivoiser"

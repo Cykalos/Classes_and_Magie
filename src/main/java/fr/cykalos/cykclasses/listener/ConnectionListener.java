@@ -75,6 +75,7 @@ public final class ConnectionListener implements Listener {
         plugin.skillBar().exit(event.getPlayer(), false);
         plugin.parties().onQuit(event.getPlayer());
         plugin.hud().clear(event.getPlayer());
+        plugin.gearListener().forget(uuid);
         plugin.combat().clear(uuid);
         plugin.profiles().unload(uuid);
         pending.remove(uuid);
