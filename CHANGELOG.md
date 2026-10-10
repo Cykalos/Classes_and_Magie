@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.1.0](https://github.com/Cykalos/CykClasses_and_Magie/compare/v1.0.0...v1.1.0) (2026-10-10)
+
+### ✨ Nouveautés
+
+- barre de compétences en icônes, HUD de combat, groupes et MythicMobs ([`6aed4b9`](https://github.com/Cykalos/CykClasses_and_Magie/commit/6aed4b90f3366f43788efa8ab0d8123ad38fb33e))
+  - corrige la touche 1 qui ne lançait rien quand la main était déjà sur le slot 1
+  - F affiche les compétences en icônes dans la barre (slots 1-8), l'arme reste en main
+  - icônes personnalisables : icon, icon-model (resource pack) ou custom-model-data
+  - recharge visible sur les icônes, objets sauvegardés même en cas de crash ou de mort
+  - XP gagnée affichée 5 s en bossbar avec cumul (hud.yml)
+  - dégâts flottants normaux / critiques / compétences / soins sur mobs et joueurs
+  - PV de la cible en bossbar et au-dessus de la tête, configurables dans hud.yml
+  - système de groupe : règles d'XP (partagée ou égale) et de dégâts alliés fixées à la création
+  - soins et bonus réservés aux membres du groupe, panneau des PV du groupe, /gc
+  - MythicMobs : noms et niveaux des mobs, XP par mob, compétences de type MYTHIC
+
+
 ## 1.0.0 (2026-10-10)
 
 ### ✨ Nouveautés
