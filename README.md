@@ -70,7 +70,7 @@ Classe → **race** → **traits** → **métier**, chaque étape s'ouvre automa
 - **Forge** (`forge.yml`) : les objets fabriqués par un forgeron reçoivent une rareté (Commun → Légendaire, et Unique), des stats aléatoires positives ou négatives, et des emplacements de gemmes. Plus le métier est haut, meilleure est la qualité. Chaque objet **unique** n'existe qu'une fois sur le serveur.
 - **Gemmes et joaillerie** (`gems.yml`) : trouvées **brutes** en minant, **taillées** par un joaillier au tailleur de pierre (rareté Commune → Parfaite et pureté selon son niveau), puis incrustées en cliquant avec la gemme sur un objet forgé.
 
-📖 **Documentation complète avec exemples : [wiki du projet](https://github.com/Cykalos/CykClasses_and_Magie/wiki).**
+📖 **Documentation complète avec exemples : [wiki du projet](https://github.com/Cykalos/Classes_and_Magie/wiki).**
 
 ## Objets
 
@@ -109,7 +109,7 @@ Classe → **race** → **traits** → **métier**, chaque étape s'ouvre automa
 | `/race` · `/traits [relancer]` · `/metier` | Personnage |
 | `/groupe` · `/gc` · `/global` | Groupe et chat |
 | `/competence <id\|n°>` | Lancer une compétence |
-| `/classe admin …` | Administration (liste complète sur le [wiki](https://github.com/Cykalos/CykClasses_and_Magie/wiki/Commandes)) |
+| `/classe admin …` | Administration (liste complète sur le [wiki](https://github.com/Cykalos/Classes_and_Magie/wiki/Commandes)) |
 | `/classe admin reload` | Recharger la configuration |
 
 Permissions : `cykclasses.use`, `cykclasses.reset` (tout le monde), `cykclasses.admin` (op).

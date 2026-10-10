@@ -16,7 +16,7 @@
 
 ## Étapes
 
-1. Télécharge le dernier `CykClasses-x.y.z.jar` dans les [Releases](https://github.com/Cykalos/CykClasses_and_Magie/releases).
+1. Télécharge le dernier `CykClasses-x.y.z.jar` dans les [Releases](https://github.com/Cykalos/Classes_and_Magie/releases).
 2. Place-le dans `plugins/` et démarre le serveur.
 3. Modifie les fichiers de `plugins/CykClasses/`, puis `/classe admin reload`.
 

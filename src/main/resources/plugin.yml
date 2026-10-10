@@ -4,7 +4,7 @@ main: fr.cykalos.cykclasses.CykClasses
 api-version: '26.1'
 description: Système de classes RPG avec sous-classes, compétences uniques, statistiques, défauts et mana.
 authors: [Cykalos]
-website: https://github.com/Cykalos/CykClasses_and_Magie
+website: https://github.com/Cykalos/Classes_and_Magie
 softdepend: [PlaceholderAPI, MythicMobs, CraftEngine, ExecutableItems, ItemsAdder, Oraxen, Nexo, MMOItems]
 libraries:
   - org.xerial:sqlite-jdbc:3.46.1.3
