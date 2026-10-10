@@ -76,6 +76,6 @@ public final class SubclassGui extends Gui {
         set(27, new ItemBuilder(Material.ARROW).name(plugin.messages().raw("gui.back")).build(),
                 e -> new ClassSelectGui(plugin, viewer).open());
         set(35, new ItemBuilder(Material.BARRIER).name(plugin.messages().raw("gui.close")).build(), e -> viewer.closeInventory());
-        fill();
+        frame();
     }
 }

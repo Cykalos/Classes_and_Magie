@@ -56,6 +56,6 @@ public final class PartyCreateGui extends Gui {
             plugin.parties().create(viewer, mode, friendlyFire);
         });
         set(26, new ItemBuilder(Material.BARRIER).name(plugin.messages().raw("gui.close")).build(), e -> viewer.closeInventory());
-        fill();
+        frame();
     }
 }

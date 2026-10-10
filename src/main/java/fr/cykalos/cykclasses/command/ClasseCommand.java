@@ -272,7 +272,11 @@ public final class ClasseCommand implements TabExecutor {
                     plugin.messages().send(sender, "unknown-class", Text.ph("class", args.length > 3 ? args[3] : "?"));
                     return;
                 }
-                target.getInventory().addItem(plugin.gear().createGem(gem, parseInt(args, 4, 1)));
+                // /classe admin gemme <joueur> <id> [n] [rareté] [pureté] : brute sans rareté, taillée sinon
+                var stack = args.length > 5
+                        ? plugin.gear().createGem(gem, parseInt(args, 4, 1), args[5].toUpperCase(Locale.ROOT), parseInt(args, 6, 100))
+                        : plugin.gear().createRawGem(gem, parseInt(args, 4, 1));
+                target.getInventory().addItem(stack);
                 plugin.messages().send(sender, "admin-done");
             }
             case "forge" -> {
@@ -293,6 +297,13 @@ public final class ClasseCommand implements TabExecutor {
                     return;
                 }
                 plugin.jobs().addXp(target, profile, job, parseInt(args, 3, 100));
+                plugin.messages().send(sender, "admin-done");
+            }
+            case "resetspec" -> {
+                if (profile.getJobId() != null) {
+                    profile.setJobSpec(profile.getJobId(), null);
+                    plugin.stats().apply(target);
+                }
                 plugin.messages().send(sender, "admin-done");
             }
             case "setjoblevel" -> {
@@ -348,7 +359,7 @@ public final class ClasseCommand implements TabExecutor {
                     if (sender.hasPermission("cykclasses.admin")) {
                         options.addAll(List.of("setlevel", "addxp", "setclass", "reset", "mana", "reload", "setrace",
                                 "resetrace", "resettraits", "setjob", "addpoints", "resettree", "resetstats", "kit", "gemme", "forge",
-                                "jobxp", "setjoblevel", "libererunique"));
+                                "jobxp", "setjoblevel", "resetspec", "libererunique"));
                     }
                 }
                 default -> {

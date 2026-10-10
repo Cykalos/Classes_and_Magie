@@ -11,6 +11,7 @@ import fr.cykalos.cykclasses.util.ItemBuilder;
 import fr.cykalos.cykclasses.util.Text;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Map;
@@ -101,7 +102,12 @@ public final class SkillTreeGui extends Gui {
                 open();
             }
         });
-        fill();
+        ItemStack bar = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).name(" ").build();
+        for (int i = 45; i < 54; i++) {
+            if (getInventory().getItem(i) == null) {
+                getInventory().setItem(i, bar);
+            }
+        }
     }
 
     private static String pct(double v, boolean lowerIsBetter) {

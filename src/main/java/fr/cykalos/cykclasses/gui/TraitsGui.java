@@ -72,6 +72,6 @@ public final class TraitsGui extends Gui {
             viewer.closeInventory();
             plugin.character().continueCreation(viewer);
         });
-        fill();
+        frame();
     }
 }

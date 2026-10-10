@@ -57,6 +57,20 @@ public abstract class Gui implements InventoryHolder {
         }
     }
 
+    /** Cadre : bordure en verre noir, intérieur vide pour mettre les boutons en valeur. */
+    protected void frame() {
+        ItemStack border = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).name(" ").build();
+        int size = inventory.getSize();
+        int rows = size / 9;
+        for (int i = 0; i < size; i++) {
+            int row = i / 9, col = i % 9;
+            boolean edge = row == 0 || row == rows - 1 || col == 0 || col == 8;
+            if (edge && inventory.getItem(i) == null) {
+                inventory.setItem(i, border);
+            }
+        }
+    }
+
     public void handleClick(InventoryClickEvent event) {
         event.setCancelled(true);
         if (event.getClickedInventory() != inventory) {

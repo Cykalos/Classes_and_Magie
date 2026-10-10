@@ -66,7 +66,19 @@ public final class JobGui extends Gui {
                 plugin.messages().send(viewer, "job.later-info");
             });
         }
+        var currentJob = plugin.content().job(p.getJobId());
+        if (currentJob != null && !currentJob.specializations().isEmpty()) {
+            var spec = plugin.jobs().spec(p);
+            int minLvl = currentJob.specializations().values().stream().mapToInt(sp -> sp.minLevel()).min().orElse(20);
+            boolean ready = plugin.jobs().level(p) >= minLvl;
+            set(last + 6, new ItemBuilder(spec != null ? spec.icon() : Material.NETHER_STAR)
+                    .name(plugin.messages().raw("spec.button") + (spec == null ? "" : " <white>" + Text.plain(spec.name())))
+                    .lore(spec != null ? plugin.messages().raw("spec.button-chosen")
+                            : ready ? plugin.messages().raw("spec.button-ready")
+                            : plugin.messages().raw("spec.button-locked").replace("<level>", String.valueOf(minLvl)))
+                    .glow(spec == null && ready).build(), e -> new SpecGui(plugin, viewer).open());
+        }
         set(last + 8, new ItemBuilder(Material.BARRIER).name(plugin.messages().raw("gui.close")).build(), e -> viewer.closeInventory());
-        fill();
+        frame();
     }
 }

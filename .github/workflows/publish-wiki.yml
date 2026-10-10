@@ -1,0 +1,26 @@
+name: Wiki
+
+# Publie docs/wiki sur le wiki GitHub du dépôt à chaque modification sur main.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/wiki/**"
+      - ".github/workflows/publish-wiki.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wiki
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: Andrew-Chen-Wang/github-wiki-action@v5
+        with:
+          path: docs/wiki

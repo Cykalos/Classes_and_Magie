@@ -3,6 +3,7 @@
 # ╚══════════════════════════════════════════════╝
 # Un seul métier par joueur. Proposé après la classe, la race et les traits (ou plus tard avec /metier).
 # Le niveau de chaque métier est conservé si le joueur en change puis revient.
+# specializations : sous-métiers choisis une seule fois à partir de min-level (voir forgeron).
 
 # Le métier peut-il être changé ? Délai entre deux changements (heures)
 allow-change: true
@@ -16,7 +17,7 @@ leveling:
 
 # Actions : BREAK (casser), PLACE (poser), CRAFT (fabriquer), INTERACT_BLOCK (utiliser un bloc),
 #           FISH (pêcher), BREED (élever), TAME (apprivoiser), SMELT (retirer d'un four),
-#           ENCHANT (enchanter), BREW (distiller à l'alambic)
+#           ENCHANT (enchanter), BREW (distiller à l'alambic), REFINE (tailler une gemme ; cible = id de la gemme)
 # targets : matériaux / entités ("*" = joker, "(A|B)" = A ou B). Sans targets : toutes les cibles.
 #
 # xp-sources : ce qui fait gagner de l'XP de métier (pas d'XP pour un bloc posé par un joueur).
@@ -35,6 +36,22 @@ jobs:
       - {action: BREAK, targets: ["*DIAMOND_ORE", "*EMERALD_ORE"], xp: 15}
       - {action: BREAK, targets: ["ANCIENT_DEBRIS"], xp: 30}
       - {action: BREAK, targets: ["STONE", "DEEPSLATE", "TUFF"], xp: 0.2}
+    specializations:
+      prospecteur:
+        name: "<aqua><bold>Prospecteur"
+        icon: AMETHYST_SHARD
+        min-level: 20
+        description: ["<gray>Flaire les gemmes dans la roche."]
+        bonuses:
+          - {targets: ["*_ORE", "ANCIENT_DEBRIS"], gem-chance: 0.03, xp-multiplier: 1.1}
+      foreur:
+        name: "<gray><bold>Foreur"
+        icon: DIAMOND_PICKAXE
+        min-level: 20
+        description: ["<gray>Creuse plus vite et plus profond."]
+        effects: ["haste:2"]
+        bonuses:
+          - {targets: ["*_ORE", "ANCIENT_DEBRIS", "STONE", "DEEPSLATE"], xp-multiplier: 1.3}
   forgeron:
     name: "<dark_gray><bold>Forgeron"
     icon: ANVIL
@@ -45,6 +62,57 @@ jobs:
       - {action: CRAFT, targets: ["GOLDEN_*"], xp: 10}
       - {action: CRAFT, targets: ["DIAMOND_*", "CROSSBOW", "MACE"], xp: 25}
       - {action: SMELT, targets: ["IRON_INGOT", "GOLD_INGOT", "COPPER_INGOT"], xp: 1}
+    # Sous-métiers : choisis une fois au niveau indiqué, bonus sur un domaine précis de la forge
+    #   rarity-levels : niveaux ajoutés pour le tirage de rareté · power : stats plus fortes · xp-multiplier
+    specializations:
+      armurier:
+        name: "<gray><bold>Armurier"
+        icon: IRON_CHESTPLATE
+        min-level: 20
+        description: ["<gray>Spécialiste des armures et des boucliers."]
+        stats: {armor: 1}
+        bonuses:
+          - {targets: ["*_HELMET", "*_CHESTPLATE", "*_LEGGINGS", "*_BOOTS", "SHIELD"], rarity-levels: 10, power: 0.15, xp-multiplier: 1.25}
+      fabricant_d_armes:
+        name: "<red><bold>Fabricant d'armes"
+        icon: IRON_SWORD
+        min-level: 20
+        description: ["<gray>Spécialiste des épées, haches et masses."]
+        stats: {melee-damage: 1.03}
+        bonuses:
+          - {targets: ["*_SWORD", "*_AXE", "MACE"], rarity-levels: 10, power: 0.15, xp-multiplier: 1.25}
+      facteur_d_arcs:
+        name: "<green><bold>Facteur d'arcs"
+        icon: BOW
+        min-level: 20
+        description: ["<gray>Spécialiste des arcs et des arbalètes."]
+        stats: {ranged-damage: 1.03}
+        bonuses:
+          - {targets: ["BOW", "CROSSBOW"], rarity-levels: 12, power: 0.2, xp-multiplier: 1.5}
+  joaillier:
+    name: "<light_purple><bold>Joaillier"
+    icon: AMETHYST_CLUSTER
+    description: ["<gray>Taille les gemmes brutes au tailleur de pierre.", "<gray>Plus il progresse, plus elles sont rares et pures."]
+    stats: {mana: 10}
+    xp-sources:
+      - {action: REFINE, targets: ["RUBIS", "SAPHIR", "EMERAUDE", "TOPAZE", "ONYX"], xp: 10}
+      - {action: REFINE, targets: ["OEIL_DE_FAUCON"], xp: 14}
+      - {action: REFINE, targets: ["DIAMANT_PUR"], xp: 40}
+    specializations:
+      lapidaire:
+        name: "<aqua><bold>Lapidaire"
+        icon: PRISMARINE_CRYSTALS
+        min-level: 20
+        description: ["<gray>Une taille d'une précision extrême : des gemmes plus pures."]
+        bonuses:
+          - {targets: [], purity: 12, xp-multiplier: 1.2}
+      orfevre:
+        name: "<gold><bold>Orfèvre"
+        icon: GOLD_BLOCK
+        min-level: 20
+        description: ["<gray>Sait révéler les gemmes les plus rares."]
+        bonuses:
+          - {targets: [], rarity-levels: 12, xp-multiplier: 1.2}
   bucheron:
     name: "<gold><bold>Bûcheron"
     icon: IRON_AXE

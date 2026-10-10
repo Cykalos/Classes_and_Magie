@@ -73,6 +73,6 @@ public final class RaceGui extends Gui {
         }
         set(getInventory().getSize() - 1, new ItemBuilder(Material.BARRIER).name(plugin.messages().raw("gui.close")).build(),
                 e -> viewer.closeInventory());
-        fill();
+        frame();
     }
 }

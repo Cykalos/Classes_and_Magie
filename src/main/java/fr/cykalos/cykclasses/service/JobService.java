@@ -40,6 +40,57 @@ public final class JobService {
         return p.getJobId() == null ? 0 : p.getJobLevel(p.getJobId());
     }
 
+    /** Spécialisation actuelle du joueur pour son métier, ou null. */
+    public Job.Specialization spec(PlayerProfile p) {
+        Job job = plugin.content().job(p.getJobId());
+        if (job == null) {
+            return null;
+        }
+        String id = p.getJobSpec(job.id());
+        return id == null ? null : job.specializations().get(id);
+    }
+
+    /** Bonus de spécialisation cumulés pour une cible (matériau fabriqué, id de gemme...). */
+    public Job.BonusTotal bonus(PlayerProfile p, String target) {
+        Job.Specialization spec = spec(p);
+        if (spec == null) {
+            return Job.BonusTotal.NONE;
+        }
+        int rarity = 0;
+        double power = 0, xp = 1, purity = 0, gem = 0;
+        for (Job.Bonus b : spec.bonuses()) {
+            if (b.matches(target)) {
+                rarity += b.rarityLevels();
+                power += b.power();
+                xp *= b.xpMultiplier();
+                purity += b.purity();
+                gem += b.gemChance();
+            }
+        }
+        return new Job.BonusTotal(rarity, power, xp, purity, gem);
+    }
+
+    public boolean chooseSpec(Player player, Job.Specialization spec) {
+        PlayerProfile p = plugin.profiles().get(player);
+        Job job = plugin.content().job(p.getJobId());
+        if (job == null || !job.specializations().containsValue(spec)) {
+            return false;
+        }
+        if (p.getJobSpec(job.id()) != null) {
+            plugin.messages().send(player, "spec.already");
+            return false;
+        }
+        if (p.getJobLevel(job.id()) < spec.minLevel()) {
+            plugin.messages().send(player, "job.need-level", Text.ph("level", spec.minLevel()), Text.ph("current", p.getJobLevel(job.id())));
+            return false;
+        }
+        p.setJobSpec(job.id(), spec.id());
+        plugin.stats().apply(player);
+        plugin.messages().send(player, "spec.chosen", Text.ph("spec", spec.name()));
+        player.playSound(Sound.sound(Key.key("ui.toast.challenge_complete"), Sound.Source.PLAYER, 0.8f, 1.2f));
+        return true;
+    }
+
     /** Donne l'XP correspondant à une action, si le métier du joueur la récompense. */
     public void reward(Player player, JobRule.Action action, String target, int amount) {
         PlayerProfile p = plugin.profiles().getIfLoaded(player.getUniqueId());
@@ -57,7 +108,7 @@ public final class JobService {
             }
         }
         if (total > 0) {
-            addXp(player, p, job, total);
+            addXp(player, p, job, total * bonus(p, target).xpMultiplier());
         }
     }
 
@@ -82,6 +133,12 @@ public final class JobService {
             player.showTitle(Title.title(plugin.messages().get("job.level-up-title", Text.ph("level", newLevel)),
                     Text.mm(job.name()), Title.Times.times(Duration.ofMillis(200), Duration.ofMillis(1500), Duration.ofMillis(400))));
             player.playSound(Sound.sound(Key.key("entity.player.levelup"), Sound.Source.PLAYER, 0.8f, 0.8f));
+            for (Job.Specialization spec : job.specializations().values()) {
+                if (p.getJobSpec(job.id()) == null && spec.minLevel() > level && spec.minLevel() <= newLevel) {
+                    plugin.messages().send(player, "spec.available");
+                    break;
+                }
+            }
             // Recettes débloquées à ce niveau
             for (JobRule r : plugin.content().jobRules()) {
                 if (r.jobs().contains(job.id()) && r.minLevel() > level && r.minLevel() <= newLevel) {

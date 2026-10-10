@@ -86,7 +86,8 @@ public final class GearListener implements Listener {
             plugin.messages().send(player, "forge.empty-cursor");
             return;
         }
-        ItemStack forged = plugin.gear().forge(current.clone(), player, plugin.jobs().level(p), null);
+        var bonus = plugin.jobs().bonus(p, current.getType().name());
+        ItemStack forged = plugin.gear().forge(current.clone(), player, plugin.jobs().level(p) + bonus.rarityLevels(), null, bonus.power());
         e.setCurrentItem(forged);
         player.playSound(Sound.sound(Key.key("block.anvil.use"), Sound.Source.PLAYER, 0.6f, 1.2f));
     }
@@ -108,7 +109,7 @@ public final class GearListener implements Listener {
             plugin.messages().send(player, "gems.no-creative");
             return;
         }
-        GearService.SocketResult result = plugin.gear().socket(target, gemId);
+        GearService.SocketResult result = plugin.gear().socket(target, cursor);
         switch (result) {
             case OK -> {
                 e.setCancelled(true);
@@ -128,6 +129,10 @@ public final class GearListener implements Listener {
                 e.setCancelled(true);
                 plugin.messages().send(player, "gems.wrong-type");
             }
+            case RAW -> {
+                e.setCancelled(true);
+                plugin.messages().send(player, "gems.raw-socket");
+            }
             default -> {
                 // NOT_GEAR : clic normal, on laisse faire
             }
@@ -144,12 +149,34 @@ public final class GearListener implements Listener {
         if (p == null) {
             return;
         }
-        GearService.Gem gem = plugin.gear().rollGemDrop(p.getJobId(), plugin.jobs().level(p), e.getBlock().getType());
+        double extra = plugin.jobs().bonus(p, e.getBlock().getType().name()).gemChance();
+        GearService.Gem gem = plugin.gear().rollGemDrop(p.getJobId(), plugin.jobs().level(p), e.getBlock().getType(), extra);
         if (gem != null) {
-            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation().add(0.5, 0.5, 0.5), plugin.gear().createGem(gem, 1));
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation().add(0.5, 0.5, 0.5), plugin.gear().createRawGem(gem, 1));
             plugin.messages().send(player, "gems.found", Text.ph("gem", gem.name()));
             player.playSound(Sound.sound(Key.key("entity.experience_orb.pickup"), Sound.Source.PLAYER, 1f, 0.6f));
         }
+    }
+
+    // ------------------------------------------------------------ Joaillerie
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onStation(org.bukkit.event.player.PlayerInteractEvent e) {
+        if (e.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK || e.getClickedBlock() == null
+                || e.getHand() != org.bukkit.inventory.EquipmentSlot.HAND) {
+            return;
+        }
+        if (!plugin.gear().isStation(e.getClickedBlock().getType()) || !plugin.gear().isRawGem(e.getItem())) {
+            return;
+        }
+        e.setCancelled(true);
+        Player player = e.getPlayer();
+        PlayerProfile p = plugin.profiles().get(player);
+        if (!plugin.gear().canRefine(p.getJobId())) {
+            plugin.messages().send(player, "gems.need-jeweler");
+            return;
+        }
+        new fr.cykalos.cykclasses.gui.JewelerGui(plugin, player).open();
     }
 
     // ------------------------------------------------------------ Équipement

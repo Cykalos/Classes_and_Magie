@@ -65,12 +65,12 @@ public final class ContentRegistry {
         traitsConfig = yaml("traits.yml");
         loadTraits(traitsConfig);
         jobsConfig = yaml("jobs.yml");
-        if (!jobsConfig.contains("leveling")) {
+        if (!jobsConfig.contains("leveling") || !jobsConfig.contains("jobs.joaillier")) {
             // Ancien format (avant les niveaux de métier) : sauvegarde puis nouveau fichier par défaut.
             File old = new File(plugin.getDataFolder(), "jobs.yml");
-            File backup = new File(plugin.getDataFolder(), "jobs-ancien.yml");
+            File backup = new File(plugin.getDataFolder(), "jobs-ancien-" + System.currentTimeMillis() + ".yml");
             if (old.renameTo(backup)) {
-                plugin.getLogger().warning("jobs.yml mis à jour (niveaux de métier). L'ancien fichier est conservé : jobs-ancien.yml");
+                plugin.getLogger().warning("jobs.yml mis à jour (niveaux de métier). L'ancien fichier est conservé : " + backup.getName());
                 jobsConfig = yaml("jobs.yml");
             }
         }
@@ -211,10 +211,34 @@ public final class ContentRegistry {
                             plugin.getLogger().warning("Source d'XP invalide (métier " + id + ") : " + m);
                         }
                     }
+                    Map<String, Job.Specialization> specs = new LinkedHashMap<>();
+                    ConfigurationSection sp = s.getConfigurationSection("specializations");
+                    if (sp != null) {
+                        for (String sid : sp.getKeys(false)) {
+                            ConfigurationSection one = sp.getConfigurationSection(sid);
+                            if (one == null) {
+                                continue;
+                            }
+                            List<Job.Bonus> bonuses = new ArrayList<>();
+                            for (Map<?, ?> b : one.getMapList("bonuses")) {
+                                bonuses.add(new Job.Bonus(patterns(PermanentEffect.strings(b, "targets")),
+                                        b.get("rarity-levels") instanceof Number n ? n.intValue() : 0,
+                                        b.get("power") instanceof Number n ? n.doubleValue() : 0,
+                                        b.get("xp-multiplier") instanceof Number n ? n.doubleValue() : 1,
+                                        b.get("purity") instanceof Number n ? n.doubleValue() : 0,
+                                        b.get("gem-chance") instanceof Number n ? n.doubleValue() : 0));
+                            }
+                            specs.put(sid.toLowerCase(Locale.ROOT), new Job.Specialization(sid.toLowerCase(Locale.ROOT),
+                                    one.getString("name", sid), ItemBuilder.material(one.getString("icon"), Material.BOOK),
+                                    one.getStringList("description"), one.getInt("min-level", 20),
+                                    StatModifier.load(one.getConfigurationSection("stats")),
+                                    PermanentEffect.parse(one.getStringList("effects")), bonuses));
+                        }
+                    }
                     jobs.put(id.toLowerCase(Locale.ROOT), new Job(id.toLowerCase(Locale.ROOT), s.getString("name", id),
                             ItemBuilder.material(s.getString("icon"), Material.WOODEN_PICKAXE), s.getStringList("description"),
                             StatModifier.load(s.getConfigurationSection("stats")), PermanentEffect.parse(s.getStringList("effects")),
-                            sources));
+                            sources, specs));
                 }
             }
         }

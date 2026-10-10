@@ -42,6 +42,8 @@ public final class PlayerProfile {
     /** Niveau et XP par métier (conservés si le joueur change de métier). */
     private Map<String, Integer> jobLevels = new HashMap<>();
     private Map<String, Double> jobXp = new HashMap<>();
+    /** Spécialisation choisie par métier. */
+    private Map<String, String> jobSpecs = new HashMap<>();
 
     private transient Map<String, Long> cooldowns = new HashMap<>();
     private transient boolean castMode;
@@ -71,6 +73,7 @@ public final class PlayerProfile {
         if (kitsReceived == null) kitsReceived = new ArrayList<>();
         if (jobLevels == null) jobLevels = new HashMap<>();
         if (jobXp == null) jobXp = new HashMap<>();
+        if (jobSpecs == null) jobSpecs = new HashMap<>();
         if (level < 1) level = 1;
         return this;
     }
@@ -152,6 +155,12 @@ public final class PlayerProfile {
     public double getJobXp(String job) { return job == null ? 0 : jobXp.getOrDefault(job, 0.0); }
     public void setJobXp(String job, double xp) { jobXp.put(job, Math.max(0, xp)); markDirty(); }
 
+    public String getJobSpec(String job) { return job == null ? null : jobSpecs.get(job); }
+    public void setJobSpec(String job, String spec) {
+        if (spec == null) jobSpecs.remove(job); else jobSpecs.put(job, spec);
+        markDirty();
+    }
+
     public boolean isPartyChat() { return partyChat; }
     public void setPartyChat(boolean partyChat) { this.partyChat = partyChat; }
 
@@ -217,6 +226,7 @@ public final class PlayerProfile {
         map.put("kits-received", new ArrayList<>(kitsReceived));
         map.put("job-levels", new HashMap<>(jobLevels));
         map.put("job-xp", new HashMap<>(jobXp));
+        map.put("job-specs", new HashMap<>(jobSpecs));
         return map;
     }
 
@@ -265,6 +275,9 @@ public final class PlayerProfile {
         }
         if (map.get("job-xp") instanceof Map<?, ?> m) {
             m.forEach((k, v) -> { if (v instanceof Number n) p.jobXp.put(String.valueOf(k), n.doubleValue()); });
+        }
+        if (map.get("job-specs") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v != null) p.jobSpecs.put(String.valueOf(k), String.valueOf(v)); });
         }
         return p.normalize();
     }

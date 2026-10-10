@@ -55,7 +55,7 @@ Classe → **race** → **traits** → **métier**, chaque étape s'ouvre automa
 
 - **Races** (`races.yml`) : Humain, Elfe, Nain, Orc, Tieffelin, Félys. Bonus, défauts, effets permanents, et **malus si la race n'est pas faite pour la classe** (ex. Nain mage, Orc prêtre).
 - **Traits** (`traits.yml`) : 3 traits tirés au hasard, positifs, négatifs ou mixtes, avec rareté. **Traits uniques** : un seul joueur du serveur peut les obtenir (1 % de chance). Relances limitées (3 par défaut), `/traits relancer`.
-- **Métier** (`jobs.yml`) : un seul par joueur (Mineur, Forgeron, Bûcheron, Fermier, Alchimiste, Enchanteur, Pêcheur, Dresseur). Certaines actions sont réservées : miner le diamant, fabriquer des armures, utiliser l'alambic, l'enclume, pêcher…
+- **Métier** (`jobs.yml`) : un seul par joueur (Mineur, Forgeron, Joaillier, Bûcheron, Fermier, Alchimiste, Enchanteur, Pêcheur, Dresseur). Certaines actions sont réservées : miner le diamant, fabriquer des armures, utiliser l'alambic, l'enclume, pêcher…
 
 ## Progression
 
@@ -65,11 +65,12 @@ Classe → **race** → **traits** → **métier**, chaque étape s'ouvre automa
 
 ## Métiers, forge et gemmes
 
-- **Niveaux de métier** (`jobs.yml`) : XP gagnée en faisant son métier (miner, forger, pêcher, enchanter, distiller…), jusqu'au niveau 50. Les recettes et actions se débloquent par niveau (ex. équipement en diamant au niveau 15 du forgeron).
+- **Niveaux de métier** (`jobs.yml`) : XP gagnée en faisant son métier (miner, forger, tailler des gemmes, pêcher, enchanter, distiller…), jusqu'au niveau 50. Les recettes et actions se débloquent par niveau (ex. équipement en diamant au niveau 15 du forgeron).
+- **Spécialisations** : au niveau 20, chaque métier propose des sous-métiers (Prospecteur/Foreur, Armurier/Fabricant d'armes/Facteur d'arcs, Lapidaire/Orfèvre) avec des bonus sur un domaine précis.
 - **Forge** (`forge.yml`) : les objets fabriqués par un forgeron reçoivent une rareté (Commun → Légendaire, et Unique), des stats aléatoires positives ou négatives, et des emplacements de gemmes. Plus le métier est haut, meilleure est la qualité. Chaque objet **unique** n'existe qu'une fois sur le serveur.
-- **Gemmes** (`gems.yml`) : trouvées en minant, à incruster en cliquant avec la gemme sur un objet forgé.
+- **Gemmes et joaillerie** (`gems.yml`) : trouvées **brutes** en minant, **taillées** par un joaillier au tailleur de pierre (rareté Commune → Parfaite et pureté selon son niveau), puis incrustées en cliquant avec la gemme sur un objet forgé.
 
-Documentation complète avec exemples : voir la doc partagée du projet.
+📖 **Documentation complète avec exemples : [wiki du projet](https://github.com/Cykalos/CykClasses_and_Magie/wiki).**
 
 ## Objets
 
@@ -108,7 +109,7 @@ Documentation complète avec exemples : voir la doc partagée du projet.
 | `/race` · `/traits [relancer]` · `/metier` | Personnage |
 | `/groupe` · `/gc` · `/global` | Groupe et chat |
 | `/competence <id\|n°>` | Lancer une compétence |
-| `/classe admin setlevel\|addxp\|setclass\|reset\|mana <joueur> …` | Administration |
+| `/classe admin …` | Administration (liste complète sur le [wiki](https://github.com/Cykalos/CykClasses_and_Magie/wiki/Commandes)) |
 | `/classe admin reload` | Recharger la configuration |
 
 Permissions : `cykclasses.use`, `cykclasses.reset` (tout le monde), `cykclasses.admin` (op).
@@ -121,6 +122,7 @@ Permissions : `cykclasses.use`, `cykclasses.reset` (tout le monde), `cykclasses.
 
 - `config.yml` — stockage, courbe d'XP, XP par monstre, mana, mode compétences, HUD, reset.
 - `classes.yml` — classes, sous-classes, stats, défauts, conditions et compétences (le haut du fichier documente tous les types disponibles).
+- `races.yml`, `traits.yml`, `skilltree.yml`, `attributes.yml`, `jobs.yml`, `forge.yml`, `gems.yml`, `kits.yml`, `items.yml` — personnage, métiers, artisanat, objets.
 - `hud.yml` — XP gagnée, dégâts flottants, PV des cibles, panneau du groupe.
 - `messages.yml` — tous les textes au format [MiniMessage](https://docs.advntr.dev/minimessage/format.html).
 

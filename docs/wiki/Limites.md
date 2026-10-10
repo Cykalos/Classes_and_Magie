@@ -1,0 +1,30 @@
+# Limites
+
+Ce que CykClasses **ne fait pas** (ou pas encore), pour éviter les mauvaises surprises.
+
+## Personnage
+
+- Une seule classe et une seule sous-classe ; pas de multi-classe ni de sous-sous-classe.
+- 8 compétences maximum dans la barre.
+- Pas de compétences passives déclenchées automatiquement : passer par les stats, l'arbre ou MythicMobs.
+- Les traits ne se choisissent pas, ils se relancent (nombre limité).
+
+## Métiers et artisanat
+
+- Un seul métier actif et une seule spécialisation par métier.
+- Restrictions et forge sur les matériaux **vanilla** uniquement.
+- Une fois forgé, un objet garde sa rareté et ses stats ; seules les gemmes s'ajoutent.
+- Une gemme incrustée est définitive ; pas de fusion ni de retaille.
+- Un objet unique détruit (lave, cactus…) n'est pas libéré automatiquement : `/classe admin libererunique <id>`.
+
+## Objets
+
+- Les objets interdits restent visibles (pas de masquage).
+- Le plugin ne crée pas d'objets custom : il référence ceux de CraftEngine, MythicCrucible, ExecutableItems…
+
+## Technique
+
+- Paper 26.x uniquement (pas Spigot, pas Folia).
+- Le panneau du groupe utilise le scoreboard latéral et peut entrer en conflit avec un autre plugin de scoreboard.
+- Les groupes ne survivent pas à un redémarrage.
+- Les nouvelles mécaniques de compétence demandent du Java ou MythicMobs.

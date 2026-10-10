@@ -1,14 +1,78 @@
 # ╔══════════════════════════════════════════════╗
 # ║              CykClasses - gems.yml           ║
 # ╚══════════════════════════════════════════════╝
-# Gemmes à incruster dans les objets FORGÉS qui ont des emplacements libres (voir forge.yml → sockets).
-# Incrustation : prends la gemme avec la souris et clique sur l'objet dans ton inventaire.
-# Une gemme incrustée est définitive (elle ne peut pas être retirée).
+# Les gemmes sont trouvées BRUTES par les mineurs, puis TAILLÉES par un joaillier au tailleur de pierre
+# (clic droit avec une gemme brute en main). La taille donne une rareté et une pureté qui multiplient ses stats.
+# Une gemme taillée s'incruste dans un objet FORGÉ qui a un emplacement libre (voir forge.yml → sockets) :
+# prends la gemme avec la souris et clique sur l'objet. Une gemme incrustée est définitive.
+
+# Nom d'une gemme brute (<gem> = nom de la gemme)
+raw-name: "<gray><gem> brut"
+# Suffixe ajouté à item-model pour l'apparence brute (ex. "monpack:gems/rubis" + "_brut"), vide = même modèle
+raw-model-suffix: ""
+
+# Taille des gemmes
+refining:
+  # Bloc atelier et métiers autorisés (vide = tout le monde)
+  station: STONECUTTER
+  jobs: [joaillier]
+  # Pureté (%) = aléatoire entre min et max, + per-level × niveau du métier, plafonnée à 100
+  purity:
+    min: 35
+    max: 80
+    per-level: 0.8
+  # Multiplicateur des stats = power de la rareté × (purity-min-factor + (1 - purity-min-factor) × pureté)
+  # ex. Rare (1.3) à 50 % de pureté : 1.3 × 0.75 = ×0.98 · Parfaite à 100 % : ×2.0
+  purity-min-factor: 0.5
+  # Raretés toujours à 100 % de pureté
+  always-pure: [PARFAITE]
+  rarities:
+    COMMUNE:
+      name: "<white>Commune"
+      color: "<white>"
+      weight: 100
+      weight-per-level: -1.8
+      min-weight: 15
+      power: 0.8
+    RAFFINEE:
+      name: "<green>Raffinée"
+      color: "<green>"
+      weight: 35
+      weight-per-level: 0.3
+      power: 1.0
+    RARE:
+      name: "<aqua>Rare"
+      color: "<aqua>"
+      weight: 8
+      weight-per-level: 0.6
+      min-job-level: 5
+      power: 1.3
+    EPIQUE:
+      name: "<light_purple>Épique"
+      color: "<light_purple>"
+      weight: 2
+      weight-per-level: 0.35
+      min-job-level: 15
+      power: 1.6
+    LEGENDAIRE:
+      name: "<gold>Légendaire"
+      color: "<gold>"
+      weight: 0.3
+      weight-per-level: 0.12
+      min-job-level: 25
+      power: 1.8
+    PARFAITE:
+      name: "<gold><bold>Parfaite</bold>"
+      color: "<gold>"
+      weight: 0.05
+      weight-per-level: 0.03
+      min-job-level: 35
+      power: 2.0
 
 socket-empty: "<dark_gray>◇ Emplacement de gemme libre"
 socket-filled: "<white>◆ "
 
-# Gemmes trouvées en minant (blocs non posés par un joueur)
+# Gemmes brutes trouvées en minant (blocs non posés par un joueur)
 drops:
   # Métiers qui peuvent en trouver (vide = tout le monde)
   jobs: [mineur]

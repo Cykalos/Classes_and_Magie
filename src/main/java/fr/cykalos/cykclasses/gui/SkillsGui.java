@@ -35,7 +35,8 @@ public final class SkillsGui extends Gui {
             return;
         }
         List<SkillDefinition> skills = new ArrayList<>(rc.skills().values());
-        for (int i = 0; i < skills.size() && i < 18; i++) {
+        int[] slots = {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25};
+        for (int i = 0; i < skills.size() && i < slots.length; i++) {
             SkillDefinition s = skills.get(i);
             boolean unlocked = profile.getLevel() >= s.unlockLevel;
             ItemBuilder b = new ItemBuilder(unlocked ? s.icon : Material.GRAY_DYE)
@@ -53,7 +54,7 @@ public final class SkillsGui extends Gui {
             if (unlocked) {
                 b.lore(plugin.messages().item("gui.skill-click"));
             }
-            set(9 + i, b.build(), e -> {
+            set(slots[i], b.build(), e -> {
                 viewer.closeInventory();
                 plugin.skills().cast(viewer, s);
             });
@@ -61,6 +62,6 @@ public final class SkillsGui extends Gui {
         set(27, new ItemBuilder(Material.ARROW).name(plugin.messages().raw("gui.back")).build(),
                 e -> new ClassSelectGui(plugin, viewer).open());
         set(35, new ItemBuilder(Material.BARRIER).name(plugin.messages().raw("gui.close")).build(), e -> viewer.closeInventory());
-        fill();
+        frame();
     }
 }

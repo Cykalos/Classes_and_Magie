@@ -66,6 +66,6 @@ public final class AttributesGui extends Gui {
             }
         });
         set(35, new ItemBuilder(Material.BARRIER).name(plugin.messages().raw("gui.close")).build(), e -> viewer.closeInventory());
-        fill();
+        frame();
     }
 }

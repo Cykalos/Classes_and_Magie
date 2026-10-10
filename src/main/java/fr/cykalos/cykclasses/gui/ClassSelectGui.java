@@ -50,6 +50,7 @@ public final class ClassSelectGui extends Gui {
         }
         int last = getInventory().getSize() - 9;
         if (profile.hasClass()) {
+            set(4, profileHead(profile), null);
             set(last, new ItemBuilder(Material.OAK_SAPLING).name(plugin.messages().raw("gui.tree-button"))
                     .lore(plugin.messages().raw("gui.points-line").replace("<points>", String.valueOf(plugin.stats().availableSkillPoints(profile))))
                     .glow(plugin.stats().availableSkillPoints(profile) > 0).build(),
@@ -84,7 +85,41 @@ public final class ClassSelectGui extends Gui {
             }
         }
         set(last + 8, new ItemBuilder(Material.BARRIER).name(plugin.messages().raw("gui.close")).build(), e -> viewer.closeInventory());
-        fill();
+        frame();
+    }
+
+    /** Tête du joueur résumant tout son personnage. */
+    private org.bukkit.inventory.ItemStack profileHead(PlayerProfile p) {
+        org.bukkit.inventory.ItemStack head = new org.bukkit.inventory.ItemStack(Material.PLAYER_HEAD);
+        var meta = (org.bukkit.inventory.meta.SkullMeta) head.getItemMeta();
+        meta.setOwningPlayer(viewer);
+        meta.displayName(Text.item("<gold><bold>" + viewer.getName()));
+        java.util.List<net.kyori.adventure.text.Component> lore = new java.util.ArrayList<>();
+        RpgClass rc = plugin.classes().effective(p);
+        var race = plugin.content().race(p.getRaceId());
+        var job = plugin.content().job(p.getJobId());
+        var spec = plugin.jobs().spec(p);
+        lore.add(Text.item("<gray>Classe : " + (rc == null ? "<dark_gray>-" : rc.name) + " <gray>Niv. <white>" + p.getLevel()));
+        lore.add(Text.item("<gray>Race : " + (race == null ? "<dark_gray>-" : race.name())));
+        lore.add(Text.item("<gray>Métier : " + (job == null ? "<dark_gray>-" : job.name() + " <gray>Niv. <white>" + plugin.jobs().level(p))
+                + (spec == null ? "" : " <dark_gray>(" + Text.plain(spec.name()) + ")")));
+        java.util.List<String> traitNames = new java.util.ArrayList<>();
+        for (String id : p.getTraits()) {
+            var t = plugin.content().trait(id);
+            if (t != null) {
+                traitNames.add(t.name());
+            }
+        }
+        if (!traitNames.isEmpty()) {
+            lore.add(Text.item("<gray>Traits : " + String.join("<gray>, ", traitNames)));
+        }
+        lore.add(net.kyori.adventure.text.Component.empty());
+        lore.add(Text.item("<gray>Mana : <aqua>" + (int) p.getMana() + "/" + (int) plugin.stats().maxMana(p)));
+        lore.add(Text.item("<gray>Points d'arbre : <green>" + plugin.stats().availableSkillPoints(p)
+                + " <gray>· Attributs : <yellow>" + plugin.stats().availableAttributePoints(p)));
+        meta.lore(lore);
+        head.setItemMeta(meta);
+        return head;
     }
 
     /** Répartit les icônes au centre des lignes intérieures. */

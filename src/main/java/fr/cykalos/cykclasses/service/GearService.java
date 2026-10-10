@@ -57,6 +57,8 @@ public final class GearService {
 
     private final CykClasses plugin;
     private final NamespacedKey kRarity, kStats, kSockets, kGems, kUnique, kUid, kCrafter, kGem;
+    private final NamespacedKey kGemRaw, kGemRarity, kGemPurity;
+    private final List<Rarity> gemRarities = new ArrayList<>();
     private YamlConfiguration forge;
     private YamlConfiguration gems;
     private final Map<String, List<Pattern>> crafters = new HashMap<>();
@@ -77,6 +79,9 @@ public final class GearService {
         kUid = new NamespacedKey(plugin, "gear_uid");
         kCrafter = new NamespacedKey(plugin, "gear_crafter");
         kGem = new NamespacedKey(plugin, "gem_id");
+        kGemRaw = new NamespacedKey(plugin, "gem_raw");
+        kGemRarity = new NamespacedKey(plugin, "gem_rarity");
+        kGemPurity = new NamespacedKey(plugin, "gem_purity");
     }
 
     // ------------------------------------------------------------ Chargement
@@ -86,7 +91,13 @@ public final class GearService {
         if (!file.exists()) {
             plugin.saveResource(name, false);
         }
-        return YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration y = YamlConfiguration.loadConfiguration(file);
+        // Sections ajoutées dans une nouvelle version : valeurs par défaut du plugin.
+        var stream = plugin.getResource(name);
+        if (stream != null) {
+            y.setDefaults(YamlConfiguration.loadConfiguration(new java.io.InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8)));
+        }
+        return y;
     }
 
     private static List<Pattern> patterns(List<String> raw) {
@@ -161,7 +172,55 @@ public final class GearService {
                         g.getDouble("weight", 10), applies, StatModifier.load(st), st == null ? Map.of() : st.getValues(false)));
             }
         }
+        gemRarities.clear();
+        ConfigurationSection gr = gems.getConfigurationSection("refining.rarities");
+        if (gr != null) {
+            for (String id : gr.getKeys(false)) {
+                ConfigurationSection r = gr.getConfigurationSection(id);
+                if (r != null) {
+                    gemRarities.add(new Rarity(id.toUpperCase(Locale.ROOT), r.getString("name", id), r.getString("color", "<white>"),
+                            r.getDouble("weight", 1), r.getDouble("weight-per-level", 0), r.getDouble("min-weight", 0),
+                            r.getInt("min-job-level", 0), 0, 0, 0, r.getDouble("power", 1), 0));
+                }
+            }
+        }
         loadUniques();
+    }
+
+    public List<Rarity> gemRarities() { return gemRarities; }
+
+    /** Bloc qui sert d'atelier de joaillier (tailleur de pierre par défaut). */
+    public boolean isStation(Material m) {
+        Material station = Material.matchMaterial(gems.getString("refining.station", "STONECUTTER"));
+        return station != null && station == m;
+    }
+
+    public boolean canRefine(String jobId) {
+        List<String> jobs = gems.getStringList("refining.jobs");
+        return jobs.isEmpty() || (jobId != null && jobs.contains(jobId));
+    }
+
+    /** Chances (%) de chaque rareté de taille pour un niveau donné. */
+    public Map<String, Double> gemRarityChances(int level) {
+        Map<String, Double> out = new LinkedHashMap<>();
+        double total = 0;
+        double[] w = new double[gemRarities.size()];
+        for (int i = 0; i < gemRarities.size(); i++) {
+            Rarity r = gemRarities.get(i);
+            w[i] = level < r.minJobLevel() ? 0 : Math.max(0, Math.max(r.minWeight(), r.weight() + r.weightPerLevel() * level));
+            total += w[i];
+        }
+        for (int i = 0; i < gemRarities.size(); i++) {
+            out.put(gemRarities.get(i).id(), total <= 0 ? 0 : w[i] / total * 100);
+        }
+        return out;
+    }
+
+    public double[] purityRange(int level, double bonus) {
+        double perLevel = gems.getDouble("refining.purity.per-level", 0.8);
+        double min = Math.min(100, gems.getDouble("refining.purity.min", 35) + perLevel * level + bonus);
+        double max = Math.min(100, gems.getDouble("refining.purity.max", 80) + perLevel * level + bonus);
+        return new double[]{min, max};
     }
 
     private void loadUniques() {
@@ -242,6 +301,10 @@ public final class GearService {
 
     /** Tire la rareté selon le niveau de métier. */
     public Rarity rollRarity(int jobLevel) {
+        return rollRarity(rarities, jobLevel);
+    }
+
+    private static Rarity rollRarity(List<Rarity> rarities, int jobLevel) {
         ThreadLocalRandom r = ThreadLocalRandom.current();
         double total = 0;
         double[] weights = new double[rarities.size()];
@@ -268,6 +331,11 @@ public final class GearService {
      * Applique une qualité à un objet fabriqué. Retourne l'objet modifié.
      */
     public ItemStack forge(ItemStack item, Player crafter, int jobLevel, String forcedRarity) {
+        return forge(item, crafter, jobLevel, forcedRarity, 0);
+    }
+
+    /** @param powerBonus bonus de spécialisation (+0.15 = stats 15 % plus fortes) */
+    public ItemStack forge(ItemStack item, Player crafter, int jobLevel, String forcedRarity, double powerBonus) {
         Rarity rarity = forcedRarity == null ? rollRarity(jobLevel) : rarityById(forcedRarity);
         if (rarity == null) {
             return item;
@@ -302,7 +370,7 @@ public final class GearService {
                 return item;
             }
         }
-        Map<String, Object> stats = rollStats(cat, rarity);
+        Map<String, Object> stats = rollStats(cat, rarity, powerBonus);
         pdc.set(kRarity, PersistentDataType.STRING, rarity.id());
         pdc.set(kStats, PersistentDataType.STRING, encode(stats));
         pdc.set(kSockets, PersistentDataType.INTEGER, rarity.sockets());
@@ -347,7 +415,7 @@ public final class GearService {
         return free.isEmpty() ? null : free.get(ThreadLocalRandom.current().nextInt(free.size()));
     }
 
-    private Map<String, Object> rollStats(Category cat, Rarity rarity) {
+    private Map<String, Object> rollStats(Category cat, Rarity rarity, double powerBonus) {
         ThreadLocalRandom r = ThreadLocalRandom.current();
         ConfigurationSection pool = forge.getConfigurationSection("stat-pool." + cat.name().toLowerCase(Locale.ROOT));
         Map<String, Object> out = new LinkedHashMap<>();
@@ -364,7 +432,7 @@ public final class GearService {
             if (range.size() < 2) {
                 continue;
             }
-            double v = r.nextDouble(range.get(0), range.get(1) + 1e-9) * rarity.power();
+            double v = r.nextDouble(range.get(0), range.get(1) + 1e-9) * rarity.power() * (1 + powerBonus);
             if (r.nextDouble() < rarity.negativeChance()) {
                 v = -v * negScale;
             }
@@ -436,10 +504,11 @@ public final class GearService {
         }
         PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
         StatModifier m = StatModifier.load(decode(pdc.get(kStats, PersistentDataType.STRING)));
-        for (String g : gemsOf(pdc)) {
-            Gem gem = gemDefs.get(g);
+        for (String entry : gemsOf(pdc)) {
+            Socketed sg = Socketed.parse(entry);
+            Gem gem = gemDefs.get(sg.id());
             if (gem != null) {
-                m.add(gem.stats());
+                m.add(gem.stats().scaled(gemFactor(sg.rarity(), sg.purity())));
             }
         }
         return m;
@@ -520,8 +589,18 @@ public final class GearService {
             lore.add(Component.empty());
             for (int i = 0; i < sockets; i++) {
                 if (i < gemList.size()) {
-                    Gem g = gemDefs.get(gemList.get(i));
-                    String desc = g == null ? gemList.get(i) : g.name() + " <dark_gray>(" + String.join(", ", stripColors(g.stats().describe())) + ")";
+                    Socketed sg = Socketed.parse(gemList.get(i));
+                    Gem g = gemDefs.get(sg.id());
+                    String desc;
+                    if (g == null) {
+                        desc = sg.id();
+                    } else {
+                        Rarity gr = gemRarityById(sg.rarity());
+                        String quality = gr == null ? "" : " " + gr.color() + "[" + Text.plain(gr.label())
+                                + (sg.purity() >= 0 ? " · " + Math.round(sg.purity()) + "%" : "") + "]";
+                        desc = g.name() + quality + " <dark_gray>(" + String.join(", ",
+                                stripColors(g.stats().scaled(gemFactor(sg.rarity(), sg.purity())).describe())) + ")";
+                    }
                     lore.add(Text.item(gems.getString("socket-filled", "<white>◆ ") + desc));
                 } else {
                     lore.add(Text.item(gems.getString("socket-empty", "<dark_gray>◇ Emplacement de gemme libre")));
@@ -542,13 +621,94 @@ public final class GearService {
 
     // ------------------------------------------------------------ Gemmes
 
-    public ItemStack createGem(Gem gem, int amount) {
+    /** Gemme incrustée : identifiant, rareté de taille (null = ancienne gemme) et pureté (-1 = inconnue). */
+    public record Socketed(String id, String rarity, double purity) {
+        static Socketed parse(String entry) {
+            String[] p = entry.split("\\|");
+            String rarity = p.length > 1 && !p[1].isBlank() ? p[1] : null;
+            double purity = -1;
+            if (p.length > 2) {
+                try {
+                    purity = Double.parseDouble(p[2]);
+                } catch (NumberFormatException ignored) {
+                }
+            }
+            return new Socketed(p[0], rarity, purity);
+        }
+
+        String encode() {
+            return id + "|" + (rarity == null ? "" : rarity) + "|" + Math.round(purity);
+        }
+    }
+
+    public Rarity gemRarityById(String id) {
+        if (id == null) {
+            return null;
+        }
+        for (Rarity r : gemRarities) {
+            if (r.id().equalsIgnoreCase(id)) {
+                return r;
+            }
+        }
+        return null;
+    }
+
+    /** Multiplicateur des stats d'une gemme taillée selon sa rareté et sa pureté (1 pour les anciennes gemmes). */
+    public double gemFactor(String rarityId, double purity) {
+        Rarity r = gemRarityById(rarityId);
+        if (r == null) {
+            return 1;
+        }
+        double minF = gems.getDouble("refining.purity-min-factor", 0.5);
+        double p = purity < 0 ? 100 : Math.max(0, Math.min(100, purity));
+        return r.power() * (minF + (1 - minF) * p / 100.0);
+    }
+
+    public boolean isRawGem(ItemStack item) {
+        return gemId(item) != null && item.getItemMeta().getPersistentDataContainer().has(kGemRaw, PersistentDataType.BYTE);
+    }
+
+    /** Gemme brute (à faire tailler par un joaillier). */
+    public ItemStack createRawGem(Gem gem, int amount) {
         ItemStack it = new ItemStack(gem.material(), Math.max(1, amount));
         ItemMeta meta = it.getItemMeta();
-        meta.displayName(Text.item(gem.name()));
+        meta.displayName(Text.item(gems.getString("raw-name", "<gray><gem> brut").replace("<gem>", Text.plain(gem.name()))));
         List<Component> lore = new ArrayList<>(Text.itemLore(gem.description()));
         lore.add(Component.empty());
-        gem.stats().describe().forEach(l -> lore.add(Text.item("<gray>• " + l)));
+        lore.add(plugin.messages().item("gems.raw-line"));
+        lore.add(plugin.messages().item("gems.raw-how"));
+        meta.lore(lore);
+        if (gem.itemModel() != null) {
+            NamespacedKey model = NamespacedKey.fromString(gem.itemModel() + gems.getString("raw-model-suffix", ""));
+            if (model != null) {
+                meta.setItemModel(model);
+            }
+        }
+        meta.getPersistentDataContainer().set(kGem, PersistentDataType.STRING, gem.id());
+        meta.getPersistentDataContainer().set(kGemRaw, PersistentDataType.BYTE, (byte) 1);
+        it.setItemMeta(meta);
+        return it;
+    }
+
+    /** Gemme taillée sans rareté (compatibilité / commande admin sans rareté). */
+    public ItemStack createGem(Gem gem, int amount) {
+        return createGem(gem, amount, null, -1);
+    }
+
+    /** Gemme taillée avec rareté et pureté. */
+    public ItemStack createGem(Gem gem, int amount, String rarityId, double purity) {
+        ItemStack it = new ItemStack(gem.material(), Math.max(1, amount));
+        ItemMeta meta = it.getItemMeta();
+        Rarity r = gemRarityById(rarityId);
+        meta.displayName(Text.item((r == null ? "" : r.color()) + Text.plain(gem.name())));
+        List<Component> lore = new ArrayList<>();
+        if (r != null) {
+            lore.add(Text.item(r.label()));
+            lore.add(plugin.messages().item("gems.purity", Text.ph("purity", Math.round(purity))));
+        }
+        lore.addAll(Text.itemLore(gem.description()));
+        lore.add(Component.empty());
+        gem.stats().scaled(gemFactor(rarityId, purity)).describe().forEach(l -> lore.add(Text.item("<gray>• " + l)));
         lore.add(Component.empty());
         List<String> cats = new ArrayList<>();
         gem.appliesTo().forEach(c -> cats.add(plugin.messages().raw("gems.category-" + c.name().toLowerCase(Locale.ROOT))));
@@ -562,21 +722,45 @@ public final class GearService {
             }
         }
         meta.setEnchantmentGlintOverride(true);
-        meta.getPersistentDataContainer().set(kGem, PersistentDataType.STRING, gem.id());
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        pdc.set(kGem, PersistentDataType.STRING, gem.id());
+        if (r != null) {
+            pdc.set(kGemRarity, PersistentDataType.STRING, r.id());
+            pdc.set(kGemPurity, PersistentDataType.DOUBLE, purity);
+        }
         it.setItemMeta(meta);
         return it;
     }
 
-    /** Résultat d'une tentative d'incrustation. */
-    public enum SocketResult { OK, NOT_GEAR, NO_SOCKET, WRONG_TYPE, UNKNOWN_GEM }
+    /** Taille une gemme brute : rareté selon le niveau, pureté aléatoire. */
+    public ItemStack refine(Gem gem, int jobLevel, int bonusLevels, double bonusPurity) {
+        Rarity r = rollRarity(gemRarities, jobLevel + bonusLevels);
+        ThreadLocalRandom rnd = ThreadLocalRandom.current();
+        double perLevel = gems.getDouble("refining.purity.per-level", 0.8);
+        double min = gems.getDouble("refining.purity.min", 35) + perLevel * jobLevel;
+        double max = gems.getDouble("refining.purity.max", 80) + perLevel * jobLevel;
+        double purity = rnd.nextDouble(Math.min(min, max), Math.max(min, max) + 1e-9) + bonusPurity;
+        purity = Math.max(1, Math.min(100, Math.round(purity)));
+        if (r != null && gems.getStringList("refining.always-pure").contains(r.id())) {
+            purity = 100;
+        }
+        return createGem(gem, 1, r == null ? null : r.id(), purity);
+    }
 
-    public SocketResult socket(ItemStack target, String gemId) {
-        Gem gem = gemDefs.get(gemId);
+    /** Résultat d'une tentative d'incrustation. */
+    public enum SocketResult { OK, NOT_GEAR, NO_SOCKET, WRONG_TYPE, UNKNOWN_GEM, RAW }
+
+    public SocketResult socket(ItemStack target, ItemStack gemItem) {
+        String gemId = gemId(gemItem);
+        Gem gem = gemId == null ? null : gemDefs.get(gemId);
         if (gem == null) {
             return SocketResult.UNKNOWN_GEM;
         }
         if (!isGear(target)) {
             return SocketResult.NOT_GEAR;
+        }
+        if (isRawGem(gemItem)) {
+            return SocketResult.RAW;
         }
         if (!gem.appliesTo().contains(category(target.getType()))) {
             return SocketResult.WRONG_TYPE;
@@ -588,7 +772,10 @@ public final class GearService {
         if (list.size() >= sockets) {
             return SocketResult.NO_SOCKET;
         }
-        list.add(gem.id());
+        PersistentDataContainer gp = gemItem.getItemMeta().getPersistentDataContainer();
+        String rarity = gp.get(kGemRarity, PersistentDataType.STRING);
+        double purity = gp.getOrDefault(kGemPurity, PersistentDataType.DOUBLE, -1.0);
+        list.add(new Socketed(gem.id(), rarity, purity).encode());
         pdc.set(kGems, PersistentDataType.STRING, String.join(",", list));
         target.setItemMeta(meta);
         refreshLore(target);
@@ -596,7 +783,7 @@ public final class GearService {
     }
 
     /** Gemme tirée au hasard lors du minage, ou null. */
-    public Gem rollGemDrop(String jobId, int jobLevel, Material block) {
+    public Gem rollGemDrop(String jobId, int jobLevel, Material block, double extraChance) {
         ConfigurationSection d = gems.getConfigurationSection("drops");
         if (d == null || gemDefs.isEmpty()) {
             return null;
@@ -615,7 +802,7 @@ public final class GearService {
         if (!match) {
             return null;
         }
-        double chance = d.getDouble("base-chance", 0.01) + d.getDouble("chance-per-job-level", 0.001) * jobLevel;
+        double chance = d.getDouble("base-chance", 0.01) + d.getDouble("chance-per-job-level", 0.001) * jobLevel + extraChance;
         ThreadLocalRandom r = ThreadLocalRandom.current();
         if (r.nextDouble() >= chance) {
             return null;

@@ -91,6 +91,12 @@ public final class StatsService {
         if (job != null) {
             mod.add(job.modifiers());
             effects.addAll(job.effects());
+            String specId = profile.getJobSpec(job.id());
+            Job.Specialization spec = specId == null ? null : job.specializations().get(specId);
+            if (spec != null) {
+                mod.add(spec.modifiers());
+                effects.addAll(spec.effects());
+            }
         }
         for (AttributeDef a : plugin.content().attributes()) {
             mod.add(a.perPoint(), profile.getAttribute(a.id()));

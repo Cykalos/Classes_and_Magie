@@ -76,6 +76,27 @@ public final class StatModifier {
         return this;
     }
 
+    /** Copie dont la force est multipliée par {@code factor} (additifs × factor, multiplicateurs 1 + (v - 1) × factor). */
+    public StatModifier scaled(double factor) {
+        StatModifier m = new StatModifier();
+        m.health = health * factor;
+        m.healthPerLevel = healthPerLevel * factor;
+        m.mana = mana * factor;
+        m.manaPerLevel = manaPerLevel * factor;
+        m.manaRegen = manaRegen * factor;
+        m.manaRegenPerLevel = manaRegenPerLevel * factor;
+        m.speed = speed * factor;
+        m.armor = armor * factor;
+        m.attackSpeed = attackSpeed * factor;
+        m.critChance = critChance * factor;
+        m.critMultiplier = critMultiplier * factor;
+        m.meleeDamage = 1 + (meleeDamage - 1) * factor;
+        m.rangedDamage = 1 + (rangedDamage - 1) * factor;
+        m.magicDamage = 1 + (magicDamage - 1) * factor;
+        m.damageTaken = 1 + (damageTaken - 1) * factor;
+        return m;
+    }
+
     public StatModifier add(StatModifier o) {
         return add(o, 1);
     }
