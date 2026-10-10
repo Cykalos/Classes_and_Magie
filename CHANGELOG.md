@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.1](https://github.com/Cykalos/Classes_and_Magie/compare/v1.4.0...v1.4.1) (2026-10-10)
+
+### 🐛 Corrections
+
+- messages manquants après une mise à jour du plugin ([`a5418ce`](https://github.com/Cykalos/Classes_and_Magie/commit/a5418ce6040763a2eb22394f7d241e6c2efa42a1))
+
+### 🔧 Maintenance
+
+- liens vers le dépôt renommé Classes_and_Magie [skip release] ([`a60df32`](https://github.com/Cykalos/Classes_and_Magie/commit/a60df32a21eaa0884ec821e6381a05d5334b1222))
+
+
 ## [1.4.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.3.0...v1.4.0) (2026-10-10)
 
 ### ✨ Nouveautés
