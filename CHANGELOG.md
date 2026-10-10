@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/Cykalos/CykClasses_and_Magie/compare/v1.3.0...v1.4.0) (2026-10-10)
+
+### ✨ Nouveautés
+
+- spécialisations de métier, joaillerie et wiki ([`28e1574`](https://github.com/Cykalos/CykClasses_and_Magie/commit/28e1574848a6098809982d256223e0678f3cc01c))
+  - Spécialisations (sous-métiers) au niveau 20 : Prospecteur, Foreur, Armurier, Fabricant d'armes, Facteur d'arcs, Lapidaire, Orfèvre, avec bonus de rareté, puissance, pureté, chance de gemme et XP
+  - Nouveau métier Joaillier : les gemmes sont trouvées brutes et taillées au tailleur de pierre ; rareté (Commune → Parfaite) et pureté selon le niveau du métier
+  - Atelier du joaillier : chances de rareté et fourchette de pureté affichées, taille à l'unité ou en lot
+  - Menus retravaillés : cadre sombre, en-têtes de profil, boutons centrés
+  - jobs.yml ancien sauvegardé automatiquement ; nouvelles clés de gems.yml et forge.yml avec valeurs par défaut
+  - Wiki GitHub publié automatiquement depuis docs/wiki
+
+
 ## [1.3.0](https://github.com/Cykalos/CykClasses_and_Magie/compare/v1.2.0...v1.3.0) (2026-10-10)
 
 ### ✨ Nouveautés
