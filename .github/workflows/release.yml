@@ -62,9 +62,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.info.outputs.tag }}
-          name: CykClasses ${{ steps.info.outputs.tag }}
+          name: Classes and Magie ${{ steps.info.outputs.tag }}
           body_path: release-notes.md
-          files: build/libs/CykClasses-${{ steps.info.outputs.version }}.jar
+          files: "build/libs/Classes and Magie ${{ steps.info.outputs.version }}.jar"
           make_latest: true
 
       - name: Mise à jour du CHANGELOG.md

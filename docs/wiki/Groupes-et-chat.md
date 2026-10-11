@@ -33,7 +33,7 @@ Un **panneau latéral** affiche chaque membre : classe, niveau, PV, mana (`hud.y
 
 | Commande | Effet |
 |---|---|
-| `/gc` | Bascule ton chat sur le groupe |
+| `/gc` | Bascule le chat du joueur sur le groupe |
 | `/global` | Revient au chat public |
 | `/gc <message>` · `/global <message>` | Un seul message, sans changer de mode |
 
@@ -47,7 +47,7 @@ chat:
   class-tag: "<dark_gray>[</dark_gray><class> <gray>Niv. <level></gray><dark_gray>]</dark_gray>"
 ```
 
-Si un autre plugin gère le chat (EssentialsChat, LPC…), mets `format-enabled: false` et utilise les placeholders `%cykclasses_class%`, `%cykclasses_level%`, `%cykclasses_display%`.
+Si un autre plugin gère le chat (EssentialsChat, LPC…), passer `format-enabled: false` et utiliser les placeholders `%cykclasses_class%`, `%cykclasses_level%`, `%cykclasses_display%`.
 
 Permission `cykclasses.chat.spy` : voir les chats de groupe.
 
