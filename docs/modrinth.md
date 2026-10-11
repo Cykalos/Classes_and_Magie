@@ -1,0 +1,66 @@
+# Classes and Magie
+
+**Un système RPG complet pour serveurs Paper 26.x : classes, sous-classes, compétences et mana, races, traits, métiers, forge et gemmes.**
+
+Chaque joueur crée un vrai personnage : il choisit une classe, une race, reçoit des traits au hasard, apprend un métier, puis progresse en niveaux, en sous-classe et en spécialisation. Tout est réglable dans des fichiers YAML commentés, sans une ligne de code.
+
+---
+
+## ⚔️ Classes et compétences
+
+- **5 classes** : Guerrier, Mage, Archer, Assassin, Clerc, chacune avec ses statistiques, ses défauts et ses compétences.
+- **10 sous-classes** débloquées par des conditions : niveau, éliminations, sorts lancés, dégâts infligés, soins prodigués…
+- **36 compétences** : charge, boule de feu, pluie de météores, nova de givre, pas de l'ombre, parade, racines, jugement…
+- **Barre de compétences** : la touche **F** remplace la barre d'objets par les icônes des compétences, les touches **1 à 8** les lancent. Recharge et mana visibles sur chaque icône, icônes personnalisables par resource pack.
+- **Mana** avec régénération par classe, réduite en combat.
+
+## 🧬 Création du personnage
+
+- **6 races** (Humain, Elfe, Nain, Orc, Tieffelin, Félys) avec bonus, défauts, effets permanents et **malus** si la race ne convient pas à la classe.
+- **Traits aléatoires** positifs, négatifs ou mixtes, avec relances limitées.
+- **Traits uniques** : un seul joueur sur tout le serveur peut porter chacun d'eux.
+
+## 📈 Progression
+
+- Niveaux et XP par monstre (barème configurable, MythicMobs compris).
+- **Arbre de compétences** par classe, avec des branches réservées aux sous-classes.
+- **Attributs** : Force, Dextérité, Intelligence, Vitalité, Sagesse, Agilité, Endurance.
+
+## ⚒️ Métiers et artisanat
+
+- **9 métiers**, un seul par joueur : Mineur, Forgeron, Joaillier, Bûcheron, Fermier, Alchimiste, Enchanteur, Pêcheur, Dresseur.
+- Actions et **recettes débloquées par niveau** de métier (équipement en diamant, débris antiques, table de forgeron…).
+- **Spécialisations** au niveau 20 : Prospecteur, Foreur, Armurier, Fabricant d'armes, Facteur d'arcs, Lapidaire, Orfèvre.
+- **Forge** : les armes et armures fabriquées par un forgeron reçoivent une **rareté** (Commun → Légendaire), des **stats aléatoires** positives ou négatives et des emplacements de gemmes.
+- **Objets uniques** : Excalibur, Égide… chacun ne peut être forgé **qu'une seule fois** sur le serveur.
+- **Gemmes** trouvées brutes en minant, **taillées par un joaillier** (rareté et pureté selon son niveau), puis incrustées dans l'équipement.
+
+## 👥 Groupes, chat et HUD
+
+- **Groupes** dont les règles sont fixées à la création : XP partagée ou égale, dégâts alliés ou non. Les soins ne touchent que les alliés.
+- **Chat de groupe** (`/gc`), classe et niveau affichés dans le chat.
+- **Dégâts flottants** (normaux, critiques, compétences, soins) et **PV de la cible** en bossbar ou au-dessus de la tête.
+- Panneau latéral avec les PV et le mana des membres du groupe.
+
+## 🔌 Compatibilité
+
+- **Paper 26.1.x et 26.2** (et Purpur), Java 25.
+- **MythicMobs** (optionnel) : noms et niveaux des mobs, XP par mob, compétences MythicMobs utilisables comme compétences de classe.
+- **PlaceholderAPI** (optionnel) : placeholders `%cykclasses_*%`.
+- Objets custom dans les kits et les restrictions : **CraftEngine, ExecutableItems, MythicCrucible, ItemsAdder, Oraxen, Nexo, MMOItems**.
+- Stockage **YAML, JSON ou SQLite**.
+- **API Java** et événements pour les autres plugins.
+
+## 📖 Documentation
+
+Documentation complète en français, avec exemples et limites : **[wiki](https://github.com/Cykalos/Classes_and_Magie/wiki)**.
+
+Code source sous licence **GPL-3.0** : **[GitHub](https://github.com/Cykalos/Classes_and_Magie)** · Bugs et suggestions : **[Issues](https://github.com/Cykalos/Classes_and_Magie/issues)**.
+
+---
+
+## 🇬🇧 English
+
+**A complete RPG system for Paper 26.x servers.** Players pick a **class** (5 classes, 10 unlockable subclasses, 36 skills cast from a dedicated hotbar with mana and cooldowns), a **race** (with class penalties), random **traits** (including server-unique ones), and a **job** (9 jobs with level-gated recipes and specializations). Blacksmiths **forge** gear with random rarity and stats, including one-of-a-kind **unique items**; jewelers **cut raw gems** with rarity and purity before they are socketed. Also includes **parties** with custom rules, party chat, floating damage numbers and target health display, a **skill tree** and **attributes**.
+
+Compatible with **MythicMobs**, **PlaceholderAPI** and custom items from **CraftEngine, ExecutableItems, MythicCrucible, ItemsAdder, Oraxen, Nexo, MMOItems**. Fully configurable through commented YAML files. The default texts and documentation are in **French**; every message can be translated in `messages.yml`.

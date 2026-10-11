@@ -36,7 +36,7 @@ skills:
 
 `ARCANE_BOLT`, `ARROW_RAIN`, `BEAR_TRAP`, `BLESSING`, `BLINK`, `BLOOD_RAGE`, `CHARGE`, `DISENGAGE`, `DIVINE_GRACE`, `ENTANGLING_ROOTS`, `EXECUTION`, `EXPLOSIVE_ARROW`, `FIREBALL`, `FLAME_AURA`, `FROST_NOVA`, `HEAL`, `HOLY_LIGHT`, `HOLY_SHIELD`, `HUNTERS_MARK`, `ICE_LANCE`, `JUDGMENT`, `LUNGE`, `MANA_SHIELD`, `METEOR_SHOWER`, `PARRY`, `PIERCING_ARROW`, `POISON_BLADE`, `PURIFY`, `SHADOW_STEP`, `SHADOW_VEIL`, `SHATTERING_BLOW`, `VANISH`, `VOLLEY`, `WAR_CRY`, `WHIRLWIND`, `WILD_SPIRIT`, `MYTHIC`.
 
-Les soins et bonus (`HEAL`, `BLESSING`, `WAR_CRY`, `HOLY_SHIELD`…) ne touchent **que toi et ton groupe**. Les compétences offensives touchent les alliés seulement si le groupe a activé les dégâts alliés.
+Les soins et bonus (`HEAL`, `BLESSING`, `WAR_CRY`, `HOLY_SHIELD`…) ne touchent **que le lanceur et son groupe**. Les compétences offensives touchent les alliés seulement si le groupe a activé les dégâts alliés.
 
 ## Compétences MythicMobs
 

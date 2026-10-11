@@ -49,7 +49,7 @@ Un trait : `rarity`, `kind` (`POSITIVE`, `NEGATIVE`, `MIXED`), `stats`, `flaws`,
 
 ### Traits uniques
 
-`rarity: UNIQUE` : **un seul joueur sur tout le serveur** peut porter ce trait. Il peut y en avoir autant que tu veux (par défaut : *Élu des dieux*, *Maître d'armes légendaire*, *Maudit immortel*). Chacun a son propre propriétaire.
+`rarity: UNIQUE` : **un seul joueur sur tout le serveur** peut porter ce trait. Il peut y en avoir autant que souhaité (par défaut : *Élu des dieux*, *Maître d'armes légendaire*, *Maudit immortel*). Chacun a son propre propriétaire.
 
 - Un trait unique déjà pris n'est plus jamais tiré.
 - Il redevient libre si son porteur le perd (`/classe admin resettraits <joueur>`).

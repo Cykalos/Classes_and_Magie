@@ -4,7 +4,7 @@
 
 - Serveur **Paper 26.1.x ou 26.2** (testé à la compilation sur les deux).
 - **Java 25**.
-- Aucune dépendance obligatoire. SQLite est téléchargé automatiquement par Paper si tu choisis ce stockage.
+- Aucune dépendance obligatoire. SQLite est téléchargé automatiquement par Paper si ce stockage est choisi.
 
 ## Plugins optionnels
 
@@ -16,9 +16,9 @@
 
 ## Étapes
 
-1. Télécharge le dernier `CykClasses-x.y.z.jar` dans les [Releases](https://github.com/Cykalos/Classes_and_Magie/releases).
-2. Place-le dans `plugins/` et démarre le serveur.
-3. Modifie les fichiers de `plugins/CykClasses/`, puis `/classe admin reload`.
+1. Télécharger le dernier `Classes and Magie x.y.z.jar` dans les [Releases](https://github.com/Cykalos/Classes_and_Magie/releases).
+2. Le placer dans `plugins/` et démarrer le serveur.
+3. Modifier les fichiers de `plugins/CykClasses/`, puis `/classe admin reload`.
 
 ## Fichiers de configuration
 
@@ -37,6 +37,6 @@
 
 ## Mise à jour
 
-- Les nouvelles clés de `gems.yml` et `forge.yml` prennent leur **valeur par défaut** si elles manquent dans ton fichier.
-- Si ton `jobs.yml` date d'avant les niveaux de métier ou la joaillerie, il est **sauvegardé** en `jobs-ancien-<date>.yml` et remplacé par la nouvelle version. Reporte tes modifications depuis la sauvegarde.
+- Les nouvelles clés de `gems.yml` et `forge.yml` prennent leur **valeur par défaut** si elles manquent dans le fichier du serveur.
+- Si le `jobs.yml` du serveur date d'avant les niveaux de métier ou la joaillerie, il est **sauvegardé** en `jobs-ancien-<date>.yml` et remplacé par la nouvelle version. Les modifications personnelles sont à reporter depuis la sauvegarde.
 - Les données des joueurs (classe, niveaux, métiers…) sont conservées.

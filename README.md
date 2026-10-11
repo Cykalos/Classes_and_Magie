@@ -1,6 +1,6 @@
-# CykClasses
+# Classes and Magie
 
-Plugin **Paper 26.x** (Minecraft Java Edition) de classes RPG : classes, sous-classes à débloquer, compétences uniques, statistiques, défauts et mana.
+**Classes and Magie** (nom interne : `CykClasses`) est un plugin **Paper 26.x** (Minecraft Java Edition) de classes RPG : classes, sous-classes à débloquer, compétences uniques, statistiques, défauts et mana.
 
 ## Fonctionnalités
 
@@ -28,11 +28,11 @@ Plugin **Paper 26.x** (Minecraft Java Edition) de classes RPG : classes, sous-cl
 
 ## Lancer une compétence
 
-1. Appuie sur **F** (échange de main) : ta barre d'objets affiche les **icônes de tes compétences** (slots 1 à 8) et ton arme reste en main (slot 9).
-2. Appuie sur **1 à 8** pour lancer la compétence correspondante. L'icône affiche la recharge (animation + secondes restantes), passe en bleu si le mana manque, en gris si elle n'est pas débloquée.
-3. **F** à nouveau, ouvrir l'inventaire ou 15 s d'inactivité pour retrouver ta barre normale.
+1. Appuyer sur **F** (échange de main) : la barre d'objets affiche les **icônes des compétences** (slots 1 à 8) et l'arme reste en main (slot 9).
+2. Appuyer sur **1 à 8** pour lancer la compétence correspondante. L'icône affiche la recharge (animation + secondes restantes), passe en bleu si le mana manque, en gris si elle n'est pas débloquée.
+3. **F** à nouveau, ouvrir l'inventaire ou 15 s d'inactivité pour retrouver la barre normale.
 
-Tes objets sont sauvegardés pendant le mode compétences (même en cas de crash ou de mort). La molette lance aussi les compétences dans ce mode.
+Les objets de la barre sont sauvegardés pendant le mode compétences (même en cas de crash ou de mort). La molette lance aussi les compétences dans ce mode.
 
 Icônes personnalisables par compétence dans `classes.yml` : `icon`, `icon-model` (modèle de resource pack) ou `custom-model-data`.
 
@@ -45,7 +45,7 @@ Alternatives : `/competence <id|numéro>` ou clic dans `/classe competences`.
 - **XP** : *partagée* (divisée entre les membres proches, +10 % par membre) ou *égale* (chacun reçoit l'XP complète de l'élimination).
 - **Dégâts alliés** : activés (les compétences offensives comme Charge et les coups touchent aussi les alliés) ou désactivés.
 
-Les soins et bonus (Soin, Bénédiction, Cri de guerre, Bouclier sacré…) ne touchent **que les membres du groupe** (ou toi seul sans groupe). Un panneau latéral affiche les PV des membres.
+Les soins et bonus (Soin, Bénédiction, Cri de guerre, Bouclier sacré…) ne touchent **que les membres du groupe** (ou le lanceur seul, sans groupe). Un panneau latéral affiche les PV des membres.
 
 `/groupe inviter|accepter|refuser|quitter|expulser|chef|dissoudre|info`, `/gc <message>` pour le chat de groupe.
 
@@ -80,7 +80,7 @@ Classe → **race** → **traits** → **métier**, chaque étape s'ouvre automa
 
 ## Chat
 
-- `/gc` bascule ton chat sur le groupe, `/global` revient au chat public. `/gc <message>` et `/global <message>` pour un seul message.
+- `/gc` bascule le chat du joueur sur le groupe, `/global` revient au chat public. `/gc <message>` et `/global <message>` pour un seul message.
 - Classe et niveau affichés devant le nom (désactivable si un autre plugin gère le chat : placeholders `%cykclasses_*%`).
 
 ## HUD (`hud.yml`)
@@ -147,7 +147,7 @@ Java 25 requis.
 
 ```bash
 ./gradlew build
-# -> build/libs/CykClasses-<version>.jar
+# -> build/libs/Classes and Magie <version>.jar
 ```
 
 ## Releases

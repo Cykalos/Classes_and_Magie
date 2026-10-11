@@ -39,13 +39,15 @@ tasks.processResources {
     }
 }
 
+// Nom du fichier : "Classes and Magie 1.2.3.jar"
+val jarName = "Classes and Magie"
+
 tasks.jar {
-    archiveClassifier.set("plain")
+    archiveFileName.set("$jarName ${project.version}-plain.jar")
 }
 
 tasks.shadowJar {
-    archiveBaseName.set("CykClasses")
-    archiveClassifier.set("")
+    archiveFileName.set("$jarName ${project.version}.jar")
     dependencies {
         include(dependency("io.github.projectunified:.*"))
     }
