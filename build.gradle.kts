@@ -39,15 +39,15 @@ tasks.processResources {
     }
 }
 
-// Nom du fichier : "Classes and Magie 1.2.3.jar"
-val jarName = "Classes and Magie"
+// Nom du fichier : "Classes_and_Magie-1.2.3.jar"
+val jarName = "Classes_and_Magie"
 
 tasks.jar {
-    archiveFileName.set("$jarName ${project.version}-plain.jar")
+    archiveFileName.set("$jarName-${project.version}-plain.jar")
 }
 
 tasks.shadowJar {
-    archiveFileName.set("$jarName ${project.version}.jar")
+    archiveFileName.set("$jarName-${project.version}.jar")
     dependencies {
         include(dependency("io.github.projectunified:.*"))
     }

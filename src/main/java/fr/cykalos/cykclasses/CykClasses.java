@@ -80,6 +80,38 @@ public final class CykClasses extends JavaPlugin {
     }
 
     @Override
+    public void onLoad() {
+        migrateDataFolder();
+    }
+
+    /**
+     * Le plugin s'appelait « CykClasses » : son dossier plugins/CykClasses est renommé
+     * en plugins/Classes_and_Magie au premier démarrage (configuration et données conservées).
+     */
+    private void migrateDataFolder() {
+        java.io.File target = getDataFolder();
+        java.io.File old = new java.io.File(target.getParentFile(), "CykClasses");
+        if (!old.isDirectory()) {
+            return;
+        }
+        String[] existing = target.list();
+        if (target.exists() && existing != null && existing.length > 0) {
+            getLogger().warning("Les dossiers plugins/CykClasses et plugins/" + target.getName()
+                    + " existent tous les deux : c'est " + target.getName() + " qui est utilisé. "
+                    + "L'ancien dossier CykClasses peut être fusionné ou supprimé.");
+            return;
+        }
+        if (target.exists() && !target.delete()) {
+            return;
+        }
+        if (old.renameTo(target)) {
+            getLogger().info("Ancien dossier plugins/CykClasses renommé en plugins/" + target.getName() + ".");
+        } else {
+            getLogger().warning("Impossible de renommer plugins/CykClasses : il faut le renommer à la main en plugins/" + target.getName() + ".");
+        }
+    }
+
+    @Override
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
