@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.4.2](https://github.com/Cykalos/Classes_and_Magie/compare/v1.4.1...v1.4.2) (2026-10-11)
+
+### 🐛 Corrections
+
+- fichier .jar renommé « Classes and Magie X.Y.Z.jar », documentation pour tous les publics ([`d766573`](https://github.com/Cykalos/Classes_and_Magie/commit/d76657380305e4de321a7d05a3f49a26dbd293f8))
+  - Le .jar s'appelle maintenant « Classes and Magie X.Y.Z.jar » (le nom interne du plugin reste CykClasses, configuration et données inchangées)
+  - README et wiki réécrits sans tutoiement, pour tous les lecteurs
+  - Description du projet pour Modrinth (docs/modrinth.md)
+
+
 ## [1.4.1](https://github.com/Cykalos/Classes_and_Magie/compare/v1.4.0...v1.4.1) (2026-10-10)
 
 ### 🐛 Corrections
