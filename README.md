@@ -161,4 +161,6 @@ Architecture inspirée de plugins RPG open source comme [Fabled (ex-ProSkillAPI)
 
 ## Licence
 
-[GPL-3.0](LICENSE)
+[GPL-3.0-only](LICENSE) — © Cykalos.
+
+Le plugin est libre et gratuit : chacun peut l'utiliser, le modifier et le redistribuer, à condition de conserver la mention de l'auteur et de publier toute version modifiée sous la même licence, avec son code source.
