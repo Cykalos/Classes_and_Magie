@@ -16,9 +16,9 @@
 
 ## Étapes
 
-1. Télécharger le dernier `Classes and Magie x.y.z.jar` dans les [Releases](https://github.com/Cykalos/Classes_and_Magie/releases).
+1. Télécharger le dernier `Classes_and_Magie-x.y.z.jar` dans les [Releases](https://github.com/Cykalos/Classes_and_Magie/releases).
 2. Le placer dans `plugins/` et démarrer le serveur.
-3. Modifier les fichiers de `plugins/CykClasses/`, puis `/classe admin reload`.
+3. Modifier les fichiers de `plugins/Classes_and_Magie/`, puis `/classe admin reload`.
 
 ## Fichiers de configuration
 
@@ -40,3 +40,4 @@
 - Les nouvelles clés de `gems.yml` et `forge.yml` prennent leur **valeur par défaut** si elles manquent dans le fichier du serveur.
 - Si le `jobs.yml` du serveur date d'avant les niveaux de métier ou la joaillerie, il est **sauvegardé** en `jobs-ancien-<date>.yml` et remplacé par la nouvelle version. Les modifications personnelles sont à reporter depuis la sauvegarde.
 - Les données des joueurs (classe, niveaux, métiers…) sont conservées.
+- Depuis la version 1.5, le dossier de configuration s'appelle `plugins/Classes_and_Magie/`. L'ancien dossier `plugins/CykClasses/` est renommé automatiquement au premier démarrage, avec toute la configuration et les données.

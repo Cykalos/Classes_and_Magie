@@ -67,20 +67,8 @@ jobs:
           tag_name: ${{ steps.info.outputs.tag }}
           name: Classes and Magie ${{ steps.info.outputs.tag }}
           body_path: release-notes.md
-          files: "build/libs/Classes and Magie ${{ steps.info.outputs.version }}.jar"
+          files: build/libs/Classes_and_Magie-${{ steps.info.outputs.version }}.jar
           make_latest: true
-
-      # GitHub remplace les espaces des fichiers par des points : on remet le vrai nom en libellé affiché
-      - name: Nom affiché du .jar
-        if: steps.info.outputs.skip != 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ASSETS: ${{ steps.gh_release.outputs.assets }}
-        run: |
-          for id in $(echo "$ASSETS" | jq -r '.[].id'); do
-            gh api -X PATCH "repos/${{ github.repository }}/releases/assets/$id" \
-              -f label="Classes and Magie ${{ steps.info.outputs.version }}.jar" > /dev/null
-          done
 
       # Publication sur Modrinth : active seulement si le secret MODRINTH_TOKEN
       # et la variable MODRINTH_PROJECT_ID existent (Settings → Secrets and variables → Actions).
@@ -92,7 +80,7 @@ jobs:
         with:
           modrinth-id: ${{ vars.MODRINTH_PROJECT_ID }}
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          files: "build/libs/Classes and Magie ${{ steps.info.outputs.version }}.jar"
+          files: build/libs/Classes_and_Magie-${{ steps.info.outputs.version }}.jar
           name: Classes and Magie ${{ steps.info.outputs.version }}
           version: ${{ steps.info.outputs.version }}
           version-type: ${{ vars.MODRINTH_VERSION_TYPE || 'beta' }}

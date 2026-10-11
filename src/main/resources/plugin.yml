@@ -1,4 +1,4 @@
-name: CykClasses
+name: Classes_and_Magie
 version: '${version}'
 main: fr.cykalos.cykclasses.CykClasses
 api-version: '26.1'
