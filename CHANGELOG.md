@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.5.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.4.2...v1.5.0) (2026-10-11)
+
+### ✨ Nouveautés
+
+- le plugin s'appelle désormais Classes_and_Magie ([`b2f88c1`](https://github.com/Cykalos/Classes_and_Magie/commit/b2f88c1cbe372f46148434e8dbe2e1ad6032ee80))
+  - Dossier de configuration plugins/Classes_and_Magie : l'ancien dossier plugins/CykClasses est renommé automatiquement au premier démarrage, configuration et données comprises
+  - Fichier .jar nommé Classes_and_Magie-X.Y.Z.jar
+  - Commandes, permissions (cykclasses.*) et placeholders (%cykclasses_*%) inchangés
+
+### 📚 Documentation
+
+- icône du projet dans le README et le wiki [skip release] ([`742b3bf`](https://github.com/Cykalos/Classes_and_Magie/commit/742b3bf436422fa39f1c64aeab5b992436f3ae13))
+- licence GPL-3.0-only précisée dans le README [skip release] ([`a5b2640`](https://github.com/Cykalos/Classes_and_Magie/commit/a5b2640f6c2f7b6733f8c2d9a768be220f7d4d72))
+
+### 🔧 CI
+
+- publication automatique sur Modrinth à chaque release [skip release] ([`ce830c3`](https://github.com/Cykalos/Classes_and_Magie/commit/ce830c32ecbbf11826dd8ba8ce408f5c08c84171))
+- libellé « Classes and Magie X.Y.Z.jar » sur le fichier des releases [skip release] ([`9022a26`](https://github.com/Cykalos/Classes_and_Magie/commit/9022a264f90698701b7f330e260ee974392b9b96))
+
+
 ## [1.4.2](https://github.com/Cykalos/Classes_and_Magie/compare/v1.4.1...v1.4.2) (2026-10-11)
 
 ### 🐛 Corrections
