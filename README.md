@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/images/icon.png" width="160" alt="Classes and Magie"></p>
+
 # Classes and Magie
 
 **Classes and Magie** (nom interne : `CykClasses`) est un plugin **Paper 26.x** (Minecraft Java Edition) de classes RPG : classes, sous-classes à débloquer, compétences uniques, statistiques, défauts et mana.

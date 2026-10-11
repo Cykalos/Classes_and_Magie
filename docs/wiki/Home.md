@@ -1,3 +1,5 @@
+<p align="center"><img src="icon.png" width="128" alt="Classes and Magie"></p>
+
 # Classes and Magie — Wiki
 
 **Classes and Magie** (nom interne du plugin : `CykClasses`) est un plugin **Paper 26.x** (Java 25) de jeu de rôle : classes, sous-classes, compétences et mana, races, traits, arbre de compétences, attributs, métiers avec spécialisations, forge à raretés, gemmes à tailler et incruster, groupes, HUD.
