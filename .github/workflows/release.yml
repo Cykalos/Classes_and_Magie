@@ -58,6 +58,7 @@ jobs:
           git push origin "${{ steps.info.outputs.tag }}"
 
       - name: Release GitHub
+        id: gh_release
         if: steps.info.outputs.skip != 'true'
         uses: softprops/action-gh-release@v2
         with:
@@ -66,6 +67,18 @@ jobs:
           body_path: release-notes.md
           files: "build/libs/Classes and Magie ${{ steps.info.outputs.version }}.jar"
           make_latest: true
+
+      # GitHub remplace les espaces des fichiers par des points : on remet le vrai nom en libellé affiché
+      - name: Nom affiché du .jar
+        if: steps.info.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ASSETS: ${{ steps.gh_release.outputs.assets }}
+        run: |
+          for id in $(echo "$ASSETS" | jq -r '.[].id'); do
+            gh api -X PATCH "repos/${{ github.repository }}/releases/assets/$id" \
+              -f label="Classes and Magie ${{ steps.info.outputs.version }}.jar" > /dev/null
+          done
 
       - name: Mise à jour du CHANGELOG.md
         if: steps.info.outputs.skip != 'true'
