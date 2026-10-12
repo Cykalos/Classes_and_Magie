@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.6.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.5.0...v1.6.0) (2026-10-12)
+
+### ✨ Nouveautés
+
+- faiblesses, défauts conditionnels et modules activables ([`7186bee`](https://github.com/Cykalos/Classes_and_Magie/commit/7186bee752a16b5216a1a15bc0882ae343f18d22))
+  - Faiblesses (weaknesses.yml, /faiblesses) : imposées à une race, une classe ou une sous-classe, ou tirées au hasard avec des chances par race et par classe (races, classes, exclusions, multiplicateurs), relances, menu pendant la création
+  - 15 faiblesses fournies : Hydrophobe, Photosensible, Vulnérable au feu, Frileux, Os fragiles, Proie des morts, Peur du noir, Mana instable, Mauvais tireur, Panique, Vertige, Claustrophobe, Anémie, Maudit par la lune, Sang infernal
+  - Défauts conditionnels : tous les défauts (classes, races, traits, faiblesses) acceptent des conditions — moment de la journée, météo, dimension, monde, biome, lumière, ciel, eau, pluie, lave, PV, altitude, accroupi, sprint, élytres, objet tenu ou porté, permission, chance
+  - Nouveaux types de défauts : DAMAGE_DEALT, MANA_REGEN, EFFECT, PERIODIC_DAMAGE ; DAMAGE_TAKEN filtrable par attaquant (types d'entités et mobs MythicMobs)
+  - Modules activables dans config.yml : races, traits, faiblesses, métiers, arbre, attributs, groupes, forge, gemmes, kits, restrictions d'objets
+  - /classe admin faiblesse <joueur> <reset|add|remove> [id], placeholder %cykclasses_weaknesses%
+  - Wiki : page Faiblesses, défauts conditionnels, modules
+
+### 📚 Documentation
+
+- description Modrinth — personnalisation et limites expliquées [skip release] ([`be3e34a`](https://github.com/Cykalos/Classes_and_Magie/commit/be3e34aea391c59c6290ff3585cbe3b1fe45ee67))
+
+
 ## [1.5.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.4.2...v1.5.0) (2026-10-11)
 
 ### ✨ Nouveautés
