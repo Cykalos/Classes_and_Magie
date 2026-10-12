@@ -4,7 +4,7 @@
 
 Choisie juste après la classe. Par défaut : **Humain**, **Elfe**, **Nain**, **Orc**, **Tieffelin**, **Félys**.
 
-Chaque race a des stats, des défauts, des effets permanents, des classes recommandées et des **malus de classe** :
+Chaque race a des stats, des faiblesses (`flaws`, et `weaknesses` pour imposer une faiblesse de `weaknesses.yml`), des effets permanents, des classes recommandées et des **malus de classe** :
 
 | Race | Malus si elle joue… |
 |---|---|

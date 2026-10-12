@@ -8,7 +8,7 @@ Ce que CykClasses **ne fait pas** (ou pas encore), pour éviter les mauvaises su
 - 8 compétences maximum dans la barre.
 - Pas de compétences passives déclenchées automatiquement : passer par les stats, l'arbre ou MythicMobs.
 - Les traits et faiblesses ne se choisissent pas, ils se relancent (nombre limité).
-- Les types de défauts et de conditions sont prédéfinis (une douzaine de types, une vingtaine de conditions), mais se combinent librement.
+- Les types de faiblesses et de conditions sont prédéfinis (une douzaine de types, une vingtaine de conditions), mais se combinent librement.
 
 ## Métiers et artisanat
 

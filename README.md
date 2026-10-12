@@ -2,11 +2,11 @@
 
 # Classes and Magie
 
-**Classes and Magie** est un plugin **Paper 26.x** (Minecraft Java Edition) de classes RPG : classes, sous-classes à débloquer, compétences uniques, statistiques, défauts et mana.
+**Classes and Magie** est un plugin **Paper 26.x** (Minecraft Java Edition) de classes RPG : classes, sous-classes à débloquer, compétences uniques, statistiques, faiblesses et mana.
 
 ## Fonctionnalités
 
-- **5 classes** jouables, chacune avec ses statistiques, ses défauts et 3 compétences :
+- **5 classes** jouables, chacune avec ses statistiques, ses faiblesses et 3 compétences :
   Guerrier, Mage, Archer, Assassin, Clerc.
 - **10 sous-classes** débloquées par des conditions (niveau, éliminations, utilisation de compétences, dégâts infligés, soins prodigués…) :
 
@@ -21,7 +21,7 @@
 - **36 compétences** différentes (charge, boule de feu, pluie de météores, nova de givre, pas de l'ombre, parade, marque du chasseur, racines…). Toutes les valeurs sont réglables dans `classes.yml`.
 - **Mana** avec régénération par classe, réduite en combat.
 - **Statistiques** : PV, mana, régénération, multiplicateurs de dégâts (mêlée / distance / magie), dégâts subis, vitesse, armure, vitesse d'attaque, coups critiques — avec progression par niveau.
-- **Défauts** : vulnérabilités (feu, chute, magie…), armures/boucliers interdits, armes pénalisées, faiblesse dans l'eau ou au soleil, faim accrue, soins réduits, pas de mana dans le noir.
+- **Faiblesses** : vulnérabilités (feu, chute, magie…), armures/boucliers interdits, armes pénalisées, faiblesse dans l'eau ou au soleil, faim accrue, soins réduits, pas de mana dans le noir.
 - **Niveaux et XP** gagnés en tuant des monstres (barème par créature configurable).
 - **Menus** : choix de classe, sous-classes avec progression des conditions, liste des compétences.
 - **Stockage** au choix : `YAML`, `JSON` ou `SQLITE`.
@@ -55,9 +55,9 @@ Les soins et bonus (Soin, Bénédiction, Cri de guerre, Bouclier sacré…) ne t
 
 Classe → **race** → **traits** → **faiblesses** → **métier**, chaque étape s'ouvre automatiquement.
 
-- **Races** (`races.yml`) : Humain, Elfe, Nain, Orc, Tieffelin, Félys. Bonus, défauts, effets permanents, et **malus si la race n'est pas faite pour la classe** (ex. Nain mage, Orc prêtre).
+- **Races** (`races.yml`) : Humain, Elfe, Nain, Orc, Tieffelin, Félys. Bonus, faiblesses, effets permanents, et **malus si la race n'est pas faite pour la classe** (ex. Nain mage, Orc prêtre).
 - **Traits** (`traits.yml`) : 3 traits tirés au hasard, positifs, négatifs ou mixtes, avec rareté. **Traits uniques** : un seul joueur du serveur peut les obtenir (1 % de chance). Relances limitées (3 par défaut), `/traits relancer`.
-- **Faiblesses** (`weaknesses.yml`) : imposées à une race ou une classe, ou tirées au hasard avec des chances propres à chaque race et classe. Vulnérabilités (feu, chute, morts-vivants…), malus de nuit, sous la pluie, dans certains biomes ou à PV bas, dégâts réguliers. `/faiblesses`.
+- **Faiblesses** (`weaknesses.yml`) : un seul menu `/faiblesses` regroupe toutes les faiblesses du personnage (classe, race, traits). Des faiblesses réutilisables peuvent être imposées à une race ou une classe (`weaknesses: [id]`), ou tirées au hasard avec des chances propres à chaque race et classe. Vulnérabilités (feu, chute, morts-vivants…), malus de nuit, sous la pluie, dans certains biomes ou à PV bas, dégâts réguliers. `/faiblesses`.
 - **Métier** (`jobs.yml`) : un seul par joueur (Mineur, Forgeron, Joaillier, Bûcheron, Fermier, Alchimiste, Enchanteur, Pêcheur, Dresseur). Certaines actions sont réservées : miner le diamant, fabriquer des armures, utiliser l'alambic, l'enclume, pêcher…
 
 ## Progression
@@ -124,7 +124,7 @@ Permissions : `cykclasses.use`, `cykclasses.reset` (tout le monde), `cykclasses.
 ## Configuration
 
 - `config.yml` — **modules** (activer ou désactiver races, traits, faiblesses, métiers, arbre, attributs, groupes, forge, gemmes, kits, restrictions), stockage, courbe d'XP, XP par monstre, mana, mode compétences, HUD, reset.
-- `classes.yml` — classes, sous-classes, stats, défauts, conditions et compétences (le haut du fichier documente tous les types disponibles).
+- `classes.yml` — classes, sous-classes, stats, faiblesses, conditions et compétences (le haut du fichier documente tous les types disponibles).
 - `races.yml`, `traits.yml`, `weaknesses.yml`, `skilltree.yml`, `attributes.yml`, `jobs.yml`, `forge.yml`, `gems.yml`, `kits.yml`, `items.yml` — personnage, métiers, artisanat, objets.
 - `hud.yml` — XP gagnée, dégâts flottants, PV des cibles, panneau du groupe.
 - `messages.yml` — tous les textes au format [MiniMessage](https://docs.advntr.dev/minimessage/format.html).

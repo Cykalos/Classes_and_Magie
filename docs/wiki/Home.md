@@ -9,7 +9,7 @@
 ## Parcours d'un joueur
 
 1. **Classe** (`/classe`) : Guerrier, Mage, Archer, Assassin, Clerc → kit de départ.
-2. **Race** (`/race`) : bonus, défauts, et malus si la race ne convient pas à la classe.
+2. **Race** (`/race`) : bonus, faiblesses, et malus si la race ne convient pas à la classe.
 3. **Traits** (`/traits`) : 3 traits tirés au hasard, relances limitées, traits uniques.
 4. **Faiblesses** (`/faiblesses`) : imposées par la race ou la classe, ou tirées au hasard selon elles.
 5. **Métier** (`/metier`) : un seul métier, qui débloque des actions et des recettes par niveau.
@@ -20,11 +20,11 @@
 | Page | Contenu |
 |---|---|
 | [Installation](Installation.md) | Prérequis, plugins compatibles, fichiers de configuration |
-| [Classes](Classes.md) | Classes, sous-classes, stats, défauts, conditions |
+| [Classes](Classes.md) | Classes, sous-classes, stats, faiblesses, conditions |
 | [Compétences et mana](Compétences-et-mana.md) | Barre de compétences, mana, types de compétences, MythicMobs |
 | [Niveaux et XP](Niveaux-et-XP.md) | Courbe d'XP, XP par monstre |
 | [Races et traits](Races-et-traits.md) | Races, malus de classe, traits et traits uniques |
-| [Faiblesses](Faiblesses.md) | Faiblesses imposées et aléatoires, conditions des défauts |
+| [Faiblesses](Faiblesses.md) | Toutes les faiblesses : imposées, aléatoires, conditions |
 | [Progression](Progression.md) | Arbre de compétences et attributs |
 | [Métiers](Métiers.md) | Métiers, restrictions, niveaux, recettes, spécialisations |
 | [Forge](Forge.md) | Raretés, stats aléatoires, objets uniques |

@@ -31,6 +31,10 @@ public final class Messages {
         if (added > 0) {
             plugin.getLogger().info(added + " message(s) absent(s) de messages.yml : texte par défaut utilisé.");
         }
+        // Anciens textes par défaut remplacés dans une nouvelle version (si l'admin ne les a pas modifiés)
+        if ("<red>Défauts :".equals(yaml.getString("gui.flaws-header"))) {
+            yaml.set("gui.flaws-header", "<red>Faiblesses :");
+        }
         prefix = yaml.getString("prefix", "");
     }
 

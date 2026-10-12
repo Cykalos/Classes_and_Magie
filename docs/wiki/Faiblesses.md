@@ -2,12 +2,13 @@
 
 Fichier : `weaknesses.yml`. Commande : `/faiblesses` (alias `/weaknesses`).
 
-Les faiblesses (vulnérabilités) s'ajoutent aux défauts de classe et de race. Il en existe deux sortes :
+Pour le joueur, tout ce qui pénalise son personnage est une **faiblesse**. Le menu `/faiblesses` les regroupe toutes, avec leur origine :
 
-- **Imposées** : toujours appliquées à une race, une classe ou une sous-classe.
-- **Aléatoires** : tirées après les traits, avec des chances qui dépendent de la race et de la classe du joueur.
+- **Classe**, **race** et **traits** : écrites directement dans `classes.yml`, `races.yml` ou `traits.yml` (clé `flaws`).
+- **Imposées** : faiblesses de `weaknesses.yml` toujours appliquées à une race, une classe ou une sous-classe.
+- **Tirées au hasard** : après les traits, avec des chances qui dépendent de la race et de la classe du joueur. Le joueur peut relancer le tirage s'il lui reste des relances.
 
-Le menu montre l'origine de chaque faiblesse, et le joueur peut relancer le tirage s'il lui reste des relances.
+Dans les fichiers, `flaws` (faiblesse écrite sur place) et `weaknesses.yml` (faiblesse réutilisable) utilisent exactement les mêmes types et les mêmes conditions.
 
 ## Tirage
 
@@ -22,15 +23,33 @@ roll:
 
 ## Faiblesses imposées
 
+Deux façons de faire, au choix :
+
+**Dans la race ou la classe** (recommandé, tout est au même endroit) :
+
+```yaml
+# races.yml
+nain:
+  weaknesses: [vertige]
+
+# classes.yml (classe ou sous-classe ; une sous-classe hérite de celles de sa classe, sauf inherit-flaws: false)
+pyromancien:
+  weaknesses: [vulnerable_au_feu]
+```
+
+**Ou dans `weaknesses.yml`** :
+
 ```yaml
 predefined:
   races:
-    demon: [sang_infernal]
+    elfe: [claustrophobe]
   classes:
-    pyromancien: [frileux]   # classes et sous-classes
+    pyromancien: [vulnerable_au_feu]
 ```
 
-Une faiblesse imposée n'est jamais tirée une seconde fois. Avec `weight: 0`, une faiblesse n'est **jamais** tirée au hasard : elle sert uniquement de faiblesse imposée.
+Imposées par défaut : Elfe → *Claustrophobe*, Nain → *Vertige*, Orc → *Mauvais tireur*, Tieffelin → *Sang infernal*, Félys → *Frileux*. L'Humain n'en a aucune.
+
+Une faiblesse imposée n'est jamais tirée une seconde fois. Les exclusions (`exclude-races`, `exclude-classes`) s'appliquent aussi aux faiblesses imposées : un Orc guerrier n'a pas *Mauvais tireur*, puisque le guerrier est déjà pénalisé à distance. Avec `weight: 0`, une faiblesse n'est **jamais** tirée au hasard : elle sert uniquement de faiblesse imposée.
 
 ## Définir une faiblesse
 
@@ -60,9 +79,9 @@ weaknesses:
 
 **Chance réelle** = `weight` × multiplicateur de la race × multiplicateur de la classe × multiplicateur de la sous-classe. Si l'un vaut 0, la faiblesse ne peut pas être tirée pour ce personnage.
 
-Faiblesses fournies : Hydrophobe, Photosensible, Vulnérable au feu, Frileux, Os fragiles, Proie des morts, Peur du noir, Mana instable, Mauvais tireur, Panique, Vertige, Claustrophobe, Anémie, Maudit par la lune, Sang infernal (Tieffelin).
+Faiblesses fournies : Hydrophobe, Photosensible, Vulnérable au feu, Frileux, Os fragiles, Proie des morts, Peur du noir, Mana instable, Mauvais tireur, Panique, Vertige, Claustrophobe, Anémie, Maudit par la lune, Sang infernal (Tieffelin). Leurs exclusions évitent les doublons avec les faiblesses déjà présentes dans les classes et les races (un Félys ne tire jamais *Hydrophobe*, il déteste déjà l'eau).
 
-## Types de défauts
+## Types de faiblesses
 
 | Type | Paramètres | Effet |
 |---|---|---|
@@ -83,7 +102,7 @@ Faiblesses fournies : Hydrophobe, Photosensible, Vulnérable au feu, Frileux, Os
 
 ## Conditions
 
-Chaque défaut peut avoir un bloc `conditions`. Il ne s'applique que si **toutes** sont vraies.
+Chaque faiblesse peut avoir un bloc `conditions`. Il ne s'applique que si **toutes** sont vraies.
 
 | Condition | Exemple | Vrai quand… |
 |---|---|---|
@@ -119,7 +138,7 @@ flaws:
     description: "+20% de dégâts la nuit"
 ```
 
-`DAMAGE_DEALT` avec un multiplicateur supérieur à 1 devient un **bonus** : les défauts servent aussi à créer des avantages conditionnels.
+`DAMAGE_DEALT` avec un multiplicateur supérieur à 1 devient un **bonus** : les faiblesses servent aussi à créer des avantages conditionnels.
 
 ## Administration
 

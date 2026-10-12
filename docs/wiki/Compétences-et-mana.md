@@ -56,7 +56,7 @@ Le mana et la recharge sont gérés par CykClasses, l'effet par MythicMobs.
 
 - Maximum et régénération venant de la classe, du niveau, de la race, des traits, des attributs, de l'arbre, de l'équipement.
 - `config.yml → mana` : `regen-interval-ticks`, `regen-in-combat`, `combat-regen-multiplier` (régénération réduite 5 s après un coup).
-- Le défaut `DARKNESS_MANA_BLOCK` coupe la régénération dans le noir.
+- La faiblesse `DARKNESS_MANA_BLOCK` coupe la régénération dans le noir.
 
 ## Ce qu'on ne peut pas faire
 

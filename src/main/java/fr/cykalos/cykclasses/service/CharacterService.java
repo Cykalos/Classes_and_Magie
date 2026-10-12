@@ -282,7 +282,17 @@ public final class CharacterService {
             return List.of();
         }
         String race = plugin.modules().races() ? p.getRaceId() : null;
-        return plugin.content().predefinedWeaknesses(race, p.getClassId(), p.getSubclassId());
+        List<Weakness> out = new ArrayList<>();
+        for (Weakness w : plugin.content().predefinedWeaknesses(race, p.getClassId(), p.getSubclassId())) {
+            // exclude-races / exclude-classes s'appliquent aussi aux faiblesses imposées (évite les doublons)
+            boolean excluded = (race != null && w.excludeRaces().contains(race))
+                    || w.excludeClasses().contains(p.getClassId())
+                    || (p.getSubclassId() != null && w.excludeClasses().contains(p.getSubclassId()));
+            if (!excluded) {
+                out.add(w);
+            }
+        }
+        return out;
     }
 
     public List<Weakness> rolledOf(PlayerProfile p) {

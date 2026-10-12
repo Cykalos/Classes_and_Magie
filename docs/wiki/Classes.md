@@ -29,7 +29,10 @@ Une sous-classe garde les compétences de sa classe et en ajoute 2 ou 3. Le choi
 
 Ces clés sont les mêmes partout : races, traits, métiers, attributs, arbre, forge, gemmes.
 
-## Défauts (`flaws`)
+## Faiblesses (`flaws`)
+
+Les faiblesses propres à une classe s'écrivent directement dans sa clé `flaws`. Pour imposer une faiblesse réutilisable de `weaknesses.yml`, ajouter `weaknesses: [id]` (voir [Faiblesses](Faiblesses.md)).
+
 
 | Type | Paramètres | Exemple |
 |---|---|---|
@@ -46,7 +49,7 @@ Ces clés sont les mêmes partout : races, traits, métiers, attributs, arbre, f
 | `EFFECT` | `effects` (`"slowness:1"`) | Ralenti dans l'eau |
 | `PERIODIC_DAMAGE` | `damage`, `interval` (s), `fire-ticks` | Brûle au soleil comme un vampire |
 
-**Tous les défauts acceptent des conditions** : ils ne s'appliquent que lorsqu'elles sont toutes vraies.
+**Toutes les faiblesses acceptent des conditions** : ils ne s'appliquent que lorsqu'elles sont toutes vraies.
 
 ```yaml
 flaws:
@@ -60,7 +63,7 @@ flaws:
 
 Conditions disponibles : `time`, `weather`, `dimensions`, `worlds`, `biomes`, `light-below`, `light-above`, `under-sky`, `in-water`, `in-rain`, `in-lava`, `health-below`, `health-above`, `y-below`, `y-above`, `sneaking`, `sprinting`, `gliding`, `holding`, `wearing`, `permission`, `chance`. Détail sur la page [Faiblesses](Faiblesses.md#conditions).
 
-`inherit-flaws: false` sur une sous-classe pour ne pas reprendre les défauts du parent.
+`inherit-flaws: false` sur une sous-classe pour ne pas reprendre les faiblesses du parent.
 
 ## Conditions des sous-classes (`requirements`)
 

@@ -25,7 +25,7 @@
 | Fichier | Rôle |
 |---|---|
 | `config.yml` | Stockage (`YAML`, `JSON`, `SQLITE`), courbe d'XP, XP par monstre, mana, mode compétences, chat, groupes |
-| `classes.yml` | Classes, sous-classes, stats, défauts, conditions, compétences |
+| `classes.yml` | Classes, sous-classes, stats, faiblesses, conditions, compétences |
 | `races.yml` · `traits.yml` | Races et traits |
 | `weaknesses.yml` | Faiblesses imposées et aléatoires |
 | `skilltree.yml` · `attributes.yml` | Arbre de compétences et attributs |

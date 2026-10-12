@@ -12,7 +12,7 @@ Chaque joueur crée un vrai personnage : il choisit une classe, une race, reçoi
 
 Contenu fourni par défaut :
 
-- **5 classes** : Guerrier, Mage, Archer, Assassin, Clerc, chacune avec ses statistiques, ses défauts et ses compétences.
+- **5 classes** : Guerrier, Mage, Archer, Assassin, Clerc, chacune avec ses statistiques, ses faiblesses et ses compétences.
 - **10 sous-classes** débloquées par des conditions : niveau, éliminations, sorts lancés, dégâts infligés, soins prodigués…
 - **36 compétences** : charge, boule de feu, pluie de météores, nova de givre, pas de l'ombre, parade, racines, jugement…
 - **Barre de compétences** : la touche **F** remplace la barre d'objets par les icônes des compétences, les touches **1 à 8** les lancent. Recharge et mana visibles sur chaque icône, icônes personnalisables par resource pack.
@@ -20,7 +20,7 @@ Contenu fourni par défaut :
 
 ## 🧬 Création du personnage
 
-- **6 races** (Humain, Elfe, Nain, Orc, Tieffelin, Félys) avec bonus, défauts, effets permanents et **malus** si la race ne convient pas à la classe.
+- **6 races** (Humain, Elfe, Nain, Orc, Tieffelin, Félys) avec bonus, faiblesses, effets permanents et **malus** si la race ne convient pas à la classe.
 - **Traits aléatoires** positifs, négatifs ou mixtes, avec relances limitées.
 - **Traits uniques** : un seul joueur sur tout le serveur peut porter chacun d'eux.
 - **Faiblesses** imposées par la race ou la classe, ou tirées au hasard selon elles : vulnérable au feu, proie des morts-vivants, maudit par la lune…
@@ -53,7 +53,7 @@ Tout se règle dans des fichiers YAML commentés, avec des exemples :
 
 | Fichier | Ce que vous pouvez créer ou modifier |
 |---|---|
-| `classes.yml` | Classes, sous-classes, stats, défauts, conditions de déblocage, compétences |
+| `classes.yml` | Classes, sous-classes, stats, faiblesses, conditions de déblocage, compétences |
 | `races.yml` · `traits.yml` | Races, malus selon la classe, traits et traits uniques |
 | `weaknesses.yml` | Faiblesses imposées ou aléatoires, avec chances par race et par classe |
 | `jobs.yml` | Métiers, spécialisations, actions réservées, recettes par niveau, XP |
@@ -65,9 +65,9 @@ Tout se règle dans des fichiers YAML commentés, avec des exemples :
 **Bon à savoir**
 
 - Les compétences s'appuient sur une trentaine de **mécaniques fournies** (projectile, zone, soin, charge, téléportation, invisibilité…) entièrement réglables : dégâts, portée, durée, mana, recharge, icône. Pour une mécanique totalement nouvelle, utilisez une compétence **MythicMobs** (type `MYTHIC`, sans code) ou l'**API Java**.
-- **Défauts conditionnels** : chaque défaut ou faiblesse peut ne s'appliquer que la nuit, sous la pluie, dans un biome, un monde, à PV bas, en altitude, avec un objet en main… (une vingtaine de conditions combinables).
+- **Faiblesses conditionnelles** : chaque faiblesse peut ne s'appliquer que la nuit, sous la pluie, dans un biome, un monde, à PV bas, en altitude, avec un objet en main… (une vingtaine de conditions combinables).
 - **Modules** : désactivez races, traits, faiblesses, métiers, arbre, attributs, groupes, forge, gemmes, kits ou restrictions d'objets dans `config.yml`.
-- Les types de défauts, de conditions et d'actions de métier sont prédéfinis, mais se combinent librement.
+- Les types de faiblesses, de conditions et d'actions de métier sont prédéfinis, mais se combinent librement.
 - Une classe et une sous-classe par joueur, un seul métier, jusqu'à 8 compétences dans la barre.
 - Les commandes sont en français, avec des alias anglais (`/class`, `/job`, `/party`, `/skill`).
 
