@@ -7,6 +7,7 @@
 #   effects     : effets permanents ("night_vision:1", "speed:1"...)
 #   recommended-classes : affichées comme recommandées
 #   class-penalties : malus si la race joue une classe (ou sous-classe) pour laquelle elle n'est pas faite
+#   weaknesses  : faiblesses imposées à la race (identifiants de weaknesses.yml)
 
 races:
   humain:
@@ -40,6 +41,8 @@ races:
         multiplier: 1.1
         description: "+10% de dégâts au corps à corps"
     recommended-classes: [archer, mage, clerc]
+    # Faiblesses imposées (définies dans weaknesses.yml)
+    weaknesses: [claustrophobe]
     class-penalties:
       guerrier:
         description: "Trop frêle pour l'armure lourde du guerrier."
@@ -67,6 +70,7 @@ races:
         multiplier: 1.5
         description: "Nage mal : +50% de dégâts de noyade"
     recommended-classes: [guerrier, clerc]
+    weaknesses: [vertige]
     class-penalties:
       mage:
         description: "Les nains se méfient de la magie pure."
@@ -96,6 +100,7 @@ races:
       - type: SUNLIGHT_WEAKNESS
         description: "Affaibli en plein soleil"
     recommended-classes: [guerrier, assassin]
+    weaknesses: [mauvais_tireur]
     class-penalties:
       mage:
         description: "La magie résiste à l'esprit orc."
@@ -128,6 +133,7 @@ races:
         multiplier: 0.8
         description: "Soins reçus -20%"
     recommended-classes: [mage, assassin]
+    weaknesses: [sang_infernal]
     class-penalties:
       clerc:
         description: "La magie sacrée brûle le sang démoniaque."
@@ -164,6 +170,7 @@ races:
         multiplier: 0.5
         description: "Bonus : -50% de dégâts de chute"
     recommended-classes: [assassin, archer]
+    weaknesses: [frileux]
     class-penalties:
       guerrier:
         description: "Trop léger pour encaisser en première ligne."

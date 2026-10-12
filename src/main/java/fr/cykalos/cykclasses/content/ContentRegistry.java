@@ -40,6 +40,7 @@ public final class ContentRegistry {
     /** classe ou sous-classe -> faiblesses imposées */
     private final Map<String, List<String>> classWeaknesses = new HashMap<>();
     private YamlConfiguration weaknessesConfig;
+    private final Set<String> warnedClassWeaknesses = new java.util.HashSet<>();
     private YamlConfiguration traitsConfig;
     private YamlConfiguration jobsConfig;
     private YamlConfiguration treeConfig;
@@ -159,6 +160,10 @@ public final class ContentRegistry {
             if (s == null) {
                 continue;
             }
+            List<String> imposed = lower(s.getStringList("weaknesses"));
+            if (!imposed.isEmpty()) {
+                raceWeaknesses.computeIfAbsent(id.toLowerCase(Locale.ROOT), k -> new ArrayList<>()).addAll(imposed);
+            }
             Map<String, Race.Affinity> penalties = new HashMap<>();
             ConfigurationSection pen = s.getConfigurationSection("class-penalties");
             if (pen != null) {
@@ -229,6 +234,15 @@ public final class ContentRegistry {
         }
         readPredefined(y.getConfigurationSection("predefined.races"), raceWeaknesses);
         readPredefined(y.getConfigurationSection("predefined.classes"), classWeaknesses);
+        // Faiblesses imposées dans races.yml (weaknesses: [...]) : on retire les identifiants inconnus.
+        raceWeaknesses.forEach((race, ids) -> ids.removeIf(w -> {
+            boolean unknown = !weaknesses.containsKey(w);
+            if (unknown) {
+                plugin.getLogger().warning("races.yml : faiblesse inconnue « " + w + " » (race " + race + ")");
+            }
+            return unknown;
+        }));
+        warnedClassWeaknesses.clear();
     }
 
     private void readPredefined(ConfigurationSection section, Map<String, List<String>> into) {
@@ -244,7 +258,7 @@ public final class ContentRegistry {
                     plugin.getLogger().warning("weaknesses.yml : faiblesse imposée inconnue « " + w + " » (" + owner + ")");
                 }
             }
-            into.put(owner.toLowerCase(Locale.ROOT), ids);
+            into.computeIfAbsent(owner.toLowerCase(Locale.ROOT), k -> new ArrayList<>()).addAll(ids);
         }
     }
 
@@ -480,8 +494,24 @@ public final class ContentRegistry {
         if (subclassId != null) {
             ids.addAll(classWeaknesses.getOrDefault(subclassId.toLowerCase(Locale.ROOT), List.of()));
         }
+        // Faiblesses imposées dans classes.yml (weaknesses: [...]) de la sous-classe (ou de la classe)
+        var rc = plugin.classes() == null ? null
+                : plugin.classes().get(subclassId != null ? subclassId : classId);
+        if (rc == null && classId != null && plugin.classes() != null) {
+            rc = plugin.classes().get(classId);
+        }
+        if (rc != null) {
+            ids.addAll(rc.weaknessIds());
+        }
         List<Weakness> out = new ArrayList<>();
-        ids.forEach(id -> out.add(weaknesses.get(id)));
+        for (String id : ids) {
+            Weakness w = weaknesses.get(id);
+            if (w != null) {
+                out.add(w);
+            } else if (warnedClassWeaknesses.add(id)) {
+                plugin.getLogger().warning("classes.yml : faiblesse inconnue « " + id + " »");
+            }
+        }
         return out;
     }
     public YamlConfiguration jobsConfig() { return jobsConfig; }

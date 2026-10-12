@@ -1,10 +1,14 @@
 # ╔══════════════════════════════════════════════╗
 # ║           CykClasses - weaknesses.yml        ║
 # ╚══════════════════════════════════════════════╝
-# Faiblesses / vulnérabilités du personnage, en plus des défauts de classe et de race.
-#   - IMPOSÉES : définies dans « predefined », toujours appliquées à une race ou une classe.
+# Faiblesses du personnage. Pour le joueur, tout est une « faiblesse » : celles écrites directement dans
+# classes.yml / races.yml / traits.yml (clé flaws) et celles de ce fichier, réutilisables partout.
+#   - IMPOSÉES : toujours appliquées à une race ou une classe. Deux façons de les imposer :
+#       • dans races.yml ou classes.yml :   weaknesses: [hydrophobe]   (recommandé, tout est au même endroit)
+#       • ou ici, dans la section « predefined » ci-dessous.
 #   - ALÉATOIRES : tirées après les traits, avec des chances qui dépendent de la race et de la classe.
-# Le joueur les consulte avec /faiblesses. Module activable dans config.yml → modules.weaknesses.
+# Le joueur voit TOUTES ses faiblesses (classe, race, traits, imposées, tirées) avec /faiblesses.
+# Module activable dans config.yml → modules.weaknesses.
 
 roll:
   # Tirage aléatoire activé ? (false = uniquement les faiblesses imposées)
@@ -17,13 +21,14 @@ roll:
   # Afficher le menu pendant la création du personnage (false = tirage silencieux)
   show-step: true
 
-# Faiblesses imposées : clé = id de race, de classe ou de sous-classe → liste de faiblesses.
+# Autre façon d'imposer des faiblesses : clé = id de race, de classe ou de sous-classe → liste.
+# Par défaut, elles sont imposées directement dans races.yml (weaknesses: [...]).
 # Une faiblesse imposée n'est jamais tirée en double.
 predefined:
-  races:
-    demon: [sang_infernal]
-  classes:
-    pyromancien: [frileux]
+  races: {}
+  #  elfe: [claustrophobe]
+  classes: {}
+  #  pyromancien: [vulnerable_au_feu]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Une faiblesse :
@@ -62,7 +67,9 @@ weaknesses:
     severity: "<gray>Faiblesse mineure"
     description: ["<gray>L'eau te glace le sang."]
     weight: 10
-    race-weights: {felin: 3, nain: 2}
+    # Félys et Tieffelins sont déjà faibles dans l'eau, les Nains se noient déjà plus vite
+    exclude-races: [felin, demon, nain]
+    exclude-classes: [pyromancien]
     flaws:
       - type: EFFECT
         effects: ["slowness:1"]
@@ -80,6 +87,7 @@ weaknesses:
     description: ["<gray>Le soleil te brûle les yeux."]
     weight: 8
     race-weights: {demon: 3}
+    exclude-races: [orc]
     exclude-classes: [assassin, ombre, duelliste]
     flaws:
       - type: EFFECT
@@ -94,9 +102,9 @@ weaknesses:
     description: ["<gray>Les flammes te dévorent plus vite."]
     weight: 10
     race-weights: {elfe: 2, felin: 2}
-    class-weights: {cryomancien: 3}
     exclude-races: [demon]
-    exclude-classes: [pyromancien]
+    # déjà vulnérables au feu par leur classe
+    exclude-classes: [pyromancien, cryomancien, druide]
     flaws:
       - type: DAMAGE_TAKEN
         causes: [FIRE, FIRE_TICK, LAVA, HOT_FLOOR, CAMPFIRE]
@@ -110,6 +118,7 @@ weaknesses:
     description: ["<gray>Le froid te paralyse."]
     weight: 8
     race-weights: {demon: 2}
+    exclude-classes: [pyromancien]
     flaws:
       - type: EFFECT
         effects: ["slowness:1", "mining_fatigue:1"]
@@ -127,6 +136,8 @@ weaknesses:
     description: ["<gray>La moindre chute peut te briser."]
     weight: 10
     race-weights: {nain: 0.3, orc: 0.5}
+    exclude-races: [felin]
+    exclude-classes: [paladin]
     flaws:
       - type: DAMAGE_TAKEN
         causes: [FALL]
@@ -179,7 +190,8 @@ weaknesses:
     severity: "<gray>Faiblesse mineure"
     description: ["<gray>Tu vises… à côté."]
     weight: 8
-    exclude-classes: [archer, chasseur, rodeur]
+    # déjà pénalisés à distance par leur classe
+    exclude-classes: [archer, chasseur, rodeur, guerrier, berserker, paladin, duelliste, clerc, pretre]
     flaws:
       - type: DAMAGE_DEALT
         kinds: [RANGED]
@@ -205,7 +217,6 @@ weaknesses:
     severity: "<gray>Faiblesse mineure"
     description: ["<gray>Le vide t'attire."]
     weight: 6
-    race-weights: {nain: 3}
     exclude-races: [felin]
     flaws:
       - type: EFFECT
@@ -220,7 +231,6 @@ weaknesses:
     description: ["<gray>Sous terre, tu étouffes."]
     weight: 6
     exclude-races: [nain]
-    race-weights: {elfe: 2}
     flaws:
       - type: EFFECT
         effects: ["slowness:1"]
@@ -233,6 +243,9 @@ weaknesses:
     severity: "<gold>Faiblesse moyenne"
     description: ["<gray>Ton sang se renouvelle mal."]
     weight: 6
+    # soins déjà réduits
+    exclude-races: [demon]
+    exclude-classes: [berserker, ombre]
     stats: {health: -2}
     flaws:
       - type: HEALING_REDUCTION
@@ -252,18 +265,18 @@ weaknesses:
         conditions: {time: NIGHT, under-sky: true, weather: [CLEAR], dimensions: [NORMAL]}
         description: "Perd ½ ❤ toutes les 20 s sous la lune"
 
-  # Uniquement imposée (weight: 0) : voir predefined.races.demon
+  # Uniquement imposée (weight: 0) : voir races.yml → demon
   sang_infernal:
     name: "<dark_red>Sang infernal"
     icon: MAGMA_CREAM
     severity: "<red>Faiblesse de race"
-    description: ["<gray>L'eau et le froid éteignent ta flamme."]
+    description: ["<gray>Le froid et la pluie éteignent ta flamme."]
     weight: 0
     flaws:
       - type: DAMAGE_TAKEN
-        causes: [DROWNING, FREEZE]
+        causes: [FREEZE]
         multiplier: 1.5
-        description: "+50% de dégâts de noyade et de gel"
+        description: "+50% de dégâts de gel"
       - type: EFFECT
         effects: ["weakness:1"]
         conditions: {in-rain: true}

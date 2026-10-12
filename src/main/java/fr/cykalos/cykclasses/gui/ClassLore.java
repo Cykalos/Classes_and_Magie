@@ -33,21 +33,18 @@ final class ClassLore {
         lore.add(Text.item("<gray>• Dégâts subis " + colorInverse(s.damageTaken)
                 + (s.speed != 0 ? " · Vitesse " + color(1 + s.speed) : "")
                 + (s.critChance > 0 ? " · Critique <yellow>" + Math.round(s.critChance * 100) + "%" : "")));
+        // Faiblesses : défauts de la classe + faiblesses imposées, sous un seul titre
         List<Flaw> flaws = rc.flaws();
-        if (!flaws.isEmpty()) {
+        var imposed = plugin.modules().weaknesses()
+                ? plugin.content().predefinedWeaknesses(null, rc.root().id, rc.isSubclass() ? rc.id : null)
+                : List.<fr.cykalos.cykclasses.content.Weakness>of();
+        if (!flaws.isEmpty() || !imposed.isEmpty()) {
             lore.add(Component.empty());
             lore.add(plugin.messages().item("gui.flaws-header"));
             for (Flaw f : flaws) {
                 lore.add(Text.item("<red>• </red><gray>" + f.description));
             }
-        }
-        if (plugin.modules().weaknesses()) {
-            var imposed = plugin.content().predefinedWeaknesses(null, rc.root().id, rc.isSubclass() ? rc.id : null);
-            if (!imposed.isEmpty()) {
-                lore.add(Component.empty());
-                lore.add(plugin.messages().item("weaknesses.header"));
-                imposed.forEach(w -> lore.add(Text.item("<red>• </red>" + w.name())));
-            }
+            imposed.forEach(w -> lore.add(Text.item("<red>• </red>" + w.name())));
         }
         if (!rc.skills().isEmpty()) {
             lore.add(Component.empty());

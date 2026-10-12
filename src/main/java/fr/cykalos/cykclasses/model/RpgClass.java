@@ -25,13 +25,15 @@ public final class RpgClass {
     public final ClassStats stats;
     private final List<Flaw> ownFlaws;
     private final boolean inheritFlaws;
+    private final List<String> ownWeaknesses;
     private final Map<String, SkillDefinition> ownSkills;
     private final List<Requirement> requirements;
     private final Map<String, RpgClass> subclasses = new LinkedHashMap<>();
 
     private RpgClass(String id, String name, Material icon, List<String> description, RpgClass parent,
-                     ClassStats stats, List<Flaw> ownFlaws, boolean inheritFlaws,
+                     ClassStats stats, List<Flaw> ownFlaws, boolean inheritFlaws, List<String> ownWeaknesses,
                      Map<String, SkillDefinition> ownSkills, List<Requirement> requirements) {
+        this.ownWeaknesses = ownWeaknesses;
         this.id = id;
         this.name = name;
         this.icon = icon;
@@ -88,6 +90,7 @@ public final class RpgClass {
                 stats,
                 flaws,
                 s.getBoolean("inherit-flaws", true),
+                s.getStringList("weaknesses").stream().map(w -> w.toLowerCase(Locale.ROOT)).toList(),
                 skills,
                 reqs
         );
@@ -133,6 +136,16 @@ public final class RpgClass {
         }
         List<Flaw> all = new ArrayList<>(parent.flaws());
         all.addAll(ownFlaws);
+        return all;
+    }
+
+    /** Faiblesses imposées par cette classe (weaknesses: [...]), héritées du parent sauf inherit-flaws: false. */
+    public List<String> weaknessIds() {
+        if (parent == null || !inheritFlaws) {
+            return ownWeaknesses;
+        }
+        List<String> all = new ArrayList<>(parent.weaknessIds());
+        all.addAll(ownWeaknesses);
         return all;
     }
 

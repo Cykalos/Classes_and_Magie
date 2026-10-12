@@ -47,18 +47,16 @@ public final class RaceGui extends Gui {
             if (!race.effects().isEmpty()) {
                 race.effects().forEach(e -> b.lore("<gray>• <aqua>" + e.type().getKey().getKey().replace('_', ' ') + " " + (e.amplifier() + 1)));
             }
-            if (!race.flaws().isEmpty()) {
+            // Faiblesses : défauts de la race + faiblesses imposées, sous un seul titre
+            var imposed = plugin.modules().weaknesses()
+                    ? plugin.content().predefinedWeaknesses(race.id(), null, null)
+                    : java.util.List.<fr.cykalos.cykclasses.content.Weakness>of();
+            if (!race.flaws().isEmpty() || !imposed.isEmpty()) {
                 b.lore("").lore(plugin.messages().raw("gui.flaws-header"));
                 for (Flaw f : race.flaws()) {
                     b.lore("<red>• </red><gray>" + f.description);
                 }
-            }
-            if (plugin.modules().weaknesses()) {
-                var imposed = plugin.content().predefinedWeaknesses(race.id(), null, null);
-                if (!imposed.isEmpty()) {
-                    b.lore("").lore(plugin.messages().raw("weaknesses.header"));
-                    imposed.forEach(w -> b.lore("<red>• </red>" + w.name()));
-                }
+                imposed.forEach(w -> b.lore("<red>• </red>" + w.name()));
             }
             b.lore("");
             Race.Affinity pen = race.penaltyFor(p.getClassId(), p.getSubclassId());
