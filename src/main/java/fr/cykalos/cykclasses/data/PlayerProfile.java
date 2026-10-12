@@ -27,6 +27,9 @@ public final class PlayerProfile {
     private List<String> traits = new ArrayList<>();
     private boolean traitsRolled;
     private int rerollsUsed;
+    private List<String> weaknesses = new ArrayList<>();
+    private boolean weaknessesRolled;
+    private int weaknessRerollsUsed;
     private String jobId;
     private long jobChangedAt;
     private boolean jobPromptDone;
@@ -68,6 +71,7 @@ public final class PlayerProfile {
         if (counters == null) counters = new HashMap<>();
         if (cooldowns == null) cooldowns = new HashMap<>();
         if (traits == null) traits = new ArrayList<>();
+        if (weaknesses == null) weaknesses = new ArrayList<>();
         if (attributes == null) attributes = new HashMap<>();
         if (treeNodes == null) treeNodes = new HashMap<>();
         if (kitsReceived == null) kitsReceived = new ArrayList<>();
@@ -119,6 +123,12 @@ public final class PlayerProfile {
     public void setTraits(List<String> traits) { this.traits = new ArrayList<>(traits); markDirty(); }
     public boolean isTraitsRolled() { return traitsRolled; }
     public void setTraitsRolled(boolean rolled) { this.traitsRolled = rolled; markDirty(); }
+    public List<String> getWeaknesses() { return weaknesses; }
+    public void setWeaknesses(List<String> ids) { this.weaknesses = new ArrayList<>(ids); markDirty(); }
+    public boolean isWeaknessesRolled() { return weaknessesRolled; }
+    public void setWeaknessesRolled(boolean rolled) { this.weaknessesRolled = rolled; markDirty(); }
+    public int getWeaknessRerollsUsed() { return weaknessRerollsUsed; }
+    public void setWeaknessRerollsUsed(int used) { this.weaknessRerollsUsed = Math.max(0, used); markDirty(); }
     public int getRerollsUsed() { return rerollsUsed; }
     public void setRerollsUsed(int used) { this.rerollsUsed = Math.max(0, used); markDirty(); }
     public String getJobId() { return jobId; }
@@ -214,6 +224,9 @@ public final class PlayerProfile {
         map.put("traits", new ArrayList<>(traits));
         map.put("traits-rolled", traitsRolled);
         map.put("rerolls-used", rerollsUsed);
+        map.put("weaknesses", new ArrayList<>(weaknesses));
+        map.put("weaknesses-rolled", weaknessesRolled);
+        map.put("weakness-rerolls-used", weaknessRerollsUsed);
         map.put("job", jobId);
         map.put("job-changed-at", jobChangedAt);
         map.put("job-prompt-done", jobPromptDone);
@@ -254,6 +267,11 @@ public final class PlayerProfile {
         }
         p.traitsRolled = Boolean.TRUE.equals(map.get("traits-rolled"));
         p.rerollsUsed = map.get("rerolls-used") instanceof Number n ? n.intValue() : 0;
+        if (map.get("weaknesses") instanceof List<?> wl) {
+            wl.forEach(o -> p.weaknesses.add(String.valueOf(o)));
+        }
+        p.weaknessesRolled = Boolean.TRUE.equals(map.get("weaknesses-rolled"));
+        p.weaknessRerollsUsed = map.get("weakness-rerolls-used") instanceof Number n ? n.intValue() : 0;
         p.jobId = (String) map.get("job");
         p.jobChangedAt = map.get("job-changed-at") instanceof Number n ? n.longValue() : 0;
         p.jobPromptDone = Boolean.TRUE.equals(map.get("job-prompt-done"));

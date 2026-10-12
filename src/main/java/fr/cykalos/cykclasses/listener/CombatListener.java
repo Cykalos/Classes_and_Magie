@@ -119,6 +119,14 @@ public final class CombatListener implements Listener {
                         attacker.setHealth(Math.min(max.getValue(), attacker.getHealth() + heal));
                     }
                 }
+                Flaw.Kind flawKind = skill ? Flaw.Kind.SKILL : kind == DamageKind.RANGED ? Flaw.Kind.RANGED : Flaw.Kind.MELEE;
+                String[] targetNames = entityNames(event.getEntity());
+                for (Flaw f : plugin.stats().flaws(profile)) {
+                    if (f.type == Flaw.Type.DAMAGE_DEALT && (f.kinds.isEmpty() || f.kinds.contains(flawKind))
+                            && Flaw.matchesName(f.targets, targetNames) && f.active(attacker)) {
+                        damage *= f.multiplier;
+                    }
+                }
                 if (!skill) {
                     profile.addCounter("damage_dealt", damage);
                 }
@@ -131,7 +139,7 @@ public final class CombatListener implements Listener {
         ItemStack hand = attacker.getInventory().getItemInMainHand();
         double mult = 1.0;
         for (Flaw f : plugin.stats().flaws(plugin.profiles().get(attacker))) {
-            if (f.type == Flaw.Type.WEAPON_PENALTY && f.matches(hand.getType())) {
+            if (f.type == Flaw.Type.WEAPON_PENALTY && f.matches(hand.getType()) && f.active(attacker)) {
                 mult *= f.multiplier;
             }
         }
@@ -184,8 +192,18 @@ public final class CombatListener implements Listener {
 
         String cause = event.getCause().name();
         double damage = event.getDamage() * plugin.stats().stats(profile).damageTaken;
+        Entity source = null;
+        if (event instanceof EntityDamageByEntityEvent byEntity) {
+            source = byEntity.getDamager();
+            if (source instanceof Projectile proj && proj.getShooter() instanceof Entity shooter) {
+                source = shooter;
+            }
+        }
+        String[] sourceNames = entityNames(source);
         for (Flaw f : plugin.stats().flaws(profile)) {
-            if (f.type == Flaw.Type.DAMAGE_TAKEN && f.matchesCause(cause)) {
+            if (f.type == Flaw.Type.DAMAGE_TAKEN && f.matchesCause(cause)
+                    && (f.damagers.isEmpty() || (source != null && Flaw.matchesName(f.damagers, sourceNames)))
+                    && f.active(victim)) {
                 damage *= f.multiplier;
             }
         }
@@ -210,6 +228,16 @@ public final class CombatListener implements Listener {
         if (event instanceof EntityDamageByEntityEvent) {
             profile.touchCombat();
         }
+    }
+
+    /** Noms utilisables dans damagers / targets : type d'entité et « MYTHIC:Nom » pour les mobs MythicMobs. */
+    private String[] entityNames(Entity entity) {
+        if (entity == null) {
+            return new String[0];
+        }
+        String mythic = plugin.mythic() == null ? null
+                : plugin.mythic().info(entity).map(i -> "MYTHIC:" + i.internalName()).orElse(null);
+        return new String[]{entity.getType().name(), mythic};
     }
 
     // ------------------------------------------------------------ Divers
@@ -238,7 +266,7 @@ public final class CombatListener implements Listener {
             return;
         }
         for (Flaw f : plugin.stats().flaws(prof)) {
-            if (f.type == Flaw.Type.HEALING_REDUCTION) {
+            if (f.type == Flaw.Type.HEALING_REDUCTION && f.active(player)) {
                 event.setAmount(event.getAmount() * f.multiplier);
             }
         }
@@ -254,7 +282,7 @@ public final class CombatListener implements Listener {
             return;
         }
         for (Flaw f : plugin.stats().flaws(prof)) {
-            if (f.type == Flaw.Type.HUNGER) {
+            if (f.type == Flaw.Type.HUNGER && f.active(player)) {
                 event.setExhaustion(event.getExhaustion() * (float) f.multiplier);
             }
         }

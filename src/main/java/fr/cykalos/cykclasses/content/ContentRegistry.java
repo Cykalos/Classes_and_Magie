@@ -34,6 +34,12 @@ public final class ContentRegistry {
     private final Map<String, AttributeDef> attributes = new LinkedHashMap<>();
     private final Map<String, Kit> kits = new LinkedHashMap<>();
     private final List<ItemRule> itemRules = new ArrayList<>();
+    private final Map<String, Weakness> weaknesses = new LinkedHashMap<>();
+    /** race -> faiblesses imposées */
+    private final Map<String, List<String>> raceWeaknesses = new HashMap<>();
+    /** classe ou sous-classe -> faiblesses imposées */
+    private final Map<String, List<String>> classWeaknesses = new HashMap<>();
+    private YamlConfiguration weaknessesConfig;
     private YamlConfiguration traitsConfig;
     private YamlConfiguration jobsConfig;
     private YamlConfiguration treeConfig;
@@ -61,6 +67,9 @@ public final class ContentRegistry {
         attributes.clear();
         kits.clear();
         itemRules.clear();
+        weaknesses.clear();
+        raceWeaknesses.clear();
+        classWeaknesses.clear();
         loadRaces(yaml("races.yml"));
         traitsConfig = yaml("traits.yml");
         loadTraits(traitsConfig);
@@ -82,7 +91,10 @@ public final class ContentRegistry {
         kitsConfig = yaml("kits.yml");
         loadKits(kitsConfig);
         loadItemRules(yaml("items.yml"));
-        plugin.getLogger().info(races.size() + " races, " + traits.size() + " traits, " + jobs.size() + " métiers, "
+        weaknessesConfig = yaml("weaknesses.yml");
+        loadWeaknesses(weaknessesConfig);
+        plugin.getLogger().info(races.size() + " races, " + traits.size() + " traits, " + weaknesses.size() + " faiblesses, "
+                + jobs.size() + " métiers, "
                 + trees.size() + " arbres, " + attributes.size() + " attributs, " + kits.size() + " kits, "
                 + itemRules.size() + " restrictions d'objets.");
     }
@@ -193,6 +205,57 @@ public final class ContentRegistry {
                     StatModifier.load(s.getConfigurationSection("stats")), flaws(s.getMapList("flaws"), "trait " + id),
                     PermanentEffect.parse(s.getStringList("effects")), lower(s.getStringList("conflicts"))));
         }
+    }
+
+    private void loadWeaknesses(YamlConfiguration y) {
+        ConfigurationSection root = y.getConfigurationSection("weaknesses");
+        if (root != null) {
+            for (String id : root.getKeys(false)) {
+                ConfigurationSection s = root.getConfigurationSection(id);
+                if (s == null) {
+                    continue;
+                }
+                Material icon = Material.matchMaterial(s.getString("icon", "FERMENTED_SPIDER_EYE"));
+                String key = id.toLowerCase(Locale.ROOT);
+                weaknesses.put(key, new Weakness(key, s.getString("name", id),
+                        icon == null ? Material.FERMENTED_SPIDER_EYE : icon, s.getStringList("description"),
+                        s.getString("severity", ""), s.getDouble("weight", 10),
+                        lower(s.getStringList("races")), lower(s.getStringList("classes")),
+                        lower(s.getStringList("exclude-races")), lower(s.getStringList("exclude-classes")),
+                        weights(s.getConfigurationSection("race-weights")), weights(s.getConfigurationSection("class-weights")),
+                        StatModifier.load(s.getConfigurationSection("stats")), flaws(s.getMapList("flaws"), "faiblesse " + id),
+                        PermanentEffect.parse(s.getStringList("effects")), lower(s.getStringList("conflicts"))));
+            }
+        }
+        readPredefined(y.getConfigurationSection("predefined.races"), raceWeaknesses);
+        readPredefined(y.getConfigurationSection("predefined.classes"), classWeaknesses);
+    }
+
+    private void readPredefined(ConfigurationSection section, Map<String, List<String>> into) {
+        if (section == null) {
+            return;
+        }
+        for (String owner : section.getKeys(false)) {
+            List<String> ids = new ArrayList<>();
+            for (String w : lower(section.getStringList(owner))) {
+                if (weaknesses.containsKey(w)) {
+                    ids.add(w);
+                } else {
+                    plugin.getLogger().warning("weaknesses.yml : faiblesse imposée inconnue « " + w + " » (" + owner + ")");
+                }
+            }
+            into.put(owner.toLowerCase(Locale.ROOT), ids);
+        }
+    }
+
+    private static Map<String, Double> weights(ConfigurationSection s) {
+        Map<String, Double> out = new HashMap<>();
+        if (s != null) {
+            for (String k : s.getKeys(false)) {
+                out.put(k.toLowerCase(Locale.ROOT), s.getDouble(k, 1.0));
+            }
+        }
+        return out;
     }
 
     private void loadJobs(YamlConfiguration y) {
@@ -401,6 +464,26 @@ public final class ContentRegistry {
     public Kit kit(String classId) { return classId == null ? null : kits.get(classId.toLowerCase(Locale.ROOT)); }
     public List<ItemRule> itemRules() { return itemRules; }
     public YamlConfiguration traitsConfig() { return traitsConfig; }
+    public Weakness weakness(String id) { return id == null ? null : weaknesses.get(id.toLowerCase(Locale.ROOT)); }
+    public Collection<Weakness> weaknesses() { return weaknesses.values(); }
+    public YamlConfiguration weaknessesConfig() { return weaknessesConfig; }
+
+    /** Faiblesses imposées par la race, la classe et la sous-classe (sans doublon). */
+    public List<Weakness> predefinedWeaknesses(String raceId, String classId, String subclassId) {
+        java.util.LinkedHashSet<String> ids = new java.util.LinkedHashSet<>();
+        if (raceId != null) {
+            ids.addAll(raceWeaknesses.getOrDefault(raceId.toLowerCase(Locale.ROOT), List.of()));
+        }
+        if (classId != null) {
+            ids.addAll(classWeaknesses.getOrDefault(classId.toLowerCase(Locale.ROOT), List.of()));
+        }
+        if (subclassId != null) {
+            ids.addAll(classWeaknesses.getOrDefault(subclassId.toLowerCase(Locale.ROOT), List.of()));
+        }
+        List<Weakness> out = new ArrayList<>();
+        ids.forEach(id -> out.add(weaknesses.get(id)));
+        return out;
+    }
     public YamlConfiguration jobsConfig() { return jobsConfig; }
     public YamlConfiguration treeConfig() { return treeConfig; }
     public YamlConfiguration attributesConfig() { return attributesConfig; }

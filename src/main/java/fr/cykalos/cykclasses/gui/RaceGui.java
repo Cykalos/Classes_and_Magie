@@ -53,6 +53,13 @@ public final class RaceGui extends Gui {
                     b.lore("<red>• </red><gray>" + f.description);
                 }
             }
+            if (plugin.modules().weaknesses()) {
+                var imposed = plugin.content().predefinedWeaknesses(race.id(), null, null);
+                if (!imposed.isEmpty()) {
+                    b.lore("").lore(plugin.messages().raw("weaknesses.header"));
+                    imposed.forEach(w -> b.lore("<red>• </red>" + w.name()));
+                }
+            }
             b.lore("");
             Race.Affinity pen = race.penaltyFor(p.getClassId(), p.getSubclassId());
             if (rc != null && pen != null) {

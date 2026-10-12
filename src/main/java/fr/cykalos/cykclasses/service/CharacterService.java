@@ -14,6 +14,8 @@ import fr.cykalos.cykclasses.gui.ClassSelectGui;
 import fr.cykalos.cykclasses.gui.JobGui;
 import fr.cykalos.cykclasses.gui.RaceGui;
 import fr.cykalos.cykclasses.gui.TraitsGui;
+import fr.cykalos.cykclasses.gui.WeaknessGui;
+import fr.cykalos.cykclasses.content.Weakness;
 import fr.cykalos.cykclasses.util.Text;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -88,14 +90,18 @@ public final class CharacterService {
                 return;
             }
             PlayerProfile p = plugin.profiles().get(player);
+            var mod = plugin.modules();
             if (!p.hasClass()) {
                 new ClassSelectGui(plugin, player).open();
-            } else if (p.getRaceId() == null && !plugin.content().races().isEmpty()) {
+            } else if (mod.races() && p.getRaceId() == null && !plugin.content().races().isEmpty()) {
                 new RaceGui(plugin, player).open();
-            } else if (!p.isTraitsRolled() && !plugin.content().traits().isEmpty()) {
+            } else if (mod.traits() && !p.isTraitsRolled() && !plugin.content().traits().isEmpty()) {
                 rollTraits(player, p, false);
                 new TraitsGui(plugin, player).open();
-            } else if (p.getJobId() == null && !p.isJobPromptDone() && !plugin.content().jobs().isEmpty()) {
+            } else if (mod.weaknesses() && !p.isWeaknessesRolled() && hasWeaknessStep(player, p)) {
+                rollWeaknesses(player, p, false);
+                new WeaknessGui(plugin, player).open();
+            } else if (mod.jobs() && p.getJobId() == null && !p.isJobPromptDone() && !plugin.content().jobs().isEmpty()) {
                 new JobGui(plugin, player).open();
             }
         }, 2L);
@@ -250,6 +256,164 @@ public final class CharacterService {
         plugin.stats().apply(player);
     }
 
+    // ------------------------------------------------------------ Faiblesses
+
+    private YamlConfiguration wcfg() {
+        return plugin.content().weaknessesConfig();
+    }
+
+    public boolean weaknessRollEnabled() {
+        return wcfg() != null && wcfg().getBoolean("roll.enabled", true);
+    }
+
+    /** L'étape « faiblesses » de la création a-t-elle quelque chose à montrer ? */
+    private boolean hasWeaknessStep(Player player, PlayerProfile p) {
+        if (!wcfg().getBoolean("roll.show-step", true)) {
+            // Tirage silencieux, sans menu : le joueur les verra avec /faiblesses.
+            rollWeaknesses(player, p, false);
+            return false;
+        }
+        return (weaknessRollEnabled() && wcfg().getInt("roll.max", 2) > 0 && !plugin.content().weaknesses().isEmpty())
+                || !predefinedOf(p).isEmpty();
+    }
+
+    public List<Weakness> predefinedOf(PlayerProfile p) {
+        if (!plugin.modules().weaknesses()) {
+            return List.of();
+        }
+        String race = plugin.modules().races() ? p.getRaceId() : null;
+        return plugin.content().predefinedWeaknesses(race, p.getClassId(), p.getSubclassId());
+    }
+
+    public List<Weakness> rolledOf(PlayerProfile p) {
+        List<Weakness> out = new ArrayList<>();
+        for (String id : p.getWeaknesses()) {
+            Weakness w = plugin.content().weakness(id);
+            if (w != null) {
+                out.add(w);
+            }
+        }
+        return out;
+    }
+
+    /** Faiblesses actives : imposées (race, classe, sous-classe) puis tirées au hasard. */
+    public List<Weakness> weaknessesOf(PlayerProfile p) {
+        List<Weakness> out = new ArrayList<>(predefinedOf(p));
+        for (Weakness w : rolledOf(p)) {
+            if (!out.contains(w)) {
+                out.add(w);
+            }
+        }
+        return out;
+    }
+
+    public int weaknessRerollsLeft(PlayerProfile p) {
+        return Math.max(0, wcfg().getInt("roll.rerolls", 1) - p.getWeaknessRerollsUsed());
+    }
+
+    public void rerollWeaknesses(Player player) {
+        PlayerProfile p = plugin.profiles().get(player);
+        if (weaknessRerollsLeft(p) <= 0) {
+            plugin.messages().send(player, "weaknesses.no-reroll");
+            return;
+        }
+        p.setWeaknessRerollsUsed(p.getWeaknessRerollsUsed() + 1);
+        rollWeaknesses(player, p, true);
+        player.playSound(Sound.sound(Key.key("entity.wither.ambient"), Sound.Source.PLAYER, 0.4f, 1.6f));
+    }
+
+    /**
+     * Tire les faiblesses : entre roll.min et roll.max, selon les chances de chaque faiblesse
+     * pour la race et la classe du joueur. Les faiblesses imposées ne sont pas tirées en double.
+     */
+    public void rollWeaknesses(Player player, PlayerProfile p, boolean announce) {
+        List<String> ids = new ArrayList<>();
+        if (weaknessRollEnabled()) {
+            int min = Math.max(0, wcfg().getInt("roll.min", 1));
+            int max = Math.max(min, wcfg().getInt("roll.max", 2));
+            ThreadLocalRandom r = ThreadLocalRandom.current();
+            int count = min + (max > min ? r.nextInt(max - min + 1) : 0);
+            String race = plugin.modules().races() ? p.getRaceId() : null;
+            List<Weakness> imposed = predefinedOf(p);
+            List<Weakness> picked = new ArrayList<>();
+            for (int i = 0; i < count; i++) {
+                List<Weakness> candidates = new ArrayList<>();
+                List<Double> weights = new ArrayList<>();
+                double total = 0;
+                for (Weakness w : plugin.content().weaknesses()) {
+                    if (picked.contains(w) || imposed.contains(w) || weaknessConflicts(w, picked) || weaknessConflicts(w, imposed)) {
+                        continue;
+                    }
+                    double weight = w.weightFor(race, p.getClassId(), p.getSubclassId());
+                    if (weight > 0) {
+                        candidates.add(w);
+                        weights.add(weight);
+                        total += weight;
+                    }
+                }
+                if (candidates.isEmpty()) {
+                    break;
+                }
+                double x = r.nextDouble(total);
+                Weakness chosen = candidates.getLast();
+                for (int j = 0; j < candidates.size(); j++) {
+                    x -= weights.get(j);
+                    if (x < 0) {
+                        chosen = candidates.get(j);
+                        break;
+                    }
+                }
+                picked.add(chosen);
+            }
+            picked.forEach(w -> ids.add(w.id()));
+        }
+        p.setWeaknesses(ids);
+        p.setWeaknessesRolled(true);
+        if (player != null) {
+            plugin.stats().apply(player);
+            if (announce) {
+                plugin.messages().send(player, "weaknesses.rerolled", Text.ph("left", weaknessRerollsLeft(p)));
+            }
+        }
+    }
+
+    private static boolean weaknessConflicts(Weakness w, List<Weakness> others) {
+        for (Weakness o : others) {
+            if (w.conflicts().contains(o.id()) || o.conflicts().contains(w.id())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Admin : retire les faiblesses tirées (un nouveau tirage aura lieu). */
+    public void resetWeaknesses(Player player) {
+        PlayerProfile p = plugin.profiles().get(player);
+        p.setWeaknesses(List.of());
+        p.setWeaknessesRolled(false);
+        p.setWeaknessRerollsUsed(0);
+        plugin.stats().apply(player);
+    }
+
+    /** Admin : ajoute ou retire une faiblesse précise. */
+    public boolean setWeakness(Player player, String id, boolean add) {
+        PlayerProfile p = plugin.profiles().get(player);
+        Weakness w = plugin.content().weakness(id);
+        if (w == null) {
+            return false;
+        }
+        List<String> ids = new ArrayList<>(p.getWeaknesses());
+        if (add && !ids.contains(w.id())) {
+            ids.add(w.id());
+        } else if (!add) {
+            ids.remove(w.id());
+        }
+        p.setWeaknesses(ids);
+        p.setWeaknessesRolled(true);
+        plugin.stats().apply(player);
+        return true;
+    }
+
     // ------------------------------------------------------------ Métier
 
     public boolean chooseJob(Player player, Job job) {
@@ -281,6 +445,9 @@ public final class CharacterService {
     // ------------------------------------------------------------ Kits
 
     public void giveKit(Player player, String classId) {
+        if (!plugin.modules().kits()) {
+            return;
+        }
         Kit kit = plugin.content().kit(classId);
         if (kit == null) {
             return;

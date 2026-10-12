@@ -70,8 +70,11 @@ public final class ManaService {
                 amount *= combatMult;
             }
             for (Flaw f : plugin.stats().flaws(profile)) {
-                if (f.type == Flaw.Type.DARKNESS_MANA_BLOCK && player.getLocation().getBlock().getLightLevel() < 8) {
+                if (f.type == Flaw.Type.DARKNESS_MANA_BLOCK && player.getLocation().getBlock().getLightLevel() < 8
+                        && f.active(player)) {
                     amount = 0;
+                } else if (f.type == Flaw.Type.MANA_REGEN && f.active(player)) {
+                    amount *= f.multiplier;
                 }
             }
             profile.setMana(Math.min(max, profile.getMana() + amount));

@@ -9,6 +9,7 @@ import fr.cykalos.cykclasses.gui.JobGui;
 import fr.cykalos.cykclasses.gui.RaceGui;
 import fr.cykalos.cykclasses.gui.SkillTreeGui;
 import fr.cykalos.cykclasses.gui.TraitsGui;
+import fr.cykalos.cykclasses.gui.WeaknessGui;
 import fr.cykalos.cykclasses.util.Text;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * /race, /traits, /metier, /arbre, /stats.
+ * /race, /traits, /faiblesses, /metier, /arbre, /stats.
  */
 public final class CharacterCommand implements TabExecutor {
 
@@ -62,6 +63,15 @@ public final class CharacterCommand implements TabExecutor {
                 }
                 new TraitsGui(plugin, player).open();
             }
+            case "faiblesses" -> {
+                if (sub.equals("relancer") || sub.equals("reroll")) {
+                    plugin.character().rerollWeaknesses(player);
+                }
+                if (!p.isWeaknessesRolled()) {
+                    plugin.character().rollWeaknesses(player, p, false);
+                }
+                new WeaknessGui(plugin, player).open();
+            }
             case "metier" -> new JobGui(plugin, player).open();
             case "arbre" -> {
                 if (sub.equals("reset")) {
@@ -98,7 +108,7 @@ public final class CharacterCommand implements TabExecutor {
             return List.of();
         }
         return switch (command.getName().toLowerCase(Locale.ROOT)) {
-            case "traits" -> List.of("relancer");
+            case "traits", "faiblesses" -> List.of("relancer");
             case "arbre", "stats" -> List.of("reset");
             default -> List.of();
         };

@@ -94,7 +94,7 @@ public final class JobService {
     /** Donne l'XP correspondant à une action, si le métier du joueur la récompense. */
     public void reward(Player player, JobRule.Action action, String target, int amount) {
         PlayerProfile p = plugin.profiles().getIfLoaded(player.getUniqueId());
-        if (p == null || p.getJobId() == null) {
+        if (p == null || p.getJobId() == null || !plugin.modules().jobs()) {
             return;
         }
         Job job = plugin.content().job(p.getJobId());

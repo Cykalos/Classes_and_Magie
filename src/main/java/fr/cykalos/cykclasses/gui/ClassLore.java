@@ -41,6 +41,14 @@ final class ClassLore {
                 lore.add(Text.item("<red>• </red><gray>" + f.description));
             }
         }
+        if (plugin.modules().weaknesses()) {
+            var imposed = plugin.content().predefinedWeaknesses(null, rc.root().id, rc.isSubclass() ? rc.id : null);
+            if (!imposed.isEmpty()) {
+                lore.add(Component.empty());
+                lore.add(plugin.messages().item("weaknesses.header"));
+                imposed.forEach(w -> lore.add(Text.item("<red>• </red>" + w.name())));
+            }
+        }
         if (!rc.skills().isEmpty()) {
             lore.add(Component.empty());
             lore.add(plugin.messages().item("gui.skills-header"));

@@ -18,6 +18,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Défauts « environnementaux » vérifiés périodiquement : armure interdite, eau, soleil.
@@ -29,6 +31,8 @@ public final class FlawService {
 
     private final CykClasses plugin;
     private BukkitTask task;
+    /** Dernier déclenchement des défauts PERIODIC_DAMAGE, par joueur. */
+    private final Map<UUID, Map<Flaw, Long>> periodic = new HashMap<>();
 
     public FlawService(CykClasses plugin) {
         this.plugin = plugin;
@@ -36,7 +40,7 @@ public final class FlawService {
 
     public void start() {
         stop();
-        task = Bukkit.getScheduler().runTaskTimer(plugin, this::tick, 40L, 40L);
+        task = Bukkit.getScheduler().runTaskTimer(plugin, this::tick, 40L, 20L);
     }
 
     public void stop() {
@@ -47,6 +51,7 @@ public final class FlawService {
     }
 
     private void tick() {
+        periodic.keySet().removeIf(id -> Bukkit.getPlayer(id) == null);
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
                 continue;
@@ -61,18 +66,44 @@ public final class FlawService {
             }
             plugin.items().enforceArmor(player, profile);
             plugin.gearListener().checkEquipment(player);
+            long now = System.currentTimeMillis();
             for (Flaw f : plugin.stats().flaws(profile)) {
                 switch (f.type) {
-                    case FORBIDDEN_ARMOR -> enforceArmor(player, f);
+                    case FORBIDDEN_ARMOR -> {
+                        if (f.active(player)) {
+                            enforceArmor(player, f);
+                        }
+                    }
+                    case EFFECT -> {
+                        if (f.active(player)) {
+                            for (PermanentEffect e : f.effects) {
+                                player.addPotionEffect(new PotionEffect(e.type(), 60, e.amplifier(), false, false, true));
+                            }
+                        }
+                    }
+                    case PERIODIC_DAMAGE -> {
+                        Map<Flaw, Long> last = periodic.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>());
+                        long prev = last.getOrDefault(f, 0L);
+                        if (now - prev >= (long) (f.interval * 1000) - 50 && f.active(player)) {
+                            last.put(f, now);
+                            if (f.damage > 0) {
+                                player.damage(f.damage);
+                            }
+                            if (f.fireTicks > 0) {
+                                player.setFireTicks(Math.max(player.getFireTicks(), f.fireTicks));
+                            }
+                        }
+                    }
                     case WATER_WEAKNESS -> {
-                        if (player.isInWater()) {
+                        if (player.isInWater() && f.active(player)) {
                             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 0, false, false, true));
                             player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60, 0, false, false, true));
                         }
                     }
                     case SUNLIGHT_WEAKNESS -> {
                         Block b = player.getLocation().getBlock();
-                        if (player.getWorld().isDayTime() && b.getLightFromSky() >= 15 && !player.getWorld().hasStorm()) {
+                        if (player.getWorld().isDayTime() && b.getLightFromSky() >= 15 && !player.getWorld().hasStorm()
+                                && f.active(player)) {
                             player.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60, 0, false, false, true));
                         }
                     }

@@ -48,7 +48,8 @@ public final class ItemRestrictionService implements Listener {
 
     /** Règle non respectée par le joueur pour cet usage, ou null si l'utilisation est permise. */
     public ItemRule failing(Player player, ItemStack item, ItemRule.Use use) {
-        if (item == null || item.getType().isAir() || plugin.content().itemRules().isEmpty()) {
+        if (item == null || item.getType().isAir() || plugin.content().itemRules().isEmpty()
+                || !plugin.modules().itemRestrictions()) {
             return null;
         }
         if (player.hasPermission("cykclasses.bypass.items")) {
@@ -245,7 +246,7 @@ public final class ItemRestrictionService implements Listener {
 
     /** Retire les objets portés qui ne respectent pas leurs conditions (appelé périodiquement). */
     public void enforceArmor(Player player, PlayerProfile profile) {
-        if (plugin.content().itemRules().isEmpty()) {
+        if (plugin.content().itemRules().isEmpty() || !plugin.modules().itemRestrictions()) {
             return;
         }
         PlayerInventory inv = player.getInventory();
