@@ -229,6 +229,23 @@ public final class ClasseCommand implements TabExecutor {
                 plugin.character().continueCreation(target);
                 plugin.messages().send(sender, "admin-done");
             }
+            case "faiblesse" -> {
+                // /classe admin faiblesse <joueur> <reset|add|remove> [id]
+                String op = args.length > 3 ? args[3].toLowerCase(Locale.ROOT) : "";
+                if (op.equals("reset")) {
+                    plugin.character().resetWeaknesses(target);
+                    plugin.character().continueCreation(target);
+                } else if ((op.equals("add") || op.equals("remove")) && args.length > 4) {
+                    if (!plugin.character().setWeakness(target, args[4], op.equals("add"))) {
+                        plugin.messages().send(sender, "unknown-class", Text.ph("class", args[4]));
+                        return;
+                    }
+                } else {
+                    plugin.messages().sendList(sender, "admin-help");
+                    return;
+                }
+                plugin.messages().send(sender, "admin-done");
+            }
             case "resettraits" -> {
                 plugin.character().resetTraits(target);
                 plugin.character().continueCreation(target);
@@ -359,7 +376,7 @@ public final class ClasseCommand implements TabExecutor {
                     if (sender.hasPermission("cykclasses.admin")) {
                         options.addAll(List.of("setlevel", "addxp", "setclass", "reset", "mana", "reload", "setrace",
                                 "resetrace", "resettraits", "setjob", "addpoints", "resettree", "resetstats", "kit", "gemme", "forge",
-                                "jobxp", "setjoblevel", "resetspec", "libererunique"));
+                                "jobxp", "setjoblevel", "resetspec", "libererunique", "faiblesse"));
                     }
                 }
                 default -> {
@@ -379,9 +396,12 @@ public final class ClasseCommand implements TabExecutor {
                 case "addpoints" -> options.addAll(List.of("competences", "stats"));
                 case "gemme" -> options.addAll(plugin.gear().gems().keySet());
                 case "forge" -> plugin.gear().rarities().forEach(r -> options.add(r.id().toLowerCase(Locale.ROOT)));
+                case "faiblesse" -> options.addAll(List.of("reset", "add", "remove"));
                 default -> {
                 }
             }
+        } else if (args.length == 5 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("faiblesse")) {
+            plugin.content().weaknesses().forEach(w -> options.add(w.id()));
         }
         String last = args[args.length - 1].toLowerCase(Locale.ROOT);
         return options.stream().filter(o -> o.toLowerCase(Locale.ROOT).startsWith(last)).collect(Collectors.toList());

@@ -9,6 +9,7 @@ import fr.cykalos.cykclasses.content.SkillMod;
 import fr.cykalos.cykclasses.content.SkillTree;
 import fr.cykalos.cykclasses.content.Trait;
 import fr.cykalos.cykclasses.content.TreeNode;
+import fr.cykalos.cykclasses.content.Weakness;
 import fr.cykalos.cykclasses.data.PlayerProfile;
 import fr.cykalos.cykclasses.model.ClassStats;
 import fr.cykalos.cykclasses.model.Flaw;
@@ -68,7 +69,8 @@ public final class StatsService {
         List<PermanentEffect> effects = new ArrayList<>();
         Map<String, SkillMod> skillMods = new HashMap<>();
 
-        Race race = plugin.content().race(profile.getRaceId());
+        var modules = plugin.modules();
+        Race race = modules.races() ? plugin.content().race(profile.getRaceId()) : null;
         if (race != null) {
             mod.add(race.modifiers());
             flaws.addAll(race.flaws());
@@ -79,7 +81,7 @@ public final class StatsService {
                 flaws.addAll(penalty.flaws());
             }
         }
-        for (String id : profile.getTraits()) {
+        for (String id : modules.traits() ? profile.getTraits() : List.<String>of()) {
             Trait t = plugin.content().trait(id);
             if (t != null) {
                 mod.add(t.modifiers());
@@ -87,7 +89,14 @@ public final class StatsService {
                 effects.addAll(t.effects());
             }
         }
-        Job job = plugin.content().job(profile.getJobId());
+        if (modules.weaknesses()) {
+            for (Weakness w : plugin.character().weaknessesOf(profile)) {
+                mod.add(w.modifiers());
+                flaws.addAll(w.flaws());
+                effects.addAll(w.effects());
+            }
+        }
+        Job job = modules.jobs() ? plugin.content().job(profile.getJobId()) : null;
         if (job != null) {
             mod.add(job.modifiers());
             effects.addAll(job.effects());
@@ -98,14 +107,16 @@ public final class StatsService {
                 effects.addAll(spec.effects());
             }
         }
-        for (AttributeDef a : plugin.content().attributes()) {
-            mod.add(a.perPoint(), profile.getAttribute(a.id()));
+        if (modules.attributes()) {
+            for (AttributeDef a : plugin.content().attributes()) {
+                mod.add(a.perPoint(), profile.getAttribute(a.id()));
+            }
         }
         Player online = org.bukkit.Bukkit.getPlayer(profile.getUuid());
         if (online != null && plugin.gear() != null) {
             mod.add(plugin.gear().equipped(online));
         }
-        for (SkillTree tree : treesOf(profile)) {
+        for (SkillTree tree : modules.skillTree() ? treesOf(profile) : List.<SkillTree>of()) {
             for (TreeNode node : tree.nodes().values()) {
                 int rank = profile.getNodeRank(tree.classId() + ":" + node.id());
                 if (rank > 0) {

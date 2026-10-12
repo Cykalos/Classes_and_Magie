@@ -60,6 +60,7 @@ public final class CykClasses extends JavaPlugin {
     private ManaService mana;
     private CombatService combat;
     private FlawService flaws;
+    private final fr.cykalos.cykclasses.config.Modules modules = new fr.cykalos.cykclasses.config.Modules();
     private ClassService classService;
     private SkillBar skillBar;
     private PartyManager parties;
@@ -116,6 +117,7 @@ public final class CykClasses extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
         migrateConfig();
+        modules.load(getConfig());
         getConfig().options().copyDefaults(true);
         saveConfig();
 
@@ -174,7 +176,7 @@ public final class CykClasses extends JavaPlugin {
         registerCommand("gc", groupe);
         registerCommand("global", groupe);
         CharacterCommand charCmd = new CharacterCommand(this);
-        for (String c : new String[]{"race", "traits", "metier", "arbre", "stats"}) {
+        for (String c : new String[]{"race", "traits", "faiblesses", "metier", "arbre", "stats"}) {
             registerCommand(c, charCmd);
         }
 
@@ -217,10 +219,19 @@ public final class CykClasses extends JavaPlugin {
 
     private void registerCommand(String name, TabExecutor executor) {
         PluginCommand cmd = getCommand(name);
-        if (cmd != null) {
-            cmd.setExecutor(executor);
-            cmd.setTabCompleter(executor);
+        if (cmd == null) {
+            return;
         }
+        // Commande d'un module désactivé dans config.yml → modules : message au lieu d'exécuter.
+        cmd.setExecutor((sender, command, label, args) -> {
+            if (!modules.commandEnabled(name)) {
+                messages.send(sender, "module-disabled");
+                return true;
+            }
+            return executor.onCommand(sender, command, label, args);
+        });
+        cmd.setTabCompleter((sender, command, alias, args) ->
+                modules.commandEnabled(name) ? executor.onTabComplete(sender, command, alias, args) : java.util.List.of());
     }
 
     @Override
@@ -254,6 +265,7 @@ public final class CykClasses extends JavaPlugin {
     public void reload() {
         reloadConfig();
         migrateConfig();
+        modules.load(getConfig());
         skillBar.exitAll();
         messages.load();
         hud.load();
@@ -278,6 +290,7 @@ public final class CykClasses extends JavaPlugin {
     public ManaService mana() { return mana; }
     public CombatService combat() { return combat; }
     public FlawService flaws() { return flaws; }
+    public fr.cykalos.cykclasses.config.Modules modules() { return modules; }
     public ClassService classService() { return classService; }
     public SkillBar skillBar() { return skillBar; }
     public PartyManager parties() { return parties; }

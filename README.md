@@ -53,10 +53,11 @@ Les soins et bonus (Soin, Bénédiction, Cri de guerre, Bouclier sacré…) ne t
 
 ## Création du personnage
 
-Classe → **race** → **traits** → **métier**, chaque étape s'ouvre automatiquement.
+Classe → **race** → **traits** → **faiblesses** → **métier**, chaque étape s'ouvre automatiquement.
 
 - **Races** (`races.yml`) : Humain, Elfe, Nain, Orc, Tieffelin, Félys. Bonus, défauts, effets permanents, et **malus si la race n'est pas faite pour la classe** (ex. Nain mage, Orc prêtre).
 - **Traits** (`traits.yml`) : 3 traits tirés au hasard, positifs, négatifs ou mixtes, avec rareté. **Traits uniques** : un seul joueur du serveur peut les obtenir (1 % de chance). Relances limitées (3 par défaut), `/traits relancer`.
+- **Faiblesses** (`weaknesses.yml`) : imposées à une race ou une classe, ou tirées au hasard avec des chances propres à chaque race et classe. Vulnérabilités (feu, chute, morts-vivants…), malus de nuit, sous la pluie, dans certains biomes ou à PV bas, dégâts réguliers. `/faiblesses`.
 - **Métier** (`jobs.yml`) : un seul par joueur (Mineur, Forgeron, Joaillier, Bûcheron, Fermier, Alchimiste, Enchanteur, Pêcheur, Dresseur). Certaines actions sont réservées : miner le diamant, fabriquer des armures, utiliser l'alambic, l'enclume, pêcher…
 
 ## Progression
@@ -122,9 +123,9 @@ Permissions : `cykclasses.use`, `cykclasses.reset` (tout le monde), `cykclasses.
 
 ## Configuration
 
-- `config.yml` — stockage, courbe d'XP, XP par monstre, mana, mode compétences, HUD, reset.
+- `config.yml` — **modules** (activer ou désactiver races, traits, faiblesses, métiers, arbre, attributs, groupes, forge, gemmes, kits, restrictions), stockage, courbe d'XP, XP par monstre, mana, mode compétences, HUD, reset.
 - `classes.yml` — classes, sous-classes, stats, défauts, conditions et compétences (le haut du fichier documente tous les types disponibles).
-- `races.yml`, `traits.yml`, `skilltree.yml`, `attributes.yml`, `jobs.yml`, `forge.yml`, `gems.yml`, `kits.yml`, `items.yml` — personnage, métiers, artisanat, objets.
+- `races.yml`, `traits.yml`, `weaknesses.yml`, `skilltree.yml`, `attributes.yml`, `jobs.yml`, `forge.yml`, `gems.yml`, `kits.yml`, `items.yml` — personnage, métiers, artisanat, objets.
 - `hud.yml` — XP gagnée, dégâts flottants, PV des cibles, panneau du groupe.
 - `messages.yml` — tous les textes au format [MiniMessage](https://docs.advntr.dev/minimessage/format.html).
 

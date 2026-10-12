@@ -2,6 +2,21 @@
 # ║              CykClasses - config             ║
 # ╚══════════════════════════════════════════════╝
 
+# Modules : désactive ce dont ton serveur n'a pas besoin.
+# Un module désactivé disparaît du jeu (étape de création sautée, commande indisponible, aucun effet).
+modules:
+  races: true              # /race, races.yml
+  traits: true             # /traits, traits.yml
+  weaknesses: true         # /faiblesses, weaknesses.yml
+  jobs: true               # /metier, jobs.yml (actions réservées et XP de métier)
+  skill-tree: true         # /arbre, skilltree.yml
+  attributes: true         # /stats, attributes.yml
+  parties: true            # /groupe, /gc
+  forge: true              # objets de qualité (forge.yml)
+  gems: true               # gemmes, joaillerie (gems.yml)
+  kits: true               # kits de départ (kits.yml)
+  item-restrictions: true  # conditions d'utilisation des objets (items.yml)
+
 # Stockage des données joueurs : YAML, JSON ou SQLITE
 storage:
   type: YAML

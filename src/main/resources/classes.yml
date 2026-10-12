@@ -23,6 +23,17 @@
 #   HUNGER             multiplier de la faim
 #   HEALING_REDUCTION  multiplier des soins reçus
 #   DARKNESS_MANA_BLOCK  pas de régénération de mana dans le noir
+#   DAMAGE_DEALT       dégâts infligés × multiplier (kinds: [MELEE, RANGED, SKILL], targets: [ZOMBIE…])
+#   MANA_REGEN         régénération de mana × multiplier
+#   EFFECT             effets de potion (effects: ["slowness:1"]) tant que les conditions sont vraies
+#   PERIODIC_DAMAGE    dégâts réguliers (damage, interval en secondes, fire-ticks)
+#   DAMAGE_TAKEN accepte aussi damagers: [ZOMBIE, "*SKELETON", PLAYER, "mythic:NomDuMob"]
+#   Tous les défauts acceptent un bloc « conditions » (nuit, pluie, biome, monde, PV bas, altitude…),
+#   documenté en détail en haut de weaknesses.yml. Exemple :
+#     - type: DAMAGE_TAKEN
+#       multiplier: 1.3
+#       conditions: {time: NIGHT, dimensions: [NORMAL]}
+#       description: "+30% de dégâts subis la nuit"
 #   inherit-flaws: false sur une sous-classe pour ne pas hériter des défauts du parent.
 #
 # CONDITIONS des sous-classes (requirements) :

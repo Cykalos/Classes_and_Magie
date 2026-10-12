@@ -53,7 +53,8 @@ public final class JobListener implements Listener {
 
     /** @return true si l'action est bloquée (l'événement est annulé et le message envoyé). */
     private boolean blocked(Player player, JobRule.Action action, String target, Cancellable event) {
-        if (player.getGameMode() == GameMode.CREATIVE || player.hasPermission("cykclasses.bypass.jobs")) {
+        if (player.getGameMode() == GameMode.CREATIVE || player.hasPermission("cykclasses.bypass.jobs")
+                || !plugin.modules().jobs()) {
             return false;
         }
         PlayerProfile p = plugin.profiles().getIfLoaded(player.getUniqueId());

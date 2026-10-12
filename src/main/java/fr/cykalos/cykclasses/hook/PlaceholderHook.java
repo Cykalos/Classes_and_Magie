@@ -84,6 +84,11 @@ public final class PlaceholderHook extends PlaceholderExpansion {
                 }
                 yield String.join(", ", names);
             }
+            case "weaknesses" -> {
+                java.util.List<String> names = new java.util.ArrayList<>();
+                plugin.character().weaknessesOf(profile).forEach(w -> names.add(Text.plain(w.name())));
+                yield String.join(", ", names);
+            }
             case "skill_points" -> String.valueOf(plugin.stats().availableSkillPoints(profile));
             case "attribute_points" -> String.valueOf(plugin.stats().availableAttributePoints(profile));
             case "party_chat" -> profile.isPartyChat() ? "groupe" : "global";

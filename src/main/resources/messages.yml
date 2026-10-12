@@ -7,6 +7,7 @@ player-not-found: "<red>Joueur introuvable : <white><player>"
 unknown-class: "<red>Classe inconnue : <white><class>"
 reloaded: "<green>Configuration rechargée (<classes> classes, <skills> compétences)."
 
+module-disabled: "<red>Cette fonctionnalité est désactivée sur ce serveur."
 no-class: "<red>Tu n'as pas encore de classe. Utilise <white>/classe</white> pour en choisir une."
 already-has-class: "<red>Tu as déjà une classe. Utilise <white>/classe reset</white> pour en changer."
 class-chosen: "<green>Tu es désormais <class> <green>!"
@@ -84,6 +85,7 @@ admin-help:
   - "<red>/classe admin kit <joueur> [classe]"
   - "<red>/classe admin gemme <joueur> <gemme> [n] [rareté] [pureté] · forge <joueur> <rareté>"
   - "<red>/classe admin resetspec <joueur>"
+  - "<red>/classe admin faiblesse <joueur> <reset|add|remove> [faiblesse]"
   - "<red>/classe admin jobxp <joueur> <xp> · setjoblevel <joueur> <niv>"
   - "<red>/classe admin libererunique <objet>"
   - "<red>/classe admin reload"
@@ -200,6 +202,18 @@ traits:
   rerolled: "<light_purple>Nouveaux traits tirés ! <gray>(<left> relance(s) restante(s))"
   no-reroll: "<red>Tu n'as plus de relance."
   unique-broadcast: "<gold>✦ <player> a obtenu le trait unique <trait><gold> ! Personne d'autre ne pourra l'avoir."
+
+weaknesses:
+  gui-title: "<dark_gray>Tes faiblesses"
+  none: "<green>Aucune faiblesse ! <gray>Les dieux t'ont épargné."
+  imposed: "<dark_red>⚑ Imposée par ta race ou ta classe"
+  rolled: "<dark_purple>⚂ Tirée au hasard"
+  reroll: "<light_purple>Relancer les faiblesses <gray>(<white><left></white> restante(s))"
+  reroll-desc: "<gray>Tire de nouvelles faiblesses (les imposées restent)."
+  keep: "<green><bold>Continuer"
+  rerolled: "<light_purple>Nouvelles faiblesses tirées. <gray>(<left> relance(s) restante(s))"
+  no-reroll: "<red>Tu n'as plus de relance."
+  header: "<dark_red>Faiblesses :"
 
 job:
   gui-title: "<dark_gray>Choisis ton métier"

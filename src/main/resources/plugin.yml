@@ -36,6 +36,10 @@ commands:
   traits:
     description: Tes traits (et relance).
     usage: /traits [relancer]
+  faiblesses:
+    description: Faiblesses de ton personnage (et relance).
+    usage: /faiblesses [relancer]
+    aliases: [weaknesses, faiblesse]
   metier:
     description: Choisir ou voir ton métier.
     usage: /metier

@@ -1,0 +1,270 @@
+# ╔══════════════════════════════════════════════╗
+# ║           CykClasses - weaknesses.yml        ║
+# ╚══════════════════════════════════════════════╝
+# Faiblesses / vulnérabilités du personnage, en plus des défauts de classe et de race.
+#   - IMPOSÉES : définies dans « predefined », toujours appliquées à une race ou une classe.
+#   - ALÉATOIRES : tirées après les traits, avec des chances qui dépendent de la race et de la classe.
+# Le joueur les consulte avec /faiblesses. Module activable dans config.yml → modules.weaknesses.
+
+roll:
+  # Tirage aléatoire activé ? (false = uniquement les faiblesses imposées)
+  enabled: true
+  # Nombre de faiblesses tirées : au hasard entre min et max
+  min: 1
+  max: 2
+  # Relances autorisées par joueur (/faiblesses relancer)
+  rerolls: 1
+  # Afficher le menu pendant la création du personnage (false = tirage silencieux)
+  show-step: true
+
+# Faiblesses imposées : clé = id de race, de classe ou de sous-classe → liste de faiblesses.
+# Une faiblesse imposée n'est jamais tirée en double.
+predefined:
+  races:
+    demon: [sang_infernal]
+  classes:
+    pyromancien: [frileux]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Une faiblesse :
+#   name, icon, description, severity (texte libre affiché sous le nom)
+#   weight          : chance relative de tirage (0 = jamais tirée, seulement imposée)
+#   races / classes : qui peut la recevoir (vide = tout le monde ; classes accepte les sous-classes)
+#   exclude-races / exclude-classes : qui ne la reçoit jamais
+#   race-weights / class-weights    : multiplicateur de chance (2 = deux fois plus probable, 0 = jamais)
+#   conflicts       : faiblesses jamais tirées ensemble
+#   stats           : modificateurs permanents (mêmes clés que classes.yml)
+#   effects         : effets de potion permanents ("slowness:1")
+#   flaws           : défauts, avec conditions facultatives (voir ci-dessous)
+#
+# Types de défauts (flaws) — utilisables aussi dans classes.yml, races.yml et traits.yml :
+#   DAMAGE_TAKEN       multiplier ; causes: [FIRE, FALL, DROWNING, FREEZE, MAGIC, POISON, ENTITY_ATTACK, PROJECTILE…]
+#                      damagers: [ZOMBIE, "*SKELETON", PLAYER, "mythic:NomDuMob"]
+#   DAMAGE_DEALT       multiplier ; kinds: [MELEE, RANGED, SKILL] ; targets: [ZOMBIE, "*SPIDER", PLAYER…]
+#   HEALING_REDUCTION  multiplier des soins reçus
+#   HUNGER             multiplier de la faim
+#   MANA_REGEN         multiplier de la régénération de mana (0 = bloquée)
+#   EFFECT             effects: ["slowness:1", "weakness:1"] appliqués tant que les conditions sont vraies
+#   PERIODIC_DAMAGE    damage (demi-cœurs), interval (secondes), fire-ticks (secondes × 20)
+#   FORBIDDEN_ARMOR / WEAPON_PENALTY (materials), WATER_WEAKNESS, SUNLIGHT_WEAKNESS, DARKNESS_MANA_BLOCK
+#
+# Conditions (toutes facultatives, toutes doivent être vraies) :
+#   time: DAY|NIGHT · weather: [CLEAR, RAIN, THUNDER] · dimensions: [NORMAL, NETHER, THE_END] · worlds: [monde]
+#   biomes: ["*DESERT*"] · light-below / light-above: 0-15 · under-sky: true · in-water / in-rain / in-lava: true
+#   health-below / health-above: 0.3 (= 30 % des PV) · y-below / y-above: hauteur
+#   sneaking / sprinting / gliding: true · holding / wearing: ["*_SWORD"] · permission: noeud · chance: 0.25
+# ─────────────────────────────────────────────────────────────────────────────
+
+weaknesses:
+  hydrophobe:
+    name: "<blue>Hydrophobe"
+    icon: WATER_BUCKET
+    severity: "<gray>Faiblesse mineure"
+    description: ["<gray>L'eau te glace le sang."]
+    weight: 10
+    race-weights: {felin: 3, nain: 2}
+    flaws:
+      - type: EFFECT
+        effects: ["slowness:1"]
+        conditions: {in-water: true}
+        description: "Ralenti dans l'eau"
+      - type: DAMAGE_TAKEN
+        causes: [DROWNING]
+        multiplier: 1.5
+        description: "+50% de dégâts de noyade"
+
+  photosensible:
+    name: "<yellow>Photosensible"
+    icon: SUNFLOWER
+    severity: "<gray>Faiblesse mineure"
+    description: ["<gray>Le soleil te brûle les yeux."]
+    weight: 8
+    race-weights: {demon: 3}
+    exclude-classes: [assassin, ombre, duelliste]
+    flaws:
+      - type: EFFECT
+        effects: ["weakness:1"]
+        conditions: {time: DAY, under-sky: true, weather: [CLEAR]}
+        description: "Affaibli en plein soleil"
+
+  vulnerable_au_feu:
+    name: "<red>Vulnérable au feu"
+    icon: BLAZE_POWDER
+    severity: "<gold>Faiblesse moyenne"
+    description: ["<gray>Les flammes te dévorent plus vite."]
+    weight: 10
+    race-weights: {elfe: 2, felin: 2}
+    class-weights: {cryomancien: 3}
+    exclude-races: [demon]
+    exclude-classes: [pyromancien]
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [FIRE, FIRE_TICK, LAVA, HOT_FLOOR, CAMPFIRE]
+        multiplier: 1.3
+        description: "+30% de dégâts de feu"
+
+  frileux:
+    name: "<aqua>Frileux"
+    icon: SNOWBALL
+    severity: "<gray>Faiblesse mineure"
+    description: ["<gray>Le froid te paralyse."]
+    weight: 8
+    race-weights: {demon: 2}
+    flaws:
+      - type: EFFECT
+        effects: ["slowness:1", "mining_fatigue:1"]
+        conditions: {biomes: ["*SNOW*", "*FROZEN*", "*ICE*", "GROVE", "JAGGED_PEAKS"]}
+        description: "Ralenti dans les biomes glacés"
+      - type: DAMAGE_TAKEN
+        causes: [FREEZE]
+        multiplier: 1.5
+        description: "+50% de dégâts de gel"
+
+  os_fragiles:
+    name: "<white>Os fragiles"
+    icon: BONE
+    severity: "<gray>Faiblesse mineure"
+    description: ["<gray>La moindre chute peut te briser."]
+    weight: 10
+    race-weights: {nain: 0.3, orc: 0.5}
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [FALL]
+        multiplier: 1.5
+        description: "+50% de dégâts de chute"
+
+  proie_des_morts:
+    name: "<dark_green>Proie des morts"
+    icon: ROTTEN_FLESH
+    severity: "<gold>Faiblesse moyenne"
+    description: ["<gray>Les morts-vivants sentent ta peur."]
+    weight: 8
+    race-weights: {demon: 2}
+    exclude-classes: [clerc, paladin, pretre]
+    flaws:
+      - type: DAMAGE_TAKEN
+        damagers: [ZOMBIE, "*ZOMBIE*", HUSK, DROWNED, "*SKELETON*", STRAY, BOGGED, PHANTOM, WITHER]
+        multiplier: 1.25
+        description: "+25% de dégâts des morts-vivants"
+
+  peur_du_noir:
+    name: "<dark_gray>Peur du noir"
+    icon: BLACK_CANDLE
+    severity: "<gray>Faiblesse mineure"
+    description: ["<gray>Dans l'obscurité, ta main tremble."]
+    weight: 8
+    exclude-races: [orc, nain]
+    flaws:
+      - type: DAMAGE_DEALT
+        multiplier: 0.85
+        conditions: {light-below: 7}
+        description: "-15% de dégâts dans le noir"
+
+  mana_instable:
+    name: "<light_purple>Mana instable"
+    icon: AMETHYST_SHARD
+    severity: "<gold>Faiblesse moyenne"
+    description: ["<gray>Blessé, ta magie t'échappe."]
+    weight: 10
+    classes: [mage, clerc, pyromancien, cryomancien, pretre, druide]
+    flaws:
+      - type: MANA_REGEN
+        multiplier: 0.5
+        conditions: {health-below: 0.5}
+        description: "Mana régénéré deux fois moins vite sous 50% de PV"
+
+  mauvais_tireur:
+    name: "<green>Mauvais tireur"
+    icon: ARROW
+    severity: "<gray>Faiblesse mineure"
+    description: ["<gray>Tu vises… à côté."]
+    weight: 8
+    exclude-classes: [archer, chasseur, rodeur]
+    flaws:
+      - type: DAMAGE_DEALT
+        kinds: [RANGED]
+        multiplier: 0.85
+        description: "-15% de dégâts à distance"
+
+  panique:
+    name: "<red>Panique"
+    icon: GOAT_HORN
+    severity: "<gold>Faiblesse moyenne"
+    description: ["<gray>Proche de la mort, tu perds tes moyens."]
+    weight: 6
+    class-weights: {berserker: 0, guerrier: 0.5}
+    flaws:
+      - type: DAMAGE_DEALT
+        multiplier: 0.8
+        conditions: {health-below: 0.25}
+        description: "-20% de dégâts sous 25% de PV"
+
+  vertige:
+    name: "<gray>Vertige"
+    icon: FEATHER
+    severity: "<gray>Faiblesse mineure"
+    description: ["<gray>Le vide t'attire."]
+    weight: 6
+    race-weights: {nain: 3}
+    exclude-races: [felin]
+    flaws:
+      - type: EFFECT
+        effects: ["nausea:1"]
+        conditions: {y-above: 160}
+        description: "Nausée en haute altitude"
+
+  claustrophobe:
+    name: "<dark_gray>Claustrophobe"
+    icon: COBBLED_DEEPSLATE
+    severity: "<gray>Faiblesse mineure"
+    description: ["<gray>Sous terre, tu étouffes."]
+    weight: 6
+    exclude-races: [nain]
+    race-weights: {elfe: 2}
+    flaws:
+      - type: EFFECT
+        effects: ["slowness:1"]
+        conditions: {y-below: 20, under-sky: false}
+        description: "Ralenti dans les profondeurs"
+
+  anemie:
+    name: "<dark_red>Anémie"
+    icon: RED_DYE
+    severity: "<gold>Faiblesse moyenne"
+    description: ["<gray>Ton sang se renouvelle mal."]
+    weight: 6
+    stats: {health: -2}
+    flaws:
+      - type: HEALING_REDUCTION
+        multiplier: 0.8
+        description: "Soins reçus -20%"
+
+  maudit_par_la_lune:
+    name: "<dark_purple>Maudit par la lune"
+    icon: ENDER_EYE
+    severity: "<red>Faiblesse grave"
+    description: ["<gray>Les nuits sans nuages, la lune te ronge."]
+    weight: 2
+    flaws:
+      - type: PERIODIC_DAMAGE
+        damage: 1
+        interval: 20
+        conditions: {time: NIGHT, under-sky: true, weather: [CLEAR], dimensions: [NORMAL]}
+        description: "Perd ½ ❤ toutes les 20 s sous la lune"
+
+  # Uniquement imposée (weight: 0) : voir predefined.races.demon
+  sang_infernal:
+    name: "<dark_red>Sang infernal"
+    icon: MAGMA_CREAM
+    severity: "<red>Faiblesse de race"
+    description: ["<gray>L'eau et le froid éteignent ta flamme."]
+    weight: 0
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [DROWNING, FREEZE]
+        multiplier: 1.5
+        description: "+50% de dégâts de noyade et de gel"
+      - type: EFFECT
+        effects: ["weakness:1"]
+        conditions: {in-rain: true}
+        description: "Affaibli sous la pluie"

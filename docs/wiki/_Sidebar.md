@@ -9,6 +9,7 @@
 - [Compétences et mana](Compétences-et-mana.md)
 - [Niveaux et XP](Niveaux-et-XP.md)
 - [Races et traits](Races-et-traits.md)
+- [Faiblesses](Faiblesses.md)
 - [Progression](Progression.md)
 
 **Artisanat**

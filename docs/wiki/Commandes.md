@@ -11,7 +11,7 @@
 | `/classe competences` | Liste des compétences |
 | `/classe reset` | Réinitialiser sa classe (délai) |
 | `/competence <id\|n°>` | Lancer une compétence |
-| `/race` · `/traits [relancer]` | Race, traits |
+| `/race` · `/traits [relancer]` · `/faiblesses [relancer]` | Race, traits, faiblesses |
 | `/metier` | Métier, niveaux, recettes, spécialisation |
 | `/arbre [reset]` · `/stats [reset]` | Arbre de compétences, attributs |
 | `/groupe …` · `/gc` · `/global` | Groupe et chat |
@@ -26,6 +26,7 @@
 | `setrace <joueur> <race>` · `resetrace <joueur>` · `resettraits <joueur>` | Personnage |
 | `setjob <joueur> [métier]` · `jobxp <joueur> <xp>` · `setjoblevel <joueur> <niv>` · `resetspec <joueur>` | Métier |
 | `addpoints <joueur> <competences\|stats> <n>` · `resettree <joueur>` · `resetstats <joueur>` | Points |
+| `faiblesse <joueur> <reset\|add\|remove> [id]` | Faiblesses |
 | `kit <joueur> [classe]` | Redonne un kit |
 | `gemme <joueur> <id> [n] [rareté] [pureté]` | Gemme brute (sans rareté) ou taillée |
 | `forge <joueur> <rareté>` | Forge l'objet en main |
@@ -43,7 +44,7 @@
 
 ## Placeholders (PlaceholderAPI)
 
-`%cykclasses_class%`, `%cykclasses_class_id%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`
+`%cykclasses_class%`, `%cykclasses_class_id%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_weaknesses%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`
 
 ## API Java
 

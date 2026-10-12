@@ -71,7 +71,7 @@ public final class GearListener implements Listener {
             return;
         }
         PlayerProfile p = plugin.profiles().get(player);
-        if (!plugin.gear().isQualityCraft(p.getJobId(), current.getType())) {
+        if (!plugin.modules().forge() || !plugin.gear().isQualityCraft(p.getJobId(), current.getType())) {
             return;
         }
         if (e.isShiftClick() || e.getClick() == ClickType.NUMBER_KEY || e.getClick() == ClickType.DROP
@@ -96,7 +96,8 @@ public final class GearListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onSocket(InventoryClickEvent e) {
-        if (!(e.getWhoClicked() instanceof Player player) || e.getClick() != ClickType.LEFT && e.getClick() != ClickType.RIGHT) {
+        if (!(e.getWhoClicked() instanceof Player player) || e.getClick() != ClickType.LEFT && e.getClick() != ClickType.RIGHT
+                || !plugin.modules().gems()) {
             return;
         }
         ItemStack cursor = e.getCursor();
@@ -142,7 +143,7 @@ public final class GearListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMine(BlockBreakEvent e) {
         Player player = e.getPlayer();
-        if (player.getGameMode() == GameMode.CREATIVE || e.getBlock().hasMetadata("cyk_placed")) {
+        if (player.getGameMode() == GameMode.CREATIVE || e.getBlock().hasMetadata("cyk_placed") || !plugin.modules().gems()) {
             return;
         }
         PlayerProfile p = plugin.profiles().getIfLoaded(player.getUniqueId());
@@ -163,7 +164,7 @@ public final class GearListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onStation(org.bukkit.event.player.PlayerInteractEvent e) {
         if (e.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK || e.getClickedBlock() == null
-                || e.getHand() != org.bukkit.inventory.EquipmentSlot.HAND) {
+                || e.getHand() != org.bukkit.inventory.EquipmentSlot.HAND || !plugin.modules().gems()) {
             return;
         }
         if (!plugin.gear().isStation(e.getClickedBlock().getType()) || !plugin.gear().isRawGem(e.getItem())) {
