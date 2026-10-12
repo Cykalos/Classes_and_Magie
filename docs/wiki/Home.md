@@ -11,8 +11,9 @@
 1. **Classe** (`/classe`) : Guerrier, Mage, Archer, Assassin, Clerc → kit de départ.
 2. **Race** (`/race`) : bonus, défauts, et malus si la race ne convient pas à la classe.
 3. **Traits** (`/traits`) : 3 traits tirés au hasard, relances limitées, traits uniques.
-4. **Métier** (`/metier`) : un seul métier, qui débloque des actions et des recettes par niveau.
-5. Progression : niveaux de classe, **sous-classe**, **arbre** (`/arbre`), **attributs** (`/stats`), **spécialisation** de métier au niveau 20.
+4. **Faiblesses** (`/faiblesses`) : imposées par la race ou la classe, ou tirées au hasard selon elles.
+5. **Métier** (`/metier`) : un seul métier, qui débloque des actions et des recettes par niveau.
+6. Progression : niveaux de classe, **sous-classe**, **arbre** (`/arbre`), **attributs** (`/stats`), **spécialisation** de métier au niveau 20.
 
 ## Pages
 
@@ -23,6 +24,7 @@
 | [Compétences et mana](Compétences-et-mana.md) | Barre de compétences, mana, types de compétences, MythicMobs |
 | [Niveaux et XP](Niveaux-et-XP.md) | Courbe d'XP, XP par monstre |
 | [Races et traits](Races-et-traits.md) | Races, malus de classe, traits et traits uniques |
+| [Faiblesses](Faiblesses.md) | Faiblesses imposées et aléatoires, conditions des défauts |
 | [Progression](Progression.md) | Arbre de compétences et attributs |
 | [Métiers](Métiers.md) | Métiers, restrictions, niveaux, recettes, spécialisations |
 | [Forge](Forge.md) | Raretés, stats aléatoires, objets uniques |
@@ -37,6 +39,6 @@
 
 Les statistiques finales d'un joueur s'additionnent ou se multiplient dans cet ordre :
 
-`classe (+ sous-classe) → race → malus race/classe → traits → métier → spécialisation → attributs → arbre → équipement forgé et gemmes`
+`classe (+ sous-classe) → race → malus race/classe → traits → faiblesses → métier → spécialisation → attributs → arbre → équipement forgé et gemmes`
 
 Les valeurs « additives » (PV, mana, armure…) s'ajoutent ; les multiplicateurs (dégâts, dégâts subis) se multiplient.

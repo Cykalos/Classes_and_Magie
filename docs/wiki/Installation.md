@@ -27,6 +27,7 @@
 | `config.yml` | Stockage (`YAML`, `JSON`, `SQLITE`), courbe d'XP, XP par monstre, mana, mode compétences, chat, groupes |
 | `classes.yml` | Classes, sous-classes, stats, défauts, conditions, compétences |
 | `races.yml` · `traits.yml` | Races et traits |
+| `weaknesses.yml` | Faiblesses imposées et aléatoires |
 | `skilltree.yml` · `attributes.yml` | Arbre de compétences et attributs |
 | `jobs.yml` | Métiers, XP de métier, spécialisations, actions réservées |
 | `forge.yml` | Raretés des objets forgés, stats aléatoires, objets uniques |
@@ -34,6 +35,27 @@
 | `kits.yml` · `items.yml` | Kits de départ, restrictions d'objets |
 | `hud.yml` | Dégâts flottants, PV des cibles, panneau du groupe, barres d'XP |
 | `messages.yml` | Tous les textes ([MiniMessage](https://docs.advntr.dev/minimessage/format.html)) |
+
+## Modules
+
+Chaque partie du plugin peut être désactivée dans `config.yml` :
+
+```yaml
+modules:
+  races: true
+  traits: true
+  weaknesses: true
+  jobs: true
+  skill-tree: true
+  attributes: true
+  parties: true
+  forge: true
+  gems: true
+  kits: true
+  item-restrictions: true
+```
+
+Un module désactivé disparaît du jeu : son étape de création est sautée, sa commande répond « fonctionnalité désactivée » et il n'a plus d'effet sur les stats. Les données des joueurs sont conservées, il suffit de le réactiver pour les retrouver. Seule exception : un objet déjà forgé garde ses stats même si la forge est désactivée.
 
 ## Mise à jour
 

@@ -33,7 +33,8 @@ Ces clés sont les mêmes partout : races, traits, métiers, attributs, arbre, f
 
 | Type | Paramètres | Exemple |
 |---|---|---|
-| `DAMAGE_TAKEN` | `causes`, `multiplier` | Mage : +30 % de dégâts de feu |
+| `DAMAGE_TAKEN` | `causes`, `damagers`, `multiplier` | Mage : +30 % de dégâts de feu ; +25 % contre les zombies |
+| `DAMAGE_DEALT` | `kinds` (MELEE, RANGED, SKILL), `targets`, `multiplier` | −15 % de dégâts à distance |
 | `FORBIDDEN_ARMOR` | `materials` | Mage : pas d'armure en fer ou plus |
 | `WEAPON_PENALTY` | `materials`, `multiplier` | Clerc : −40 % avec une épée |
 | `WATER_WEAKNESS` | — | Lent et faible dans l'eau |
@@ -41,6 +42,23 @@ Ces clés sont les mêmes partout : races, traits, métiers, attributs, arbre, f
 | `HUNGER` | `multiplier` | Guerrier : faim accrue |
 | `HEALING_REDUCTION` | `multiplier` | Soins reçus réduits |
 | `DARKNESS_MANA_BLOCK` | — | Pas de régénération dans le noir |
+| `MANA_REGEN` | `multiplier` (0 = bloquée) | Mana deux fois plus lent |
+| `EFFECT` | `effects` (`"slowness:1"`) | Ralenti dans l'eau |
+| `PERIODIC_DAMAGE` | `damage`, `interval` (s), `fire-ticks` | Brûle au soleil comme un vampire |
+
+**Tous les défauts acceptent des conditions** : ils ne s'appliquent que lorsqu'elles sont toutes vraies.
+
+```yaml
+flaws:
+  - type: PERIODIC_DAMAGE
+    damage: 1
+    interval: 3
+    fire-ticks: 60
+    conditions: {time: DAY, under-sky: true, weather: [CLEAR]}
+    description: "Brûle au soleil"
+```
+
+Conditions disponibles : `time`, `weather`, `dimensions`, `worlds`, `biomes`, `light-below`, `light-above`, `under-sky`, `in-water`, `in-rain`, `in-lava`, `health-below`, `health-above`, `y-below`, `y-above`, `sneaking`, `sprinting`, `gliding`, `holding`, `wearing`, `permission`, `chance`. Détail sur la page [Faiblesses](Faiblesses.md#conditions).
 
 `inherit-flaws: false` sur une sous-classe pour ne pas reprendre les défauts du parent.
 

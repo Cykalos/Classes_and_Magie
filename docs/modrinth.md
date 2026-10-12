@@ -23,6 +23,7 @@ Contenu fourni par défaut :
 - **6 races** (Humain, Elfe, Nain, Orc, Tieffelin, Félys) avec bonus, défauts, effets permanents et **malus** si la race ne convient pas à la classe.
 - **Traits aléatoires** positifs, négatifs ou mixtes, avec relances limitées.
 - **Traits uniques** : un seul joueur sur tout le serveur peut porter chacun d'eux.
+- **Faiblesses** imposées par la race ou la classe, ou tirées au hasard selon elles : vulnérable au feu, proie des morts-vivants, maudit par la lune…
 
 ## 📈 Progression
 
@@ -54,6 +55,7 @@ Tout se règle dans des fichiers YAML commentés, avec des exemples :
 |---|---|
 | `classes.yml` | Classes, sous-classes, stats, défauts, conditions de déblocage, compétences |
 | `races.yml` · `traits.yml` | Races, malus selon la classe, traits et traits uniques |
+| `weaknesses.yml` | Faiblesses imposées ou aléatoires, avec chances par race et par classe |
 | `jobs.yml` | Métiers, spécialisations, actions réservées, recettes par niveau, XP |
 | `forge.yml` · `gems.yml` | Raretés, stats aléatoires, objets uniques, gemmes, taille |
 | `skilltree.yml` · `attributes.yml` | Arbres de compétences, attributs |
@@ -63,6 +65,8 @@ Tout se règle dans des fichiers YAML commentés, avec des exemples :
 **Bon à savoir**
 
 - Les compétences s'appuient sur une trentaine de **mécaniques fournies** (projectile, zone, soin, charge, téléportation, invisibilité…) entièrement réglables : dégâts, portée, durée, mana, recharge, icône. Pour une mécanique totalement nouvelle, utilisez une compétence **MythicMobs** (type `MYTHIC`, sans code) ou l'**API Java**.
+- **Défauts conditionnels** : chaque défaut ou faiblesse peut ne s'appliquer que la nuit, sous la pluie, dans un biome, un monde, à PV bas, en altitude, avec un objet en main… (une vingtaine de conditions combinables).
+- **Modules** : désactivez races, traits, faiblesses, métiers, arbre, attributs, groupes, forge, gemmes, kits ou restrictions d'objets dans `config.yml`.
 - Les types de défauts, de conditions et d'actions de métier sont prédéfinis, mais se combinent librement.
 - Une classe et une sous-classe par joueur, un seul métier, jusqu'à 8 compétences dans la barre.
 - Les commandes sont en français, avec des alias anglais (`/class`, `/job`, `/party`, `/skill`).
@@ -88,6 +92,6 @@ Code source sous licence **GPL-3.0** : **[GitHub](https://github.com/Cykalos/Cla
 
 **A complete RPG system for Paper 26.x servers.** Players pick a **class** (5 classes, 10 unlockable subclasses, 36 skills cast from a dedicated hotbar with mana and cooldowns), a **race** (with class penalties), random **traits** (including server-unique ones), and a **job** (9 jobs with level-gated recipes and specializations). Blacksmiths **forge** gear with random rarity and stats, including one-of-a-kind **unique items**; jewelers **cut raw gems** with rarity and purity before they are socketed. Also includes **parties** with custom rules, party chat, floating damage numbers and target health display, a **skill tree** and **attributes**.
 
-**Fully configurable:** everything listed above is ready-to-play default content. Create your own classes, subclasses, races, traits, jobs, forge rarities, gems, kits and item rules in commented YAML files, without writing code. Skills are built from ~36 tunable mechanics (projectiles, AoE, heals, dashes, teleports…); brand-new mechanics can be added through **MythicMobs** skills or the Java API.
+**Fully configurable:** everything listed above is ready-to-play default content. Weaknesses can be imposed by race or class or rolled with per-race/per-class odds, every flaw can be conditional (night, rain, biome, world, low health, altitude, held item…), and each module can be turned off. Create your own classes, subclasses, races, traits, jobs, forge rarities, gems, kits and item rules in commented YAML files, without writing code. Skills are built from ~36 tunable mechanics (projectiles, AoE, heals, dashes, teleports…); brand-new mechanics can be added through **MythicMobs** skills or the Java API.
 
 Compatible with **MythicMobs**, **PlaceholderAPI** and custom items from **CraftEngine, ExecutableItems, MythicCrucible, ItemsAdder, Oraxen, Nexo, MMOItems**. The default texts and documentation are in **French**; every message can be translated in `messages.yml`. Commands are in French with English aliases (`/class`, `/job`, `/party`, `/skill`).
