@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.6.0...v1.7.0) (2026-10-12)
+
+### ✨ Nouveautés
+
+- faiblesses unifiées — un seul menu et un seul nom pour les joueurs ([`e00d5c9`](https://github.com/Cykalos/Classes_and_Magie/commit/e00d5c9ae5431f2602a2ffc1851cc2359312bf6c))
+  - /faiblesses regroupe toutes les faiblesses du personnage avec leur origine : classe, race (et malus de classe), traits, faiblesses imposées et tirées au hasard
+  - « Défauts » devient « Faiblesses » partout dans les menus (classes et races affichent leurs faiblesses et celles imposées sous un seul titre)
+  - Imposer une faiblesse directement dans races.yml ou classes.yml : weaknesses: [id] (les sous-classes héritent de celles de leur classe, sauf inherit-flaws: false)
+  - Faiblesses imposées par défaut : Elfe → Claustrophobe, Nain → Vertige, Orc → Mauvais tireur, Tieffelin → Sang infernal, Félys → Frileux
+  - Les exclusions s'appliquent aussi aux faiblesses imposées, et les exclusions par défaut évitent les doublons avec les faiblesses des classes et des races
+  - Les défauts déjà écrits dans classes.yml / races.yml / traits.yml (clé flaws) fonctionnent comme avant
+
 ## [1.6.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.5.0...v1.6.0) (2026-10-12)
 
 ### ✨ Nouveautés

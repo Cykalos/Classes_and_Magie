@@ -76,6 +76,8 @@ jobs:
       #                          MODRINTH_GAME_VERSIONS (">=26.1" par défaut)
       - name: Publication Modrinth
         if: steps.info.outputs.skip != 'true' && env.MODRINTH_TOKEN != '' && vars.MODRINTH_PROJECT_ID != ''
+        # Un échec Modrinth (jeton expiré…) ne doit pas bloquer la release GitHub ni le CHANGELOG
+        continue-on-error: true
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           modrinth-id: ${{ vars.MODRINTH_PROJECT_ID }}
