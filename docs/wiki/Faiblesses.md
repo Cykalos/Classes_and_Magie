@@ -144,7 +144,7 @@ flaws:
 
 - `/classe admin faiblesse <joueur> reset` : nouveau tirage au prochain passage.
 - `/classe admin faiblesse <joueur> add <id>` / `remove <id>` : ajouter ou retirer une faiblesse précise.
-- Placeholder : `%cykclasses_weaknesses%`.
+- Placeholders : `%cykclasses_weaknesses%` (toutes les faiblesses : classe, race, traits, imposées, tirées) et `%cykclasses_weaknesses_count%`.
 
 ## Ce qu'on ne peut pas faire
 

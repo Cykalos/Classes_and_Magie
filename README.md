@@ -32,7 +32,7 @@
 
 1. Appuyer sur **F** (échange de main) : la barre d'objets affiche les **icônes des compétences** (slots 1 à 8) et l'arme reste en main (slot 9).
 2. Appuyer sur **1 à 8** pour lancer la compétence correspondante. L'icône affiche la recharge (animation + secondes restantes), passe en bleu si le mana manque, en gris si elle n'est pas débloquée.
-3. **F** à nouveau, ouvrir l'inventaire ou 15 s d'inactivité pour retrouver la barre normale.
+3. **F** à nouveau, un clic dans l'inventaire ou 15 s d'inactivité pour retrouver la barre normale. (Minecraft ne prévient pas le serveur quand un joueur ouvre son propre inventaire : c'est le premier clic qui quitte le mode.)
 
 Les objets de la barre sont sauvegardés pendant le mode compétences (même en cas de crash ou de mort). La molette lance aussi les compétences dans ce mode.
 

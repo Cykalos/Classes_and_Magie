@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  */
 public record JobRule(Action action, List<Pattern> targets, List<String> jobs, String message, int minLevel, String display) {
 
-    public enum Action { BREAK, PLACE, CRAFT, INTERACT_BLOCK, FISH, BREED, TAME, SMELT, ENCHANT, BREW, REFINE }
+    public enum Action { BREAK, PLACE, CRAFT, INTERACT_BLOCK, FISH, BREED, TAME, SMELT, ENCHANT, BREW, REFINE, USE_ITEM }
 
     public boolean matches(Material material) {
         return material != null && matches(material.name());

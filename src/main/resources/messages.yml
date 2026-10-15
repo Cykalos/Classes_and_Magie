@@ -119,6 +119,7 @@ gui:
   race-button: "<aqua>Race"
   traits-button: "<light_purple>Traits"
   job-button: "<gold>Métier"
+  weaknesses-button: "<dark_red>Faiblesses"
 
 skillbar:
   cooldown: "<red>Recharge : <white><time>s"
@@ -247,6 +248,7 @@ job:
   action-enchant: "Enchanter"
   action-brew: "Distiller"
   action-refine: "Tailler"
+  action-use_item: "Utiliser"
 
 tree:
   none: "<red>Aucun arbre de compétences pour ta classe."
@@ -282,6 +284,9 @@ forge:
   empty-cursor: "<yellow>Vide ton curseur pour récupérer l'objet forgé."
   unique-broadcast: "<gold>✦ <player> a forgé l'objet unique <item><gold> ! Il n'en existera jamais d'autre."
   unique-not-taken: "<red>Cet objet unique n'a pas encore été forgé."
+  unique-broken-name: "<dark_gray><item> (brisé)"
+  unique-broken-lore: "<gray>Cet objet unique a été reforgé ailleurs : son pouvoir s'est éteint."
+  unique-broken: "<red>Ton objet <white><item></white> a perdu son pouvoir : il a été reforgé ailleurs."
 
 gems:
   socketed: "<green>Gemme incrustée !"
@@ -296,6 +301,7 @@ gems:
   raw-how: "<dark_gray>À faire tailler par un joaillier (tailleur de pierre)."
   raw-socket: "<red>Une gemme brute doit d'abord être taillée par un joaillier."
   need-jeweler: "<red>Seul un joaillier sait tailler les gemmes."
+  need-jeweler-socket: "<red>Seul un joaillier sait incruster les gemmes."
   gui-title: "<dark_gray>Atelier du joaillier"
   gui-info: "<aqua><bold>Taille des gemmes</bold> <gray>(métier niv. <white><level></white>)"
   gui-purity: "<gray>Pureté obtenue : <white><min> à <max> %"

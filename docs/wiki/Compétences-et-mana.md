@@ -4,7 +4,9 @@
 
 1. **F** (échange de main) : la barre d'objets affiche les **icônes des compétences** dans les slots 1 à 8. L'arme reste en main dans le slot 9.
 2. **1 à 8** (ou la molette) lance la compétence. L'icône montre la recharge (secondes restantes), devient bleue si le mana manque, grise si elle n'est pas débloquée.
-3. **F** à nouveau, ouvrir l'inventaire ou 15 s sans lancer : retour à la barre normale.
+3. **F** à nouveau, un clic dans l'inventaire ou 15 s sans lancer : retour à la barre normale. Minecraft ne prévient pas le serveur à l'ouverture de l'inventaire du joueur : c'est le premier clic qui quitte le mode.
+
+Les slots sans compétence sont remplis par une case grise (`casting.empty-slot-icon`), pour que le butin ramassé aille dans l'inventaire et pas dans la barre.
 
 Les objets de la barre sont sauvegardés pendant le mode compétences, même en cas de mort ou de crash.
 

@@ -162,7 +162,7 @@ public final class CykClasses extends JavaPlugin {
         pm.registerEvents(new CombatListener(this), this);
         pm.registerEvents(new ProgressListener(this), this);
         pm.registerEvents(new CastingListener(this), this);
-        pm.registerEvents(new GuiListener(), this);
+        pm.registerEvents(new GuiListener(this), this);
         pm.registerEvents(new HudListener(this), this);
         pm.registerEvents(new JobListener(this), this);
         pm.registerEvents(items, this);

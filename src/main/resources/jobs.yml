@@ -17,7 +17,8 @@ leveling:
 
 # Actions : BREAK (casser), PLACE (poser), CRAFT (fabriquer), INTERACT_BLOCK (utiliser un bloc),
 #           FISH (pêcher), BREED (élever), TAME (apprivoiser), SMELT (retirer d'un four),
-#           ENCHANT (enchanter), BREW (distiller à l'alambic), REFINE (tailler une gemme ; cible = id de la gemme)
+#           ENCHANT (enchanter), BREW (distiller à l'alambic), REFINE (tailler une gemme ; cible = id de la gemme),
+#           USE_ITEM (clic droit avec un objet : poudre d'os, houe… ; cible = l'objet en main)
 # targets : matériaux / entités ("*" = joker, "(A|B)" = A ou B). Sans targets : toutes les cibles.
 #
 # xp-sources : ce qui fait gagner de l'XP de métier (pas d'XP pour un bloc posé par un joueur).
@@ -230,6 +231,14 @@ restrictions:
     jobs: [fermier]
     min-level: 10
     display: "Verrues du Nether"
+  - action: PLACE
+    targets: ["WHEAT", "CARROTS", "POTATOES", "BEETROOTS", "MELON_STEM", "PUMPKIN_STEM", "TORCHFLOWER_CROP", "PITCHER_CROP"]
+    jobs: [fermier]
+    display: "Planter des cultures"
+  - action: USE_ITEM
+    targets: ["BONE_MEAL", "*_HOE"]
+    jobs: [fermier]
+    display: "Poudre d'os, labourer"
 
   # Alchimiste / enchanteur / pêcheur / dresseur
   - action: INTERACT_BLOCK

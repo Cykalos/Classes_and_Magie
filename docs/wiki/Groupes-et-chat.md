@@ -15,6 +15,8 @@ Les soins et bonus ne touchent **que les membres du groupe** (ou soi-même sans 
 
 `/groupe inviter|accepter|refuser|quitter|expulser|chef|dissoudre|info`
 
+Avec `disband-when-alone: true` (par défaut), un groupe qui n'a plus qu'un membre est dissous : expulser le seul autre membre dissout donc le groupe.
+
 ```yaml
 party:
   max-size: 5

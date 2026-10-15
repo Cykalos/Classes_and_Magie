@@ -263,13 +263,23 @@ public final class SkillBar {
             if (current != null && !current.isEmpty() && !isIcon(current)) {
                 continue; // objet ramassé : on n'écrase rien
             }
-            ItemStack icon = i < skills.size() ? icon(profile, skills.get(i), i) : null;
+            // Slot sans compétence : case de remplissage, pour que le butin ramassé aille dans l'inventaire
+            ItemStack icon = i < skills.size() ? icon(profile, skills.get(i), i) : filler();
             if (icon == null ? current == null || current.isEmpty()
                     : current != null && current.isSimilar(icon) && current.getAmount() == icon.getAmount()) {
                 continue; // inchangé : évite d'envoyer des paquets inutiles
             }
             inv.setItem(i, icon);
         }
+    }
+
+    private ItemStack filler() {
+        ItemStack item = new ItemStack(material("casting.empty-slot-icon", Material.GRAY_STAINED_GLASS_PANE));
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(net.kyori.adventure.text.Component.text(" "));
+        meta.getPersistentDataContainer().set(iconKey, PersistentDataType.STRING, "");
+        item.setItemMeta(meta);
+        return item;
     }
 
     private ItemStack icon(PlayerProfile profile, SkillDefinition s, int index) {

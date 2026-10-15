@@ -28,11 +28,12 @@ final class ClassLore {
                 + "</white> <dark_gray>(+" + Text.format(s.healthPerLevel) + "/niv.)"));
         lore.add(Text.item("<gray>• Mana : <aqua>" + Text.format(s.mana) + "</aqua> <dark_gray>(+" + Text.format(s.manaPerLevel)
                 + "/niv., " + Text.format(s.manaRegen) + "/s)"));
-        lore.add(Text.item("<gray>• Mêlée " + color(s.meleeDamage) + " · Distance " + color(s.rangedDamage)
-                + " · Magie " + color(s.magicDamage)));
-        lore.add(Text.item("<gray>• Dégâts subis " + colorInverse(s.damageTaken)
-                + (s.speed != 0 ? " · Vitesse " + color(1 + s.speed) : "")
-                + (s.critChance > 0 ? " · Critique <yellow>" + Math.round(s.critChance * 100) + "%" : "")));
+        // Le libellé prend la couleur de sa valeur (vert = bonus, rouge = malus, blanc = neutre)
+        lore.add(Text.item("<gray>• " + color("Mêlée", s.meleeDamage) + " <dark_gray>·</dark_gray> " + color("Distance", s.rangedDamage)
+                + " <dark_gray>·</dark_gray> " + color("Magie", s.magicDamage)));
+        lore.add(Text.item("<gray>• " + colorInverse("Dégâts subis", s.damageTaken)
+                + (s.speed != 0 ? " <dark_gray>·</dark_gray> " + color("Vitesse", 1 + s.speed) : "")
+                + (s.critChance > 0 ? " <dark_gray>·</dark_gray> <yellow>Critique " + Math.round(s.critChance * 100) + "%</yellow>" : "")));
         // Faiblesses : défauts de la classe + faiblesses imposées, sous un seul titre
         List<Flaw> flaws = rc.flaws();
         var imposed = plugin.modules().weaknesses()
@@ -56,13 +57,13 @@ final class ClassLore {
         return lore;
     }
 
-    private static String color(double mult) {
-        String c = mult > 1.001 ? "<green>" : mult < 0.999 ? "<red>" : "<white>";
-        return c + Text.percent(mult);
+    private static String color(String label, double mult) {
+        String c = mult > 1.001 ? "green" : mult < 0.999 ? "red" : "white";
+        return "<" + c + ">" + label + " " + Text.percent(mult) + "</" + c + ">";
     }
 
-    private static String colorInverse(double mult) {
-        String c = mult < 0.999 ? "<green>" : mult > 1.001 ? "<red>" : "<white>";
-        return c + Text.percent(mult);
+    private static String colorInverse(String label, double mult) {
+        String c = mult < 0.999 ? "green" : mult > 1.001 ? "red" : "white";
+        return "<" + c + ">" + label + " " + Text.percent(mult) + "</" + c + ">";
     }
 }

@@ -67,6 +67,8 @@ public final class GearService {
     private final Map<String, Gem> gemDefs = new LinkedHashMap<>();
     /** template unique -> uid de l'objet créé */
     private final Map<String, String> uniqueTaken = new HashMap<>();
+    /** uid des objets uniques libérés par un admin : ces exemplaires ne sont plus valables. */
+    private final java.util.Set<String> releasedUids = new java.util.HashSet<>();
     private File uniquesFile;
 
     public GearService(CykClasses plugin) {
@@ -195,6 +197,12 @@ public final class GearService {
         return station != null && station == m;
     }
 
+    /** Métiers autorisés à incruster des gemmes (gems.yml → socketing.jobs, vide = tout le monde). */
+    public boolean canSocket(String jobId) {
+        List<String> jobs = gems.getStringList("socketing.jobs");
+        return jobs.isEmpty() || (jobId != null && jobs.contains(jobId));
+    }
+
     public boolean canRefine(String jobId) {
         List<String> jobs = gems.getStringList("refining.jobs");
         return jobs.isEmpty() || (jobId != null && jobs.contains(jobId));
@@ -226,10 +234,15 @@ public final class GearService {
     private void loadUniques() {
         uniquesFile = new File(plugin.getDataFolder(), "forge-uniques.yml");
         uniqueTaken.clear();
+        releasedUids.clear();
         YamlConfiguration y = YamlConfiguration.loadConfiguration(uniquesFile);
         for (String k : y.getKeys(false)) {
+            if (k.equals(RELEASED_KEY)) {
+                continue;
+            }
             uniqueTaken.put(k.toLowerCase(Locale.ROOT), y.getString(k + ".uid", ""));
         }
+        releasedUids.addAll(y.getStringList(RELEASED_KEY));
     }
 
     private void saveUnique(String templateId, String uid, Player crafter) {
@@ -246,14 +259,24 @@ public final class GearService {
         uniqueTaken.put(templateId, uid);
     }
 
-    /** Admin : rend un objet unique de nouveau disponible à la forge. */
+    private static final String RELEASED_KEY = "_liberes";
+
+    /**
+     * Admin : rend un objet unique de nouveau disponible à la forge. L'ancien exemplaire devient
+     * invalide : il se brise dès qu'il est dans l'inventaire d'un joueur.
+     */
     public boolean releaseUnique(String templateId) {
         String id = templateId.toLowerCase(Locale.ROOT);
-        if (uniqueTaken.remove(id) == null) {
+        String oldUid = uniqueTaken.remove(id);
+        if (oldUid == null) {
             return false;
         }
         YamlConfiguration y = YamlConfiguration.loadConfiguration(uniquesFile);
         y.set(id, null);
+        if (!oldUid.isEmpty()) {
+            releasedUids.add(oldUid);
+            y.set(RELEASED_KEY, new ArrayList<>(releasedUids));
+        }
         try {
             y.save(uniquesFile);
         } catch (IOException ignored) {
@@ -515,21 +538,59 @@ public final class GearService {
     }
 
     /** Bonus de l'équipement porté : arme en main (si arme), armures, main secondaire (bouclier). */
+    /** Exemplaire d'un objet unique libéré depuis (/classe admin libererunique) ? */
+    public boolean isObsoleteUnique(ItemStack item) {
+        if (item == null || item.getType().isAir() || !item.hasItemMeta() || releasedUids.isEmpty()) {
+            return false;
+        }
+        PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
+        String uid = pdc.get(kUid, PersistentDataType.STRING);
+        return uid != null && pdc.has(kUnique, PersistentDataType.STRING) && releasedUids.contains(uid);
+    }
+
+    /** Brise les exemplaires invalides d'objets uniques présents dans l'inventaire du joueur. */
+    public void breakObsoleteUniques(Player player) {
+        if (releasedUids.isEmpty()) {
+            return;
+        }
+        PlayerInventory inv = player.getInventory();
+        for (int i = 0; i < inv.getSize(); i++) {
+            ItemStack it = inv.getItem(i);
+            if (!isObsoleteUnique(it)) {
+                continue;
+            }
+            ItemMeta meta = it.getItemMeta();
+            PersistentDataContainer pdc = meta.getPersistentDataContainer();
+            UniqueTemplate tpl = uniques.get(pdc.get(kUnique, PersistentDataType.STRING));
+            String name = tpl == null
+                    ? net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(it.effectiveName())
+                    : Text.plain(tpl.name());
+            for (NamespacedKey k : new NamespacedKey[]{kRarity, kStats, kSockets, kGems, kUnique, kUid, kCrafter}) {
+                pdc.remove(k);
+            }
+            meta.displayName(plugin.messages().item("forge.unique-broken-name", Text.ph("item", name)));
+            meta.lore(List.of(plugin.messages().item("forge.unique-broken-lore")));
+            it.setItemMeta(meta);
+            inv.setItem(i, it);
+            plugin.messages().send(player, "forge.unique-broken", Text.ph("item", name));
+        }
+    }
+
     public StatModifier equipped(Player player) {
         StatModifier total = new StatModifier();
         PlayerInventory inv = player.getInventory();
         ItemStack hand = inv.getItemInMainHand();
-        if (isGear(hand) && category(hand.getType()) != Category.ARMOR) {
+        if (isGear(hand) && category(hand.getType()) != Category.ARMOR && !isObsoleteUnique(hand)) {
             total.add(modifiers(hand));
         }
         for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
             ItemStack it = inv.getItem(slot);
-            if (isGear(it)) {
+            if (isGear(it) && !isObsoleteUnique(it)) {
                 total.add(modifiers(it));
             }
         }
         ItemStack off = inv.getItemInOffHand();
-        if (isGear(off) && off.getType() == Material.SHIELD) {
+        if (isGear(off) && off.getType() == Material.SHIELD && !isObsoleteUnique(off)) {
             total.add(modifiers(off));
         }
         return total;

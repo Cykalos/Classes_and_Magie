@@ -93,6 +93,15 @@ target-health:
   medium-threshold: 60
   low-threshold: 30
 
+# ───────────────────── En groupe ─────────────────────
+party:
+  # Les alliés proches voient les dégâts flottants et la barre de vie des cibles de leurs coéquipiers
+  share-with-party: true
+  # En groupe, pas de bossbar de cible : barre au-dessus de la tête, partagée avec le groupe
+  no-bossbar-in-party: true
+  # Distance maximale des alliés (blocs)
+  range: 48
+
 # ───────────────────── Panneau du groupe ─────────────────────
 party-board:
   enabled: true

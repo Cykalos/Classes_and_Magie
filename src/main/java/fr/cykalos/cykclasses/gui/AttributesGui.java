@@ -15,6 +15,11 @@ import java.util.List;
 /** Répartition des points d'attributs. Clic = +1, clic avec Maj = +5. */
 public final class AttributesGui extends Gui {
 
+    @Override
+    protected boolean moduleEnabled() {
+        return plugin.modules().attributes();
+    }
+
     public AttributesGui(CykClasses plugin, Player viewer) {
         super(plugin, viewer, 4, plugin.messages().get("attributes.gui-title"));
     }

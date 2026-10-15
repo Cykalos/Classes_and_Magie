@@ -32,6 +32,7 @@ L'XP s'obtient en faisant son métier (`xp-sources`). Aucun gain pour un bloc po
 | `FISH`, `BREED`, `TAME` | Pêche, élevage, apprivoisement | xp |
 | `REFINE` | Taille d'une gemme (cible = id de la gemme) | xp |
 | `INTERACT_BLOCK` | Utiliser un bloc (restriction uniquement) | — |
+| `USE_ITEM` | Clic droit avec un objet : poudre d'os, houe… (restriction uniquement) | — |
 
 Cibles : noms de matériaux ou d'entités, `*` = joker, `(A|B)` = A ou B. Sans `targets` : toutes les cibles.
 
@@ -54,7 +55,7 @@ Exemples par défaut :
 | Mineur | Fer, or, lapis, redstone | Diamant/émeraude (10), débris antiques (25) |
 | Forgeron | Équipement en fer, bouclier, enclume | Or + arbalète (5), diamant + masse (15), table de forgeron (30) |
 | Bûcheron | Bois sombres et exotiques | Tiges du Nether (10) |
-| Fermier | Élevage, citrouilles, melons… | Verrues du Nether (10) |
+| Fermier | Élevage, citrouilles, melons, planter des cultures, poudre d'os et labourer | Verrues du Nether (10) |
 | Alchimiste / Enchanteur / Pêcheur / Dresseur | Alambic / table d'enchantement / pêche / apprivoiser | — |
 
 Permission `cykclasses.bypass.jobs` : ignore les restrictions.
@@ -99,4 +100,5 @@ jobs:
 
 - Pas de second métier, ni deux spécialisations sur le même métier.
 - Les restrictions portent sur des matériaux et entités vanilla (pas sur des objets custom CraftEngine — utiliser [Objets](Objets.md) pour ça).
+- L'élevage est refusé avant que la nourriture soit consommée : un joueur sans le métier ne perd pas ses carottes ou son blé.
 - Pas d'XP de métier pour les actions faites par des machines (redstone, fermes automatiques sans joueur).

@@ -12,6 +12,11 @@ import org.bukkit.entity.Player;
  */
 public final class PartyCreateGui extends Gui {
 
+    @Override
+    protected boolean moduleEnabled() {
+        return plugin.modules().parties();
+    }
+
     private Party.XpMode mode;
     private boolean friendlyFire;
 

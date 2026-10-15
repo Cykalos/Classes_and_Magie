@@ -66,7 +66,7 @@ casting:
   # Appuyer sur F (échange de main) active le mode compétences :
   # la barre d'objets affiche les icônes des compétences (slots 1 à 8),
   # ton arme reste en main dans le slot 9. Les touches 1 à 8 lancent les compétences.
-  # F à nouveau (ou ouvrir l'inventaire) pour revenir à ta barre normale.
+  # F à nouveau (ou un clic dans l'inventaire) pour revenir à ta barre normale.
   swap-hands-toggle: true
   # Faut-il être accroupi pour activer le mode compétences avec F ?
   require-sneak: false
@@ -74,6 +74,8 @@ casting:
   timeout-seconds: 15
   # Icône des compétences pas encore débloquées
   locked-icon: GRAY_DYE
+  # Case de remplissage des slots sans compétence (le butin ramassé va alors dans l'inventaire)
+  empty-slot-icon: GRAY_STAINED_GLASS_PANE
   # Les compétences offensives peuvent-elles toucher les joueurs hors de ton groupe ?
   pvp: true
 

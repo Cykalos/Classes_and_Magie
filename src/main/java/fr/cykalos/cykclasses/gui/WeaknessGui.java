@@ -22,7 +22,17 @@ import java.util.List;
  */
 public final class WeaknessGui extends Gui {
 
+    @Override
+    protected boolean moduleEnabled() {
+        return plugin.modules().weaknesses();
+    }
+
     private static final int[] SLOTS = {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34};
+
+    @Override
+    public boolean isCreationStep() {
+        return !plugin.profiles().get(viewer).isWeaknessesConfirmed();
+    }
 
     public WeaknessGui(CykClasses plugin, Player viewer) {
         super(plugin, viewer, 5, plugin.messages().get("weaknesses.gui-title"));
@@ -90,6 +100,7 @@ public final class WeaknessGui extends Gui {
             });
         }
         set(41, new ItemBuilder(Material.LIME_CONCRETE).name(plugin.messages().raw("weaknesses.keep")).build(), e -> {
+            p.setWeaknessesConfirmed(true);
             viewer.closeInventory();
             plugin.character().continueCreation(viewer);
         });
