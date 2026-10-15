@@ -19,6 +19,11 @@ import java.util.Map;
 /** Arbre de compétences : les nœuds sont placés selon leurs coordonnées x (0-8) / y (0-4). */
 public final class SkillTreeGui extends Gui {
 
+    @Override
+    protected boolean moduleEnabled() {
+        return plugin.modules().skillTree();
+    }
+
     private final int treeIndex;
 
     public SkillTreeGui(CykClasses plugin, Player viewer, int treeIndex) {

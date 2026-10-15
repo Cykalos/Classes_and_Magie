@@ -34,7 +34,19 @@ public abstract class Gui implements InventoryHolder {
 
     protected abstract void build();
 
+    /** Module dont dépend ce menu (config.yml → modules). Désactivé : le menu ne s'ouvre pas. */
+    protected boolean moduleEnabled() {
+        return true;
+    }
+
     public void open() {
+        if (!moduleEnabled()) {
+            plugin.messages().send(viewer, "module-disabled");
+            if (viewer.getOpenInventory().getTopInventory().getHolder(false) instanceof Gui) {
+                viewer.closeInventory();
+            }
+            return;
+        }
         inventory.clear();
         actions.clear();
         build();
@@ -69,6 +81,22 @@ public abstract class Gui implements InventoryHolder {
                 inventory.setItem(i, border);
             }
         }
+    }
+
+    /**
+     * Étape obligatoire de la création du personnage : si le joueur ferme ce menu (touche Échap / E),
+     * l'étape en cours est rouverte.
+     */
+    public boolean isCreationStep() {
+        return false;
+    }
+
+    /** Appelé quand le joueur ferme lui-même le menu. */
+    public void onPlayerClose() {
+    }
+
+    public Player viewer() {
+        return viewer;
     }
 
     public void handleClick(InventoryClickEvent event) {

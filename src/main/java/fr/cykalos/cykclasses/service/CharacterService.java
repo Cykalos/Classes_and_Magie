@@ -95,11 +95,16 @@ public final class CharacterService {
                 new ClassSelectGui(plugin, player).open();
             } else if (mod.races() && p.getRaceId() == null && !plugin.content().races().isEmpty()) {
                 new RaceGui(plugin, player).open();
-            } else if (mod.traits() && !p.isTraitsRolled() && !plugin.content().traits().isEmpty()) {
-                rollTraits(player, p, false);
+            } else if (mod.traits() && !p.isTraitsConfirmed() && !plugin.content().traits().isEmpty()) {
+                // Tirés une seule fois : fermer le menu ou se déconnecter ne relance pas le tirage
+                if (!p.isTraitsRolled()) {
+                    rollTraits(player, p, false);
+                }
                 new TraitsGui(plugin, player).open();
-            } else if (mod.weaknesses() && !p.isWeaknessesRolled() && hasWeaknessStep(player, p)) {
-                rollWeaknesses(player, p, false);
+            } else if (mod.weaknesses() && !p.isWeaknessesConfirmed() && hasWeaknessStep(player, p)) {
+                if (!p.isWeaknessesRolled()) {
+                    rollWeaknesses(player, p, false);
+                }
                 new WeaknessGui(plugin, player).open();
             } else if (mod.jobs() && p.getJobId() == null && !p.isJobPromptDone() && !plugin.content().jobs().isEmpty()) {
                 new JobGui(plugin, player).open();
@@ -252,6 +257,7 @@ public final class CharacterService {
         releaseUniques(p);
         p.setTraits(List.of());
         p.setTraitsRolled(false);
+        p.setTraitsConfirmed(false);
         p.setRerollsUsed(0);
         plugin.stats().apply(player);
     }
@@ -270,7 +276,10 @@ public final class CharacterService {
     private boolean hasWeaknessStep(Player player, PlayerProfile p) {
         if (!wcfg().getBoolean("roll.show-step", true)) {
             // Tirage silencieux, sans menu : le joueur les verra avec /faiblesses.
-            rollWeaknesses(player, p, false);
+            if (!p.isWeaknessesRolled()) {
+                rollWeaknesses(player, p, false);
+            }
+            p.setWeaknessesConfirmed(true);
             return false;
         }
         return (weaknessRollEnabled() && wcfg().getInt("roll.max", 2) > 0 && !plugin.content().weaknesses().isEmpty())
@@ -315,6 +324,39 @@ public final class CharacterService {
             }
         }
         return out;
+    }
+
+    /**
+     * Toutes les faiblesses du personnage en texte : classe, race (et malus), traits, imposées et tirées.
+     */
+    public List<String> allWeaknessLabels(PlayerProfile p) {
+        java.util.LinkedHashSet<String> out = new java.util.LinkedHashSet<>();
+        var rc = plugin.classes().effective(p);
+        if (rc != null) {
+            rc.flaws().forEach(f -> out.add(Text.plain(f.description)));
+        }
+        if (plugin.modules().races()) {
+            var race = plugin.content().race(p.getRaceId());
+            if (race != null) {
+                race.flaws().forEach(f -> out.add(Text.plain(f.description)));
+                var pen = race.penaltyFor(p.getClassId(), p.getSubclassId());
+                if (pen != null) {
+                    pen.flaws().forEach(f -> out.add(Text.plain(f.description)));
+                }
+            }
+        }
+        if (plugin.modules().traits()) {
+            for (String id : p.getTraits()) {
+                var t = plugin.content().trait(id);
+                if (t != null) {
+                    t.flaws().forEach(f -> out.add(Text.plain(f.description)));
+                }
+            }
+        }
+        if (plugin.modules().weaknesses()) {
+            weaknessesOf(p).forEach(w -> out.add(Text.plain(w.name())));
+        }
+        return new ArrayList<>(out);
     }
 
     public int weaknessRerollsLeft(PlayerProfile p) {
@@ -401,6 +443,7 @@ public final class CharacterService {
         PlayerProfile p = plugin.profiles().get(player);
         p.setWeaknesses(List.of());
         p.setWeaknessesRolled(false);
+        p.setWeaknessesConfirmed(false);
         p.setWeaknessRerollsUsed(0);
         plugin.stats().apply(player);
     }
@@ -420,6 +463,7 @@ public final class CharacterService {
         }
         p.setWeaknesses(ids);
         p.setWeaknessesRolled(true);
+        p.setWeaknessesConfirmed(true);
         plugin.stats().apply(player);
         return true;
     }

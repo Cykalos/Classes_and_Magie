@@ -21,6 +21,11 @@ import java.util.Map;
  */
 public final class JewelerGui extends Gui {
 
+    @Override
+    protected boolean moduleEnabled() {
+        return plugin.modules().gems();
+    }
+
     private ItemStack lastResult;
 
     public JewelerGui(CykClasses plugin, Player viewer) {

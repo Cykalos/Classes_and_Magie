@@ -114,7 +114,8 @@ stat-pool:
 
 # Objets uniques : chacun ne peut être forgé qu'UNE SEULE FOIS sur tout le serveur.
 # materials : objets de base sur lesquels il peut apparaître. Stats fixes (même format que classes.yml).
-# Historique dans forge-uniques.yml · /classe admin libererunique <id> pour le rendre de nouveau disponible.
+# Historique dans forge-uniques.yml · /classe admin libererunique <id> pour le rendre de nouveau disponible :
+# l'ancien exemplaire perd alors son pouvoir (il se brise dès qu'il est dans l'inventaire d'un joueur).
 uniques:
   excalibur:
     name: "<gold><bold>Excalibur"

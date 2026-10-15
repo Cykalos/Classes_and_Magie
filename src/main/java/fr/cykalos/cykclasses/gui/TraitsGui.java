@@ -15,6 +15,16 @@ import java.util.List;
 /** Traits tirés au hasard, avec possibilité de relancer. */
 public final class TraitsGui extends Gui {
 
+    @Override
+    protected boolean moduleEnabled() {
+        return plugin.modules().traits();
+    }
+
+    @Override
+    public boolean isCreationStep() {
+        return !plugin.profiles().get(viewer).isTraitsConfirmed();
+    }
+
     public TraitsGui(CykClasses plugin, Player viewer) {
         super(plugin, viewer, 3, plugin.messages().get("traits.gui-title"));
     }
@@ -69,6 +79,7 @@ public final class TraitsGui extends Gui {
             open();
         });
         set(23, new ItemBuilder(Material.LIME_CONCRETE).name(plugin.messages().raw("traits.keep")).build(), e -> {
+            p.setTraitsConfirmed(true);
             viewer.closeInventory();
             plugin.character().continueCreation(viewer);
         });

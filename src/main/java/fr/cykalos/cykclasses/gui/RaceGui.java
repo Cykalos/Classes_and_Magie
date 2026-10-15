@@ -16,6 +16,16 @@ import java.util.List;
 /** Choix de la race (après la classe). Affiche bonus, défauts et l'adéquation avec la classe choisie. */
 public final class RaceGui extends Gui {
 
+    @Override
+    protected boolean moduleEnabled() {
+        return plugin.modules().races();
+    }
+
+    @Override
+    public boolean isCreationStep() {
+        return plugin.modules().races() && plugin.profiles().get(viewer).getRaceId() == null;
+    }
+
     public RaceGui(CykClasses plugin, Player viewer) {
         super(plugin, viewer, rows(plugin), plugin.messages().get("race.gui-title"));
     }

@@ -69,6 +69,10 @@ refining:
       min-job-level: 35
       power: 2.0
 
+# Incrustation : métiers autorisés à incruster une gemme taillée (vide = tout le monde)
+socketing:
+  jobs: [joaillier]
+
 socket-empty: "<dark_gray>◇ Emplacement de gemme libre"
 socket-filled: "<white>◆ "
 

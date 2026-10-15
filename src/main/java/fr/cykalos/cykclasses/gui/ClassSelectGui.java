@@ -16,6 +16,11 @@ import java.util.List;
  */
 public final class ClassSelectGui extends Gui {
 
+    @Override
+    public boolean isCreationStep() {
+        return !plugin.profiles().get(viewer).hasClass();
+    }
+
     public ClassSelectGui(CykClasses plugin, Player viewer) {
         super(plugin, viewer, rows(plugin), plugin.messages().get("gui.class-title"));
     }
@@ -51,11 +56,12 @@ public final class ClassSelectGui extends Gui {
         int last = getInventory().getSize() - 9;
         if (profile.hasClass()) {
             set(4, profileHead(profile), null);
-            set(last, new ItemBuilder(Material.OAK_SAPLING).name(plugin.messages().raw("gui.tree-button"))
+            var mod = plugin.modules();
+            if (mod.skillTree()) set(last, new ItemBuilder(Material.OAK_SAPLING).name(plugin.messages().raw("gui.tree-button"))
                     .lore(plugin.messages().raw("gui.points-line").replace("<points>", String.valueOf(plugin.stats().availableSkillPoints(profile))))
                     .glow(plugin.stats().availableSkillPoints(profile) > 0).build(),
                     e -> new SkillTreeGui(plugin, viewer, 0).open());
-            set(last + 1, new ItemBuilder(Material.ANVIL).name(plugin.messages().raw("gui.attributes-button"))
+            if (mod.attributes()) set(last + 1, new ItemBuilder(Material.ANVIL).name(plugin.messages().raw("gui.attributes-button"))
                     .lore(plugin.messages().raw("gui.points-line").replace("<points>", String.valueOf(plugin.stats().availableAttributePoints(profile))))
                     .glow(plugin.stats().availableAttributePoints(profile) > 0).build(),
                     e -> new AttributesGui(plugin, viewer).open());
@@ -64,12 +70,12 @@ public final class ClassSelectGui extends Gui {
             set(last + 3, new ItemBuilder(Material.ENCHANTED_BOOK).name(plugin.messages().raw("gui.skills-button")).build(),
                     e -> new SkillsGui(plugin, viewer).open());
             var race = plugin.content().race(profile.getRaceId());
-            if (!plugin.content().races().isEmpty()) {
+            if (mod.races() && !plugin.content().races().isEmpty()) {
                 set(last + 4, new ItemBuilder(race == null ? Material.PLAYER_HEAD : race.icon())
                         .name(plugin.messages().raw("gui.race-button") + (race == null ? "" : " <white>" + Text.plain(race.name()))).build(),
                         e -> new RaceGui(plugin, viewer).open());
             }
-            if (!plugin.content().traits().isEmpty()) {
+            if (mod.traits() && !plugin.content().traits().isEmpty()) {
                 set(last + 5, new ItemBuilder(Material.AMETHYST_SHARD).name(plugin.messages().raw("gui.traits-button")).build(), e -> {
                     if (!plugin.profiles().get(viewer).isTraitsRolled()) {
                         plugin.character().rollTraits(viewer, plugin.profiles().get(viewer), false);
@@ -78,7 +84,11 @@ public final class ClassSelectGui extends Gui {
                 });
             }
             var job = plugin.content().job(profile.getJobId());
-            if (!plugin.content().jobs().isEmpty()) {
+            if (mod.weaknesses()) {
+                set(last + 7, new ItemBuilder(Material.FERMENTED_SPIDER_EYE).name(plugin.messages().raw("gui.weaknesses-button")).build(),
+                        e -> new WeaknessGui(plugin, viewer).open());
+            }
+            if (mod.jobs() && !plugin.content().jobs().isEmpty()) {
                 set(last + 6, new ItemBuilder(job == null ? Material.WOODEN_PICKAXE : job.icon())
                         .name(plugin.messages().raw("gui.job-button") + (job == null ? "" : " <white>" + Text.plain(job.name()))).build(),
                         e -> new JobGui(plugin, viewer).open());

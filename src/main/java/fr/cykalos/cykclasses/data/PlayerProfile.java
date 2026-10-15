@@ -27,6 +27,8 @@ public final class PlayerProfile {
     private List<String> traits = new ArrayList<>();
     private boolean traitsRolled;
     private int rerollsUsed;
+    private boolean traitsConfirmed;
+    private boolean weaknessesConfirmed;
     private List<String> weaknesses = new ArrayList<>();
     private boolean weaknessesRolled;
     private int weaknessRerollsUsed;
@@ -123,6 +125,10 @@ public final class PlayerProfile {
     public void setTraits(List<String> traits) { this.traits = new ArrayList<>(traits); markDirty(); }
     public boolean isTraitsRolled() { return traitsRolled; }
     public void setTraitsRolled(boolean rolled) { this.traitsRolled = rolled; markDirty(); }
+    public boolean isTraitsConfirmed() { return traitsConfirmed; }
+    public void setTraitsConfirmed(boolean v) { this.traitsConfirmed = v; markDirty(); }
+    public boolean isWeaknessesConfirmed() { return weaknessesConfirmed; }
+    public void setWeaknessesConfirmed(boolean v) { this.weaknessesConfirmed = v; markDirty(); }
     public List<String> getWeaknesses() { return weaknesses; }
     public void setWeaknesses(List<String> ids) { this.weaknesses = new ArrayList<>(ids); markDirty(); }
     public boolean isWeaknessesRolled() { return weaknessesRolled; }
@@ -226,6 +232,8 @@ public final class PlayerProfile {
         map.put("rerolls-used", rerollsUsed);
         map.put("weaknesses", new ArrayList<>(weaknesses));
         map.put("weaknesses-rolled", weaknessesRolled);
+        map.put("traits-confirmed", traitsConfirmed);
+        map.put("weaknesses-confirmed", weaknessesConfirmed);
         map.put("weakness-rerolls-used", weaknessRerollsUsed);
         map.put("job", jobId);
         map.put("job-changed-at", jobChangedAt);
@@ -271,6 +279,9 @@ public final class PlayerProfile {
             wl.forEach(o -> p.weaknesses.add(String.valueOf(o)));
         }
         p.weaknessesRolled = Boolean.TRUE.equals(map.get("weaknesses-rolled"));
+        // Anciennes sauvegardes (sans ces champs) : tirage déjà fait = déjà validé
+        p.traitsConfirmed = map.containsKey("traits-confirmed") ? Boolean.TRUE.equals(map.get("traits-confirmed")) : p.traitsRolled;
+        p.weaknessesConfirmed = map.containsKey("weaknesses-confirmed") ? Boolean.TRUE.equals(map.get("weaknesses-confirmed")) : p.weaknessesRolled;
         p.weaknessRerollsUsed = map.get("weakness-rerolls-used") instanceof Number n ? n.intValue() : 0;
         p.jobId = (String) map.get("job");
         p.jobChangedAt = map.get("job-changed-at") instanceof Number n ? n.longValue() : 0;

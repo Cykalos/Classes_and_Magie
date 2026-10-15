@@ -13,6 +13,21 @@ import java.util.List;
 /** Choix du métier (un seul). */
 public final class JobGui extends Gui {
 
+    @Override
+    protected boolean moduleEnabled() {
+        return plugin.modules().jobs();
+    }
+
+    /** Fermer le menu pendant la création = « choisir plus tard ». */
+    @Override
+    public void onPlayerClose() {
+        var p = plugin.profiles().get(viewer);
+        if (p.getJobId() == null && !p.isJobPromptDone()) {
+            p.setJobPromptDone(true);
+            plugin.messages().send(viewer, "job.later-info");
+        }
+    }
+
     public JobGui(CykClasses plugin, Player viewer) {
         super(plugin, viewer, Math.max(3, Math.min(6, (int) Math.ceil(plugin.content().jobs().size() / 7.0) + 2)),
                 plugin.messages().get("job.gui-title"));

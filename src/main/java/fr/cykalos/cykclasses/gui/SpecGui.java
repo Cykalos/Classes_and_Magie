@@ -14,6 +14,11 @@ import java.util.List;
 /** Choix de la spécialisation (sous-métier) du métier actuel. */
 public final class SpecGui extends Gui {
 
+    @Override
+    protected boolean moduleEnabled() {
+        return plugin.modules().jobs();
+    }
+
     public SpecGui(CykClasses plugin, Player viewer) {
         super(plugin, viewer, 4, plugin.messages().get("spec.gui-title"));
     }

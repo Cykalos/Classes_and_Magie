@@ -52,6 +52,38 @@ public final class JobListener implements Listener {
     }
 
     /** @return true si l'action est bloquée (l'événement est annulé et le message envoyé). */
+    /**
+     * Élevage refusé AVANT que la nourriture soit consommée (sinon le joueur perd ses carottes, blé…).
+     */
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onFeed(org.bukkit.event.player.PlayerInteractEntityEvent e) {
+        if (!(e.getRightClicked() instanceof org.bukkit.entity.Animals animal)) {
+            return;
+        }
+        var hand = e.getPlayer().getInventory().getItem(e.getHand());
+        if (hand != null && !hand.getType().isAir() && animal.isBreedItem(hand) && animal.canBreed()) {
+            blocked(e.getPlayer(), JobRule.Action.BREED, animal.getType().name(), e);
+        }
+    }
+
+    /** USE_ITEM : clic droit avec un objet (poudre d'os, houe pour labourer…). */
+    @EventHandler(priority = EventPriority.LOW)
+    public void onUseItem(PlayerInteractEvent e) {
+        if ((e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) || e.getItem() == null
+                || e.useItemInHand() == org.bukkit.event.Event.Result.DENY) {
+            return;
+        }
+        // On refuse seulement l'utilisation de l'objet : ouvrir un coffre avec une houe en main reste possible.
+        Cancellable itemOnly = new Cancellable() {
+            private boolean cancelled;
+            @Override public boolean isCancelled() { return cancelled; }
+            @Override public void setCancelled(boolean c) { cancelled = c; }
+        };
+        if (blocked(e.getPlayer(), JobRule.Action.USE_ITEM, e.getItem().getType().name(), itemOnly)) {
+            e.setUseItemInHand(org.bukkit.event.Event.Result.DENY);
+        }
+    }
+
     private boolean blocked(Player player, JobRule.Action action, String target, Cancellable event) {
         if (player.getGameMode() == GameMode.CREATIVE || player.hasPermission("cykclasses.bypass.jobs")
                 || !plugin.modules().jobs()) {

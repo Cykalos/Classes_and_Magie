@@ -338,9 +338,10 @@ public final class HudService {
         }
         List<Player> out = new ArrayList<>();
         if (attacker != null) {
-            out.add(attacker);
+            // En groupe : les alliés proches voient aussi les dégâts de leurs coéquipiers
+            out.addAll(cfg.getBoolean("party.share-with-party", true) ? partyNear(attacker) : List.of(attacker));
         }
-        if (mode.equals("INVOLVED") && victim instanceof Player p && !p.equals(attacker)) {
+        if (mode.equals("INVOLVED") && victim instanceof Player p && !out.contains(p)) {
             out.add(p);
         }
         return out;
@@ -416,7 +417,10 @@ public final class HudService {
                 return;
             }
             boolean alive = victim.isValid() && !victim.isDead();
-            if (mode.equals("BOSSBAR") || mode.equals("BOTH")) {
+            List<Player> group = cfg.getBoolean("party.share-with-party", true) ? partyNear(attacker) : List.of(attacker);
+            // En groupe : pas de bossbar (barre au-dessus de la tête à la place), visible par les alliés
+            boolean partyHead = group.size() > 1 && cfg.getBoolean("party.no-bossbar-in-party", true);
+            if (!partyHead && (mode.equals("BOSSBAR") || mode.equals("BOTH"))) {
                 TargetState st = targets.get(attacker.getUniqueId());
                 if (st == null) {
                     st = new TargetState();
@@ -429,10 +433,37 @@ public final class HudService {
                 st.until = alive ? until : System.currentTimeMillis() + 1000;
                 updateTargetBar(st, victim);
             }
-            if (alive && (mode.equals("ABOVE_HEAD") || mode.equals("BOTH"))) {
-                showHead(attacker, victim, until);
+            if (partyHead) {
+                TargetState old = targets.remove(attacker.getUniqueId());
+                if (old != null) {
+                    attacker.hideBossBar(old.bar);
+                }
+            }
+            if (alive && (partyHead || mode.equals("ABOVE_HEAD") || mode.equals("BOTH"))) {
+                for (Player p : group) {
+                    showHead(p, victim, until);
+                }
             }
         });
+    }
+
+    /** Le joueur et les membres de son groupe proches de lui (même monde, 48 blocs). */
+    private List<Player> partyNear(Player player) {
+        List<Player> out = new ArrayList<>();
+        out.add(player);
+        var party = plugin.parties().get(player);
+        if (party == null) {
+            return out;
+        }
+        double range = cfg.getDouble("party.range", 48);
+        for (UUID id : party.members()) {
+            Player m = Bukkit.getPlayer(id);
+            if (m != null && !m.equals(player) && m.getWorld().equals(player.getWorld())
+                    && m.getLocation().distanceSquared(player.getLocation()) <= range * range) {
+                out.add(m);
+            }
+        }
+        return out;
     }
 
     private void updateTargetBar(TargetState st, LivingEntity target) {

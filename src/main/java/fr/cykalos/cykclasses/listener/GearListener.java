@@ -40,6 +40,7 @@ public final class GearListener implements Listener {
 
     /** Recalcule les stats si l'équipement porté a changé. */
     public void checkEquipment(Player player) {
+        plugin.gear().breakObsoleteUniques(player);
         int sig = plugin.gear().signature(player);
         Integer old = signatures.put(player.getUniqueId(), sig);
         if (old == null || old != sig) {
@@ -92,6 +93,18 @@ public final class GearListener implements Listener {
         player.playSound(Sound.sound(Key.key("block.anvil.use"), Sound.Source.PLAYER, 0.6f, 1.2f));
     }
 
+    /** Amélioration à la table de forgeron (diamant → netherite) : nom et description mis à jour. */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onSmith(org.bukkit.event.inventory.PrepareSmithingEvent e) {
+        ItemStack result = e.getResult();
+        if (result == null || result.getType().isAir() || !plugin.gear().isGear(result)) {
+            return;
+        }
+        ItemStack copy = result.clone();
+        plugin.gear().refreshLore(copy);
+        e.setResult(copy);
+    }
+
     // ------------------------------------------------------------ Gemmes
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -108,6 +121,11 @@ public final class GearListener implements Listener {
         }
         if (player.getGameMode() == GameMode.CREATIVE) {
             plugin.messages().send(player, "gems.no-creative");
+            return;
+        }
+        if (plugin.gear().isGear(target) && !plugin.gear().canSocket(plugin.profiles().get(player).getJobId())) {
+            e.setCancelled(true);
+            plugin.messages().send(player, "gems.need-jeweler-socket");
             return;
         }
         GearService.SocketResult result = plugin.gear().socket(target, cursor);
