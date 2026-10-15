@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.8.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.7.0...v1.8.0) (2026-10-15)
+
+### ✨ Nouveautés
+
+- corrections de la recette avant la version stable ([`a878c3a`](https://github.com/Cykalos/Classes_and_Magie/commit/a878c3a9806f901c16a39bdf97ce7f76e9bb22eb))
+  - Création du personnage : fermer un menu obligatoire (Échap / E) le rouvre ; les traits et faiblesses tirés doivent être validés, même après une déconnexion ; fermer le menu du métier = « choisir plus tard »
+  - Menus : libellés de stats colorés comme leur valeur (Mêlée +25 % en vert)
+  - Mode compétences : les slots sans compétence sont remplis (le butin va dans l'inventaire)
+  - Objets uniques : un exemplaire libéré (libererunique) se brise, jamais deux exemplaires actifs
+  - Amélioration en netherite : le nom de l'objet forgé est mis à jour
+  - Gemmes : incrustation réservée au joaillier (gems.yml → socketing.jobs)
+  - Métiers : l'élevage refusé ne consomme plus la nourriture ; nouvelle action USE_ITEM (poudre d'os, houe…) ; cultures, poudre d'os et labour réservés au fermier par défaut
+  - Modules désactivés : boutons retirés du menu /classe et menus inaccessibles ; bouton Faiblesses ajouté au menu /classe
+  - Groupes : dégâts flottants et barre de vie des cibles partagés avec les alliés proches, pas de bossbar de cible en groupe (hud.yml → party)
+  - Placeholders %cykclasses_weaknesses% (toutes les faiblesses) et %cykclasses_weaknesses_count%
+
+
 ## [1.7.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.6.0...v1.7.0) (2026-10-12)
 
 ### ✨ Nouveautés
