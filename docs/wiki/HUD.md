@@ -40,6 +40,15 @@ Les dégâts des compétences MythicMobs sont aussi affichés.
 - Couleur selon les PV restants (seuils `medium-threshold`, `low-threshold`).
 - Au-dessus de la tête : barre de vie configurable, visible par tous ou seulement par ceux qui ont frappé (`visible-to: DAMAGERS`).
 
+## En groupe
+
+```yaml
+party:
+  share-with-party: true      # les alliés proches voient les dégâts et la barre de vie des cibles
+  no-bossbar-in-party: true   # en groupe : barre au-dessus de la tête au lieu de la bossbar
+  range: 48                   # distance maximale des alliés
+```
+
 ## Panneau du groupe
 
 `party-board` : titre, lignes par membre (`<leader>`, `<name>`, `<class>`, `<level>`, `<bar>`, `<health>`, `<mana>`…), pied de page.

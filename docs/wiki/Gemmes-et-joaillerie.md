@@ -7,7 +7,14 @@ Fichier : `gems.yml`.
 1. **Trouvée brute** par un mineur (minerais non posés par un joueur).
 2. **Taillée** par un joueur **joaillier** : clic droit sur un **tailleur de pierre** avec une gemme brute en main → l'atelier s'ouvre.
 3. La taille donne une **rareté** et une **pureté** qui multiplient ses stats.
-4. **Incrustée** dans un objet forgé qui a un emplacement libre : prendre la gemme avec la souris et cliquer sur l'objet. C'est définitif.
+4. **Incrustée** par un joaillier dans un objet forgé qui a un emplacement libre : prendre la gemme avec la souris et cliquer sur l'objet. C'est définitif.
+
+Les métiers autorisés à incruster se règlent dans `gems.yml` :
+
+```yaml
+socketing:
+  jobs: [joaillier]   # vide = tout le monde
+```
 
 Une gemme brute ne peut pas être incrustée.
 

@@ -55,7 +55,7 @@ modules:
   item-restrictions: true
 ```
 
-Un module désactivé disparaît du jeu : son étape de création est sautée, sa commande répond « fonctionnalité désactivée » et il n'a plus d'effet sur les stats. Les données des joueurs sont conservées, il suffit de le réactiver pour les retrouver. Seule exception : un objet déjà forgé garde ses stats même si la forge est désactivée.
+Un module désactivé disparaît du jeu : son étape de création est sautée, son bouton disparaît du menu `/classe`, sa commande et son menu répondent « fonctionnalité désactivée » et il n'a plus d'effet sur les stats. Les faiblesses écrites directement dans une classe ou une race restent actives, puisqu'elles font partie de la classe ou de la race. Les données des joueurs sont conservées, il suffit de le réactiver pour les retrouver. Seule exception : un objet déjà forgé garde ses stats même si la forge est désactivée.
 
 ## Mise à jour
 

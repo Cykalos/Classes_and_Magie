@@ -65,7 +65,9 @@ uniques:
     stats: {melee-damage: 1.2, crit-chance: 0.1, health: 4}
 ```
 
-L'historique est dans `forge-uniques.yml` (qui l'a forgé, quand). `/classe admin libererunique <id>` le rend de nouveau disponible (par exemple si l'objet a été détruit).
+L'historique est dans `forge-uniques.yml` (qui l'a forgé, quand). `/classe admin libererunique <id>` le rend de nouveau disponible (par exemple si l'objet a été détruit). L'ancien exemplaire, s'il existe encore, **perd son pouvoir** : il se brise dès qu'il se trouve dans l'inventaire d'un joueur. Il n'y a donc jamais deux exemplaires actifs.
+
+Un objet forgé amélioré en netherite à la table de forgeron garde sa rareté, ses stats et ses gemmes, et son nom est mis à jour.
 
 Admin : `/classe admin forge <joueur> <rareté>` applique une rareté à l'objet tenu en main (pour tester).
 
@@ -74,3 +76,4 @@ Admin : `/classe admin forge <joueur> <rareté>` applique une rareté à l'objet
 - Pas de forge sur des objets custom (CraftEngine, MythicCrucible…) : seulement les matériaux vanilla ciblés.
 - Pas d'amélioration d'un objet déjà forgé (sa rareté et ses stats sont fixes ; seules les gemmes s'ajoutent).
 - Le plugin ne peut pas empêcher la destruction d'un objet unique (lave, cactus…) ; il faut alors le libérer à la main.
+- Un exemplaire libéré rangé dans un coffre ne se brise qu'au moment où un joueur le récupère.
