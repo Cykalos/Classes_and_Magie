@@ -42,7 +42,7 @@ jobs:
           echo "::notice::$JAR $(du -h "$JAR" | cut -f1) - $(unzip -l "$JAR" | tail -1) - uniitem: $(unzip -l "$JAR" | grep -c 'libs/uniitem')"
 
       - name: Artefact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Classes-and-Magie-paper-${{ strategy.job-index }}
           path: |
