@@ -1,5 +1,7 @@
 # Niveaux et XP
 
+🇫🇷 Français · [🇬🇧 English](EN-Levels-and-XP.md)
+
 ## Niveaux de classe
 
 `config.yml → leveling` :

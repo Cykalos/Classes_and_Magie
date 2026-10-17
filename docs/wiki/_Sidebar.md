@@ -1,25 +1,25 @@
-**[Accueil](Home.md)**
+**🇫🇷 [Accueil](Home.md)** · **🇬🇧 [Home](EN-Home.md)**
 
-**Démarrer**
-- [Installation](Installation.md)
-- [Commandes](Commandes.md)
+**Démarrer · Getting started**
+- [Installation](Installation.md) · [EN](EN-Installation.md)
+- [Commandes](Commandes.md) · [Commands](EN-Commands.md)
 
-**Personnage**
-- [Classes](Classes.md)
-- [Compétences et mana](Compétences-et-mana.md)
-- [Niveaux et XP](Niveaux-et-XP.md)
-- [Races et traits](Races-et-traits.md)
-- [Faiblesses](Faiblesses.md)
-- [Progression](Progression.md)
+**Personnage · Character**
+- [Classes](Classes.md) · [EN](EN-Classes.md)
+- [Compétences et mana](Compétences-et-mana.md) · [Skills and mana](EN-Skills-and-mana.md)
+- [Niveaux et XP](Niveaux-et-XP.md) · [Levels and XP](EN-Levels-and-XP.md)
+- [Races et traits](Races-et-traits.md) · [Races and traits](EN-Races-and-traits.md)
+- [Faiblesses](Faiblesses.md) · [Weaknesses](EN-Weaknesses.md)
+- [Progression](Progression.md) · [EN](EN-Progression.md)
 
-**Artisanat**
-- [Métiers](Métiers.md)
-- [Forge](Forge.md)
-- [Gemmes et joaillerie](Gemmes-et-joaillerie.md)
-- [Objets](Objets.md)
+**Artisanat · Crafting**
+- [Métiers](Métiers.md) · [Jobs](EN-Jobs.md)
+- [Forge](Forge.md) · [EN](EN-Forge.md)
+- [Gemmes et joaillerie](Gemmes-et-joaillerie.md) · [Gems and jewelcrafting](EN-Gems-and-jewelcrafting.md)
+- [Objets](Objets.md) · [Items](EN-Items.md)
 
-**Social et affichage**
-- [Groupes et chat](Groupes-et-chat.md)
-- [HUD](HUD.md)
+**Social et affichage · Social and display**
+- [Groupes et chat](Groupes-et-chat.md) · [Parties and chat](EN-Parties-and-chat.md)
+- [HUD](HUD.md) · [EN](EN-HUD.md)
 
-**[Limites](Limites.md)**
+**[Limites](Limites.md) · [Limits](EN-Limits.md)**

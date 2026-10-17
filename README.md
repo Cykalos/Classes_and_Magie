@@ -2,6 +2,8 @@
 
 # Classes and Magie
 
+🇫🇷 Français · [🇬🇧 English](README.en.md)
+
 **Classes and Magie** est un plugin **Paper 26.x** (Minecraft Java Edition) de classes RPG : classes, sous-classes à débloquer, compétences uniques, statistiques, faiblesses et mana.
 
 ## Fonctionnalités
@@ -73,7 +75,7 @@ Classe → **race** → **traits** → **faiblesses** → **métier**, chaque é
 - **Forge** (`forge.yml`) : les objets fabriqués par un forgeron reçoivent une rareté (Commun → Légendaire, et Unique), des stats aléatoires positives ou négatives, et des emplacements de gemmes. Plus le métier est haut, meilleure est la qualité. Chaque objet **unique** n'existe qu'une fois sur le serveur.
 - **Gemmes et joaillerie** (`gems.yml`) : trouvées **brutes** en minant, **taillées** par un joaillier au tailleur de pierre (rareté Commune → Parfaite et pureté selon son niveau), puis incrustées en cliquant avec la gemme sur un objet forgé.
 
-📖 **Documentation complète avec exemples : [wiki du projet](https://github.com/Cykalos/Classes_and_Magie/wiki).**
+📖 **Documentation complète avec exemples : [wiki du projet](https://github.com/Cykalos/Classes_and_Magie/wiki)** (en français et en anglais).
 
 ## Objets
 
@@ -109,7 +111,7 @@ Classe → **race** → **traits** → **faiblesses** → **métier**, chaque é
 | `/classe competences` | Liste des compétences |
 | `/classe reset` | Réinitialiser sa classe (délai configurable) |
 | `/arbre` · `/stats` | Arbre de compétences · attributs |
-| `/race` · `/traits [relancer]` · `/metier` | Personnage |
+| `/race` · `/traits [relancer]` · `/faiblesses [relancer]` · `/metier` | Personnage |
 | `/groupe` · `/gc` · `/global` | Groupe et chat |
 | `/competence <id\|n°>` | Lancer une compétence |
 | `/classe admin …` | Administration (liste complète sur le [wiki](https://github.com/Cykalos/Classes_and_Magie/wiki/Commandes)) |
@@ -119,7 +121,7 @@ Permissions : `cykclasses.use`, `cykclasses.reset` (tout le monde), `cykclasses.
 
 ## Placeholders
 
-`%cykclasses_class%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`, `%cykclasses_class_id%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`
+`%cykclasses_class%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_weaknesses%`, `%cykclasses_weaknesses_count%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`, `%cykclasses_class_id%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`
 
 ## Configuration
 
@@ -157,6 +159,16 @@ Java 25 requis.
 
 Chaque push sur `main` publie automatiquement une release GitHub avec le `.jar` et le changelog généré à partir des messages de commit ([Conventional Commits](https://www.conventionalcommits.org/fr/)) :
 `feat:` → version mineure, `fix:` → correctif, `feat!:` → version majeure. Ajouter `[skip release]` au message pour ne pas publier.
+
+Le changelog est bilingue : le sujet du commit (en anglais) alimente la partie anglaise. Pour la partie française, ajouter dans le corps du commit une ligne `FR: résumé en français` suivie des détails en français (sans elle, le texte anglais est repris) :
+
+```text
+feat(jobs): new USE_ITEM action
+
+- Bone meal and hoes can be reserved to a job
+FR: nouvelle action USE_ITEM
+- La poudre d'os et les houes peuvent être réservées à un métier
+```
 
 ## Crédits
 

@@ -1,5 +1,7 @@
 # Progression
 
+🇫🇷 Français · [🇬🇧 English](EN-Progression.md)
+
 ## Arbre de compétences (`/arbre`, `skilltree.yml`)
 
 Un arbre par classe de base + un arbre **commun**. Les branches peuvent être réservées à une sous-classe.

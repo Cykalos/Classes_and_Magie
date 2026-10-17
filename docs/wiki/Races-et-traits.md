@@ -1,5 +1,7 @@
 # Races et traits
 
+🇫🇷 Français · [🇬🇧 English](EN-Races-and-traits.md)
+
 ## Races (`races.yml`)
 
 Choisie juste après la classe. Par défaut : **Humain**, **Elfe**, **Nain**, **Orc**, **Tieffelin**, **Félys**.

@@ -1,5 +1,7 @@
 # Commandes, permissions et API
 
+🇫🇷 Français · [🇬🇧 English](EN-Commands.md)
+
 ## Joueurs
 
 | Commande | Description |

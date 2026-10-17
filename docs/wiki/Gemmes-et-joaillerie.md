@@ -1,5 +1,7 @@
 # Gemmes et joaillerie
 
+🇫🇷 Français · [🇬🇧 English](EN-Gems-and-jewelcrafting.md)
+
 Fichier : `gems.yml`.
 
 ## Le parcours d'une gemme

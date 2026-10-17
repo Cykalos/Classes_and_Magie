@@ -1,5 +1,7 @@
 # Classes
 
+🇫🇷 Français · [🇬🇧 English](EN-Classes.md)
+
 Fichier : `classes.yml`. Le haut du fichier documente toutes les clés disponibles.
 
 ## Classes et sous-classes par défaut

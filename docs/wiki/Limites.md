@@ -1,6 +1,8 @@
 # Limites
 
-Ce que CykClasses **ne fait pas** (ou pas encore), pour éviter les mauvaises surprises.
+🇫🇷 Français · [🇬🇧 English](EN-Limits.md)
+
+Ce que Classes and Magie **ne fait pas** (ou pas encore), pour éviter les mauvaises surprises.
 
 ## Personnage
 

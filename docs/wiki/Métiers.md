@@ -1,5 +1,7 @@
 # Métiers
 
+🇫🇷 Français · [🇬🇧 English](EN-Jobs.md)
+
 Fichier : `jobs.yml`. Menu : `/metier`.
 
 ## Principe

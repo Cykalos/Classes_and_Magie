@@ -1,5 +1,7 @@
 # Objets
 
+🇫🇷 Français · [🇬🇧 English](EN-Items.md)
+
 ## Kits de départ (`kits.yml`)
 
 Donnés au choix de la classe, et de la sous-classe si un kit porte son id.

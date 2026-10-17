@@ -97,7 +97,8 @@ jobs:
         if: steps.info.outputs.skip != 'true'
         run: |
           [ -f CHANGELOG.md ] || echo "# Changelog" > CHANGELOG.md
-          { head -n 1 CHANGELOG.md; echo; cat release-notes.md; tail -n +2 CHANGELOG.md; } > CHANGELOG.tmp
+          # Insère les notes avant la première version (« ## »), après l'en-tête du fichier
+          awk 'FNR==NR{notes=notes $0 "\n"; next} !done && /^## /{printf "%s\n", notes; done=1} {print} END{if(!done) printf "\n%s", notes}' release-notes.md CHANGELOG.md > CHANGELOG.tmp
           mv CHANGELOG.tmp CHANGELOG.md
           git add CHANGELOG.md
           git commit -m "chore(release): ${{ steps.info.outputs.tag }} [skip release]" || exit 0

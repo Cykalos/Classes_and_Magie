@@ -82,7 +82,7 @@ Tout se règle dans des fichiers YAML commentés, avec des exemples :
 
 ## 📖 Documentation
 
-Documentation complète en français, avec exemples et limites : **[wiki](https://github.com/Cykalos/Classes_and_Magie/wiki)**.
+Documentation complète en français et en anglais, avec exemples et limites : **[wiki](https://github.com/Cykalos/Classes_and_Magie/wiki)**.
 
 Code source sous licence **GPL-3.0** : **[GitHub](https://github.com/Cykalos/Classes_and_Magie)** · Bugs et suggestions : **[Issues](https://github.com/Cykalos/Classes_and_Magie/issues)**.
 
@@ -94,4 +94,4 @@ Code source sous licence **GPL-3.0** : **[GitHub](https://github.com/Cykalos/Cla
 
 **Fully configurable:** everything listed above is ready-to-play default content. Weaknesses can be imposed by race or class or rolled with per-race/per-class odds, every flaw can be conditional (night, rain, biome, world, low health, altitude, held item…), and each module can be turned off. Create your own classes, subclasses, races, traits, jobs, forge rarities, gems, kits and item rules in commented YAML files, without writing code. Skills are built from ~36 tunable mechanics (projectiles, AoE, heals, dashes, teleports…); brand-new mechanics can be added through **MythicMobs** skills or the Java API.
 
-Compatible with **MythicMobs**, **PlaceholderAPI** and custom items from **CraftEngine, ExecutableItems, MythicCrucible, ItemsAdder, Oraxen, Nexo, MMOItems**. The default texts and documentation are in **French**; every message can be translated in `messages.yml`. Commands are in French with English aliases (`/class`, `/job`, `/party`, `/skill`).
+Compatible with **MythicMobs**, **PlaceholderAPI** and custom items from **CraftEngine, ExecutableItems, MythicCrucible, ItemsAdder, Oraxen, Nexo, MMOItems**. The default texts are in **French**; every message can be translated in `messages.yml`. Full documentation in English and French on the **[wiki](https://github.com/Cykalos/Classes_and_Magie/wiki/EN-Home)**. Commands are in French with English aliases (`/class`, `/job`, `/party`, `/skill`).

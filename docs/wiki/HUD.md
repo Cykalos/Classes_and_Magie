@@ -1,5 +1,7 @@
 # HUD
 
+🇫🇷 Français · [🇬🇧 English](EN-HUD.md)
+
 Fichier : `hud.yml` (+ `config.yml → hud` pour la barre d'action).
 
 ## Barre d'action

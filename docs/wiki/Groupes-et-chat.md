@@ -1,5 +1,7 @@
 # Groupes et chat
 
+🇫🇷 Français · [🇬🇧 English](EN-Parties-and-chat.md)
+
 ## Créer un groupe
 
 `/groupe` ouvre le menu de création, où le chef fixe les **règles** (elles ne changent plus ensuite) :

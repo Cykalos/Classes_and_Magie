@@ -1,5 +1,7 @@
 # Faiblesses
 
+🇫🇷 Français · [🇬🇧 English](EN-Weaknesses.md)
+
 Fichier : `weaknesses.yml`. Commande : `/faiblesses` (alias `/weaknesses`).
 
 Pour le joueur, tout ce qui pénalise son personnage est une **faiblesse**. Le menu `/faiblesses` les regroupe toutes, avec leur origine :

@@ -1,5 +1,7 @@
 # Compétences et mana
 
+🇫🇷 Français · [🇬🇧 English](EN-Skills-and-mana.md)
+
 ## Lancer une compétence
 
 1. **F** (échange de main) : la barre d'objets affiche les **icônes des compétences** dans les slots 1 à 8. L'arme reste en main dans le slot 9.
@@ -52,7 +54,7 @@ Les soins et bonus (`HEAL`, `BLESSING`, `WAR_CRY`, `HOLY_SHIELD`…) ne touchent
     params: {skill: "MaCompetenceMythic", power: 1.0}
 ```
 
-Le mana et la recharge sont gérés par CykClasses, l'effet par MythicMobs.
+Le mana et la recharge sont gérés par Classes and Magie, l'effet par MythicMobs.
 
 ## Mana
 

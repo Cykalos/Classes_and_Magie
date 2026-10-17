@@ -1,5 +1,7 @@
 # Installation
 
+🇫🇷 Français · [🇬🇧 English](EN-Installation.md)
+
 ## Prérequis
 
 - Serveur **Paper 26.1.x ou 26.2** (testé à la compilation sur les deux).

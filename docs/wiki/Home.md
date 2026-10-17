@@ -2,6 +2,8 @@
 
 # Classes and Magie — Wiki
 
+🇫🇷 Français · [🇬🇧 English](EN-Home.md)
+
 **Classes and Magie** est un plugin **Paper 26.x** (Java 25) de jeu de rôle : classes, sous-classes, compétences et mana, races, traits, arbre de compétences, attributs, métiers avec spécialisations, forge à raretés, gemmes à tailler et incruster, groupes, HUD.
 
 > Ce wiki est généré automatiquement depuis le dossier `docs/wiki` du dépôt. Les corrections et ajouts se proposent par pull request sur ce dossier.
@@ -13,9 +15,9 @@
 3. **Traits** (`/traits`) : 3 traits tirés au hasard, relances limitées, traits uniques.
 4. **Faiblesses** (`/faiblesses`) : imposées par la race ou la classe, ou tirées au hasard selon elles.
 5. **Métier** (`/metier`) : un seul métier, qui débloque des actions et des recettes par niveau.
-Les étapes de création ne peuvent pas être sautées en fermant le menu (il se rouvre), et les traits et faiblesses tirés restent à valider après une déconnexion. Fermer le menu du métier revient à « choisir plus tard ». Désactivable avec `force-class-selection: false`.
-
 6. Progression : niveaux de classe, **sous-classe**, **arbre** (`/arbre`), **attributs** (`/stats`), **spécialisation** de métier au niveau 20.
+
+Les étapes de création ne peuvent pas être sautées en fermant le menu (il se rouvre), et les traits et faiblesses tirés restent à valider après une déconnexion. Fermer le menu du métier revient à « choisir plus tard ». Désactivable avec `force-class-selection: false`.
 
 ## Pages
 

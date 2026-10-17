@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Calcule la prochaine version (Conventional Commits) et génère le changelog en Markdown.
+# Calcule la prochaine version (Conventional Commits) et génère le changelog bilingue (EN + FR) en Markdown.
 # Sorties : version, tag, skip (dans $GITHUB_OUTPUT) et le fichier release-notes.md
 set -euo pipefail
 
@@ -50,13 +50,24 @@ else
   esac
 fi
 
-declare -A TITLES=(
+# Notes bilingues : anglais d'abord, puis français.
+# Convention du corps de commit (facultative) :
+#   - English detail line          <- détails anglais
+#   FR: résumé en français         <- remplace le sujet dans la partie française
+#   - ligne de détail en français  <- détails français (après FR:)
+# Sans ligne FR:, la partie française reprend le texte anglais.
+declare -A TITLES_EN=(
+  [feat]="✨ New features" [fix]="🐛 Fixes" [perf]="⚡ Performance" [refactor]="♻️ Refactoring"
+  [docs]="📚 Documentation" [style]="🎨 Style" [test]="🧪 Tests" [build]="🔧 Build" [ci]="🔧 CI"
+  [chore]="🔧 Maintenance" [other]="📝 Other changes")
+declare -A TITLES_FR=(
   [feat]="✨ Nouveautés" [fix]="🐛 Corrections" [perf]="⚡ Performances" [refactor]="♻️ Refactorisation"
   [docs]="📚 Documentation" [style]="🎨 Style" [test]="🧪 Tests" [build]="🔧 Build" [ci]="🔧 CI"
   [chore]="🔧 Maintenance" [other]="📝 Autres changements")
 ORDER=(feat fix perf refactor docs style test build ci chore other)
-declare -A SECTIONS=()
-BREAKING=""
+declare -A SECTIONS_EN=() SECTIONS_FR=()
+BREAKING_EN=""
+BREAKING_FR=""
 
 for sha in "${SHAS[@]}"; do
   subject=$(git log -1 --format='%s' "$sha")
@@ -67,14 +78,27 @@ for sha in "${SHAS[@]}"; do
   else
     type="other"; scope=""; bang=""; desc="$subject"
   fi
-  [[ -z "${TITLES[$type]+x}" ]] && type="other"
-  line="- ${scope:+**${scope}** : }${desc} ([\`${short}\`](${REPO_URL}/commit/${sha}))"
-  # Détails : lignes « - ... » du corps du commit
-  details=$(grep -E '^[[:space:]]*[-*] ' <<< "$body" | sed -E 's/^[[:space:]]*[-*] /  - /' || true)
-  [[ -n "$details" ]] && line+=$'\n'"$details"
-  SECTIONS[$type]+="${line}"$'\n'
+  [[ -z "${TITLES_EN[$type]+x}" ]] && type="other"
+
+  # Sépare le corps en partie anglaise (avant FR:) et partie française (après FR:)
+  body_en=$(awk '/^[[:space:]]*FR:/{exit} {print}' <<< "$body")
+  body_fr=$(awk 'f{print} /^[[:space:]]*FR:/{f=1}' <<< "$body")
+  desc_fr=$(grep -m1 -E '^[[:space:]]*FR:' <<< "$body" | sed -E 's/^[[:space:]]*FR:[[:space:]]*//' || true)
+  bullets() { grep -E '^[[:space:]]*[-*] ' <<< "$1" | sed -E 's/^[[:space:]]*[-*] /  - /' || true; }
+  details_en=$(bullets "$body_en")
+  details_fr=$(bullets "$body_fr")
+  [[ -z "$desc_fr" ]] && desc_fr="$desc"
+  [[ -z "$details_fr" ]] && details_fr="$details_en"
+
+  line_en="- ${scope:+**${scope}**: }${desc} ([\`${short}\`](${REPO_URL}/commit/${sha}))"
+  line_fr="- ${scope:+**${scope}** : }${desc_fr}"
+  [[ -n "$details_en" ]] && line_en+=$'\n'"$details_en"
+  [[ -n "$details_fr" ]] && line_fr+=$'\n'"$details_fr"
+  SECTIONS_EN[$type]+="${line_en}"$'\n'
+  SECTIONS_FR[$type]+="${line_fr}"$'\n'
   if [[ -n "$bang" ]] || grep -q 'BREAKING CHANGE' <<< "$body"; then
-    BREAKING+="- ${desc}"$'\n'
+    BREAKING_EN+="- ${desc}"$'\n'
+    BREAKING_FR+="- ${desc_fr}"$'\n'
   fi
 done
 
@@ -86,16 +110,30 @@ DATE=$(date -u +%Y-%m-%d)
     echo "## ${VERSION} (${DATE})"
   fi
   echo
-  if [[ -n "$BREAKING" && -n "$LAST_TAG" ]]; then
-    echo "### ⚠️ Changements majeurs"
+  if [[ -n "$BREAKING_EN" && -n "$LAST_TAG" ]]; then
+    echo "### ⚠️ Breaking changes"
     echo
-    printf '%s\n' "$BREAKING"
+    printf '%s\n' "$BREAKING_EN"
   fi
   for t in "${ORDER[@]}"; do
-    if [[ -n "${SECTIONS[$t]:-}" ]]; then
-      echo "### ${TITLES[$t]}"
+    if [[ -n "${SECTIONS_EN[$t]:-}" ]]; then
+      echo "### ${TITLES_EN[$t]}"
       echo
-      printf '%s\n' "${SECTIONS[$t]}"
+      printf '%s\n' "${SECTIONS_EN[$t]}"
+    fi
+  done
+  echo "### 🇫🇷 En français"
+  echo
+  if [[ -n "$BREAKING_FR" && -n "$LAST_TAG" ]]; then
+    echo "#### ⚠️ Changements majeurs"
+    echo
+    printf '%s\n' "$BREAKING_FR"
+  fi
+  for t in "${ORDER[@]}"; do
+    if [[ -n "${SECTIONS_FR[$t]:-}" ]]; then
+      echo "#### ${TITLES_FR[$t]}"
+      echo
+      printf '%s\n' "${SECTIONS_FR[$t]}"
     fi
   done
 } > release-notes.md
