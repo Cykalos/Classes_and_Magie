@@ -3,6 +3,23 @@
 Each version is described in English first, then in French (🇫🇷 En français).
 Chaque version est décrite en anglais, puis en français (🇫🇷 En français).
 
+## [1.8.2](https://github.com/Cykalos/Classes_and_Magie/compare/v1.8.1...v1.8.2) (2026-10-19)
+
+### 🐛 Fixes
+
+- shadow step stuns its target so it cannot strike back instantly ([`b829542`](https://github.com/Cykalos/Classes_and_Magie/commit/b829542be1f0b71db2576ea450e266d94b54bb30))
+  - After the teleport, the target is stunned for 1 s: it cannot attack or target anyone and is heavily slowed (new stun parameter, in seconds)
+  - Fall distance is reset after the teleport
+
+### 🇫🇷 En français
+
+#### 🐛 Corrections
+
+- Pas de l'ombre étourdit sa cible, qui ne peut plus riposter aussitôt
+  - Après la téléportation, la cible est étourdie 1 s : elle ne peut ni attaquer ni cibler et elle est fortement ralentie (nouveau paramètre stun, en secondes)
+  - La hauteur de chute est remise à zéro après la téléportation
+
+
 ## [1.8.1](https://github.com/Cykalos/Classes_and_Magie/compare/v1.8.0...v1.8.1) (2026-10-19)
 
 ### 🐛 Fixes
