@@ -3,6 +3,43 @@
 Each version is described in English first, then in French (🇫🇷 En français).
 Chaque version est décrite en anglais, puis en français (🇫🇷 En français).
 
+## [1.8.1](https://github.com/Cykalos/Classes_and_Magie/compare/v1.8.0...v1.8.1) (2026-10-19)
+
+### 🐛 Fixes
+
+- character creation resumes after death, protection during creation ([`c7c3a94`](https://github.com/Cykalos/Classes_and_Magie/commit/c7c3a94c39041725c2cb8bd1ef97c8a010fa08e7))
+  - A player who dies during character creation gets the current step back on respawn
+  - Menus closed by the game (teleport, unloaded world) open again
+  - New creation-protection option (config.yml, on by default): no damage, ignored by monsters, cannot attack until the character is created
+
+### 📚 Documentation
+
+- bilingual README, wiki and changelog [skip release] ([`8340709`](https://github.com/Cykalos/Classes_and_Magie/commit/83407095fb1d671862e71f10bac92ba56b3b0a57))
+  - English README (README.en.md) with language links on both READMEs
+  - English wiki pages (EN-*) with a bilingual sidebar, footer and home links
+  - CHANGELOG entries 1.0.0 to 1.8.0 in English then French
+  - Release notes generated in English and French (FR: line in the commit body)
+  - New CHANGELOG entries inserted after the file header
+
+### 🇫🇷 En français
+
+#### 🐛 Corrections
+
+- la création du personnage reprend après une mort, protection pendant la création
+  - Un joueur mort pendant la création du personnage retrouve l'étape en cours à sa réapparition
+  - Les menus fermés par le jeu (téléportation, monde déchargé) se rouvrent
+  - Nouvelle option creation-protection (config.yml, activée par défaut) : aucun dégât, ignoré par les monstres, ne peut pas attaquer tant que le personnage n'est pas créé
+
+#### 📚 Documentation
+
+- bilingual README, wiki and changelog [skip release]
+  - English README (README.en.md) with language links on both READMEs
+  - English wiki pages (EN-*) with a bilingual sidebar, footer and home links
+  - CHANGELOG entries 1.0.0 to 1.8.0 in English then French
+  - Release notes generated in English and French (FR: line in the commit body)
+  - New CHANGELOG entries inserted after the file header
+
+
 ## [1.8.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.7.0...v1.8.0) (2026-10-15)
 
 ### ✨ New features
