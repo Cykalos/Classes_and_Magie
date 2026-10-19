@@ -154,3 +154,6 @@ reset:
 
 # Choisir une classe est-il obligatoire ? (ouvre le menu à la connexion)
 force-class-selection: true
+# Protéger le joueur pendant la création du personnage ? (aucun dégât, ignoré par les monstres,
+# ne peut pas attaquer). Fonctionne seulement si force-class-selection est activé.
+creation-protection: true

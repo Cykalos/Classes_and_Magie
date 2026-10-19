@@ -18,11 +18,18 @@ public final class GuiListener implements Listener {
     /** Fermer un menu de création (Échap / E) ne permet pas de sauter l'étape : elle est rouverte. */
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
-        if (!(event.getInventory().getHolder(false) instanceof Gui gui)
-                || event.getReason() != InventoryCloseEvent.Reason.PLAYER) {
+        if (!(event.getInventory().getHolder(false) instanceof Gui gui)) {
             return;
         }
-        gui.onPlayerClose();
+        // Fermetures forcées par le jeu (téléportation, monde déchargé…) : l'étape est rouverte aussi.
+        // La mort est gérée à la réapparition, la déconnexion à la reconnexion.
+        switch (event.getReason()) {
+            case PLAYER -> gui.onPlayerClose();
+            case TELEPORT, CANT_USE, UNLOADED -> { }
+            default -> {
+                return;
+            }
+        }
         if (gui.isCreationStep() && plugin.getConfig().getBoolean("force-class-selection", true)) {
             plugin.character().continueCreation(gui.viewer());
         }

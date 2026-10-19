@@ -19,7 +19,9 @@
 5. **Job** (`/metier`): a single job, which unlocks actions and recipes by level.
 6. Progression: class levels, **subclass**, **skill tree** (`/arbre`), **attributes** (`/stats`), job **specialization** at level 20.
 
-Creation steps cannot be skipped by closing the menu (it opens again), and rolled traits and weaknesses still have to be confirmed after a disconnect. Closing the job menu means "choose later". Can be disabled with `force-class-selection: false`.
+Creation steps cannot be skipped by closing the menu (it opens again), and rolled traits and weaknesses still have to be confirmed after a disconnect. Closing the job menu means "choose later". A player who dies during creation gets the current step back on respawn. Can be disabled with `force-class-selection: false`.
+
+During creation, the player is **protected**: no damage taken, ignored by monsters, and unable to attack (`creation-protection: false` to disable).
 
 ## Pages
 

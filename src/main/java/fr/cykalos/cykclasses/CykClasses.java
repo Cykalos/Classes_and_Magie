@@ -23,6 +23,7 @@ import fr.cykalos.cykclasses.hook.PlaceholderHook;
 import fr.cykalos.cykclasses.listener.CastingListener;
 import fr.cykalos.cykclasses.listener.CombatListener;
 import fr.cykalos.cykclasses.listener.ConnectionListener;
+import fr.cykalos.cykclasses.listener.CreationProtectionListener;
 import fr.cykalos.cykclasses.listener.GuiListener;
 import fr.cykalos.cykclasses.listener.HudListener;
 import fr.cykalos.cykclasses.listener.ProgressListener;
@@ -163,6 +164,7 @@ public final class CykClasses extends JavaPlugin {
         pm.registerEvents(new ProgressListener(this), this);
         pm.registerEvents(new CastingListener(this), this);
         pm.registerEvents(new GuiListener(this), this);
+        pm.registerEvents(new CreationProtectionListener(this), this);
         pm.registerEvents(new HudListener(this), this);
         pm.registerEvents(new JobListener(this), this);
         pm.registerEvents(items, this);

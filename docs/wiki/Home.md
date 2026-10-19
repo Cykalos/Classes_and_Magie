@@ -17,7 +17,9 @@
 5. **Métier** (`/metier`) : un seul métier, qui débloque des actions et des recettes par niveau.
 6. Progression : niveaux de classe, **sous-classe**, **arbre** (`/arbre`), **attributs** (`/stats`), **spécialisation** de métier au niveau 20.
 
-Les étapes de création ne peuvent pas être sautées en fermant le menu (il se rouvre), et les traits et faiblesses tirés restent à valider après une déconnexion. Fermer le menu du métier revient à « choisir plus tard ». Désactivable avec `force-class-selection: false`.
+Les étapes de création ne peuvent pas être sautées en fermant le menu (il se rouvre), et les traits et faiblesses tirés restent à valider après une déconnexion. Fermer le menu du métier revient à « choisir plus tard ». Un joueur mort pendant la création retrouve l'étape en cours à sa réapparition. Désactivable avec `force-class-selection: false`.
+
+Pendant la création, le joueur est **protégé** : il ne subit aucun dégât, les monstres l'ignorent et il ne peut pas attaquer (`creation-protection: false` pour désactiver).
 
 ## Pages
 

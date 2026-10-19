@@ -83,6 +83,17 @@ public final class CharacterService {
 
     // ------------------------------------------------------------ Étapes de création
 
+    /** Vrai tant qu'il reste une étape de création à faire (classe, race, traits, faiblesses, métier). */
+    public boolean creationPending(Player player) {
+        PlayerProfile p = plugin.profiles().get(player);
+        var mod = plugin.modules();
+        return !p.hasClass()
+                || (mod.races() && p.getRaceId() == null && !plugin.content().races().isEmpty())
+                || (mod.traits() && !p.isTraitsConfirmed() && !plugin.content().traits().isEmpty())
+                || (mod.weaknesses() && !p.isWeaknessesConfirmed() && hasWeaknessStep(player, p))
+                || (mod.jobs() && p.getJobId() == null && !p.isJobPromptDone() && !plugin.content().jobs().isEmpty());
+    }
+
     /** Ouvre l'étape suivante de la création du personnage, s'il en reste une. */
     public void continueCreation(Player player) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {

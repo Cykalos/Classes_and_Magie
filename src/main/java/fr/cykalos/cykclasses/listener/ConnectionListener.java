@@ -90,6 +90,10 @@ public final class ConnectionListener implements Listener {
                 PlayerProfile profile = plugin.profiles().get(player);
                 profile.setMana(plugin.stats().maxMana(profile) * 0.5);
                 profile.setCastMode(false);
+                // Mort pendant la création : le menu a été fermé par la mort, on reprend l'étape
+                if (plugin.getConfig().getBoolean("force-class-selection", true)) {
+                    plugin.character().continueCreation(player);
+                }
             }
         }, 2L);
     }
