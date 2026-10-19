@@ -54,6 +54,25 @@ public final class CombatListener implements Listener {
 
     // ------------------------------------------------------------ Attaquant
 
+    /** Une entité étourdie (Pas de l'ombre…) ne peut ni attaquer ni cibler. */
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onStunnedAttack(EntityDamageByEntityEvent event) {
+        Entity damager = event.getDamager();
+        if (damager instanceof Projectile projectile && projectile.getShooter() instanceof Entity shooter) {
+            damager = shooter;
+        }
+        if (plugin.combat().isStunned(damager)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onStunnedTarget(org.bukkit.event.entity.EntityTargetLivingEntityEvent event) {
+        if (event.getTarget() != null && plugin.combat().isStunned(event.getEntity())) {
+            event.setCancelled(true);
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();

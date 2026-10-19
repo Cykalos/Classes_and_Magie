@@ -38,7 +38,7 @@ public final class AssassinSkills {
         s.register("LUNGE", AssassinSkills::lunge);
     }
 
-    /** Se téléporte dans le dos de la cible et la frappe. */
+    /** Se téléporte dans le dos de la cible, la frappe et l'étourdit (params : range, damage, stun en secondes). */
     private static boolean shadowStep(SkillContext c) {
         Player p = c.player();
         LivingEntity target = c.combat().targetInSight(p, c.d("range", 15));
@@ -60,7 +60,10 @@ public final class AssassinSkills {
         p.teleport(behind);
         Fx.particle(behind.clone().add(0, 1, 0), Particle.LARGE_SMOKE, 25, 0.3, 0.02);
         c.sound("entity.enderman.teleport", 0.8f, 0.6f);
+        p.setFallDistance(0);
+        // Damage d'abord (la cible se retourne), puis étourdissement : la cible ne riposte pas tout de suite
         c.combat().damage(p, target, c.d("damage", 6), DamageKind.MELEE);
+        c.combat().stun(target, c.d("stun", 1.0));
         return true;
     }
 

@@ -55,6 +55,8 @@ public final class CombatService {
     private final Map<UUID, Mark> marks = new HashMap<>();
     /** Lanceurs en train d'infliger des dégâts de compétence (évite le double calcul). */
     private final Set<UUID> skillDamage = new HashSet<>();
+    /** Entités étourdies (fin de l'étourdissement en millisecondes). */
+    private final Map<UUID, Long> stunned = new HashMap<>();
 
     public CombatService(CykClasses plugin) {
         this.plugin = plugin;
@@ -121,6 +123,34 @@ public final class CombatService {
         plugin.profiles().get(caster).addCounter("damage_dealt", amount);
         plugin.profiles().get(caster).touchCombat();
         return amount;
+    }
+
+    /**
+     * Étourdit une entité : elle ne peut plus attaquer ni cibler pendant {@code seconds} secondes,
+     * et elle est fortement ralentie. Sans effet si {@code seconds} vaut 0 ou moins.
+     */
+    public void stun(LivingEntity target, double seconds) {
+        if (seconds <= 0 || target instanceof Player) {
+            return;
+        }
+        stunned.put(target.getUniqueId(), System.currentTimeMillis() + (long) (seconds * 1000));
+        if (target instanceof org.bukkit.entity.Mob mob) {
+            mob.setTarget(null);
+        }
+        target.addPotionEffect(new org.bukkit.potion.PotionEffect(
+                org.bukkit.potion.PotionEffectType.SLOWNESS, (int) (seconds * 20), 3, false, false, false));
+    }
+
+    public boolean isStunned(Entity entity) {
+        Long until = stunned.get(entity.getUniqueId());
+        if (until == null) {
+            return false;
+        }
+        if (until < System.currentTimeMillis()) {
+            stunned.remove(entity.getUniqueId());
+            return false;
+        }
+        return true;
     }
 
     public void heal(Player caster, LivingEntity target, double amount) {

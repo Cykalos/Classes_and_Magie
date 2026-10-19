@@ -532,11 +532,11 @@ classes:
         type: SHADOW_STEP
         name: "<dark_gray>Pas de l'ombre"
         icon: BLACK_DYE
-        description: ["<gray>Apparais dans le dos de ta", "<gray>cible et frappe-la."]
+        description: ["<gray>Apparais dans le dos de ta", "<gray>cible, frappe-la et étourdis-la 1s."]
         mana: 20
         cooldown: 10
         unlock-level: 1
-        params: {range: 15, damage: 6}
+        params: {range: 15, damage: 6, stun: 1.0}
       disparition:
         type: VANISH
         name: "<dark_gray>Disparition"
