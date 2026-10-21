@@ -18,6 +18,8 @@ fi
 mapfile -t SHAS < <(git log --no-merges --format='%H' "$RANGE" | while read -r sha; do
   subject=$(git log -1 --format='%s' "$sha")
   [[ "$subject" == chore\(release\)* ]] && continue
+  # Commits publiés sans version (« [skip release] ») : absents des notes suivantes
+  [[ "$subject" == *"[skip release]"* ]] && continue
   echo "$sha"
 done)
 

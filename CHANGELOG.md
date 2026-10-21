@@ -18,10 +18,6 @@ Chaque version est décrite en anglais, puis en français (🇫🇷 En français
   - Skill objectives now only count skills that were actually cast
   - Admin commands /titres admin, placeholders %cykclasses_title%, %cykclasses_title_id%, %cykclasses_titles_count%, %cykclasses_titles_total%, new titles module
 
-### 📚 Documentation
-
-- remove internal CI note from the 1.9.0 changelog [skip release] ([`5aaa702`](https://github.com/Cykalos/Classes_and_Magie/commit/5aaa7020070dcc81994b8f527508a12e2b7fd478))
-
 ### 🇫🇷 En français
 
 #### ✨ Nouveautés
@@ -36,12 +32,6 @@ Chaque version est décrite en anglais, puis en français (🇫🇷 En français
   - Les quêtes peuvent exiger des titres (requirements → titles) et des vérifications (requirements → checks), et donner des titres (rewards → titles)
   - Les objectifs de compétence ne comptent plus que les compétences réellement lancées
   - Commandes d'administration /titres admin, placeholders %cykclasses_title%, %cykclasses_title_id%, %cykclasses_titles_count%, %cykclasses_titles_total%, nouveau module titles
-
-#### 📚 Documentation
-
-- remove internal CI note from the 1.9.0 changelog [skip release]
-
-
 ## [1.9.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.8.2...v1.9.0) (2026-10-21)
 
 ### ✨ New features
