@@ -48,7 +48,7 @@ jobs:
           .github/scripts/smoke-test.sh 26.2 "$JAR"
 
       - name: Artefact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Classes-and-Magie-paper-${{ strategy.job-index }}
           path: |
