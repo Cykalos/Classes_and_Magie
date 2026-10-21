@@ -10,7 +10,7 @@
 
 ## Parcours d'un joueur
 
-1. **Classe** (`/classe`) : Guerrier, Mage, Archer, Assassin, Clerc → kit de départ.
+1. **Classe** (`/classe`) : Guerrier, Mage, Archer, Assassin, Clerc → kit de départ. Une fois la classe choisie, `/classe` ouvre le menu du personnage (classe, race, traits, faiblesses, métier, arbre, attributs, titres, quêtes).
 2. **Race** (`/race`) : bonus, faiblesses, et malus si la race ne convient pas à la classe.
 3. **Traits** (`/traits`) : 3 traits tirés au hasard, relances limitées, traits uniques.
 4. **Faiblesses** (`/faiblesses`) : imposées par la race ou la classe, ou tirées au hasard selon elles.
@@ -49,6 +49,6 @@ Pendant la création, le joueur est **protégé** : il ne subit aucun dégât, l
 
 Les statistiques finales d'un joueur s'additionnent ou se multiplient dans cet ordre :
 
-`classe (+ sous-classe) → race → malus race/classe → traits → faiblesses → métier → spécialisation → attributs → arbre → équipement forgé et gemmes`
+`classe (+ sous-classe) → race → malus race/classe → traits → faiblesses → métier → spécialisation → titre équipé → attributs → arbre → équipement forgé et gemmes`
 
 Les valeurs « additives » (PV, mana, armure…) s'ajoutent ; les multiplicateurs (dégâts, dégâts subis) se multiplient.

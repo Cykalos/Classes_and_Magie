@@ -92,6 +92,7 @@ admin-help:
 
 gui:
   class-title: "<dark_gray>Choisis ta classe"
+  profile-title: "<dark_gray>Personnage"
   subclass-title: "<dark_gray>Sous-classes"
   skills-title: "<dark_gray>Compétences — <class>"
   click-choose: "<green>▶ Clique pour choisir"

@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Titres.md) · 🇬🇧 English
 
-File: `personnage/titles.yml`. Command: `/titres` (alias `/titles`), or the name tag at the top left of the `/classe` menu.
+File: `personnage/titles.yml`. Command: `/titres` (alias `/titles`), or the Titles button of the `/classe` menu.
 
 Titles are **unlocked by the player's actions**: level reached, monsters killed, quests completed, distance travelled, Minecraft advancements… Only one title is equipped at a time. It is shown **above the head** and **in chat**, and can give **effects**. Some titles are purely honorary.
 

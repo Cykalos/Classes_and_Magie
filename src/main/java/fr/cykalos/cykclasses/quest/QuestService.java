@@ -319,6 +319,7 @@ public final class QuestService {
             }
         }
         p.setQuestStage(q.id, 0);
+        p.setQuestAbandoned(q.id, false);
         int maxTracked = plugin.getConfig().getInt("quests.max-tracked", 3);
         if (plugin.getConfig().getBoolean("quests.auto-track", true) && p.questsTracked().size() < maxTracked
                 && !p.questsTracked().contains(q.id)) {
@@ -347,9 +348,29 @@ public final class QuestService {
             plugin.messages().send(player, "quests.cannot-abandon");
             return false;
         }
+        boolean wasTracked = p.questsTracked().contains(q.id);
         p.removeActiveQuest(q.id);
+        // Une quête abandonnée ne redémarre plus d'elle-même (elle reste disponible dans le journal)
+        p.setQuestAbandoned(q.id, true);
+        if (wasTracked) {
+            trackNext(p);
+        }
         plugin.messages().send(player, "quests.abandoned", Text.ph("quest", q.name));
         return true;
+    }
+
+    /** La quête suivie vient de se terminer ou d'être abandonnée : une autre quête en cours prend sa place. */
+    private void trackNext(PlayerProfile p) {
+        if (!plugin.getConfig().getBoolean("quests.auto-track", true) || !p.questsTracked().isEmpty()) {
+            return;
+        }
+        for (String id : p.questStages().keySet()) {
+            if (get(id) != null) {
+                p.questsTracked().add(id);
+                p.markDirty();
+                return;
+            }
+        }
     }
 
     public void toggleTrack(Player player, Quest q) {
@@ -466,7 +487,7 @@ public final class QuestService {
         // Déclencheurs des quêtes (secrètes en général) qui démarrent sur une action précise
         for (Quest q : quests.values()) {
             Objective t = q.trigger;
-            if (t == null || t.type != type || p.isQuestActive(q.id) || !t.matchesAny(candidates)
+            if (t == null || t.type != type || p.isQuestActive(q.id) || p.isQuestAbandoned(q.id) || !t.matchesAny(candidates)
                     || !nameMatches(t, entityName) || !t.conditions.test(player) || !q.conditions.test(player)) {
                 continue;
             }
@@ -692,7 +713,11 @@ public final class QuestService {
     }
 
     private void complete(Player player, PlayerProfile p, Quest q) {
+        boolean wasTracked = p.questsTracked().contains(q.id);
         p.completeQuest(q.id);
+        if (wasTracked) {
+            trackNext(p);
+        }
         plugin.messages().send(player, "quests.completed", Text.ph("quest", q.name));
         for (String line : q.completeText) {
             player.sendMessage(Text.mm(line, Text.ph("player", player.getName())));
@@ -833,7 +858,7 @@ public final class QuestService {
 
     private void autoStart(Player player, PlayerProfile p) {
         for (Quest q : quests.values()) {
-            if (q.start != Quest.Start.AUTO || q.trigger != null || p.isQuestActive(q.id)) {
+            if (q.start != Quest.Start.AUTO || q.trigger != null || p.isQuestActive(q.id) || p.isQuestAbandoned(q.id)) {
                 continue;
             }
             if (status(player, p, q) == Status.AVAILABLE && q.conditions.test(player)) {
@@ -874,14 +899,7 @@ public final class QuestService {
         }
         List<String> ids = new ArrayList<>(p.questsTracked());
         ids.removeIf(id -> !p.isQuestActive(id) || get(id) == null);
-        if (ids.isEmpty()) {
-            // Aucune quête suivie : les quêtes en cours sont affichées
-            for (String id : p.questStages().keySet()) {
-                if (get(id) != null) {
-                    ids.add(id);
-                }
-            }
-        }
+
         int shown = 0;
         for (String id : ids) {
             if (shown >= maxQuests) {

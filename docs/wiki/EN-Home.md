@@ -12,7 +12,7 @@
 
 ## A player's journey
 
-1. **Class** (`/classe`): Warrior, Mage, Archer, Assassin, Cleric → starter kit.
+1. **Class** (`/classe`): Warrior, Mage, Archer, Assassin, Cleric → starter kit. Once the class is chosen, `/classe` opens the character menu (class, race, traits, weaknesses, job, skill tree, attributes, titles, quests).
 2. **Race** (`/race`): bonuses, weaknesses, and penalties when the race does not suit the class.
 3. **Traits** (`/traits`): 3 randomly rolled traits, limited rerolls, unique traits.
 4. **Weaknesses** (`/faiblesses`): imposed by the race or class, or rolled randomly depending on them.
@@ -51,6 +51,6 @@ During creation, the player is **protected**: no damage taken, ignored by monste
 
 A player's final stats are added or multiplied in this order:
 
-`class (+ subclass) → race → race/class penalty → traits → weaknesses → job → specialization → attributes → skill tree → forged equipment and gems`
+`class (+ subclass) → race → race/class penalty → traits → weaknesses → job → specialization → equipped title → attributes → skill tree → forged equipment and gems`
 
 "Additive" values (health, mana, armor…) are added; multipliers (damage, damage taken) are multiplied.

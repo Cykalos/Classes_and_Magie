@@ -21,10 +21,11 @@ Included files: `tutoriel.yml`, `principale.yml`, `de-classe.yml`, `annexes.yml`
 ## For players
 
 - **Tutorial**: at the end of character creation, a chat message offers to start it (`[Commencer]` / `[Plus tard]`). It stays available in the journal.
-- **Journal** (`/quetes`, or the book at the top right of the `/classe` menu): one tab per category, plus an "In progress" tab. Each quest shows its level, description, state (in progress, available, locked, completed), objectives with progress, missing requirements and rewards.
+- **Journal** (`/quetes`, or the quest journal button of the `/classe` menu): one tab per category, plus an "In progress" tab. Each quest shows its level, description, state (in progress, available, locked, completed), objectives with progress, missing requirements and rewards.
   - Click an available quest: start it.
   - Click a quest in progress: track it (or stop tracking it) in the sidebar.
-  - Shift + right click a quest in progress: abandon it.
+  - Shift + right click a quest in progress: abandon it. An abandoned quest does not start again on its own: it stays available in the journal.
+  - A quest removed from the sidebar does not come back on its own; when the tracked quest ends, another quest in progress takes its place.
 - **Sidebar**: tracked quests and their objectives, updated live. In a party, the tracked quest is shown below the party members. `/quetes panneau` shows or hides it.
 - **Secret quests**: they appear in the journal once discovered. The tab shows how many are left to discover.
 

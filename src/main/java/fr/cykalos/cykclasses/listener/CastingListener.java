@@ -133,4 +133,19 @@ public final class CastingListener implements Listener {
             bar().exit(event.getPlayer(), false);
         }
     }
+
+    /** Les icônes de la barre (flèche spectrale…) ne servent jamais de munitions à un arc ou une arbalète. */
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onReadyArrow(com.destroystokyo.paper.event.player.PlayerReadyArrowEvent event) {
+        if (plugin.skillBar().isIcon(event.getArrow())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onShootBow(org.bukkit.event.entity.EntityShootBowEvent event) {
+        if (plugin.skillBar().isIcon(event.getConsumable())) {
+            event.setCancelled(true);
+        }
+    }
 }

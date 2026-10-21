@@ -21,10 +21,11 @@ Les fichiers fournis : `tutoriel.yml`, `principale.yml`, `de-classe.yml`, `annex
 ## Pour les joueurs
 
 - **Tutoriel** : à la fin de la création du personnage, un message propose de le commencer (`[Commencer]` / `[Plus tard]`). Il reste disponible dans le journal.
-- **Journal** (`/quetes`, ou le livre en haut à droite du menu `/classe`) : un onglet par catégorie, plus un onglet « En cours ». Chaque quête affiche son niveau, sa description, son état (en cours, disponible, verrouillée, terminée), ses objectifs avec la progression, les conditions manquantes et les récompenses.
+- **Journal** (`/quetes`, ou le bouton « Journal des quêtes » du menu `/classe`) : un onglet par catégorie, plus un onglet « En cours ». Chaque quête affiche son niveau, sa description, son état (en cours, disponible, verrouillée, terminée), ses objectifs avec la progression, les conditions manquantes et les récompenses.
   - Clic sur une quête disponible : la commencer.
   - Clic sur une quête en cours : la suivre (ou ne plus la suivre) dans le panneau latéral.
-  - Maj + clic droit sur une quête en cours : l'abandonner.
+  - Maj + clic droit sur une quête en cours : l'abandonner. Une quête abandonnée ne redémarre pas toute seule : elle reste disponible dans le journal.
+  - Une quête retirée du panneau n'y revient pas d'elle-même ; quand la quête suivie se termine, une autre quête en cours prend sa place.
 - **Panneau latéral** : les quêtes suivies et leurs objectifs, mis à jour en direct. En groupe, la quête suivie s'affiche sous les membres du groupe. `/quetes panneau` l'affiche ou le masque.
 - **Quêtes secrètes** : elles apparaissent dans le journal une fois découvertes. L'onglet indique combien il en reste à découvrir.
 

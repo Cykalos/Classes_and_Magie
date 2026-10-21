@@ -2,7 +2,7 @@
 
 🇫🇷 Français · [🇬🇧 English](EN-Titles.md)
 
-Fichier : `personnage/titles.yml`. Commande : `/titres` (alias `/titles`), ou l'étiquette en haut à gauche du menu `/classe`.
+Fichier : `personnage/titles.yml`. Commande : `/titres` (alias `/titles`), ou le bouton « Titres » du menu `/classe`.
 
 Les titres se **débloquent selon les actions du joueur** : niveau atteint, monstres éliminés, quêtes terminées, distance parcourue, progrès Minecraft… Un seul titre est équipé à la fois. Il s'affiche **au-dessus de la tête** et **dans le chat**, et peut donner des **effets**. Certains titres sont purement honorifiques.
 
