@@ -15,7 +15,6 @@ Chaque version est décrite en anglais, puis en français (🇫🇷 En français
   - Rewards: class and job XP, skill tree and attribute points, money (Vault), items (custom items included), commands
   - Configuration files organised by theme: classes/, personnage/, metiers/, objets/, affichage/, quetes/, donnees/; files from older versions are moved automatically on first start
   - Admin commands /quetes admin, placeholders %cykclasses_quests_completed%, %cykclasses_quests_active%, %cykclasses_quests_total%, %cykclasses_quest_tracked%, new quests module
-  - CI starts a real Paper server to check that the plugin enables and loads its quests
 
 ### 🇫🇷 En français
 
@@ -29,7 +28,6 @@ Chaque version est décrite en anglais, puis en français (🇫🇷 En français
   - Récompenses : XP de classe et de métier, points d'arbre et d'attributs, argent (Vault), objets (custom compris), commandes
   - Fichiers de configuration rangés par thème : classes/, personnage/, metiers/, objets/, affichage/, quetes/, donnees/ ; les fichiers des anciennes versions sont déplacés automatiquement au premier démarrage
   - Commandes d'administration /quetes admin, placeholders %cykclasses_quests_completed%, %cykclasses_quests_active%, %cykclasses_quests_total%, %cykclasses_quest_tracked%, nouveau module quests
-  - La CI démarre un vrai serveur Paper pour vérifier que le plugin s'active et charge ses quêtes
 
 
 ## [1.8.2](https://github.com/Cykalos/Classes_and_Magie/compare/v1.8.1...v1.8.2) (2026-10-19)
