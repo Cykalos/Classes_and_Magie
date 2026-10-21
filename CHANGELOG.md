@@ -3,6 +3,45 @@
 Each version is described in English first, then in French (🇫🇷 En français).
 Chaque version est décrite en anglais, puis en français (🇫🇷 En français).
 
+## [1.10.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.9.0...v1.10.0) (2026-10-21)
+
+### ✨ New features
+
+- player titles, new unlock conditions for titles and quests ([`dffb20c`](https://github.com/Cykalos/Classes_and_Magie/commit/dffb20c99c3dfe057facfb34b9c4766cea0661ea))
+  - Titles unlocked by the player's actions, managed with /titres (collection menu with unlocked and locked titles, conditions and progress)
+  - Rarities from Common to Legendary, plus Unique (a single player on the server) and Secret (hidden conditions); Epic and rarer titles are announced to the server
+  - The equipped title is shown above the head (hidden when invisible, sneaking or vanished) and in chat (<title> in the chat formats)
+  - An equipped title can give stats, potion effects and conditional bonuses, or stay honorary
+  - 31 included titles: progression, combat, one per class, jobs and exploration, story, 2 unique and 4 secret titles
+  - New conditions for titles and quests: lifetime kills and skill uses, internal counters, Minecraft statistics, advancements, playtime, completed quests, unlocked titles; they also count what players did before
+  - Quests can require titles (requirements → titles) and checks (requirements → checks), and give titles (rewards → titles)
+  - Skill objectives now only count skills that were actually cast
+  - Admin commands /titres admin, placeholders %cykclasses_title%, %cykclasses_title_id%, %cykclasses_titles_count%, %cykclasses_titles_total%, new titles module
+
+### 📚 Documentation
+
+- remove internal CI note from the 1.9.0 changelog [skip release] ([`5aaa702`](https://github.com/Cykalos/Classes_and_Magie/commit/5aaa7020070dcc81994b8f527508a12e2b7fd478))
+
+### 🇫🇷 En français
+
+#### ✨ Nouveautés
+
+- titres de joueur, nouvelles conditions de déblocage pour les titres et les quêtes
+  - Titres débloqués selon les actions du joueur, gérés avec /titres (collection avec les titres débloqués et à débloquer, conditions et progression)
+  - Raretés de Commun à Légendaire, plus Unique (un seul joueur du serveur) et Secret (conditions cachées) ; les titres Épiques et plus rares sont annoncés au serveur
+  - Le titre équipé s'affiche au-dessus de la tête (masqué si le joueur est invisible, accroupi ou en vanish) et dans le chat (<title> dans les formats du chat)
+  - Un titre équipé peut donner des stats, des effets de potion et des bonus conditionnels, ou rester honorifique
+  - 31 titres fournis : progression, combat, un par classe, métiers et exploration, histoire, 2 uniques et 4 secrets
+  - Nouvelles conditions pour les titres et les quêtes : éliminations et compétences au total, compteurs internes, statistiques Minecraft, progrès, temps de jeu, quêtes terminées, titres débloqués ; elles comptent aussi ce que les joueurs ont fait avant
+  - Les quêtes peuvent exiger des titres (requirements → titles) et des vérifications (requirements → checks), et donner des titres (rewards → titles)
+  - Les objectifs de compétence ne comptent plus que les compétences réellement lancées
+  - Commandes d'administration /titres admin, placeholders %cykclasses_title%, %cykclasses_title_id%, %cykclasses_titles_count%, %cykclasses_titles_total%, nouveau module titles
+
+#### 📚 Documentation
+
+- remove internal CI note from the 1.9.0 changelog [skip release]
+
+
 ## [1.9.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.8.2...v1.9.0) (2026-10-21)
 
 ### ✨ New features
