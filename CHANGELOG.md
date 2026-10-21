@@ -3,6 +3,35 @@
 Each version is described in English first, then in French (🇫🇷 En français).
 Chaque version est décrite en anglais, puis en français (🇫🇷 En français).
 
+## [1.9.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.8.2...v1.9.0) (2026-10-21)
+
+### ✨ New features
+
+- quest system and configuration files organised in folders ([`f570110`](https://github.com/Cykalos/Classes_and_Magie/commit/f570110cb3fd50fecba8a029cfcba0062bd5b0e2))
+  - Optional quests: tutorial offered at the end of character creation, 6-chapter main story, 2 quests per class, side quests (some repeatable) and secret quests discovered under conditions or on a specific action
+  - Quest journal (/quetes, book in the /classe menu): tabs per category, objectives with progress, missing requirements and rewards; click to start or track, Shift + right click to abandon
+  - Sidebar quest tracker, shared with the party board (hud.yml → quest-tracker, /quetes panneau to hide it)
+  - About thirty objective types (kill, gather, craft, fish, cast a skill, collect items, explore a biome, reach a place or a level…) with conditions (night, item in hand, sneaking…)
+  - Rewards: class and job XP, skill tree and attribute points, money (Vault), items (custom items included), commands
+  - Configuration files organised by theme: classes/, personnage/, metiers/, objets/, affichage/, quetes/, donnees/; files from older versions are moved automatically on first start
+  - Admin commands /quetes admin, placeholders %cykclasses_quests_completed%, %cykclasses_quests_active%, %cykclasses_quests_total%, %cykclasses_quest_tracked%, new quests module
+  - CI starts a real Paper server to check that the plugin enables and loads its quests
+
+### 🇫🇷 En français
+
+#### ✨ Nouveautés
+
+- système de quêtes et fichiers de configuration rangés dans des dossiers
+  - Quêtes facultatives : tutoriel proposé à la fin de la création du personnage, histoire principale en 6 chapitres, 2 quêtes par classe, quêtes annexes (dont des répétables) et quêtes secrètes découvertes sous conditions ou sur une action précise
+  - Journal des quêtes (/quetes, livre dans le menu /classe) : onglets par catégorie, objectifs avec progression, conditions manquantes et récompenses ; clic pour commencer ou suivre, Maj + clic droit pour abandonner
+  - Panneau latéral de suivi des quêtes, partagé avec le panneau du groupe (hud.yml → quest-tracker, /quetes panneau pour le masquer)
+  - Une trentaine de types d'objectifs (éliminer, récolter, fabriquer, pêcher, lancer une compétence, rassembler des objets, explorer un biome, atteindre un lieu ou un niveau…) avec des conditions (de nuit, objet en main, accroupi…)
+  - Récompenses : XP de classe et de métier, points d'arbre et d'attributs, argent (Vault), objets (custom compris), commandes
+  - Fichiers de configuration rangés par thème : classes/, personnage/, metiers/, objets/, affichage/, quetes/, donnees/ ; les fichiers des anciennes versions sont déplacés automatiquement au premier démarrage
+  - Commandes d'administration /quetes admin, placeholders %cykclasses_quests_completed%, %cykclasses_quests_active%, %cykclasses_quests_total%, %cykclasses_quest_tracked%, nouveau module quests
+  - La CI démarre un vrai serveur Paper pour vérifier que le plugin s'active et charge ses quêtes
+
+
 ## [1.8.2](https://github.com/Cykalos/Classes_and_Magie/compare/v1.8.1...v1.8.2) (2026-10-19)
 
 ### 🐛 Fixes
