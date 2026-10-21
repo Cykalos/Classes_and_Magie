@@ -52,6 +52,10 @@ commands:
     description: Points d'attributs.
     usage: /stats [reset]
     aliases: [attributs]
+  titres:
+    description: Collection de titres et titre équipé.
+    usage: /titres [equiper <id>|retirer|admin]
+    aliases: [titles, titre, title]
   quetes:
     description: Journal des quêtes, suivi et tutoriel.
     usage: /quetes [commencer|abandonner|suivre|panneau|tutoriel|admin]

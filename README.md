@@ -28,6 +28,7 @@
 - **Menus** : choix de classe, sous-classes avec progression des conditions, liste des compétences.
 - **Stockage** au choix : `YAML`, `JSON` ou `SQLITE`.
 - **Groupes** avec règles d'XP et de dégâts alliés, **HUD** de dégâts et de PV, intégration **MythicMobs**.
+- **Titres** à débloquer selon les actions du joueur, de Commun à Unique et Secret, affichés au-dessus de la tête et dans le chat, avec ou sans effets.
 - **Quêtes** facultatives : tutoriel, histoire principale, quêtes de classe, annexes et secrètes, journal et panneau de suivi.
 - **PlaceholderAPI** (optionnel) et **API Java** pour les autres plugins.
 
@@ -89,6 +90,14 @@ Classe → **race** → **traits** → **faiblesses** → **métier**, chaque é
 - Récompenses : XP de classe et de métier, points d'arbre et d'attributs, argent (Vault), objets (custom compris), commandes.
 - Dossier `quetes/` : chaque fichier `.yml` est lu, le format complet est documenté en haut de `tutoriel.yml` et sur le [wiki](https://github.com/Cykalos/Classes_and_Magie/wiki/Quêtes).
 
+## Titres
+
+`/titres` ouvre la collection de titres. Un seul titre est équipé : il s'affiche **au-dessus de la tête** et **dans le chat**, et peut donner des **effets** (stats, effets de potion, bonus conditionnels) ou rester honorifique.
+
+- **31 titres fournis** : progression, combat, un par classe, métiers et exploration, histoire, **uniques** (un seul joueur du serveur) et **secrets** (conditions cachées).
+- Débloqués par : niveau, éliminations, compétences lancées, blocs minés, dégâts subis, soins, statistiques Minecraft (morts, distance, poissons…), progrès, temps de jeu, quêtes terminées… Les totaux comptent aussi ce que le joueur a déjà fait.
+- Les quêtes peuvent exiger ou donner un titre. Tout se règle dans `personnage/titles.yml` ([wiki](https://github.com/Cykalos/Classes_and_Magie/wiki/Titres)).
+
 ## Objets
 
 - **Kits de départ** (`kits.yml`) donnés au choix de la classe ou de la sous-classe.
@@ -126,6 +135,7 @@ Classe → **race** → **traits** → **faiblesses** → **métier**, chaque é
 | `/race` · `/traits [relancer]` · `/faiblesses [relancer]` · `/metier` | Personnage |
 | `/groupe` · `/gc` · `/global` | Groupe et chat |
 | `/quetes [commencer\|abandonner\|suivre\|panneau\|tutoriel]` | Journal et suivi des quêtes |
+| `/titres [equiper <id>\|retirer]` | Titres |
 | `/competence <id\|n°>` | Lancer une compétence |
 | `/classe admin …` | Administration (liste complète sur le [wiki](https://github.com/Cykalos/Classes_and_Magie/wiki/Commandes)) |
 | `/classe admin reload` | Recharger la configuration |
@@ -134,15 +144,15 @@ Permissions : `cykclasses.use`, `cykclasses.reset` (tout le monde), `cykclasses.
 
 ## Placeholders
 
-`%cykclasses_class%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_weaknesses%`, `%cykclasses_weaknesses_count%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`, `%cykclasses_class_id%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`, `%cykclasses_quests_completed%`, `%cykclasses_quests_active%`, `%cykclasses_quests_total%`, `%cykclasses_quest_tracked%`
+`%cykclasses_class%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_weaknesses%`, `%cykclasses_weaknesses_count%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`, `%cykclasses_class_id%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`, `%cykclasses_title%`, `%cykclasses_titles_count%`, `%cykclasses_quests_completed%`, `%cykclasses_quests_active%`, `%cykclasses_quests_total%`, `%cykclasses_quest_tracked%`
 
 ## Configuration
 
 Fichiers rangés par thème dans `plugins/Classes_and_Magie/` (ceux d'une ancienne version sont déplacés automatiquement) :
 
-- `config.yml` — **modules** (activer ou désactiver races, traits, faiblesses, métiers, arbre, attributs, groupes, forge, gemmes, kits, restrictions, quêtes), stockage, courbe d'XP, XP par monstre, mana, mode compétences, HUD, reset, quêtes.
+- `config.yml` — **modules** (activer ou désactiver races, traits, faiblesses, métiers, arbre, attributs, groupes, forge, gemmes, kits, restrictions, quêtes, titres), stockage, courbe d'XP, XP par monstre, mana, mode compétences, HUD, reset, quêtes.
 - `classes/` — `classes.yml` (classes, sous-classes, stats, faiblesses, conditions et compétences ; le haut du fichier documente tous les types), `skilltree.yml`, `attributes.yml`.
-- `personnage/` — `races.yml`, `traits.yml`, `weaknesses.yml`.
+- `personnage/` — `races.yml`, `traits.yml`, `weaknesses.yml`, `titles.yml`.
 - `metiers/` — `jobs.yml`, `forge.yml`, `gems.yml`.
 - `objets/` — `kits.yml`, `items.yml`.
 - `affichage/` — `hud.yml` (XP gagnée, dégâts flottants, PV des cibles, panneau du groupe et des quêtes), `messages.yml` (tous les textes au format [MiniMessage](https://docs.advntr.dev/minimessage/format.html)).

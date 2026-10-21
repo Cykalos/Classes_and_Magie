@@ -21,14 +21,15 @@ import java.util.Map;
  *   items:                  # même format que kits.yml
  *     - {item: "minecraft:iron_ingot", amount: 8}
  *     - {item: "mythic:EpeeRunique", name: "<gold>Lame de l'aube"}
- *   commands: ["lp user %player% permission set monserveur.titre"]
+ *   titles: [heros_de_la_fracture]   # titres débloqués
+ *   commands: ["lp user %player% permission set monserveur.grade"]
  *   text: ["<gray>Une récompense spéciale"]   # lignes en plus dans le journal
  * </pre>
  */
 public record QuestReward(double xp, double jobXp, int skillPoints, int attributePoints, double money,
-                          List<KitItem> items, List<String> commands, List<String> text) {
+                          List<KitItem> items, List<String> titles, List<String> commands, List<String> text) {
 
-    public static final QuestReward NONE = new QuestReward(0, 0, 0, 0, 0, List.of(), List.of(), List.of());
+    public static final QuestReward NONE = new QuestReward(0, 0, 0, 0, 0, List.of(), List.of(), List.of(), List.of());
 
     public static QuestReward load(ConfigurationSection s) {
         if (s == null) {
@@ -43,7 +44,7 @@ public record QuestReward(double xp, double jobXp, int skillPoints, int attribut
             }
         }
         return new QuestReward(s.getDouble("xp"), s.getDouble("job-xp"), s.getInt("skill-points"),
-                s.getInt("attribute-points"), s.getDouble("money"), items, s.getStringList("commands"),
+                s.getInt("attribute-points"), s.getDouble("money"), items, s.getStringList("titles"), s.getStringList("commands"),
                 s.getStringList("text"));
     }
 
@@ -68,6 +69,6 @@ public record QuestReward(double xp, double jobXp, int skillPoints, int attribut
 
     public boolean isEmpty() {
         return xp <= 0 && jobXp <= 0 && skillPoints <= 0 && attributePoints <= 0 && money <= 0
-                && items.isEmpty() && commands.isEmpty() && text.isEmpty();
+                && items.isEmpty() && titles.isEmpty() && commands.isEmpty() && text.isEmpty();
     }
 }

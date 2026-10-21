@@ -4,7 +4,7 @@
 
 [🇫🇷 Français](Home.md) · 🇬🇧 English
 
-**Classes and Magie** is a role-playing plugin for **Paper 26.x** (Java 25): classes, subclasses, skills and mana, races, traits, skill tree, attributes, jobs with specializations, forge with rarities, gems to cut and socket, parties, quests, HUD.
+**Classes and Magie** is a role-playing plugin for **Paper 26.x** (Java 25): classes, subclasses, skills and mana, races, traits, skill tree, attributes, jobs with specializations, forge with rarities, gems to cut and socket, parties, quests, titles, HUD.
 
 > This wiki is generated automatically from the `docs/wiki` folder of the repository. Corrections and additions can be proposed by pull request on that folder.
 >
@@ -18,7 +18,8 @@
 4. **Weaknesses** (`/faiblesses`): imposed by the race or class, or rolled randomly depending on them.
 5. **Job** (`/metier`): a single job, which unlocks actions and recipes by level.
 6. Progression: class levels, **subclass**, **skill tree** (`/arbre`), **attributes** (`/stats`), job **specialization** at level 20.
-7. **Quests** (`/quetes`), all optional: tutorial offered at the end of creation, main story, class quests, side and secret quests.
+7. **Titles** (`/titres`) unlocked by the player's actions, shown above the head, with or without effects.
+8. **Quests** (`/quetes`), all optional: tutorial offered at the end of creation, main story, class quests, side and secret quests.
 
 Creation steps cannot be skipped by closing the menu (it opens again), and rolled traits and weaknesses still have to be confirmed after a disconnect. Closing the job menu means "choose later". A player who dies during creation gets the current step back on respawn. Can be disabled with `force-class-selection: false`.
 
@@ -35,6 +36,7 @@ During creation, the player is **protected**: no damage taken, ignored by monste
 | [Races and traits](EN-Races-and-traits.md) | Races, class penalties, traits and unique traits |
 | [Weaknesses](EN-Weaknesses.md) | Every weakness: imposed, random, conditions |
 | [Progression](EN-Progression.md) | Skill tree and attributes |
+| [Titles](EN-Titles.md) | Rarities, unique and secret titles, conditions, effects, display |
 | [Quests](EN-Quests.md) | Tutorial, story, class, side and secret quests, journal, quest tracker |
 | [Jobs](EN-Jobs.md) | Jobs, restrictions, levels, recipes, specializations |
 | [Forge](EN-Forge.md) | Rarities, random stats, unique items |

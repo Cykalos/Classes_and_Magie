@@ -107,6 +107,12 @@ public final class StatsService {
                 effects.addAll(spec.effects());
             }
         }
+        var title = plugin.titles() == null ? null : plugin.titles().equipped(profile);
+        if (title != null) {
+            mod.add(title.modifiers());
+            flaws.addAll(title.flaws());
+            effects.addAll(title.effects());
+        }
         if (modules.attributes()) {
             for (AttributeDef a : plugin.content().attributes()) {
                 mod.add(a.perPoint(), profile.getAttribute(a.id()));

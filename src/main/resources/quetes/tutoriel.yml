@@ -29,6 +29,9 @@
 #       quests: [autre_quete]       # quêtes à avoir terminées
 #       not-quests: [voie_opposee]  # quêtes à ne pas avoir faites (choix exclusifs)
 #       permission: "serveur.chapitre2"
+#       titles: [tueur_de_dragons]  # titres à avoir débloqués
+#       checks:                     # objectifs « état » à remplir (statistiques, progrès, totaux…)
+#         - {type: ADVANCEMENT, targets: ["minecraft:story/enter_the_nether"]}
 #     conditions: {time: NIGHT}     # contexte pour démarrer (mêmes conditions que les faiblesses)
 #     trigger:                      # démarre la quête quand cette action a lieu (quêtes secrètes)
 #       type: KILL
@@ -46,6 +49,7 @@
 #       money: 100            # nécessite Vault et un plugin d'économie
 #       items:                # même format que kits.yml (objets custom compris)
 #         - {item: "minecraft:diamond", amount: 2}
+#       titles: [mon_titre]   # titres débloqués (personnage/titles.yml)
 #       commands: ["say %player% a terminé une quête !"]
 #       text: ["<gray>Ligne en plus dans la liste des récompenses"]
 #     complete-text: ["<gray>Texte affiché à la fin"]
@@ -58,7 +62,8 @@
 # États (vérifiés chaque seconde) :
 #   LEVEL, JOB_LEVEL, CLASS, SUBCLASS, RACE, JOB, SPECIALIZATION, COLLECT (objets dans l'inventaire,
 #   take: true pour les retirer), REACH (world, x, y, z, radius), BIOME (targets = biomes), CONDITION
-#   (bloc conditions), TREE_POINTS, ATTRIBUTE_POINTS
+#   (bloc conditions), TREE_POINTS, ATTRIBUTE_POINTS, QUEST (quêtes terminées), TITLES (titres débloqués),
+#   KILLS_TOTAL, SKILL_USES_TOTAL, COUNTER, STATISTIC (statistiques Minecraft), ADVANCEMENT (progrès), PLAYTIME (heures)
 # Options communes :
 #   targets     liste de cibles, * = joker (« *_LOG »), « mythic:NomInterne » pour un mob MythicMobs
 #   amount      quantité (1 par défaut)

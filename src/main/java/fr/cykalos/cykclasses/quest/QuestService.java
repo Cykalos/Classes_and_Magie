@@ -167,10 +167,18 @@ public final class QuestService {
         return missingRequirements(player, p, q).isEmpty();
     }
 
+    public boolean requirementsMet(Player player, PlayerProfile p, QuestRequirements r) {
+        return missingRequirements(player, p, r).isEmpty();
+    }
+
     /** Conditions non remplies, sous forme de lignes lisibles (vide = disponible). */
     public List<Component> missingRequirements(Player player, PlayerProfile p, Quest q) {
+        return missingRequirements(player, p, q.requirements);
+    }
+
+    /** Conditions non remplies (quêtes et titres). */
+    public List<Component> missingRequirements(Player player, PlayerProfile p, QuestRequirements r) {
         List<Component> out = new ArrayList<>();
-        QuestRequirements r = q.requirements;
         if (r.level() > 0 && p.getLevel() < r.level()) {
             out.add(plugin.messages().get("quests.req.level", Text.ph("level", r.level())));
         }
@@ -203,6 +211,19 @@ public final class QuestService {
         }
         if (r.permission() != null && player != null && !player.hasPermission(r.permission())) {
             out.add(plugin.messages().get("quests.req.permission"));
+        }
+        for (String id : r.titles()) {
+            if (!p.hasTitle(id)) {
+                var t = plugin.titles() == null ? null : plugin.titles().get(id);
+                out.add(plugin.messages().get("quests.req.title", Text.ph("title", t == null ? id : Text.plain(t.name()))));
+            }
+        }
+        for (Objective o : r.checks()) {
+            double v = stateValue(player, p, o);
+            if (v < o.amount) {
+                out.add(Text.mm(plugin.messages().raw("quests.req.check"), Text.ph("objective", objectiveText(o)),
+                        Text.ph("progress", progressText(v, o.amount))));
+            }
         }
         return out;
     }
@@ -394,7 +415,13 @@ public final class QuestService {
 
     /** Action d'un joueur (tuer, casser, fabriquer…) : fait avancer les objectifs correspondants. */
     public void progress(Player player, Objective.Type type, List<String> candidates, double amount, String entityName) {
-        if (!enabled() || player == null) {
+        if (player == null) {
+            return;
+        }
+        if (plugin.titles() != null) {
+            plugin.titles().progress(player, type, candidates, amount, entityName);
+        }
+        if (!enabled()) {
             return;
         }
         PlayerProfile p = profile(player);
@@ -489,6 +516,11 @@ public final class QuestService {
         if (!o.type.isState()) {
             return p.getQuestProgress(q.id, index);
         }
+        return stateValue(player, p, o);
+    }
+
+    /** Valeur d'un objectif « état » (niveau, objets, statistiques…), partagée avec les titres. */
+    public double stateValue(Player player, PlayerProfile p, Objective o) {
         if (player == null) {
             return 0;
         }
@@ -512,8 +544,48 @@ public final class QuestService {
             case TREE_POINTS -> p.treeNodes().values().stream().mapToInt(Integer::intValue).sum();
             case ATTRIBUTE_POINTS -> o.targets.isEmpty() ? p.spentAttributePoints()
                     : o.targets.stream().mapToInt(p::getAttribute).sum();
+            case QUEST -> o.targets.isEmpty() ? p.questsCompleted().size()
+                    : o.targets.stream().filter(t -> p.hasCompletedQuest(t.toLowerCase(Locale.ROOT))).count();
+            case TITLES -> plugin.titles() == null ? 0 : plugin.titles().countUnlocked(p, o);
+            case KILLS_TOTAL -> o.targets.isEmpty() ? p.totalKills()
+                    : p.kills().entrySet().stream().filter(e -> o.matches(e.getKey())).mapToInt(Map.Entry::getValue).sum();
+            case SKILL_USES_TOTAL -> o.targets.isEmpty() ? p.totalSkillUses()
+                    : p.skillUses().entrySet().stream().filter(e -> o.matches(e.getKey())).mapToInt(Map.Entry::getValue).sum();
+            case COUNTER -> o.targets.stream().mapToDouble(p::getCounter).sum();
+            case STATISTIC -> o.targets.stream().mapToDouble(t -> statistic(player, t)).sum();
+            case ADVANCEMENT -> o.targets.stream().filter(t -> advancementDone(player, t)).count();
+            case PLAYTIME -> player.getStatistic(org.bukkit.Statistic.PLAY_ONE_MINUTE) / 72_000.0;
             default -> 0;
         };
+    }
+
+    /** Statistique Minecraft : « DEATHS », « WALK_ONE_CM », « MINE_BLOCK:DIAMOND_ORE », « KILL_ENTITY:ZOMBIE »… */
+    private static double statistic(Player player, String raw) {
+        try {
+            String[] parts = raw.toUpperCase(Locale.ROOT).split(":", 2);
+            org.bukkit.Statistic stat = org.bukkit.Statistic.valueOf(parts[0]);
+            return switch (stat.getType()) {
+                case UNTYPED -> player.getStatistic(stat);
+                case BLOCK, ITEM -> {
+                    org.bukkit.Material m = parts.length > 1 ? org.bukkit.Material.matchMaterial(parts[1]) : null;
+                    yield m == null ? 0 : player.getStatistic(stat, m);
+                }
+                case ENTITY -> {
+                    if (parts.length < 2) {
+                        yield 0;
+                    }
+                    yield player.getStatistic(stat, org.bukkit.entity.EntityType.valueOf(parts[1]));
+                }
+            };
+        } catch (IllegalArgumentException e) {
+            return 0;
+        }
+    }
+
+    private static boolean advancementDone(Player player, String key) {
+        org.bukkit.NamespacedKey nk = org.bukkit.NamespacedKey.fromString(key.toLowerCase(Locale.ROOT));
+        org.bukkit.advancement.Advancement adv = nk == null ? null : Bukkit.getAdvancement(nk);
+        return adv != null && player.getAdvancementProgress(adv).isDone();
     }
 
     private static double bool(boolean v, Objective o) {
@@ -670,6 +742,11 @@ public final class QuestService {
             }
             plugin.character().giveItem(player, item);
         }
+        if (plugin.titles() != null) {
+            for (String t : r.titles()) {
+                plugin.titles().unlock(player, t, true);
+            }
+        }
         for (String cmd : r.commands()) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                     cmd.replace("%player%", player.getName()).replace("<player>", player.getName()));
@@ -702,6 +779,14 @@ public final class QuestService {
         for (KitItem ki : r.items()) {
             String name = ki.name() != null ? ki.name() : prettyItem(ki.item());
             out.add(plugin.messages().get("quests.reward.item", Text.ph("amount", ki.amount()), Text.ph("item", name)));
+        }
+        if (plugin.titles() != null) {
+            for (String id : r.titles()) {
+                var t = plugin.titles().get(id);
+                if (t != null) {
+                    out.add(plugin.messages().get("quests.reward.title", Text.ph("title", t.name())));
+                }
+            }
         }
         for (String t : r.text()) {
             out.add(Text.mm(t));

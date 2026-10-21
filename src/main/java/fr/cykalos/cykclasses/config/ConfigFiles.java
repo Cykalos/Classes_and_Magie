@@ -14,7 +14,7 @@ import java.util.Map;
  * <pre>
  * config.yml
  * classes/      classes.yml, skilltree.yml, attributes.yml
- * personnage/   races.yml, traits.yml, weaknesses.yml
+ * personnage/   races.yml, traits.yml, weaknesses.yml, titles.yml
  * metiers/      jobs.yml, forge.yml, gems.yml
  * objets/       kits.yml, items.yml
  * affichage/    hud.yml, messages.yml
@@ -32,11 +32,11 @@ public final class ConfigFiles {
 
     static {
         put("classes", "classes.yml", "skilltree.yml", "attributes.yml");
-        put("personnage", "races.yml", "traits.yml", "weaknesses.yml");
+        put("personnage", "races.yml", "traits.yml", "weaknesses.yml", "titles.yml");
         put("metiers", "jobs.yml", "forge.yml", "gems.yml");
         put("objets", "kits.yml", "items.yml");
         put("affichage", "hud.yml", "messages.yml");
-        put(DATA, "uniques.yml", "forge-uniques.yml", "quetes-serveur.yml");
+        put(DATA, "uniques.yml", "forge-uniques.yml", "titres-uniques.yml");
     }
 
     private ConfigFiles() {

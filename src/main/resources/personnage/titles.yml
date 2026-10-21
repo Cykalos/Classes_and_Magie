@@ -1,0 +1,404 @@
+# ╔══════════════════════════════════════════════╗
+# ║          Classes and Magie - Titres          ║
+# ╚══════════════════════════════════════════════╝
+#
+# Les titres se débloquent selon les actions du joueur. Un seul titre est équipé à la fois : il s'affiche
+# au-dessus de la tête et dans le chat (<title> dans config.yml → chat), et peut donner des effets.
+# Menu : /titres · Après une modification : /classe admin reload
+#
+# ─── Format d'un titre ────────────────────────────────────────────────────────
+# titles:
+#   mon_titre:
+#     name: "<gold>Tueur de dragons"   # texte affiché (MiniMessage)
+#     rarity: EPIC                     # une des raretés ci-dessous
+#     icon: DRAGON_HEAD
+#     description: ["<gray>Texte du menu"]
+#     unique: false                    # un seul joueur du serveur (par défaut selon la rareté)
+#     hidden: false                    # affiché « ??? » tant qu'il n'est pas débloqué (par défaut selon la rareté)
+#     requirements:                    # conditions à remplir (mêmes clés que les quêtes : level, classes, races,
+#       classes: [mage]                #   jobs, job-level, quests, not-quests, permission, titles, checks)
+#     unlock:                          # objectifs à atteindre (mêmes types que les objectifs de quêtes)
+#       - {type: KILLS_TOTAL, targets: [ender_dragon], amount: 1, display: "Vaincre le dragon"}
+#     stats: {melee-damage: 1.05}     # effets quand le titre est équipé (mêmes clés que classes.yml)
+#     effects: ["night_vision:1"]      # effets de potion permanents quand il est équipé
+#     flaws:                           # effets conditionnels (même format que les faiblesses)
+#       - {type: DAMAGE_DEALT, targets: [ENDERMAN], multiplier: 1.1, description: "+10% contre les Endermen"}
+#
+# Sans « unlock », le titre ne se débloque pas tout seul : il est donné par une quête (rewards → titles)
+# ou par un administrateur (/titres admin <joueur> give <id>).
+#
+# Objectifs utiles pour les titres (ils comptent aussi tout ce que le joueur a fait avant) :
+#   KILLS_TOTAL (éliminations par type), SKILL_USES_TOTAL, COUNTER (blocks_mined, damage_dealt, damage_taken,
+#   healing_done, mana_spent), STATISTIC (statistiques Minecraft : DEATHS, WALK_ONE_CM, FISH_CAUGHT,
+#   MINE_BLOCK:DIAMOND_ORE, KILL_ENTITY:ZOMBIE…), ADVANCEMENT (progrès : minecraft:story/enter_the_nether),
+#   PLAYTIME (heures de jeu), QUEST (quêtes terminées), TITLES (titres débloqués, « rarity:EPIC » possible),
+#   LEVEL, JOB_LEVEL…
+# Les objectifs « action » (KILL avec conditions, FISH…) ne comptent qu'à partir de leur ajout.
+
+# Fréquence de vérification des titres (en ticks, 20 = 1 s)
+check-interval-ticks: 40
+# Équiper automatiquement le premier titre débloqué
+auto-equip-first: true
+
+# Affichage au-dessus de la tête
+display:
+  enabled: true
+  format: "<title>"                    # placeholders : <title>, <rarity>
+  height: 0.55                         # hauteur au-dessus de la tête (au-dessus du pseudo)
+  scale: 0.9
+  shadow: true
+  see-through: false                   # visible à travers les blocs
+  background: default                  # default, none, ou une couleur #AARRGGBB
+  hide-when-sneaking: true             # masqué quand le joueur est accroupi (comme le pseudo)
+  show-own: false                      # le joueur voit-il son propre titre ?
+
+# Titre dans le chat : <title> dans config.yml → chat.global-format / party-format
+chat:
+  format: "<dark_gray>«</dark_gray><title><dark_gray>»</dark_gray> "
+
+# Raretés, de la plus courante à la plus rare (l'ordre sert au tri du menu)
+rarities:
+  COMMON:
+    label: "<gray>Commun"
+  UNCOMMON:
+    label: "<green>Peu commun"
+  RARE:
+    label: "<aqua>Rare"
+  EPIC:
+    label: "<light_purple>Épique"
+    broadcast: true                    # annoncé à tout le serveur
+  LEGENDARY:
+    label: "<gold>Légendaire"
+    broadcast: true
+  UNIQUE:
+    label: "<gradient:#ff5555:#ffaa00>Unique</gradient>"
+    unique: true                       # un seul joueur du serveur
+    broadcast: true
+  SECRET:
+    label: "<dark_purple>Secret"
+    hidden: true                       # conditions cachées
+    broadcast: true
+
+titles:
+  # ─────────────────────────────── Progression
+  novice:
+    name: "<gray>Novice"
+    rarity: COMMON
+    icon: WOODEN_SWORD
+    description: ["<gray>Les premiers pas d'un Éveillé."]
+    unlock:
+      - {type: LEVEL, amount: 5}
+
+  aventurier:
+    name: "<white>Aventurier"
+    rarity: COMMON
+    icon: MAP
+    description: ["<gray>Toujours partant pour une quête."]
+    unlock:
+      - {type: QUEST, amount: 3, display: "Terminer 3 quêtes"}
+
+  veteran:
+    name: "<green>Vétéran"
+    rarity: UNCOMMON
+    icon: IRON_CHESTPLATE
+    description: ["<gray>Des cicatrices et des histoires."]
+    unlock:
+      - {type: LEVEL, amount: 30}
+    stats: {health: 2}
+
+  legende_vivante:
+    name: "<gradient:#f5d76e:#f5a623>Légende vivante</gradient>"
+    rarity: LEGENDARY
+    icon: NETHER_STAR
+    description: ["<gray>Le sommet de la puissance."]
+    unlock:
+      - {type: LEVEL, amount: 100}
+    stats: {health: 4, melee-damage: 1.05, ranged-damage: 1.05, magic-damage: 1.05}
+
+  # ─────────────────────────────── Combat
+  chasseur:
+    name: "<green>Chasseur"
+    rarity: UNCOMMON
+    icon: BONE
+    description: ["<gray>Les monstres ont appris à le craindre."]
+    unlock:
+      - {type: KILLS_TOTAL, targets: [zombie, husk, drowned, zombie_villager, skeleton, stray, bogged, spider, cave_spider, creeper, witch, slime, enderman, phantom, pillager, vindicator, silverfish], amount: 500, display: "Éliminer 500 monstres"}
+    stats: {melee-damage: 1.02, ranged-damage: 1.02}
+
+  exterminateur:
+    name: "<aqua>Exterminateur"
+    rarity: RARE
+    icon: IRON_AXE
+    description: ["<gray>Une légende pour les uns, un cauchemar pour les autres."]
+    unlock:
+      - {type: KILLS_TOTAL, targets: [zombie, husk, drowned, zombie_villager, skeleton, stray, bogged, spider, cave_spider, creeper, witch, slime, enderman, phantom, pillager, vindicator, silverfish], amount: 5000, display: "Éliminer 5 000 monstres"}
+    stats: {melee-damage: 1.04, ranged-damage: 1.04, magic-damage: 1.04}
+
+  fleau_des_morts:
+    name: "<aqua>Fléau des morts"
+    rarity: RARE
+    icon: ZOMBIE_HEAD
+    description: ["<gray>Les morts-vivants retournent à la terre."]
+    unlock:
+      - {type: KILLS_TOTAL, targets: [zombie, husk, drowned, zombie_villager, skeleton, stray, bogged, wither_skeleton, phantom, zombified_piglin, zoglin], amount: 1000, display: "Éliminer 1 000 morts-vivants"}
+    flaws:
+      - type: DAMAGE_DEALT
+        targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, WITHER_SKELETON, PHANTOM, ZOMBIFIED_PIGLIN, ZOGLIN, WITHER]
+        multiplier: 1.1
+        description: "+10% de dégâts contre les morts-vivants"
+
+  increvable:
+    name: "<aqua>Increvable"
+    rarity: RARE
+    icon: SHIELD
+    description: ["<gray>Encaisser, encore et encore."]
+    unlock:
+      - {type: COUNTER, targets: [damage_taken], amount: 20000, display: "Subir 20 000 dégâts"}
+    stats: {health: 2, damage-taken: 0.97}
+
+  tueur_de_dragons:
+    name: "<light_purple>Tueur de dragons"
+    rarity: EPIC
+    icon: DRAGON_HEAD
+    description: ["<gray>Celui qui a vu tomber le gardien du Cœur."]
+    unlock:
+      - {type: KILLS_TOTAL, targets: [ender_dragon], amount: 1, display: "Vaincre l'Ender Dragon"}
+    flaws:
+      - type: DAMAGE_DEALT
+        targets: [ENDER_DRAGON, ENDERMAN, SHULKER, ENDERMITE]
+        multiplier: 1.15
+        description: "+15% de dégâts contre les créatures de l'End"
+
+  fleau_du_wither:
+    name: "<light_purple>Fléau du Wither"
+    rarity: EPIC
+    icon: WITHER_SKELETON_SKULL
+    description: ["<gray>Le néant ne lui fait plus peur."]
+    unlock:
+      - {type: KILLS_TOTAL, targets: [wither], amount: 1, display: "Vaincre le Wither"}
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [WITHER]
+        multiplier: 0.5
+        description: "Dégâts de l'effet Wither réduits de moitié"
+
+  presque_immortel:
+    name: "<gray>Presque immortel"
+    rarity: COMMON
+    icon: TOTEM_OF_UNDYING
+    description: ["<gray>Mourir, se relever, recommencer."]
+    unlock:
+      - {type: STATISTIC, targets: [DEATHS], amount: 25, display: "Mourir 25 fois"}
+
+  # ─────────────────────────────── Classes
+  lame_affutee:
+    name: "<red>Lame affûtée"
+    rarity: RARE
+    icon: DIAMOND_SWORD
+    description: ["<gray>Chaque coup trouve la faille."]
+    requirements:
+      classes: [guerrier]
+    unlock:
+      - {type: SKILL_USES_TOTAL, amount: 1000, display: "Lancer 1 000 compétences"}
+    stats: {crit-chance: 0.02}
+
+  archimage:
+    name: "<light_purple>Archimage"
+    rarity: EPIC
+    icon: ENCHANTED_BOOK
+    description: ["<gray>La magie n'a plus de secrets."]
+    requirements:
+      classes: [mage]
+    unlock:
+      - {type: SKILL_USES_TOTAL, amount: 5000, display: "Lancer 5 000 compétences"}
+    stats: {mana: 20, magic-damage: 1.03}
+
+  oeil_de_lynx:
+    name: "<green>Œil de lynx"
+    rarity: RARE
+    icon: SPYGLASS
+    description: ["<gray>Aucune cible ne lui échappe."]
+    requirements:
+      classes: [archer]
+    unlock:
+      - type: KILL
+        targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH]
+        amount: 1000
+        conditions: {holding: [BOW, CROSSBOW]}
+        display: "Éliminer 1 000 monstres à l'arc ou à l'arbalète"
+    stats: {ranged-damage: 1.03}
+
+  ombre_silencieuse:
+    name: "<dark_gray>Ombre silencieuse"
+    rarity: RARE
+    icon: BLACK_DYE
+    description: ["<gray>On ne l'entend jamais venir."]
+    requirements:
+      classes: [assassin]
+    unlock:
+      - type: KILL
+        targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH]
+        amount: 300
+        conditions: {sneaking: true}
+        display: "Éliminer 300 monstres en étant accroupi"
+    stats: {speed: 0.02}
+
+  main_de_lumiere:
+    name: "<yellow>Main de lumière"
+    rarity: RARE
+    icon: GLOWSTONE_DUST
+    description: ["<gray>Là où elle passe, les blessures se referment."]
+    requirements:
+      classes: [clerc]
+    unlock:
+      - {type: COUNTER, targets: [healing_done], amount: 10000, display: "Soigner 10 000 PV"}
+    stats: {mana-regen: 0.5}
+
+  # ─────────────────────────────── Métiers et exploration
+  mineur_acharne:
+    name: "<aqua>Mineur acharné"
+    rarity: RARE
+    icon: DIAMOND_PICKAXE
+    description: ["<gray>La roche n'a plus de secrets pour lui."]
+    unlock:
+      - {type: COUNTER, targets: [blocks_mined], amount: 20000, display: "Miner 20 000 blocs"}
+    effects: ["haste:1"]
+
+  pecheur_patient:
+    name: "<green>Pêcheur patient"
+    rarity: UNCOMMON
+    icon: FISHING_ROD
+    description: ["<gray>Le calme avant la prise."]
+    unlock:
+      - {type: STATISTIC, targets: [FISH_CAUGHT], amount: 300, display: "Pêcher 300 poissons"}
+    effects: ["luck:1"]
+
+  maitre_artisan:
+    name: "<light_purple>Maître artisan"
+    rarity: EPIC
+    icon: SMITHING_TABLE
+    description: ["<gray>Au sommet de son art."]
+    unlock:
+      - {type: JOB_LEVEL, amount: 50, display: "Atteindre le niveau 50 d'un métier"}
+
+  voyageur:
+    name: "<green>Voyageur"
+    rarity: UNCOMMON
+    icon: LEATHER_BOOTS
+    description: ["<gray>La route est sa maison."]
+    unlock:
+      - {type: STATISTIC, targets: [WALK_ONE_CM, SPRINT_ONE_CM], amount: 2000000, display: "Parcourir 20 km à pied"}
+    stats: {speed: 0.02}
+
+  explorateur_des_biomes:
+    name: "<gold>Explorateur des mondes"
+    rarity: LEGENDARY
+    icon: FILLED_MAP
+    description: ["<gray>Il a vu tous les paysages du monde."]
+    unlock:
+      - {type: ADVANCEMENT, targets: ["minecraft:adventure/adventuring_time"], display: "Progrès « L'aventure, c'est l'aventure »"}
+    stats: {speed: 0.03}
+
+  pilier_du_serveur:
+    name: "<aqua>Pilier du serveur"
+    rarity: RARE
+    icon: CLOCK
+    description: ["<gray>Toujours là, depuis le début."]
+    unlock:
+      - {type: PLAYTIME, amount: 100, display: "Jouer 100 heures"}
+
+  collectionneur:
+    name: "<light_purple>Collectionneur"
+    rarity: EPIC
+    icon: BOOKSHELF
+    description: ["<gray>Les titres, il les veut tous."]
+    unlock:
+      - {type: TITLES, amount: 15, display: "Débloquer 15 titres"}
+
+  # ─────────────────────────────── Histoire
+  eveille:
+    name: "<dark_aqua>Éveillé"
+    rarity: UNCOMMON
+    icon: AMETHYST_SHARD
+    description: ["<gray>Son âme a résonné avec un Éclat."]
+    unlock:
+      - {type: QUEST, targets: [le_reveil], display: "Terminer « Le Réveil des morts »"}
+
+  heros_de_la_fracture:
+    name: "<gradient:#7fd3ff:#c78bff>Héros de la Fracture</gradient>"
+    rarity: LEGENDARY
+    icon: DRAGON_EGG
+    description: ["<gray>Récompense de la dernière quête de l'histoire principale."]
+    unlock:
+      - {type: QUEST, targets: [le_coeur_de_la_fracture], display: "Terminer « Le Cœur de la Fracture »"}
+    stats: {health: 4, melee-damage: 1.05, ranged-damage: 1.05, magic-damage: 1.05}
+
+  # ─────────────────────────────── Uniques (un seul joueur du serveur)
+  premier_heros:
+    name: "<gradient:#ff5555:#ffaa00>Le Premier Héros</gradient>"
+    rarity: UNIQUE
+    icon: GOLDEN_HELMET
+    description: ["<gray>Le premier à avoir terminé l'histoire principale."]
+    unlock:
+      - {type: QUEST, targets: [le_coeur_de_la_fracture], display: "Être le premier à terminer l'histoire"}
+    stats: {health: 2, crit-chance: 0.02}
+
+  premier_des_eveilles:
+    name: "<gradient:#ff5555:#ffaa00>Premier des Éveillés</gradient>"
+    rarity: UNIQUE
+    icon: BEACON
+    description: ["<gray>Le premier joueur à atteindre le niveau 50."]
+    unlock:
+      - {type: LEVEL, amount: 50, display: "Être le premier au niveau 50"}
+    stats: {mana: 10, health: 2}
+
+  # ─────────────────────────────── Secrets
+  enfant_de_la_lune:
+    name: "<dark_red>Enfant de la Lune"
+    rarity: SECRET
+    icon: REDSTONE
+    description: ["<gray>Survivant de la Lune sanglante."]
+    unlock:
+      - {type: QUEST, targets: [la_lune_sanglante]}
+    flaws:
+      - type: EFFECT
+        effects: ["night_vision:1"]
+        conditions: {time: NIGHT}
+        description: "Vision nocturne la nuit"
+
+  echo_des_abysses:
+    name: "<dark_aqua>Écho des abysses"
+    rarity: SECRET
+    icon: ECHO_SHARD
+    description: ["<gray>Le silence des profondeurs l'a accepté."]
+    unlock:
+      - {type: QUEST, targets: [le_murmure_des_abysses]}
+    flaws:
+      - type: DAMAGE_TAKEN
+        multiplier: 0.85
+        conditions: {y-below: 0}
+        description: "-15% de dégâts subis sous la couche 0"
+
+  noctambule:
+    name: "<dark_purple>Noctambule"
+    rarity: SECRET
+    icon: PHANTOM_MEMBRANE
+    description: ["<gray>La nuit est son domaine."]
+    unlock:
+      - type: KILL
+        targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH]
+        amount: 1000
+        conditions: {time: NIGHT}
+    flaws:
+      - type: DAMAGE_DEALT
+        multiplier: 1.08
+        conditions: {time: NIGHT}
+        description: "+8% de dégâts la nuit"
+
+  ami_des_betes:
+    name: "<green>Ami des bêtes"
+    rarity: SECRET
+    icon: WHEAT
+    description: ["<gray>Les animaux le suivent partout."]
+    unlock:
+      - {type: STATISTIC, targets: [ANIMALS_BRED], amount: 500}

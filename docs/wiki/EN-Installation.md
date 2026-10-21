@@ -33,6 +33,7 @@ Files are organised by theme in `plugins/Classes_and_Magie/`:
 | `classes/skilltree.yml` · `classes/attributes.yml` | Skill tree and attributes |
 | `personnage/races.yml` · `personnage/traits.yml` | Races and traits |
 | `personnage/weaknesses.yml` | Imposed and random weaknesses |
+| `personnage/titles.yml` | [Titles](EN-Titles.md): rarities, conditions, effects, display |
 | `metiers/jobs.yml` | Jobs, job XP, specializations, reserved actions |
 | `metiers/forge.yml` | Forged item rarities, random stats, unique items |
 | `metiers/gems.yml` | Raw gems, cutting (jewelcrafting), rarities and purity |
@@ -40,7 +41,7 @@ Files are organised by theme in `plugins/Classes_and_Magie/`:
 | `affichage/hud.yml` | Floating damage, target health, sidebar (party and quests), XP bars |
 | `affichage/messages.yml` | Every text ([MiniMessage](https://docs.advntr.dev/minimessage/format.html)) |
 | `quetes/` | [Quests](EN-Quests.md): every `.yml` file in the folder is read |
-| `donnees/` | Player data (`joueurs/` or `data.db`), unique items and traits, backups. Do not edit by hand. |
+| `donnees/` | Player data (`joueurs/` or `data.db`), unique items, traits and titles, backups. Do not edit by hand. |
 
 The default content and texts are in French. Every message can be translated in `messages.yml`, and every name (classes, races, jobs, items…) can be changed in its YAML file.
 
@@ -62,6 +63,7 @@ modules:
   kits: true
   item-restrictions: true
   quests: true
+  titles: true
 ```
 
 A disabled module disappears from the game: its creation step is skipped, its button is removed from the `/classe` menu, its command and menu answer "feature disabled" and it no longer affects stats. Weaknesses written directly in a class or a race stay active, since they are part of the class or race. Player data is kept: enabling the module again brings it back. Only exception: an already forged item keeps its stats even if the forge is disabled.

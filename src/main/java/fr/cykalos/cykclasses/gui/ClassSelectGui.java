@@ -57,6 +57,10 @@ public final class ClassSelectGui extends Gui {
         if (profile.hasClass()) {
             set(4, profileHead(profile), null);
             var mod = plugin.modules();
+            if (mod.titles()) {
+                set(0, new ItemBuilder(Material.NAME_TAG).name(plugin.messages().raw("gui.titles-button")).build(),
+                        e -> new TitlesGui(plugin, viewer).open());
+            }
             if (mod.quests()) {
                 set(8, new ItemBuilder(Material.WRITABLE_BOOK).name(plugin.messages().raw("gui.quests-button")).build(),
                         e -> new QuestJournalGui(plugin, viewer).open());

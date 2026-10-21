@@ -23,8 +23,11 @@ Ce que Classes and Magie **ne fait pas** (ou pas encore), pour éviter les mauva
 ## Quêtes
 
 - Pas de PNJ intégré ni de dialogues à choix multiples (un PNJ d'un autre plugin peut servir de cible).
-- Une trentaine de types d'objectifs prédéfinis, combinables avec les conditions.
-- Pas encore de titres de joueur.
+- Une quarantaine de types d'objectifs prédéfinis, combinables avec les conditions.
+
+## Titres
+
+- Un seul titre équipé à la fois.
 
 ## Objets
 

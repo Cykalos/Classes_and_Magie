@@ -57,6 +57,10 @@ public final class PlayerProfile {
     private List<String> questsTracked = new ArrayList<>();
     private boolean tutorialOffered;
     private boolean questTrackerHidden;
+    // Titres : débloqués (date), titre équipé, progression (« id#objectif »)
+    private Map<String, Long> titles = new HashMap<>();
+    private String equippedTitle;
+    private Map<String, Double> titleProgress = new HashMap<>();
 
     private transient Map<String, Long> cooldowns = new HashMap<>();
     private transient boolean castMode;
@@ -93,6 +97,8 @@ public final class PlayerProfile {
         if (questsCompleted == null) questsCompleted = new HashMap<>();
         if (questCounts == null) questCounts = new HashMap<>();
         if (questsTracked == null) questsTracked = new ArrayList<>();
+        if (titles == null) titles = new HashMap<>();
+        if (titleProgress == null) titleProgress = new HashMap<>();
         if (level < 1) level = 1;
         return this;
     }
@@ -223,6 +229,24 @@ public final class PlayerProfile {
     public boolean isQuestTrackerHidden() { return questTrackerHidden; }
     public void setQuestTrackerHidden(boolean v) { this.questTrackerHidden = v; markDirty(); }
 
+    // --- Titres ---
+    public Map<String, Long> titles() { return titles; }
+    public boolean hasTitle(String id) { return titles.containsKey(id.toLowerCase(Locale.ROOT)); }
+    public void addTitle(String id) { titles.putIfAbsent(id.toLowerCase(Locale.ROOT), System.currentTimeMillis()); markDirty(); }
+    public void removeTitle(String id) {
+        String key = id.toLowerCase(Locale.ROOT);
+        titles.remove(key);
+        titleProgress.keySet().removeIf(k -> k.startsWith(key + "#"));
+        if (key.equals(equippedTitle)) {
+            equippedTitle = null;
+        }
+        markDirty();
+    }
+    public String getEquippedTitle() { return equippedTitle; }
+    public void setEquippedTitle(String id) { this.equippedTitle = id == null ? null : id.toLowerCase(Locale.ROOT); markDirty(); }
+    public double getTitleProgress(String id, int objective) { return titleProgress.getOrDefault(id + "#" + objective, 0.0); }
+    public void setTitleProgress(String id, int objective, double value) { titleProgress.put(id + "#" + objective, value); markDirty(); }
+
     public boolean isPartyChat() { return partyChat; }
     public void setPartyChat(boolean partyChat) { this.partyChat = partyChat; }
 
@@ -301,6 +325,9 @@ public final class PlayerProfile {
         map.put("quests-tracked", new ArrayList<>(questsTracked));
         map.put("tutorial-offered", tutorialOffered);
         map.put("quest-tracker-hidden", questTrackerHidden);
+        map.put("titles", new HashMap<>(titles));
+        map.put("equipped-title", equippedTitle);
+        map.put("title-progress", new HashMap<>(titleProgress));
         return map;
     }
 
@@ -378,6 +405,13 @@ public final class PlayerProfile {
         }
         p.tutorialOffered = Boolean.TRUE.equals(map.get("tutorial-offered"));
         p.questTrackerHidden = Boolean.TRUE.equals(map.get("quest-tracker-hidden"));
+        if (map.get("titles") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v instanceof Number n) p.titles.put(String.valueOf(k), n.longValue()); });
+        }
+        p.equippedTitle = map.get("equipped-title") == null ? null : String.valueOf(map.get("equipped-title"));
+        if (map.get("title-progress") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v instanceof Number n) p.titleProgress.put(String.valueOf(k), n.doubleValue()); });
+        }
         return p.normalize();
     }
 }

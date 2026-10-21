@@ -153,6 +153,10 @@ public final class SkillService {
         var before = plugin.levels().availableSubclasses(player, profile);
         profile.addSkillUse(def.id);
         plugin.levels().checkNewSubclasses(player, profile, before);
+        if (plugin.quests() != null) {
+            // Compté seulement quand la compétence a vraiment été lancée (mana dépensé, cible trouvée)
+            plugin.quests().progress(player, fr.cykalos.cykclasses.quest.Objective.Type.SKILL, def.id, 1);
+        }
         profile.touchCastActivity();
         plugin.skillBar().showCooldown(player, def);
         plugin.skillBar().refresh(player);

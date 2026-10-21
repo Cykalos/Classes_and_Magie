@@ -12,6 +12,7 @@
 - [Faiblesses](Faiblesses.md) · [Weaknesses](EN-Weaknesses.md)
 - [Progression](Progression.md) · [EN](EN-Progression.md)
 - [Quêtes](Quêtes.md) · [Quests](EN-Quests.md)
+- [Titres](Titres.md) · [Titles](EN-Titles.md)
 
 **Artisanat · Crafting**
 - [Métiers](Métiers.md) · [Jobs](EN-Jobs.md)

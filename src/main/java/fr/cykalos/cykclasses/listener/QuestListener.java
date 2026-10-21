@@ -1,7 +1,6 @@
 package fr.cykalos.cykclasses.listener;
 
 import fr.cykalos.cykclasses.CykClasses;
-import fr.cykalos.cykclasses.api.event.SkillCastEvent;
 import fr.cykalos.cykclasses.hook.MythicHook;
 import fr.cykalos.cykclasses.quest.Objective;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -63,11 +62,6 @@ public final class QuestListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
         plugin.quests().progress(event.getPlayer(), Objective.Type.CONSUME, event.getItem().getType().name(), 1);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onSkill(SkillCastEvent event) {
-        plugin.quests().progress(event.getPlayer(), Objective.Type.SKILL, event.getSkill().id, 1);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

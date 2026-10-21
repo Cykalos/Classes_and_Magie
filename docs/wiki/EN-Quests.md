@@ -75,6 +75,8 @@ Stages follow each other in order; every objective of a stage must be met to mov
 | `quests` | Quests that must be completed (quest chains) |
 | `not-quests` | Quests that must not have been done (exclusive choices: join one side or the other) |
 | `permission` | Required permission (quests unlocked by another plugin) |
+| `titles` | [Titles](EN-Titles.md) that must be unlocked |
+| `checks` | List of "state" objectives to meet: statistics, advancements, totals… (`- {type: ADVANCEMENT, targets: ["minecraft:story/enter_the_nether"]}`) |
 
 With `quests.hide-other-classes: true` (config.yml), quests reserved to another class or race do not appear in the journal.
 
@@ -107,6 +109,15 @@ With `quests.hide-other-classes: true` (config.yml), quests reserved to another 
 | `BIOME` | the player is in one of the `targets` biomes |
 | `CONDITION` | the `conditions` block is true (Nether, below layer 0, at night…) |
 | `TREE_POINTS` · `ATTRIBUTE_POINTS` | the player has spent `amount` points |
+| `QUEST` | `amount` quests from `targets` are completed (without `targets`: any quests) |
+| `TITLES` | `amount` titles unlocked (`targets`: ids or `"rarity:EPIC"`) |
+| `KILLS_TOTAL` · `SKILL_USES_TOTAL` | total kills / skills cast since the player first joined |
+| `COUNTER` | internal counter: `blocks_mined`, `damage_dealt`, `damage_taken`, `healing_done`, `mana_spent` |
+| `STATISTIC` | Minecraft statistic: `DEATHS`, `WALK_ONE_CM`, `FISH_CAUGHT`, `MINE_BLOCK:DIAMOND_ORE`, `KILL_ENTITY:ZOMBIE`… |
+| `ADVANCEMENT` | `amount` advancements from `targets` obtained (`"minecraft:story/enter_the_nether"`) |
+| `PLAYTIME` | `amount` hours of playtime |
+
+Totals (`KILLS_TOTAL`, `COUNTER`, `STATISTIC`, `ADVANCEMENT`, `PLAYTIME`, `QUEST`) also count everything the player did before starting the quest.
 
 **Common options**:
 
@@ -153,6 +164,7 @@ For an NPC (villager renamed with a name tag, Citizens NPC…): `trigger: {type:
 | `skill-points` · `attribute-points` | Extra skill tree and attribute points |
 | `money` | Money (requires **Vault** and an economy plugin) |
 | `items` | Items, in the same format as `kits.yml` (CraftEngine, MythicMobs… custom items included) |
+| `titles` | [Titles](EN-Titles.md) unlocked |
 | `commands` | Console commands (`%player%` = player name): permissions, ranks, other plugins |
 | `text` | Extra lines in the journal's reward list |
 
@@ -186,6 +198,5 @@ The sidebar is set in `hud.yml → quest-tracker` (title, lines, symbols, party 
 
 - No built-in NPCs: dialogues are shown in chat. An NPC from another plugin can be used as a target (`INTERACT_ENTITY` with `name`).
 - No dialogue choices with several answers (use `not-quests` for branches).
-- Objective types are predefined (about thirty), but they combine with conditions.
+- Objective types are predefined (about forty), but they combine with conditions.
 - The sidebar replaces another plugin's scoreboard while quests are tracked (hide it with `/quetes panneau` or `quest-tracker.enabled: false`).
-- Player titles are not handled yet (planned for a future version).

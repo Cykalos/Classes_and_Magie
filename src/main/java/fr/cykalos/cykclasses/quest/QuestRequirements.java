@@ -19,13 +19,17 @@ import java.util.Locale;
  *   quests: [le_reveil]       # quêtes à avoir terminées
  *   not-quests: [autre_voie]  # quêtes à NE PAS avoir terminées (choix de camp…)
  *   permission: "monserveur.chapitre2"
+ *   titles: [tueur_de_dragons]  # titres à avoir débloqués
+ *   checks:                   # objectifs « état » à remplir (statistiques, progrès, totaux…)
+ *     - {type: STATISTIC, targets: [DEATHS], amount: 10}
  * </pre>
  */
 public record QuestRequirements(int level, int maxLevel, List<String> classes, List<String> races, List<String> jobs,
-                                int jobLevel, List<String> quests, List<String> notQuests, String permission) {
+                                int jobLevel, List<String> quests, List<String> notQuests, String permission,
+                                List<String> titles, List<Objective> checks) {
 
     public static final QuestRequirements NONE = new QuestRequirements(0, 0, List.of(), List.of(), List.of(), 0,
-            List.of(), List.of(), null);
+            List.of(), List.of(), null, List.of(), List.of());
 
     public static QuestRequirements load(ConfigurationSection s) {
         if (s == null) {
@@ -33,7 +37,19 @@ public record QuestRequirements(int level, int maxLevel, List<String> classes, L
         }
         return new QuestRequirements(s.getInt("level"), s.getInt("max-level"), lower(s.getStringList("classes")),
                 lower(s.getStringList("races")), lower(s.getStringList("jobs")), s.getInt("job-level"),
-                lower(s.getStringList("quests")), lower(s.getStringList("not-quests")), s.getString("permission"));
+                lower(s.getStringList("quests")), lower(s.getStringList("not-quests")), s.getString("permission"),
+                lower(s.getStringList("titles")), checks(s));
+    }
+
+    private static List<Objective> checks(ConfigurationSection s) {
+        List<Objective> out = new ArrayList<>();
+        for (java.util.Map<?, ?> m : s.getMapList("checks")) {
+            Objective o = Objective.load(m, "requirements.checks");
+            if (o.type.isState()) {
+                out.add(o);
+            }
+        }
+        return out;
     }
 
     private static List<String> lower(List<String> in) {

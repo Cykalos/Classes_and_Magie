@@ -4,7 +4,7 @@
 #
 # Rangement des fichiers :
 #   classes/     classes.yml, skilltree.yml, attributes.yml
-#   personnage/  races.yml, traits.yml, weaknesses.yml
+#   personnage/  races.yml, traits.yml, weaknesses.yml, titles.yml
 #   metiers/     jobs.yml, forge.yml, gems.yml
 #   objets/      kits.yml, items.yml
 #   affichage/   hud.yml, messages.yml
@@ -26,6 +26,7 @@ modules:
   kits: true               # kits de départ (objets/kits.yml)
   item-restrictions: true  # conditions d'utilisation des objets (objets/items.yml)
   quests: true             # /quetes, journal et panneau de suivi (dossier quetes/)
+  titles: true             # /titres, titres à débloquer (personnage/titles.yml)
 
 # Stockage des données joueurs : YAML, JSON ou SQLITE
 storage:
@@ -136,9 +137,9 @@ chat:
   # Formate le chat global avec la classe et le niveau (désactive si un autre plugin gère le chat :
   # utilise alors les placeholders %cykclasses_class%, %cykclasses_level%...)
   format-enabled: true
-  # Placeholders : <class_tag>, <name>, <message>
-  global-format: "<class_tag> <white><name></white><dark_gray> » </dark_gray><gray><message>"
-  party-format: "<dark_aqua>[Groupe]</dark_aqua> <class_tag> <aqua><name></aqua><dark_gray> » </dark_gray><white><message>"
+  # Placeholders : <class_tag>, <title> (titre équipé, vide sinon), <name>, <message>
+  global-format: "<class_tag> <title><white><name></white><dark_gray> » </dark_gray><gray><message>"
+  party-format: "<dark_aqua>[Groupe]</dark_aqua> <class_tag> <title><aqua><name></aqua><dark_gray> » </dark_gray><white><message>"
   # Placeholders : <class>, <level>, <race>
   class-tag: "<dark_gray>[</dark_gray><class> <gray>Niv. <level></gray><dark_gray>]</dark_gray>"
   no-class-tag: "<dark_gray>[<gray>Novice</gray>]</dark_gray>"

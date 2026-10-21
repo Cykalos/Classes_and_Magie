@@ -4,7 +4,7 @@
 
 🇫🇷 Français · [🇬🇧 English](EN-Home.md)
 
-**Classes and Magie** est un plugin **Paper 26.x** (Java 25) de jeu de rôle : classes, sous-classes, compétences et mana, races, traits, arbre de compétences, attributs, métiers avec spécialisations, forge à raretés, gemmes à tailler et incruster, groupes, quêtes, HUD.
+**Classes and Magie** est un plugin **Paper 26.x** (Java 25) de jeu de rôle : classes, sous-classes, compétences et mana, races, traits, arbre de compétences, attributs, métiers avec spécialisations, forge à raretés, gemmes à tailler et incruster, groupes, quêtes, titres, HUD.
 
 > Ce wiki est généré automatiquement depuis le dossier `docs/wiki` du dépôt. Les corrections et ajouts se proposent par pull request sur ce dossier.
 
@@ -16,7 +16,8 @@
 4. **Faiblesses** (`/faiblesses`) : imposées par la race ou la classe, ou tirées au hasard selon elles.
 5. **Métier** (`/metier`) : un seul métier, qui débloque des actions et des recettes par niveau.
 6. Progression : niveaux de classe, **sous-classe**, **arbre** (`/arbre`), **attributs** (`/stats`), **spécialisation** de métier au niveau 20.
-7. **Quêtes** (`/quetes`), toutes facultatives : tutoriel proposé à la fin de la création, histoire principale, quêtes de classe, annexes et secrètes.
+7. **Titres** (`/titres`) débloqués par les actions du joueur, affichés au-dessus de la tête, avec ou sans effets.
+8. **Quêtes** (`/quetes`), toutes facultatives : tutoriel proposé à la fin de la création, histoire principale, quêtes de classe, annexes et secrètes.
 
 Les étapes de création ne peuvent pas être sautées en fermant le menu (il se rouvre), et les traits et faiblesses tirés restent à valider après une déconnexion. Fermer le menu du métier revient à « choisir plus tard ». Un joueur mort pendant la création retrouve l'étape en cours à sa réapparition. Désactivable avec `force-class-selection: false`.
 
@@ -33,6 +34,7 @@ Pendant la création, le joueur est **protégé** : il ne subit aucun dégât, l
 | [Races et traits](Races-et-traits.md) | Races, malus de classe, traits et traits uniques |
 | [Faiblesses](Faiblesses.md) | Toutes les faiblesses : imposées, aléatoires, conditions |
 | [Progression](Progression.md) | Arbre de compétences et attributs |
+| [Titres](Titres.md) | Raretés, titres uniques et secrets, conditions, effets, affichage |
 | [Quêtes](Quêtes.md) | Tutoriel, histoire, quêtes de classe, annexes et secrètes, journal, panneau de suivi |
 | [Métiers](Métiers.md) | Métiers, restrictions, niveaux, recettes, spécialisations |
 | [Forge](Forge.md) | Raretés, stats aléatoires, objets uniques |

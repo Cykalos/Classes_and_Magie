@@ -53,17 +53,19 @@ echo "::notice title=Plugin::$(summary 'Enabling Classes_and_Magie')"
 echo "::notice title=Rangement::$(summary 'rangé')"
 echo "::notice title=Contenu::$(summary 'races, .* traits')"
 echo "::notice title=Quêtes::$(grep -E 'quêtes chargées' server.log | tail -1 | sed -E 's/^\[[^]]*\] *//')"
+echo "::notice title=Titres::$(grep -E 'titres chargés' server.log | tail -1 | sed -E 's/^\[[^]]*\] *//')"
 echo "::notice title=Démarrage::$(summary 'Done \(')"
 echo "::notice title=Fichiers::$(cd plugins/Classes_and_Magie && find . -type f | sort | tr '\n' ' ' | cut -c1-900)"
-grep -iE "WARN.*(cykclasses|Classes_and_Magie)|Quête ignorée" server.log | head -10 | while IFS= read -r l; do echo "::warning::${l:0:300}"; done || true
+grep -iE "WARN.*(cykclasses|Classes_and_Magie)|Quête ignorée|Titre ignoré" server.log | head -10 | while IFS= read -r l; do echo "::warning::${l:0:300}"; done || true
 grep -q "Done (" server.log || { echo "::error::Le serveur n'a pas démarré"; FAIL=1; }
 grep -q "quêtes chargées" server.log || { echo "::error::Les quêtes ne se sont pas chargées"; FAIL=1; }
-if grep -nE "Error occurred while enabling|Could not load 'plugins/Classes_and_Magie|Quête ignorée|Exception" server.log \
-    | grep -iE "cykclasses|Classes_and_Magie|Quête" ; then
+grep -q "titres chargés" server.log || { echo "::error::Les titres ne se sont pas chargés"; FAIL=1; }
+if grep -nE "Error occurred while enabling|Could not load 'plugins/Classes_and_Magie|Quête ignorée|Titre ignoré|Exception" server.log \
+    | grep -iE "cykclasses|Classes_and_Magie|Quête|Titre" ; then
   echo "::error::Erreur du plugin pendant le démarrage"; FAIL=1
 fi
 for f in classes/classes.yml personnage/races.yml metiers/jobs.yml affichage/messages.yml affichage/hud.yml \
-         quetes/tutoriel.yml donnees/joueurs/00000000-0000-0000-0000-000000000000.yml; do
+         quetes/tutoriel.yml personnage/titles.yml donnees/joueurs/00000000-0000-0000-0000-000000000000.yml; do
   [[ -f "plugins/Classes_and_Magie/$f" ]] || { echo "::error::Fichier manquant après rangement : $f"; FAIL=1; }
 done
 for f in classes.yml races.yml jobs.yml messages.yml hud.yml playerdata; do

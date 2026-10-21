@@ -68,7 +68,9 @@ public final class ChatListener implements Listener {
     /** Ligne de chat formatée selon config.yml (chat.global-format / chat.party-format). */
     public Component format(String path, Player source, Component displayName, Component message) {
         String fmt = plugin.getConfig().getString(path, "<name>: <message>");
-        return Text.mm(fmt, Text.phc("class_tag", classTag(source)), Text.phc("name", displayName), Text.phc("message", message));
+        Component title = plugin.titles() == null ? Component.empty() : plugin.titles().chatTag(source);
+        return Text.mm(fmt, Text.phc("class_tag", classTag(source)), Text.phc("title", title),
+                Text.phc("name", displayName), Text.phc("message", message));
     }
 
     public Component classTag(Player player) {

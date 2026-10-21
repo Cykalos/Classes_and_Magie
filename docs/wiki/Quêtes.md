@@ -75,6 +75,8 @@ Les étapes s'enchaînent dans l'ordre ; tous les objectifs d'une étape doivent
 | `quests` | Quêtes à avoir terminées (chaînes de quêtes) |
 | `not-quests` | Quêtes à ne pas avoir faites (choix exclusifs : rejoindre un camp ou l'autre) |
 | `permission` | Permission requise (quêtes débloquées par un autre plugin) |
+| `titles` | [Titres](Titres.md) à avoir débloqués |
+| `checks` | Liste d'objectifs « état » à remplir : statistiques, progrès, totaux… (`- {type: ADVANCEMENT, targets: ["minecraft:story/enter_the_nether"]}`) |
 
 Avec `quests.hide-other-classes: true` (config.yml), les quêtes réservées à une autre classe ou une autre race n'apparaissent pas dans le journal.
 
@@ -107,6 +109,15 @@ Avec `quests.hide-other-classes: true` (config.yml), les quêtes réservées à 
 | `BIOME` | le joueur est dans un des biomes de `targets` |
 | `CONDITION` | le bloc `conditions` est vrai (Nether, sous la couche 0, de nuit…) |
 | `TREE_POINTS` · `ATTRIBUTE_POINTS` | le joueur a dépensé `amount` points |
+| `QUEST` | `amount` quêtes de `targets` sont terminées (sans `targets` : toutes quêtes confondues) |
+| `TITLES` | `amount` titres débloqués (`targets` : ids ou `"rarity:EPIC"`) |
+| `KILLS_TOTAL` · `SKILL_USES_TOTAL` | total d'éliminations / de compétences lancées depuis l'arrivée du joueur |
+| `COUNTER` | compteur interne : `blocks_mined`, `damage_dealt`, `damage_taken`, `healing_done`, `mana_spent` |
+| `STATISTIC` | statistique Minecraft : `DEATHS`, `WALK_ONE_CM`, `FISH_CAUGHT`, `MINE_BLOCK:DIAMOND_ORE`, `KILL_ENTITY:ZOMBIE`… |
+| `ADVANCEMENT` | `amount` progrès de `targets` obtenus (`"minecraft:story/enter_the_nether"`) |
+| `PLAYTIME` | `amount` heures de jeu |
+
+Les totaux (`KILLS_TOTAL`, `COUNTER`, `STATISTIC`, `ADVANCEMENT`, `PLAYTIME`, `QUEST`) comptent aussi tout ce que le joueur a fait avant de commencer la quête.
 
 **Options communes** :
 
@@ -153,6 +164,7 @@ Pour un PNJ (villageois renommé avec une étiquette, PNJ Citizens…) : `trigge
 | `skill-points` · `attribute-points` | Points d'arbre et d'attributs en plus |
 | `money` | Argent (nécessite **Vault** et un plugin d'économie) |
 | `items` | Objets, au même format que `kits.yml` (objets custom CraftEngine, MythicMobs… compris) |
+| `titles` | [Titres](Titres.md) débloqués |
 | `commands` | Commandes console (`%player%` = nom du joueur) : permissions, grades, autres plugins |
 | `text` | Lignes en plus dans la liste des récompenses du journal |
 
@@ -186,6 +198,5 @@ Le panneau latéral se règle dans `hud.yml → quest-tracker` (titre, lignes, s
 
 - Pas de PNJ intégré : les dialogues s'affichent dans le chat. Un PNJ d'un autre plugin peut servir de cible (`INTERACT_ENTITY` avec `name`).
 - Pas de choix de dialogue avec plusieurs réponses (utiliser `not-quests` pour des embranchements).
-- Les types d'objectifs sont prédéfinis (une trentaine), mais se combinent avec les conditions.
+- Les types d'objectifs sont prédéfinis (une quarantaine), mais se combinent avec les conditions.
 - Le panneau latéral remplace le scoreboard d'un autre plugin tant que des quêtes sont suivies (le masquer avec `/quetes panneau` ou `quest-tracker.enabled: false`).
-- Les titres de joueur ne sont pas encore gérés (prévus pour une prochaine version).

@@ -67,6 +67,7 @@ public final class CykClasses extends JavaPlugin {
     private PartyManager parties;
     private HudService hud;
     private fr.cykalos.cykclasses.quest.QuestService quests;
+    private fr.cykalos.cykclasses.title.TitleService titles;
     private MythicHook mythic;
     private ContentRegistry content;
     private CharacterService character;
@@ -161,6 +162,8 @@ public final class CykClasses extends JavaPlugin {
         jobDescriptions = new JobDescriptions(this);
         quests = new fr.cykalos.cykclasses.quest.QuestService(this);
         quests.load();
+        titles = new fr.cykalos.cykclasses.title.TitleService(this);
+        titles.load();
 
         var pm = Bukkit.getPluginManager();
         pm.registerEvents(new ConnectionListener(this), this);
@@ -170,6 +173,7 @@ public final class CykClasses extends JavaPlugin {
         pm.registerEvents(new GuiListener(this), this);
         pm.registerEvents(new CreationProtectionListener(this), this);
         pm.registerEvents(new fr.cykalos.cykclasses.listener.QuestListener(this), this);
+        pm.registerEvents(titles, this);
         pm.registerEvents(new HudListener(this), this);
         pm.registerEvents(new JobListener(this), this);
         pm.registerEvents(items, this);
@@ -187,9 +191,11 @@ public final class CykClasses extends JavaPlugin {
             registerCommand(c, charCmd);
         }
         registerCommand("quetes", new fr.cykalos.cykclasses.command.QuetesCommand(this));
+        registerCommand("titres", new fr.cykalos.cykclasses.command.TitresCommand(this));
 
         mana.start();
         quests.start();
+        titles.start();
         flaws.start();
         hud.start();
 
@@ -263,6 +269,9 @@ public final class CykClasses extends JavaPlugin {
         if (quests != null) {
             quests.stop();
         }
+        if (titles != null) {
+            titles.stop();
+        }
         if (stats != null) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 stats.clear(player);
@@ -285,10 +294,12 @@ public final class CykClasses extends JavaPlugin {
         gear.load();
         classes.load();
         quests.load();
+        titles.load();
         stats.invalidateAll();
         hud.start();
         mana.start();
         quests.start();
+        titles.start();
         flaws.start();
         for (Player player : Bukkit.getOnlinePlayers()) {
             stats.apply(player);
@@ -310,6 +321,7 @@ public final class CykClasses extends JavaPlugin {
     public PartyManager parties() { return parties; }
     public HudService hud() { return hud; }
     public fr.cykalos.cykclasses.quest.QuestService quests() { return quests; }
+    public fr.cykalos.cykclasses.title.TitleService titles() { return titles; }
     /** @return le pont MythicMobs, ou null si MythicMobs n'est pas installé. */
     public MythicHook mythic() { return mythic; }
     public ContentRegistry content() { return content; }

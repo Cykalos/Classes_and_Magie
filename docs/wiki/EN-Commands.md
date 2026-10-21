@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Commandes.md) · 🇬🇧 English
 
-Commands are in French. Main English aliases: `/class` (`/classe`), `/skill` (`/competence`), `/party` (`/groupe`), `/weaknesses` (`/faiblesses`), `/job` (`/metier`), `/skilltree` (`/arbre`), `/quests` (`/quetes`).
+Commands are in French. Main English aliases: `/class` (`/classe`), `/skill` (`/competence`), `/party` (`/groupe`), `/weaknesses` (`/faiblesses`), `/job` (`/metier`), `/skilltree` (`/arbre`), `/quests` (`/quetes`), `/titles` (`/titres`).
 
 ## Players
 
@@ -20,6 +20,7 @@ Commands are in French. Main English aliases: `/class` (`/classe`), `/skill` (`/
 | `/arbre [reset]` · `/stats [reset]` | Skill tree, attributes |
 | `/groupe …` · `/gc` · `/global` | Party and chat |
 | `/quetes` (`/quests`) | Quest journal |
+| `/titres` (`/titles`) · `/titres equiper <id>` · `/titres retirer` | Titles |
 | `/quetes commencer\|abandonner\|suivre <id>` | Start, abandon, track a quest |
 | `/quetes panneau` · `/quetes tutoriel` | Sidebar, tutorial |
 
@@ -40,6 +41,8 @@ Commands are in French. Main English aliases: `/class` (`/classe`), `/skill` (`/
 | `libererunique <id>` | Makes a unique item forgeable again |
 | `reload` | Reloads the configuration |
 
+Titles: `/titres admin <player> <give|take|reset> [id]` and `/titres admin liberer <id>` (see [Titles](EN-Titles.md#administration)).
+
 Quests: `/quetes admin <player> <start|complete|reset> <id>` and `/quetes admin <player> resetall` (see [Quests](EN-Quests.md#administration)).
 
 ## Permissions
@@ -53,7 +56,7 @@ Quests: `/quetes admin <player> <start|complete|reset> <id>` and `/quetes admin 
 
 ## Placeholders (PlaceholderAPI)
 
-`%cykclasses_class%`, `%cykclasses_class_id%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_weaknesses%`, `%cykclasses_weaknesses_count%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`, `%cykclasses_quests_completed%`, `%cykclasses_quests_active%`, `%cykclasses_quests_total%`, `%cykclasses_quest_tracked%`
+`%cykclasses_class%`, `%cykclasses_class_id%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_weaknesses%`, `%cykclasses_weaknesses_count%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`, `%cykclasses_title%`, `%cykclasses_title_id%`, `%cykclasses_titles_count%`, `%cykclasses_titles_total%`, `%cykclasses_quests_completed%`, `%cykclasses_quests_active%`, `%cykclasses_quests_total%`, `%cykclasses_quest_tracked%`
 
 ## Java API
 

@@ -33,6 +33,7 @@ Les fichiers sont rangés par thème dans `plugins/Classes_and_Magie/` :
 | `classes/skilltree.yml` · `classes/attributes.yml` | Arbre de compétences et attributs |
 | `personnage/races.yml` · `personnage/traits.yml` | Races et traits |
 | `personnage/weaknesses.yml` | Faiblesses imposées et aléatoires |
+| `personnage/titles.yml` | [Titres](Titres.md) : raretés, conditions, effets, affichage |
 | `metiers/jobs.yml` | Métiers, XP de métier, spécialisations, actions réservées |
 | `metiers/forge.yml` | Raretés des objets forgés, stats aléatoires, objets uniques |
 | `metiers/gems.yml` | Gemmes brutes, taille (joaillerie), raretés et pureté |
@@ -40,7 +41,7 @@ Les fichiers sont rangés par thème dans `plugins/Classes_and_Magie/` :
 | `affichage/hud.yml` | Dégâts flottants, PV des cibles, panneau latéral (groupe et quêtes), barres d'XP |
 | `affichage/messages.yml` | Tous les textes ([MiniMessage](https://docs.advntr.dev/minimessage/format.html)) |
 | `quetes/` | [Quêtes](Quêtes.md) : tous les fichiers `.yml` du dossier sont lus |
-| `donnees/` | Données des joueurs (`joueurs/` ou `data.db`), objets et traits uniques, sauvegardes. À ne pas modifier à la main. |
+| `donnees/` | Données des joueurs (`joueurs/` ou `data.db`), objets, traits et titres uniques, sauvegardes. À ne pas modifier à la main. |
 
 ## Modules
 
@@ -60,6 +61,7 @@ modules:
   kits: true
   item-restrictions: true
   quests: true
+  titles: true
 ```
 
 Un module désactivé disparaît du jeu : son étape de création est sautée, son bouton disparaît du menu `/classe`, sa commande et son menu répondent « fonctionnalité désactivée » et il n'a plus d'effet sur les stats. Les faiblesses écrites directement dans une classe ou une race restent actives, puisqu'elles font partie de la classe ou de la race. Les données des joueurs sont conservées, il suffit de le réactiver pour les retrouver. Seule exception : un objet déjà forgé garde ses stats même si la forge est désactivée.

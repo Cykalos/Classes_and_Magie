@@ -121,6 +121,7 @@ gui:
   job-button: "<gold>Métier"
   weaknesses-button: "<dark_red>Faiblesses"
   quests-button: "<gold>Journal des quêtes"
+  titles-button: "<yellow>Titres"
 
 skillbar:
   cooldown: "<red>Recharge : <white><time>s"
@@ -387,6 +388,8 @@ quests:
     quest: "Terminer « <quest> »"
     not-quest: "Incompatible avec « <quest> »"
     permission: "Condition spéciale non remplie"
+    title: "Titre requis : <title>"
+    check: "<objective> <dark_gray><progress>"
   reward:
     xp: "<aqua><amount> XP"
     job-xp: "<yellow><amount> XP de métier"
@@ -394,6 +397,7 @@ quests:
     attribute-points: "<light_purple><amount> point(s) d'attributs"
     money: "<gold><amount> pièces"
     item: "<white><amount>× <item>"
+    title: "<yellow>Titre : <title>"
   objective:
     kill: "Éliminer <amount> <target>"
     break: "Récolter <amount> <target>"
@@ -425,6 +429,14 @@ quests:
     condition: "Remplir la condition"
     tree-points: "Dépenser <amount> point(s) d'arbre"
     attribute-points: "Dépenser <amount> point(s) d'attributs"
+    quest: "Terminer <amount> quête(s)"
+    titles: "Débloquer <amount> titre(s)"
+    kills-total: "Éliminer <amount> <target> (au total)"
+    skill-uses-total: "Lancer <amount> compétences (au total)"
+    counter: "Atteindre <amount> (<target>)"
+    statistic: "Atteindre <amount> (<target>)"
+    advancement: "Obtenir le progrès <target>"
+    playtime: "Jouer <amount> heure(s)"
   gui:
     title: "<dark_gray>Journal des quêtes"
     tab:
@@ -463,3 +475,35 @@ quests:
     click-track: "<yellow>▶ Clic pour suivre dans le panneau"
     click-untrack: "<yellow>▶ Clic pour ne plus suivre"
     click-abandon: "<red>▶ Maj + clic droit pour abandonner"
+
+# ------------------------------------------------------------ Titres
+titles:
+  unlocked: "<yellow>✦ Nouveau titre débloqué : <title> <dark_gray>(<rarity><dark_gray>) <gray>— /titres"
+  unlocked-title: "<yellow><bold>Nouveau titre"
+  broadcast: "<gold>✦ <white><player></white> a obtenu le titre <title> <dark_gray>(<rarity><dark_gray>)"
+  equipped: "<gray>Titre équipé : <title>"
+  unequipped: "<gray>Titre retiré."
+  lost: "<red>Le titre <title><red> n'est plus disponible."
+  not-owned: "<red>Titre introuvable ou pas encore débloqué."
+  gui:
+    title: "<dark_gray>Titres"
+    filter-all: "<white><bold>Tous les titres"
+    filter-unlocked: "<green><bold>Débloqués"
+    filter-locked: "<gray><bold>À débloquer"
+    empty: "<gray>Aucun titre ici pour le moment."
+    equipped-slot: "<gold>Titre équipé"
+    none: "<gray>Aucun"
+    summary: "<gold>Collection"
+    summary-lore: "<gray>Titres débloqués : <white><count></white>/<total>"
+    name: "<white><title>"
+    name-equipped: "<title> <green>✔ équipé"
+    name-locked: "<gray><title>"
+    hidden-name: "<dark_gray>???"
+    hidden-lore: "<dark_purple>Titre secret : ses conditions restent cachées."
+    effects: "<gold>Quand il est équipé :"
+    no-effect: "<dark_gray>Aucun effet (titre honorifique)"
+    unique-free: "<light_purple>Unique : un seul joueur du serveur peut l'obtenir"
+    unique-owned: "<red>Unique : déjà obtenu par <white><player>"
+    special: "<gray>Obtenu grâce à une quête ou un évènement"
+    click-equip: "<green>▶ Clic pour équiper"
+    click-unequip: "<yellow>▶ Clic pour retirer"

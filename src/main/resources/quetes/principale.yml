@@ -184,6 +184,7 @@ quests:
       money: 1000
       items:
         - {item: "minecraft:netherite_ingot", amount: 1}
+      titles: [heros_de_la_fracture]
       text:
         - "<light_purple>La gratitude éternelle de l'Archiviste"
     complete-text:

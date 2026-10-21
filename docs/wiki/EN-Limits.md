@@ -23,8 +23,11 @@ What Classes and Magie **does not do** (or not yet), to avoid bad surprises.
 ## Quests
 
 - No built-in NPCs and no multiple-choice dialogues (an NPC from another plugin can be used as a target).
-- About thirty predefined objective types, combinable with conditions.
-- No player titles yet.
+- About forty predefined objective types, combinable with conditions.
+
+## Titles
+
+- Only one title equipped at a time.
 
 ## Items
 
