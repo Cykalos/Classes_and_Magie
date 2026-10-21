@@ -57,6 +57,10 @@ public final class ClassSelectGui extends Gui {
         if (profile.hasClass()) {
             set(4, profileHead(profile), null);
             var mod = plugin.modules();
+            if (mod.quests()) {
+                set(8, new ItemBuilder(Material.WRITABLE_BOOK).name(plugin.messages().raw("gui.quests-button")).build(),
+                        e -> new QuestJournalGui(plugin, viewer).open());
+            }
             if (mod.skillTree()) set(last, new ItemBuilder(Material.OAK_SAPLING).name(plugin.messages().raw("gui.tree-button"))
                     .lore(plugin.messages().raw("gui.points-line").replace("<points>", String.valueOf(plugin.stats().availableSkillPoints(profile))))
                     .glow(plugin.stats().availableSkillPoints(profile) > 0).build(),

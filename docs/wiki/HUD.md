@@ -2,7 +2,7 @@
 
 🇫🇷 Français · [🇬🇧 English](EN-HUD.md)
 
-Fichier : `hud.yml` (+ `config.yml → hud` pour la barre d'action).
+Fichier : `affichage/hud.yml` (+ `config.yml → hud` pour la barre d'action).
 
 ## Barre d'action
 
@@ -51,11 +51,26 @@ party:
   range: 48                   # distance maximale des alliés
 ```
 
+## Suivi des quêtes
+
+```yaml
+quest-tracker:
+  enabled: true
+  title: "<gold><bold>Quêtes"
+  max-quests: 3
+  in-party: BELOW          # BELOW (sous les membres du groupe) ou HIDE
+  max-quests-in-party: 1
+  quest-line: "<yellow><name>"
+  objective-line: " <status> <white><objective> <gray><progress>"
+```
+
+Minecraft n'affiche qu'un seul panneau latéral : le groupe et les quêtes suivies partagent le même. `/quetes panneau` le masque pour un joueur. Détails sur la page [Quêtes](Quêtes.md).
+
 ## Panneau du groupe
 
 `party-board` : titre, lignes par membre (`<leader>`, `<name>`, `<class>`, `<level>`, `<bar>`, `<health>`, `<mana>`…), pied de page.
 
 ## Ce qu'on ne peut pas faire
 
-- Le panneau du groupe utilise le scoreboard latéral : il peut entrer en conflit avec un autre plugin de scoreboard (désactiver l'un des deux).
+- Le panneau latéral (groupe et quêtes) utilise le scoreboard : il peut entrer en conflit avec un autre plugin de scoreboard (désactiver l'un des deux).
 - Pas d'interface graphique par resource pack (textures de barres) intégrée : seulement du texte MiniMessage.

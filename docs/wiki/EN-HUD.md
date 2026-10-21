@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](HUD.md) · 🇬🇧 English
 
-File: `hud.yml` (+ `config.yml → hud` for the action bar).
+File: `affichage/hud.yml` (+ `config.yml → hud` for the action bar).
 
 ## Action bar
 
@@ -51,11 +51,26 @@ party:
   range: 48                   # maximum distance of allies
 ```
 
+## Quest tracker
+
+```yaml
+quest-tracker:
+  enabled: true
+  title: "<gold><bold>Quests"
+  max-quests: 3
+  in-party: BELOW          # BELOW (below the party members) or HIDE
+  max-quests-in-party: 1
+  quest-line: "<yellow><name>"
+  objective-line: " <status> <white><objective> <gray><progress>"
+```
+
+Minecraft only shows one sidebar: the party and the tracked quests share it. `/quetes panneau` hides it for a player. Details on the [Quests](EN-Quests.md) page.
+
 ## Party board
 
 `party-board`: title, lines per member (`<leader>`, `<name>`, `<class>`, `<level>`, `<bar>`, `<health>`, `<mana>`…), footer.
 
 ## What cannot be done
 
-- The party board uses the sidebar scoreboard: it can conflict with another scoreboard plugin (disable one of them).
+- The sidebar (party and quests) uses the scoreboard: it can conflict with another scoreboard plugin (disable one of them).
 - No built-in resource-pack interface (bar textures): MiniMessage text only.

@@ -24,19 +24,23 @@
 
 ## Configuration files
 
-| File | Role |
+Files are organised by theme in `plugins/Classes_and_Magie/`:
+
+| Folder / file | Role |
 |---|---|
-| `config.yml` | Storage (`YAML`, `JSON`, `SQLITE`), XP curve, XP per monster, mana, skill mode, chat, parties |
-| `classes.yml` | Classes, subclasses, stats, weaknesses, conditions, skills |
-| `races.yml` · `traits.yml` | Races and traits |
-| `weaknesses.yml` | Imposed and random weaknesses |
-| `skilltree.yml` · `attributes.yml` | Skill tree and attributes |
-| `jobs.yml` | Jobs, job XP, specializations, reserved actions |
-| `forge.yml` | Forged item rarities, random stats, unique items |
-| `gems.yml` | Raw gems, cutting (jewelcrafting), rarities and purity |
-| `kits.yml` · `items.yml` | Starter kits, item restrictions |
-| `hud.yml` | Floating damage, target health, party board, XP bars |
-| `messages.yml` | Every text ([MiniMessage](https://docs.advntr.dev/minimessage/format.html)) |
+| `config.yml` | Modules, storage (`YAML`, `JSON`, `SQLITE`), XP curve, XP per monster, mana, skill mode, chat, parties, quests |
+| `classes/classes.yml` | Classes, subclasses, stats, weaknesses, conditions, skills |
+| `classes/skilltree.yml` · `classes/attributes.yml` | Skill tree and attributes |
+| `personnage/races.yml` · `personnage/traits.yml` | Races and traits |
+| `personnage/weaknesses.yml` | Imposed and random weaknesses |
+| `metiers/jobs.yml` | Jobs, job XP, specializations, reserved actions |
+| `metiers/forge.yml` | Forged item rarities, random stats, unique items |
+| `metiers/gems.yml` | Raw gems, cutting (jewelcrafting), rarities and purity |
+| `objets/kits.yml` · `objets/items.yml` | Starter kits, item restrictions |
+| `affichage/hud.yml` | Floating damage, target health, sidebar (party and quests), XP bars |
+| `affichage/messages.yml` | Every text ([MiniMessage](https://docs.advntr.dev/minimessage/format.html)) |
+| `quetes/` | [Quests](EN-Quests.md): every `.yml` file in the folder is read |
+| `donnees/` | Player data (`joueurs/` or `data.db`), unique items and traits, backups. Do not edit by hand. |
 
 The default content and texts are in French. Every message can be translated in `messages.yml`, and every name (classes, races, jobs, items…) can be changed in its YAML file.
 
@@ -57,6 +61,7 @@ modules:
   gems: true
   kits: true
   item-restrictions: true
+  quests: true
 ```
 
 A disabled module disappears from the game: its creation step is skipped, its button is removed from the `/classe` menu, its command and menu answer "feature disabled" and it no longer affects stats. Weaknesses written directly in a class or a race stay active, since they are part of the class or race. Player data is kept: enabling the module again brings it back. Only exception: an already forged item keeps its stats even if the forge is disabled.
@@ -64,6 +69,7 @@ A disabled module disappears from the game: its creation step is skipped, its bu
 ## Updating
 
 - New keys of `gems.yml` and `forge.yml` take their **default value** when they are missing from the server's file.
-- If the server's `jobs.yml` predates job levels or jewelcrafting, it is **backed up** as `jobs-ancien-<date>.yml` and replaced by the new version. Personal changes must be copied back from the backup.
+- If the server's `jobs.yml` predates job levels or jewelcrafting, it is **backed up** as `donnees/sauvegardes/jobs-ancien-<date>.yml` and replaced by the new version. Personal changes must be copied back from the backup.
 - Player data (class, levels, jobs…) is kept.
+- Since version 1.9, files are organised in folders (`classes/`, `personnage/`, `metiers/`, `objets/`, `affichage/`, `donnees/`). The files of an older installation, all at the root, are **moved automatically** on first start, without loss: configuration, player data (`playerdata/` becomes `donnees/joueurs/`), SQLite database and backups.
 - Since version 1.5, the configuration folder is named `plugins/Classes_and_Magie/`. The old `plugins/CykClasses/` folder is renamed automatically on first start, with all configuration and data.

@@ -52,11 +52,7 @@ public final class ContentRegistry {
     }
 
     private YamlConfiguration yaml(String name) {
-        File file = new File(plugin.getDataFolder(), name);
-        if (!file.exists()) {
-            plugin.saveResource(name, false);
-        }
-        return YamlConfiguration.loadConfiguration(file);
+        return fr.cykalos.cykclasses.config.ConfigFiles.load(plugin, name);
     }
 
     public void load() {
@@ -77,8 +73,9 @@ public final class ContentRegistry {
         jobsConfig = yaml("jobs.yml");
         if (!jobsConfig.contains("leveling") || !jobsConfig.contains("jobs.joaillier")) {
             // Ancien format (avant les niveaux de métier) : sauvegarde puis nouveau fichier par défaut.
-            File old = new File(plugin.getDataFolder(), "jobs.yml");
-            File backup = new File(plugin.getDataFolder(), "jobs-ancien-" + System.currentTimeMillis() + ".yml");
+            File old = fr.cykalos.cykclasses.config.ConfigFiles.file(plugin, "jobs.yml");
+            File backup = new File(fr.cykalos.cykclasses.config.ConfigFiles.dataFolder(plugin), "sauvegardes/jobs-ancien-" + System.currentTimeMillis() + ".yml");
+            backup.getParentFile().mkdirs();
             if (old.renameTo(backup)) {
                 plugin.getLogger().warning("jobs.yml mis à jour (niveaux de métier). L'ancien fichier est conservé : " + backup.getName());
                 jobsConfig = yaml("jobs.yml");

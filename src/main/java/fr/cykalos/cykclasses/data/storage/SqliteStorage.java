@@ -25,6 +25,7 @@ public final class SqliteStorage implements Storage {
 
     @Override
     public synchronized void init() throws Exception {
+        file.getParentFile().mkdirs();
         Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
         try (Statement st = connection.createStatement()) {

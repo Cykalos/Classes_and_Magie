@@ -20,6 +20,12 @@ Ce que Classes and Magie **ne fait pas** (ou pas encore), pour éviter les mauva
 - Une gemme incrustée est définitive ; pas de fusion ni de retaille.
 - Un objet unique détruit (lave, cactus…) n'est pas libéré automatiquement : `/classe admin libererunique <id>`.
 
+## Quêtes
+
+- Pas de PNJ intégré ni de dialogues à choix multiples (un PNJ d'un autre plugin peut servir de cible).
+- Une trentaine de types d'objectifs prédéfinis, combinables avec les conditions.
+- Pas encore de titres de joueur.
+
 ## Objets
 
 - Les objets interdits restent visibles (pas de masquage).
@@ -28,6 +34,6 @@ Ce que Classes and Magie **ne fait pas** (ou pas encore), pour éviter les mauva
 ## Technique
 
 - Paper 26.x uniquement (pas Spigot, pas Folia).
-- Le panneau du groupe utilise le scoreboard latéral et peut entrer en conflit avec un autre plugin de scoreboard.
+- Le panneau latéral (groupe et quêtes) utilise le scoreboard et peut entrer en conflit avec un autre plugin de scoreboard.
 - Les groupes ne survivent pas à un redémarrage.
 - Les nouvelles mécaniques de compétence demandent du Java ou MythicMobs.

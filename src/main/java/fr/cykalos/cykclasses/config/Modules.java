@@ -19,6 +19,7 @@ public final class Modules {
     private boolean gems = true;
     private boolean kits = true;
     private boolean itemRestrictions = true;
+    private boolean quests = true;
 
     public void load(FileConfiguration c) {
         races = c.getBoolean("modules.races", true);
@@ -32,6 +33,7 @@ public final class Modules {
         gems = c.getBoolean("modules.gems", true);
         kits = c.getBoolean("modules.kits", true);
         itemRestrictions = c.getBoolean("modules.item-restrictions", true);
+        quests = c.getBoolean("modules.quests", true);
     }
 
     public boolean races() { return races; }
@@ -45,6 +47,7 @@ public final class Modules {
     public boolean gems() { return gems; }
     public boolean kits() { return kits; }
     public boolean itemRestrictions() { return itemRestrictions; }
+    public boolean quests() { return quests; }
 
     /** Module associé à une commande (null = toujours disponible). */
     public boolean commandEnabled(String command) {
@@ -56,6 +59,7 @@ public final class Modules {
             case "arbre" -> skillTree;
             case "stats" -> attributes;
             case "groupe", "gc" -> parties;
+            case "quetes" -> quests;
             default -> true;
         };
     }

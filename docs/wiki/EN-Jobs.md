@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Métiers.md) · 🇬🇧 English
 
-File: `jobs.yml`. Menu: `/metier` (alias `/job`).
+File: `metiers/jobs.yml`. Menu: `/metier` (alias `/job`).
 
 ## Principle
 

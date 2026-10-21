@@ -2,7 +2,7 @@
 
 🇫🇷 Français · [🇬🇧 English](EN-Progression.md)
 
-## Arbre de compétences (`/arbre`, `skilltree.yml`)
+## Arbre de compétences (`/arbre`, `classes/skilltree.yml`)
 
 Un arbre par classe de base + un arbre **commun**. Les branches peuvent être réservées à une sous-classe.
 
@@ -27,7 +27,7 @@ trees:
           charge: {damage: 0.1, cooldown: -0.1, mana: -0.1}   # +10 % dégâts, −10 % recharge, −10 % mana par rang
 ```
 
-## Attributs (`/stats`, `attributes.yml`)
+## Attributs (`/stats`, `classes/attributes.yml`)
 
 Force, Dextérité, Intelligence, Vitalité, Sagesse, Agilité, Endurance.
 

@@ -41,6 +41,12 @@ jobs:
           JAR=$(ls build/libs/*.jar | grep -v plain | head -1)
           echo "::notice::$JAR $(du -h "$JAR" | cut -f1) - $(unzip -l "$JAR" | tail -1) - uniitem: $(unzip -l "$JAR" | grep -c 'libs/uniitem')"
 
+      - name: Démarrage d'un serveur Paper (test)
+        if: matrix.paper == '26.2.build.+'
+        run: |
+          JAR=$(ls build/libs/*.jar | grep -v plain | head -1)
+          .github/scripts/smoke-test.sh 26.2 "$JAR"
+
       - name: Artefact
         uses: actions/upload-artifact@v4
         with:

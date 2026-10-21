@@ -89,6 +89,13 @@ public final class PlaceholderHook extends PlaceholderExpansion {
             case "skill_points" -> String.valueOf(plugin.stats().availableSkillPoints(profile));
             case "attribute_points" -> String.valueOf(plugin.stats().availableAttributePoints(profile));
             case "party_chat" -> profile.isPartyChat() ? "groupe" : "global";
+            case "quests_completed" -> String.valueOf(profile.questsCompleted().size());
+            case "quests_active" -> String.valueOf(profile.questStages().size());
+            case "quests_total" -> String.valueOf(plugin.quests().all().size());
+            case "quest_tracked" -> {
+                var q = profile.questsTracked().isEmpty() ? null : plugin.quests().get(profile.questsTracked().get(0));
+                yield q == null ? "" : Text.plain(q.name);
+            }
             default -> null;
         };
     }

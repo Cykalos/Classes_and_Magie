@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Objets.md) · 🇬🇧 English
 
-## Starter kits (`kits.yml`)
+## Starter kits (`objets/kits.yml`)
 
 Given when the class is chosen, and the subclass if a kit has its id.
 
@@ -43,7 +43,7 @@ The list of available prefixes is printed in the console at startup.
 
 Admin: `/classe admin kit <player> [class]` gives a kit again.
 
-## Item restrictions (`items.yml`)
+## Item restrictions (`objets/items.yml`)
 
 Custom item stats stay handled by their plugin (CraftEngine, MythicCrucible…). Here you decide **who** can use them.
 

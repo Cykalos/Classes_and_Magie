@@ -11,6 +11,7 @@
 - [Races et traits](Races-et-traits.md) · [Races and traits](EN-Races-and-traits.md)
 - [Faiblesses](Faiblesses.md) · [Weaknesses](EN-Weaknesses.md)
 - [Progression](Progression.md) · [EN](EN-Progression.md)
+- [Quêtes](Quêtes.md) · [Quests](EN-Quests.md)
 
 **Artisanat · Crafting**
 - [Métiers](Métiers.md) · [Jobs](EN-Jobs.md)

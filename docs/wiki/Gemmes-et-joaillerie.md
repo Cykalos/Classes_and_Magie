@@ -2,7 +2,7 @@
 
 🇫🇷 Français · [🇬🇧 English](EN-Gems-and-jewelcrafting.md)
 
-Fichier : `gems.yml`.
+Fichier : `metiers/gems.yml`.
 
 ## Le parcours d'une gemme
 

@@ -2,7 +2,7 @@
 
 🇫🇷 Français · [🇬🇧 English](EN-Races-and-traits.md)
 
-## Races (`races.yml`)
+## Races (`personnage/races.yml`)
 
 Choisie juste après la classe. Par défaut : **Humain**, **Elfe**, **Nain**, **Orc**, **Tieffelin**, **Félys**.
 
@@ -33,7 +33,7 @@ races:
 
 `config.yml → character.race-can-change` : autorise ou non `/race` après coup. `reset.keep-race` : garder la race lors d'un reset de classe.
 
-## Traits (`traits.yml`)
+## Traits (`personnage/traits.yml`)
 
 Après la race, **3 traits** sont tirés au hasard (positifs, négatifs ou mixtes).
 

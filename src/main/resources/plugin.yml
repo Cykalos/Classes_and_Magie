@@ -5,7 +5,7 @@ api-version: '26.1'
 description: Système de classes RPG avec sous-classes, compétences uniques, statistiques, défauts et mana.
 authors: [Cykalos]
 website: https://github.com/Cykalos/Classes_and_Magie
-softdepend: [PlaceholderAPI, MythicMobs, CraftEngine, ExecutableItems, ItemsAdder, Oraxen, Nexo, MMOItems]
+softdepend: [PlaceholderAPI, Vault, MythicMobs, CraftEngine, ExecutableItems, ItemsAdder, Oraxen, Nexo, MMOItems]
 libraries:
   - org.xerial:sqlite-jdbc:3.46.1.3
 
@@ -52,6 +52,10 @@ commands:
     description: Points d'attributs.
     usage: /stats [reset]
     aliases: [attributs]
+  quetes:
+    description: Journal des quêtes, suivi et tutoriel.
+    usage: /quetes [commencer|abandonner|suivre|panneau|tutoriel|admin]
+    aliases: [quests, quest, quete, journal]
 
 permissions:
   cykclasses.use:

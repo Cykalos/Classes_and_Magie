@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Classes.md) · 🇬🇧 English
 
-File: `classes.yml`. The top of the file documents every available key.
+File: `classes/classes.yml`. The top of the file documents every available key.
 
 ## Default classes and subclasses
 

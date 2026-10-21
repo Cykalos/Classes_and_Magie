@@ -1,0 +1,120 @@
+# ╔══════════════════════════════════════════════╗
+# ║          Classes and Magie - Quêtes          ║
+# ╚══════════════════════════════════════════════╝
+#
+# Tous les fichiers .yml du dossier quetes/ (et de ses sous-dossiers) sont lus : il est possible d'en
+# ajouter, d'en renommer ou d'en supprimer. Les quêtes sont toutes facultatives.
+# Après une modification : /classe admin reload
+#
+# ─── Format d'une quête ───────────────────────────────────────────────────────
+# quests:
+#   mon_id:
+#     name: "<gold>Nom affiché"
+#     category: MAIN          # TUTORIAL, MAIN (histoire), CLASS, SIDE (annexe), SECRET
+#     level: 10               # niveau indicatif affiché dans le journal
+#     icon: BOOK
+#     description: ["<gray>Texte du journal"]
+#     start: MANUAL           # MANUAL (depuis le journal), AUTO (dès qu'elle est disponible), OFFER (proposée)
+#     hidden: false           # true = invisible tant qu'elle n'est pas découverte (par défaut pour SECRET)
+#     repeatable: false
+#     cooldown-hours: 0       # délai avant de pouvoir la refaire (quête répétable)
+#     abandonable: true
+#     requirements:           # conditions pour qu'elle soit disponible (toutes facultatives)
+#       level: 5
+#       max-level: 30
+#       classes: [guerrier]   # classe ou sous-classe
+#       races: [nain]
+#       jobs: [mineur]
+#       job-level: 10
+#       quests: [autre_quete]       # quêtes à avoir terminées
+#       not-quests: [voie_opposee]  # quêtes à ne pas avoir faites (choix exclusifs)
+#       permission: "serveur.chapitre2"
+#     conditions: {time: NIGHT}     # contexte pour démarrer (mêmes conditions que les faiblesses)
+#     trigger:                      # démarre la quête quand cette action a lieu (quêtes secrètes)
+#       type: KILL
+#       targets: [WITCH]
+#       conditions: {chance: 0.1}
+#     stages:                 # étapes, dans l'ordre
+#       - text: ["<gray>Texte affiché au début de l'étape"]
+#         objectives:
+#           - {type: KILL, targets: [ZOMBIE, HUSK], amount: 10, display: "Éliminer des morts-vivants"}
+#     rewards:
+#       xp: 200
+#       job-xp: 100
+#       skill-points: 1
+#       attribute-points: 1
+#       money: 100            # nécessite Vault et un plugin d'économie
+#       items:                # même format que kits.yml (objets custom compris)
+#         - {item: "minecraft:diamond", amount: 2}
+#       commands: ["say %player% a terminé une quête !"]
+#       text: ["<gray>Ligne en plus dans la liste des récompenses"]
+#     complete-text: ["<gray>Texte affiché à la fin"]
+#
+# ─── Types d'objectifs ────────────────────────────────────────────────────────
+# Actions (comptées) :
+#   KILL, BREAK, PLACE, CRAFT, SMELT, FISH, BREED, TAME, ENCHANT, BREW, REFINE (gemmes taillées),
+#   CONSUME (manger/boire), SKILL (compétence lancée : targets = ids), INTERACT_ENTITY (clic droit sur
+#   une entité, name: "texte du nom"), INTERACT_BLOCK, COMMAND (targets = commandes sans /), DAMAGE (dégâts infligés)
+# États (vérifiés chaque seconde) :
+#   LEVEL, JOB_LEVEL, CLASS, SUBCLASS, RACE, JOB, SPECIALIZATION, COLLECT (objets dans l'inventaire,
+#   take: true pour les retirer), REACH (world, x, y, z, radius), BIOME (targets = biomes), CONDITION
+#   (bloc conditions), TREE_POINTS, ATTRIBUTE_POINTS
+# Options communes :
+#   targets     liste de cibles, * = joker (« *_LOG »), « mythic:NomInterne » pour un mob MythicMobs
+#   amount      quantité (1 par défaut)
+#   display     texte affiché (sinon un texte automatique)
+#   conditions  contexte de l'action : {time: NIGHT}, {holding: ["*_SWORD"]}, {sneaking: true}…
+#   module      module requis (skill-tree, attributes, jobs, parties…) : validé d'office s'il est désactivé
+
+quests:
+  tutoriel:
+    name: "<white>Premiers pas d'un Éveillé"
+    category: TUTORIAL
+    level: 1
+    icon: BOOK
+    start: OFFER
+    description:
+      - "<gray>Les bases du jeu : menus, compétences,"
+      - "<gray>combat et progression."
+    stages:
+      - text:
+          - "<gold>✦ <white>Tutoriel <dark_gray>— <gray>étape 1"
+          - "<gray>Ton personnage se gère depuis <white>/classe</white> : profil, compétences, race, traits, métier."
+          - "<gray>Les quêtes se suivent dans le <white>journal</white> et dans le panneau à droite de l'écran."
+        objectives:
+          - {type: COMMAND, targets: [classe], display: "Ouvrir le menu de ta classe (/classe)"}
+          - {type: COMMAND, targets: [quetes], display: "Ouvrir le journal des quêtes (/quetes)"}
+      - text:
+          - "<gold>✦ <white>Tutoriel <dark_gray>— <gray>étape 2"
+          - "<gray>Appuie sur <white>F</white> : la barre affiche tes compétences. Les touches <white>1 à 8</white> les lancent."
+          - "<gray>Appuie de nouveau sur <white>F</white> pour retrouver ta barre normale."
+        objectives:
+          - {type: SKILL, amount: 2, display: "Lancer 2 compétences (F, puis 1 à 8)"}
+      - text:
+          - "<gold>✦ <white>Tutoriel <dark_gray>— <gray>étape 3"
+          - "<gray>Les monstres rapportent de l'XP de classe. Chaque niveau donne des points à dépenser."
+        objectives:
+          - type: KILL
+            targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, SILVERFISH]
+            amount: 3
+            display: "Éliminer 3 monstres"
+      - text:
+          - "<gold>✦ <white>Tutoriel <dark_gray>— <gray>étape 4"
+          - "<gray>Dépense tes points dans l'<white>arbre</white> et les <white>attributs</white>, et choisis un <white>métier</white>."
+        objectives:
+          - {type: COMMAND, targets: [arbre], module: skill-tree, display: "Ouvrir l'arbre de compétences (/arbre)"}
+          - {type: COMMAND, targets: [stats], module: attributes, display: "Ouvrir les attributs (/stats)"}
+          - {type: COMMAND, targets: [metier], module: jobs, display: "Consulter les métiers (/metier)"}
+      - text:
+          - "<gold>✦ <white>Tutoriel <dark_gray>— <gray>étape 5"
+          - "<gray>À plusieurs, c'est plus sûr : un <white>groupe</white> partage l'XP et les soins."
+        objectives:
+          - {type: COMMAND, targets: [groupe], module: parties, display: "Découvrir les groupes (/groupe)"}
+    rewards:
+      xp: 150
+      attribute-points: 1
+      items:
+        - {item: "minecraft:bread", amount: 16}
+        - {item: "minecraft:torch", amount: 16}
+    complete-text:
+      - "<gray>Tu connais les bases. L'histoire principale et les quêtes de classe t'attendent dans le journal."

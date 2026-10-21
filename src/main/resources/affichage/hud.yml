@@ -116,3 +116,20 @@ party-board:
   bar-length: 6
   # Ligne d'information sous la liste (vide pour masquer). Placeholders : <xp_mode>, <friendly_fire>
   footer: "<gray>XP : <white><xp_mode></white>"
+
+# Panneau latéral de suivi des quêtes (/quetes panneau pour le masquer)
+# Minecraft n'affiche qu'un seul panneau latéral : en groupe, les quêtes s'affichent sous les membres.
+quest-tracker:
+  enabled: true
+  title: "<gradient:#f5d76e:#f5a623><bold>Quêtes</bold></gradient>"
+  max-quests: 3
+  # En groupe : BELOW (sous les membres du groupe) ou HIDE (masqué)
+  in-party: BELOW
+  max-quests-in-party: 1
+  party-separator: "<gold><bold>Quête"
+  # Placeholders : <name>, <stage>, <stages>
+  quest-line: "<yellow><name>"
+  # Placeholders : <status>, <objective>, <progress>
+  objective-line: " <status> <white><objective> <gray><progress>"
+  done-symbol: "<green>✔"
+  todo-symbol: "<gray>•"

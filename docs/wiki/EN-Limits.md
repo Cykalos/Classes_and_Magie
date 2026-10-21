@@ -20,6 +20,12 @@ What Classes and Magie **does not do** (or not yet), to avoid bad surprises.
 - A socketed gem is final; no fusion or recutting.
 - A destroyed unique item (lava, cactus…) is not released automatically: `/classe admin libererunique <id>`.
 
+## Quests
+
+- No built-in NPCs and no multiple-choice dialogues (an NPC from another plugin can be used as a target).
+- About thirty predefined objective types, combinable with conditions.
+- No player titles yet.
+
 ## Items
 
 - Forbidden items stay visible (no hiding).
@@ -28,7 +34,7 @@ What Classes and Magie **does not do** (or not yet), to avoid bad surprises.
 ## Technical
 
 - Paper 26.x only (not Spigot, not Folia).
-- The party board uses the sidebar scoreboard and can conflict with another scoreboard plugin.
+- The sidebar (party and quests) uses the scoreboard and can conflict with another scoreboard plugin.
 - Parties do not survive a restart.
 - New skill mechanics require Java or MythicMobs.
 - Default content, menus and commands are in French (every text can be translated in `messages.yml`).

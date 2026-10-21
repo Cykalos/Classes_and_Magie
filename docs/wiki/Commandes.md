@@ -17,6 +17,9 @@
 | `/metier` | Métier, niveaux, recettes, spécialisation |
 | `/arbre [reset]` · `/stats [reset]` | Arbre de compétences, attributs |
 | `/groupe …` · `/gc` · `/global` | Groupe et chat |
+| `/quetes` | Journal des quêtes |
+| `/quetes commencer\|abandonner\|suivre <id>` | Gérer une quête |
+| `/quetes panneau` · `/quetes tutoriel` | Panneau de suivi, tutoriel |
 
 ## Administration (`/classe admin …`)
 
@@ -35,6 +38,8 @@
 | `libererunique <id>` | Rend un objet unique de nouveau forgeable |
 | `reload` | Recharge la configuration |
 
+Quêtes : `/quetes admin <joueur> <start|complete|reset> <id>` et `/quetes admin <joueur> resetall` (voir [Quêtes](Quêtes.md#administration)).
+
 ## Permissions
 
 | Permission | Par défaut |
@@ -46,7 +51,7 @@
 
 ## Placeholders (PlaceholderAPI)
 
-`%cykclasses_class%`, `%cykclasses_class_id%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_weaknesses%`, `%cykclasses_weaknesses_count%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`
+`%cykclasses_class%`, `%cykclasses_class_id%`, `%cykclasses_subclass%`, `%cykclasses_race%`, `%cykclasses_job%`, `%cykclasses_traits%`, `%cykclasses_weaknesses%`, `%cykclasses_weaknesses_count%`, `%cykclasses_level%`, `%cykclasses_xp%`, `%cykclasses_xp_required%`, `%cykclasses_xp_percent%`, `%cykclasses_mana%`, `%cykclasses_max_mana%`, `%cykclasses_skill_points%`, `%cykclasses_attribute_points%`, `%cykclasses_party_chat%`, `%cykclasses_display%`, `%cykclasses_quests_completed%`, `%cykclasses_quests_active%`, `%cykclasses_quests_total%`, `%cykclasses_quest_tracked%`
 
 ## API Java
 

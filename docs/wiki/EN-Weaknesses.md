@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Faiblesses.md) · 🇬🇧 English
 
-File: `weaknesses.yml`. Command: `/faiblesses` (alias `/weaknesses`).
+File: `personnage/weaknesses.yml`. Command: `/faiblesses` (alias `/weaknesses`).
 
 For players, everything that penalises their character is a **weakness**. The `/faiblesses` menu groups them all, with their origin:
 

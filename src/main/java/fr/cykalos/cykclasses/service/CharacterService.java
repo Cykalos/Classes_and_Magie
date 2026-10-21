@@ -56,7 +56,7 @@ public final class CharacterService {
     }
 
     public void loadUniques() {
-        uniquesFile = new File(plugin.getDataFolder(), "uniques.yml");
+        uniquesFile = fr.cykalos.cykclasses.config.ConfigFiles.file(plugin, "uniques.yml");
         uniqueOwners.clear();
         YamlConfiguration y = YamlConfiguration.loadConfiguration(uniquesFile);
         for (String k : y.getKeys(false)) {
@@ -536,6 +536,16 @@ public final class CharacterService {
         }
         p.addReceivedKit(classId);
         plugin.messages().send(player, "kit-received");
+    }
+
+    /** Crée un objet au format de kits.yml (utilisé aussi par les récompenses de quêtes). */
+    public ItemStack buildItem(KitItem ki, Player player) {
+        return build(ki, player);
+    }
+
+    /** Donne un objet au joueur (au sol si l'inventaire est plein). */
+    public void giveItem(Player player, ItemStack item) {
+        place(player, player.getInventory(), item, null);
     }
 
     private ItemStack build(KitItem ki, Player player) {

@@ -93,6 +93,15 @@ public final class JobService {
 
     /** Donne l'XP correspondant à une action, si le métier du joueur la récompense. */
     public void reward(Player player, JobRule.Action action, String target, int amount) {
+        // Les quêtes comptent ces actions pour tout le monde, quel que soit le métier
+        if (plugin.quests() != null) {
+            try {
+                plugin.quests().progress(player, fr.cykalos.cykclasses.quest.Objective.Type.valueOf(action.name()),
+                        target, Math.max(1, amount));
+            } catch (IllegalArgumentException ignored) {
+                // action sans objectif de quête correspondant
+            }
+        }
         PlayerProfile p = plugin.profiles().getIfLoaded(player.getUniqueId());
         if (p == null || p.getJobId() == null || !plugin.modules().jobs()) {
             return;

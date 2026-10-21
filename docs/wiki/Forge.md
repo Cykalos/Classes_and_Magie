@@ -2,7 +2,7 @@
 
 🇫🇷 Français · [🇬🇧 English](EN-Forge.md)
 
-Fichier : `forge.yml`.
+Fichier : `metiers/forge.yml`.
 
 ## Principe
 

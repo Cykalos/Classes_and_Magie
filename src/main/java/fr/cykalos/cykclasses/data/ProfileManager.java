@@ -41,10 +41,10 @@ public final class ProfileManager {
     public void init() throws Exception {
         String type = plugin.getConfig().getString("storage.type", "YAML").toUpperCase(Locale.ROOT);
         storage = switch (type) {
-            case "JSON" -> new JsonStorage(plugin.getDataFolder());
-            case "SQLITE", "SQL", "DATABASE" -> new SqliteStorage(plugin.getDataFolder(),
+            case "JSON" -> new JsonStorage(fr.cykalos.cykclasses.config.ConfigFiles.dataFolder(plugin));
+            case "SQLITE", "SQL", "DATABASE" -> new SqliteStorage(fr.cykalos.cykclasses.config.ConfigFiles.dataFolder(plugin),
                     plugin.getConfig().getString("storage.sqlite-file", "data.db"));
-            default -> new YamlStorage(plugin.getDataFolder());
+            default -> new YamlStorage(fr.cykalos.cykclasses.config.ConfigFiles.dataFolder(plugin));
         };
         storage.init();
         plugin.getLogger().info("Stockage des joueurs : " + type);

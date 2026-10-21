@@ -89,14 +89,10 @@ public final class GearService {
     // ------------------------------------------------------------ Chargement
 
     private YamlConfiguration yaml(String name) {
-        File file = new File(plugin.getDataFolder(), name);
-        if (!file.exists()) {
-            plugin.saveResource(name, false);
-        }
-        YamlConfiguration y = YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration y = fr.cykalos.cykclasses.config.ConfigFiles.load(plugin, name);
         // Clés ajoutées dans une nouvelle version : valeurs par défaut du plugin.
         // Les listes (gemmes, raretés, objets uniques…) ne sont complétées que si elles sont absentes.
-        fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, y, name, java.util.Set.of(
+        fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, y, fr.cykalos.cykclasses.config.ConfigFiles.path(name), java.util.Set.of(
                 "gems", "uniques", "rarities", "refining.rarities", "crafters", "stat-pool",
                 "refining.always-pure", "drops.targets", "drops.jobs", "refining.jobs"));
         return y;
@@ -232,7 +228,7 @@ public final class GearService {
     }
 
     private void loadUniques() {
-        uniquesFile = new File(plugin.getDataFolder(), "forge-uniques.yml");
+        uniquesFile = fr.cykalos.cykclasses.config.ConfigFiles.file(plugin, "forge-uniques.yml");
         uniqueTaken.clear();
         releasedUids.clear();
         YamlConfiguration y = YamlConfiguration.loadConfiguration(uniquesFile);

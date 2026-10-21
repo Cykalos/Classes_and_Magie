@@ -19,7 +19,7 @@ public final class JsonStorage implements Storage {
     private final File folder;
 
     public JsonStorage(File dataFolder) {
-        this.folder = new File(dataFolder, "playerdata");
+        this.folder = new File(dataFolder, "joueurs");
     }
 
     @Override

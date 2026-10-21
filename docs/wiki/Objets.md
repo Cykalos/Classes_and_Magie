@@ -2,7 +2,7 @@
 
 🇫🇷 Français · [🇬🇧 English](EN-Items.md)
 
-## Kits de départ (`kits.yml`)
+## Kits de départ (`objets/kits.yml`)
 
 Donnés au choix de la classe, et de la sous-classe si un kit porte son id.
 
@@ -43,7 +43,7 @@ La liste des préfixes disponibles est affichée dans la console au démarrage.
 
 Admin : `/classe admin kit <joueur> [classe]` redonne un kit.
 
-## Restrictions d'objets (`items.yml`)
+## Restrictions d'objets (`objets/items.yml`)
 
 Les stats des objets custom restent gérées par leur plugin (CraftEngine, MythicCrucible…). Ici on décide **qui** peut s'en servir.
 

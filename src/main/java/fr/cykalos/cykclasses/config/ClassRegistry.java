@@ -29,11 +29,7 @@ public final class ClassRegistry {
     public void load() {
         baseClasses.clear();
         allClasses.clear();
-        File file = new File(plugin.getDataFolder(), "classes.yml");
-        if (!file.exists()) {
-            plugin.saveResource("classes.yml", false);
-        }
-        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration yaml = ConfigFiles.load(plugin, "classes.yml");
         ConfigurationSection root = yaml.getConfigurationSection("classes");
         if (root == null) {
             plugin.getLogger().severe("classes.yml ne contient aucune section 'classes' !");

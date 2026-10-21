@@ -21,13 +21,10 @@ public final class Messages {
     }
 
     public void load() {
-        File file = new File(plugin.getDataFolder(), "messages.yml");
-        if (!file.exists()) {
-            plugin.saveResource("messages.yml", false);
-        }
-        yaml = YamlConfiguration.loadConfiguration(file);
+        File file = ConfigFiles.file(plugin, "messages.yml");
+        yaml = ConfigFiles.load(plugin, "messages.yml");
         // Clés ajoutées dans une nouvelle version : texte par défaut du plugin.
-        int added = ConfigDefaults.fill(plugin, yaml, "messages.yml", java.util.Set.of());
+        int added = ConfigDefaults.fill(plugin, yaml, ConfigFiles.path("messages.yml"), java.util.Set.of());
         if (added > 0) {
             plugin.getLogger().info(added + " message(s) absent(s) de messages.yml : texte par défaut utilisé.");
         }

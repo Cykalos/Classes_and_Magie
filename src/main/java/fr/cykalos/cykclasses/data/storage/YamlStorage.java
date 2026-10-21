@@ -15,7 +15,7 @@ public final class YamlStorage implements Storage {
     private final File folder;
 
     public YamlStorage(File dataFolder) {
-        this.folder = new File(dataFolder, "playerdata");
+        this.folder = new File(dataFolder, "joueurs");
     }
 
     @Override

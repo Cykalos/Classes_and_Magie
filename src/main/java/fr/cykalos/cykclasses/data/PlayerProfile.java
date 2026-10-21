@@ -49,6 +49,14 @@ public final class PlayerProfile {
     private Map<String, Double> jobXp = new HashMap<>();
     /** Spécialisation choisie par métier. */
     private Map<String, String> jobSpecs = new HashMap<>();
+    // Quêtes : étape en cours, progression (« id#objectif »), terminées (date), nombre de réussites, suivies
+    private Map<String, Integer> questStages = new HashMap<>();
+    private Map<String, Double> questProgress = new HashMap<>();
+    private Map<String, Long> questsCompleted = new HashMap<>();
+    private Map<String, Integer> questCounts = new HashMap<>();
+    private List<String> questsTracked = new ArrayList<>();
+    private boolean tutorialOffered;
+    private boolean questTrackerHidden;
 
     private transient Map<String, Long> cooldowns = new HashMap<>();
     private transient boolean castMode;
@@ -80,6 +88,11 @@ public final class PlayerProfile {
         if (jobLevels == null) jobLevels = new HashMap<>();
         if (jobXp == null) jobXp = new HashMap<>();
         if (jobSpecs == null) jobSpecs = new HashMap<>();
+        if (questStages == null) questStages = new HashMap<>();
+        if (questProgress == null) questProgress = new HashMap<>();
+        if (questsCompleted == null) questsCompleted = new HashMap<>();
+        if (questCounts == null) questCounts = new HashMap<>();
+        if (questsTracked == null) questsTracked = new ArrayList<>();
         if (level < 1) level = 1;
         return this;
     }
@@ -177,6 +190,39 @@ public final class PlayerProfile {
         markDirty();
     }
 
+    // --- Quêtes ---
+    public Map<String, Integer> questStages() { return questStages; }
+    public boolean isQuestActive(String id) { return questStages.containsKey(id); }
+    public int getQuestStage(String id) { return questStages.getOrDefault(id, -1); }
+    public void setQuestStage(String id, int stage) { questStages.put(id, stage); clearQuestProgress(id); markDirty(); }
+    public void removeActiveQuest(String id) { questStages.remove(id); clearQuestProgress(id); questsTracked.remove(id); markDirty(); }
+    public double getQuestProgress(String id, int objective) { return questProgress.getOrDefault(id + "#" + objective, 0.0); }
+    public void setQuestProgress(String id, int objective, double value) { questProgress.put(id + "#" + objective, value); markDirty(); }
+    private void clearQuestProgress(String id) { questProgress.keySet().removeIf(k -> k.startsWith(id + "#")); }
+    public Map<String, Long> questsCompleted() { return questsCompleted; }
+    public boolean hasCompletedQuest(String id) { return questsCompleted.containsKey(id); }
+    public long getQuestCompletedAt(String id) { return questsCompleted.getOrDefault(id, 0L); }
+    public int getQuestCount(String id) { return questCounts.getOrDefault(id, 0); }
+    public void completeQuest(String id) {
+        questStages.remove(id);
+        clearQuestProgress(id);
+        questsTracked.remove(id);
+        questsCompleted.put(id, System.currentTimeMillis());
+        questCounts.merge(id, 1, Integer::sum);
+        markDirty();
+    }
+    public void resetQuest(String id) {
+        removeActiveQuest(id);
+        questsCompleted.remove(id);
+        questCounts.remove(id);
+        markDirty();
+    }
+    public List<String> questsTracked() { return questsTracked; }
+    public boolean isTutorialOffered() { return tutorialOffered; }
+    public void setTutorialOffered(boolean v) { this.tutorialOffered = v; markDirty(); }
+    public boolean isQuestTrackerHidden() { return questTrackerHidden; }
+    public void setQuestTrackerHidden(boolean v) { this.questTrackerHidden = v; markDirty(); }
+
     public boolean isPartyChat() { return partyChat; }
     public void setPartyChat(boolean partyChat) { this.partyChat = partyChat; }
 
@@ -248,6 +294,13 @@ public final class PlayerProfile {
         map.put("job-levels", new HashMap<>(jobLevels));
         map.put("job-xp", new HashMap<>(jobXp));
         map.put("job-specs", new HashMap<>(jobSpecs));
+        map.put("quest-stages", new HashMap<>(questStages));
+        map.put("quest-progress", new HashMap<>(questProgress));
+        map.put("quests-completed", new HashMap<>(questsCompleted));
+        map.put("quest-counts", new HashMap<>(questCounts));
+        map.put("quests-tracked", new ArrayList<>(questsTracked));
+        map.put("tutorial-offered", tutorialOffered);
+        map.put("quest-tracker-hidden", questTrackerHidden);
         return map;
     }
 
@@ -308,6 +361,23 @@ public final class PlayerProfile {
         if (map.get("job-specs") instanceof Map<?, ?> m) {
             m.forEach((k, v) -> { if (v != null) p.jobSpecs.put(String.valueOf(k), String.valueOf(v)); });
         }
+        if (map.get("quest-stages") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v instanceof Number n) p.questStages.put(String.valueOf(k), n.intValue()); });
+        }
+        if (map.get("quest-progress") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v instanceof Number n) p.questProgress.put(String.valueOf(k), n.doubleValue()); });
+        }
+        if (map.get("quests-completed") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v instanceof Number n) p.questsCompleted.put(String.valueOf(k), n.longValue()); });
+        }
+        if (map.get("quest-counts") instanceof Map<?, ?> m) {
+            m.forEach((k, v) -> { if (v instanceof Number n) p.questCounts.put(String.valueOf(k), n.intValue()); });
+        }
+        if (map.get("quests-tracked") instanceof List<?> l) {
+            l.forEach(o -> p.questsTracked.add(String.valueOf(o)));
+        }
+        p.tutorialOffered = Boolean.TRUE.equals(map.get("tutorial-offered"));
+        p.questTrackerHidden = Boolean.TRUE.equals(map.get("quest-tracker-hidden"));
         return p.normalize();
     }
 }

@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Gemmes-et-joaillerie.md) · 🇬🇧 English
 
-File: `gems.yml`.
+File: `metiers/gems.yml`.
 
 ## A gem's journey
 

@@ -1,28 +1,38 @@
 # ╔══════════════════════════════════════════════╗
-# ║              CykClasses - config             ║
+# ║           Classes and Magie - config         ║
 # ╚══════════════════════════════════════════════╝
+#
+# Rangement des fichiers :
+#   classes/     classes.yml, skilltree.yml, attributes.yml
+#   personnage/  races.yml, traits.yml, weaknesses.yml
+#   metiers/     jobs.yml, forge.yml, gems.yml
+#   objets/      kits.yml, items.yml
+#   affichage/   hud.yml, messages.yml
+#   quetes/      quêtes (tous les fichiers .yml du dossier sont lus)
+#   donnees/     données des joueurs et du serveur (ne pas modifier à la main)
 
-# Modules : désactive ce dont ton serveur n'a pas besoin.
+# Modules : désactiver ce dont le serveur n'a pas besoin.
 # Un module désactivé disparaît du jeu (étape de création sautée, commande indisponible, aucun effet).
 modules:
-  races: true              # /race, races.yml
-  traits: true             # /traits, traits.yml
-  weaknesses: true         # /faiblesses, weaknesses.yml
-  jobs: true               # /metier, jobs.yml (actions réservées et XP de métier)
-  skill-tree: true         # /arbre, skilltree.yml
-  attributes: true         # /stats, attributes.yml
+  races: true              # /race, personnage/races.yml
+  traits: true             # /traits, personnage/traits.yml
+  weaknesses: true         # /faiblesses, personnage/weaknesses.yml
+  jobs: true               # /metier, metiers/jobs.yml (actions réservées et XP de métier)
+  skill-tree: true         # /arbre, classes/skilltree.yml
+  attributes: true         # /stats, classes/attributes.yml
   parties: true            # /groupe, /gc
-  forge: true              # objets de qualité (forge.yml)
-  gems: true               # gemmes, joaillerie (gems.yml)
-  kits: true               # kits de départ (kits.yml)
-  item-restrictions: true  # conditions d'utilisation des objets (items.yml)
+  forge: true              # objets de qualité (metiers/forge.yml)
+  gems: true               # gemmes, joaillerie (metiers/gems.yml)
+  kits: true               # kits de départ (objets/kits.yml)
+  item-restrictions: true  # conditions d'utilisation des objets (objets/items.yml)
+  quests: true             # /quetes, journal et panneau de suivi (dossier quetes/)
 
 # Stockage des données joueurs : YAML, JSON ou SQLITE
 storage:
   type: YAML
   # Sauvegarde automatique (en secondes)
   autosave-interval: 300
-  sqlite-file: data.db
+  sqlite-file: data.db       # dans le dossier donnees/
 
 # Niveaux et expérience
 leveling:
@@ -157,3 +167,22 @@ force-class-selection: true
 # Protéger le joueur pendant la création du personnage ? (aucun dégât, ignoré par les monstres,
 # ne peut pas attaquer). Fonctionne seulement si force-class-selection est activé.
 creation-protection: true
+
+# Quêtes (fichiers dans le dossier quetes/ ; toutes les quêtes sont facultatives)
+quests:
+  # Proposer le tutoriel à la fin de la création du personnage
+  offer-tutorial: true
+  # Identifiant de la quête de tutoriel
+  tutorial: tutoriel
+  # Nombre maximum de quêtes en cours en même temps (0 = illimité)
+  max-active: 0
+  # Nombre de quêtes suivies dans le panneau latéral
+  max-tracked: 3
+  # Suivre automatiquement une quête quand elle commence
+  auto-track: true
+  # Masquer dans le journal les quêtes réservées à une autre classe ou une autre race
+  hide-other-classes: true
+  # Afficher la progression dans la barre d'action
+  progress-actionbar: true
+  # Fréquence de vérification des objectifs d'état (niveau, objets, lieu…) en ticks (20 = 1 s)
+  check-interval-ticks: 20

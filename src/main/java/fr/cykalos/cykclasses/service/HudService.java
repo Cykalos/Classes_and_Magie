@@ -86,12 +86,8 @@ public final class HudService {
     }
 
     public void load() {
-        File file = new File(plugin.getDataFolder(), "hud.yml");
-        if (!file.exists()) {
-            plugin.saveResource("hud.yml", false);
-        }
-        cfg = YamlConfiguration.loadConfiguration(file);
-        fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, cfg, "hud.yml", java.util.Set.of());
+        cfg = fr.cykalos.cykclasses.config.ConfigFiles.load(plugin, "hud.yml");
+        fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, cfg, fr.cykalos.cykclasses.config.ConfigFiles.path("hud.yml"), java.util.Set.of());
     }
 
     public YamlConfiguration config() {
@@ -120,7 +116,7 @@ public final class HudService {
         }
         for (Player p : Bukkit.getOnlinePlayers()) {
             clear(p);
-            removePartyBoard(p);
+            removeBoard(p);
         }
         for (HeadState h : heads.values()) {
             h.display.remove();
@@ -209,14 +205,10 @@ public final class HudService {
                 h.display.text(headText(le));
             }
         }
-        // Panneau de groupe (toutes les 10 ticks)
+        // Panneau latéral : groupe et quêtes suivies (toutes les 10 ticks)
         if (tickCount % 2 == 0) {
-            Set<Party> done = new HashSet<>();
             for (Player p : Bukkit.getOnlinePlayers()) {
-                Party party = plugin.parties().get(p);
-                if (party != null && done.add(party)) {
-                    refreshPartyBoard(party);
-                }
+                refreshSidebar(p);
             }
             plugin.parties().tickInvites();
         }
@@ -598,11 +590,57 @@ public final class HudService {
 
     // ------------------------------------------------------------ Panneau du groupe
 
+    /** Met à jour le panneau des membres d'un groupe. */
     public void refreshPartyBoard(Party party) {
-        ConfigurationSection s = cfg.getConfigurationSection("party-board");
-        if (s == null || !s.getBoolean("enabled", true)) {
+        for (Player p : party.onlineMembers()) {
+            refreshSidebar(p);
+        }
+    }
+
+    /**
+     * Panneau latéral d'un joueur : membres du groupe, puis quêtes suivies (hud.yml → party-board, quest-tracker).
+     * Minecraft n'affiche qu'un seul panneau latéral : les deux partagent donc le même.
+     */
+    public void refreshSidebar(Player player) {
+        List<Component> lines = new ArrayList<>();
+        Component title = null;
+        Party party = plugin.parties().get(player);
+        ConfigurationSection pb = cfg.getConfigurationSection("party-board");
+        if (party != null && pb != null && pb.getBoolean("enabled", true)) {
+            lines.addAll(partyLines(party, pb));
+            title = Text.mm(pb.getString("title", "Groupe"));
+        }
+        ConfigurationSection qt = cfg.getConfigurationSection("quest-tracker");
+        if (plugin.quests() != null && qt != null && qt.getBoolean("enabled", true)) {
+            boolean inParty = !lines.isEmpty();
+            if (!inParty || !qt.getString("in-party", "BELOW").equalsIgnoreCase("HIDE")) {
+                List<Component> q = plugin.quests().trackerLines(player,
+                        inParty ? qt.getInt("max-quests-in-party", 1) : qt.getInt("max-quests", 3));
+                if (!q.isEmpty()) {
+                    if (inParty) {
+                        lines.add(Component.empty());
+                        String sep = qt.getString("party-separator", "");
+                        if (sep != null && !sep.isBlank()) {
+                            lines.add(Text.mm(sep));
+                        }
+                    } else {
+                        title = Text.mm(qt.getString("title", "Quêtes"));
+                    }
+                    lines.addAll(q);
+                }
+            }
+        }
+        if (lines.isEmpty()) {
+            removeBoard(player);
             return;
         }
+        while (lines.size() > 15) {
+            lines.remove(lines.size() - 1);
+        }
+        applyBoard(player, title, lines);
+    }
+
+    private List<Component> partyLines(Party party, ConfigurationSection s) {
         List<Component> lines = new ArrayList<>();
         for (UUID uuid : party.members()) {
             Player p = Bukkit.getPlayer(uuid);
@@ -647,10 +685,7 @@ public final class HudService {
             lines.add(Text.mm(footer, Text.ph("xp_mode", plugin.parties().modeName(party.xpMode())),
                     Text.ph("friendly_fire", plugin.parties().ffName(party.friendlyFire()))));
         }
-        Component title = Text.mm(s.getString("title", "Groupe"));
-        for (Player p : party.onlineMembers()) {
-            applyBoard(p, title, lines);
-        }
+        return lines;
     }
 
     private void applyBoard(Player player, Component title, List<Component> lines) {
@@ -692,7 +727,17 @@ public final class HudService {
         }
     }
 
+    /** Le joueur quitte un groupe : le panneau est recalculé (il peut rester les quêtes suivies). */
     public void removePartyBoard(Player player) {
+        removeBoard(player);
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if (player.isOnline()) {
+                refreshSidebar(player);
+            }
+        });
+    }
+
+    private void removeBoard(Player player) {
         Scoreboard sb = partyBoards.remove(player.getUniqueId());
         Scoreboard previous = previousBoards.remove(player.getUniqueId());
         if (sb != null && player.getScoreboard() == sb) {
