@@ -3,6 +3,27 @@
 Each version is described in English first, then in French (🇫🇷 En français).
 Chaque version est décrite en anglais, puis en français (🇫🇷 En français).
 
+## [1.10.1](https://github.com/Cykalos/Classes_and_Magie/compare/v1.10.0...v1.10.1) (2026-10-21)
+
+### 🐛 Fixes
+
+- skill icons used as arrows, character menu layout, quest tracking and abandon ([`b196f70`](https://github.com/Cykalos/Classes_and_Magie/commit/b196f70ad28864c7310e4c9da2d1c9842b3c7c6d))
+  - Skill bar icons can no longer be shot as arrows by a bow or crossbow (the Piercing arrow icon gave free spectral arrows)
+  - Once a class is chosen, /classe opens a lighter character menu: buttons grouped by theme (class, character, progression) and centred, without the class list
+  - A quest removed from the sidebar no longer comes back on its own; when the tracked quest ends, another quest in progress takes its place
+  - An abandoned quest no longer starts again on its own; it stays available in the journal
+
+### 🇫🇷 En français
+
+#### 🐛 Corrections
+
+- icônes de compétences utilisées comme flèches, menu du personnage, suivi et abandon des quêtes
+  - Les icônes de la barre de compétences ne peuvent plus être tirées comme des flèches avec un arc ou une arbalète (l'icône de Flèche perçante donnait des flèches spectrales gratuites)
+  - Une fois la classe choisie, /classe ouvre un menu du personnage plus aéré : boutons regroupés par thème (classe, personnage, progression) et centrés, sans la liste des classes
+  - Une quête retirée du panneau n'y revient plus d'elle-même ; quand la quête suivie se termine, une autre quête en cours prend sa place
+  - Une quête abandonnée ne redémarre plus d'elle-même ; elle reste disponible dans le journal
+
+
 ## [1.10.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.9.0...v1.10.0) (2026-10-21)
 
 ### ✨ New features
