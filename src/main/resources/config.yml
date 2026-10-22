@@ -175,6 +175,9 @@ quests:
   offer-tutorial: true
   # Identifiant de la quête de tutoriel
   tutorial: tutoriel
+  # Proposer les quêtes dans le chat ([Accepter] / [Plus tard]) au lieu de les démarrer toutes seules.
+  # Les quêtes secrètes démarrent toujours seules quand elles sont découvertes.
+  ask-before-start: true
   # Nombre maximum de quêtes en cours en même temps (0 = illimité)
   max-active: 0
   # Nombre de quêtes suivies dans le panneau latéral

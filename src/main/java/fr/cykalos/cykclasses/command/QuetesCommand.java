@@ -17,11 +17,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * /quetes                         journal
- * /quetes commencer|abandonner|suivre <id>
- * /quetes panneau                 afficher / masquer le panneau de suivi
- * /quetes tutoriel [oui|non]      lancer ou refuser le tutoriel
- * /quetes admin <joueur> <start|complete|reset|resetall> [id]
+ * /classe quetes (ou /quetes)              journal
+ * /classe quetes commencer|abandonner|suivre <id>
+ * /classe quetes accepter|refuser <id>     répondre à une quête proposée dans le chat
+ * /classe quetes panneau                   afficher / masquer le panneau de suivi
+ * /classe quetes tutoriel [oui|non]        lancer ou refuser le tutoriel
+ * /classe admin quete <joueur> <start|complete|reset|resetall> [id]
  */
 public final class QuetesCommand implements TabExecutor {
 
@@ -33,9 +34,6 @@ public final class QuetesCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length > 0 && args[0].equalsIgnoreCase("admin")) {
-            return admin(sender, args);
-        }
         if (!(sender instanceof Player player)) {
             plugin.messages().send(sender, "player-only");
             return true;
@@ -61,7 +59,13 @@ public final class QuetesCommand implements TabExecutor {
                     plugin.quests().startQuest(player, tuto, false);
                 }
             }
-            case "commencer", "start", "abandonner", "abandon", "suivre", "track" -> {
+            case "refuser", "decline" -> {
+                Quest q = args.length > 1 ? plugin.quests().get(args[1]) : null;
+                if (q != null) {
+                    plugin.messages().send(player, "quests.offer-declined", Text.ph("quest", q.name));
+                }
+            }
+            case "commencer", "start", "accepter", "accept", "abandonner", "abandon", "suivre", "track" -> {
                 Quest q = args.length > 1 ? plugin.quests().get(args[1]) : null;
                 PlayerProfile p = plugin.profiles().get(player);
                 if (q == null || !plugin.quests().visible(player, p, q)) {
@@ -69,7 +73,7 @@ public final class QuetesCommand implements TabExecutor {
                     return true;
                 }
                 switch (sub) {
-                    case "commencer", "start" -> plugin.quests().startQuest(player, q, false);
+                    case "commencer", "start", "accepter", "accept" -> plugin.quests().startQuest(player, q, false);
                     case "abandonner", "abandon" -> plugin.quests().abandon(player, q);
                     default -> plugin.quests().toggleTrack(player, q);
                 }
@@ -79,13 +83,14 @@ public final class QuetesCommand implements TabExecutor {
         return true;
     }
 
-    private boolean admin(CommandSender sender, String[] args) {
+    /** Administration : args = [quete, joueur, action, id] (depuis /classe admin quete …). */
+    public boolean admin(CommandSender sender, String[] args) {
         if (!sender.hasPermission("cykclasses.admin")) {
             plugin.messages().send(sender, "no-permission");
             return true;
         }
         if (args.length < 3) {
-            sender.sendMessage(Text.mm("<gray>/quetes admin <joueur> <start|complete|reset|resetall> [id]"));
+            sender.sendMessage(Text.mm("<gray>/classe admin quete <joueur> <start|complete|reset|resetall> [id]"));
             return true;
         }
         Player target = Bukkit.getPlayerExact(args[1]);
@@ -121,20 +126,26 @@ public final class QuetesCommand implements TabExecutor {
         return true;
     }
 
+    /** Complétion de /classe admin quete … (args = [quete, joueur, action, id]). */
+    public List<String> adminTab(String[] args) {
+        List<String> out = new ArrayList<>();
+        if (args.length == 2) {
+            Bukkit.getOnlinePlayers().forEach(p -> out.add(p.getName()));
+        } else if (args.length == 3) {
+            out.addAll(List.of("start", "complete", "reset", "resetall"));
+        } else if (args.length == 4) {
+            plugin.quests().all().forEach(q -> out.add(q.id));
+        }
+        String last = args[args.length - 1].toLowerCase(Locale.ROOT);
+        out.removeIf(x -> !x.toLowerCase(Locale.ROOT).startsWith(last));
+        return out;
+    }
+
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> out = new ArrayList<>();
         if (args.length == 1) {
             out.addAll(List.of("commencer", "abandonner", "suivre", "panneau", "tutoriel"));
-            if (sender.hasPermission("cykclasses.admin")) {
-                out.add("admin");
-            }
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("admin")) {
-            Bukkit.getOnlinePlayers().forEach(p -> out.add(p.getName()));
-        } else if (args.length == 3 && args[0].equalsIgnoreCase("admin")) {
-            out.addAll(List.of("start", "complete", "reset", "resetall"));
-        } else if (args.length == 4 && args[0].equalsIgnoreCase("admin")) {
-            plugin.quests().all().forEach(q -> out.add(q.id));
         } else if (args.length == 2 && sender instanceof Player player) {
             PlayerProfile p = plugin.profiles().get(player);
             for (Quest q : plugin.quests().all()) {
@@ -142,11 +153,9 @@ public final class QuetesCommand implements TabExecutor {
                     out.add(q.id);
                 }
             }
-        } else if (args.length == 2) {
-            return out;
         }
-        String last = args[args.length - 1].toLowerCase(Locale.ROOT);
-        out.removeIf(s -> !s.toLowerCase(Locale.ROOT).startsWith(last));
+        String last = args.length == 0 ? "" : args[args.length - 1].toLowerCase(Locale.ROOT);
+        out.removeIf(x -> !x.toLowerCase(Locale.ROOT).startsWith(last));
         return out;
     }
 }

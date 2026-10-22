@@ -60,13 +60,15 @@ info-mana: "<gray>Mana : <aqua><mana>/<max_mana></aqua> <dark_gray>(+<regen>/s)"
 info-stats: "<gray>Mêlée <white><melee></white> · Distance <white><ranged></white> · Magie <white><magic></white> · Dégâts subis <white><taken></white>"
 
 help:
-  - "<gold><bold>━━ CykClasses ━━"
+  - "<gold><bold>━━ Classes and Magie ━━"
   - "<yellow>/classe <gray>- ouvre le menu des classes"
   - "<yellow>/classe info [joueur] <gray>- affiche un profil"
   - "<yellow>/classe choisir <classe> <gray>- choisit une classe"
   - "<yellow>/classe sous-classe <gray>- menu des sous-classes"
   - "<yellow>/classe competences <gray>- liste tes compétences"
   - "<yellow>/classe reset <gray>- réinitialise ta classe"
+  - "<yellow>/classe quetes <gray>(<yellow>/quetes<gray>) - journal des quêtes"
+  - "<yellow>/classe titres <gray>(<yellow>/titres<gray>) - tes titres"
   - "<yellow>/competence <id> <gray>- lance une compétence"
   - "<yellow>/arbre <gray>- arbre de compétences · <yellow>/stats <gray>- attributs"
   - "<yellow>/race · /traits · /metier <gray>- ton personnage"
@@ -88,6 +90,8 @@ admin-help:
   - "<red>/classe admin faiblesse <joueur> <reset|add|remove> [faiblesse]"
   - "<red>/classe admin jobxp <joueur> <xp> · setjoblevel <joueur> <niv>"
   - "<red>/classe admin libererunique <objet>"
+  - "<red>/classe admin quete <joueur> <start|complete|reset|resetall> [quête]"
+  - "<red>/classe admin titre <joueur> <give|take|reset> [titre] · titre liberer <titre>"
   - "<red>/classe admin reload"
 
 gui:
@@ -359,11 +363,19 @@ quests:
   tracker-hidden: "<gray>Panneau de suivi des quêtes masqué."
   tracker-shown: "<gray>Panneau de suivi des quêtes affiché."
   tutorial-declined: "<gray>Pas de souci : le tutoriel reste disponible dans le journal (<white>/quetes</white>)."
+  offer-declined: "<gray>La quête <white><quest></white> reste disponible dans le journal (<white>/quetes</white>)."
+  items-taken: "<dark_gray> − <gray>Objets remis : <white><objective>"
+  offer:
+    - ""
+    - "<gold>✦ <white>Nouvelle quête disponible :</white> <quest> <dark_gray>(niveau <level>)"
+  offer-buttons:
+    - "<green><click:run_command:'/classe quetes accepter <id>'><hover:show_text:'<green>Commencer la quête'>[Accepter]</hover></click></green>  <gray><click:run_command:'/classe quetes refuser <id>'><hover:show_text:'<gray>Elle restera disponible dans /quetes'>[Plus tard]</hover></click></gray>"
+    - ""
   tutorial-offer:
     - ""
     - "<gold>✦ <white>Ton personnage est prêt !</white>"
     - "<gray>Un court tutoriel (<white><quest></white><gray>) peut te montrer les bases. C'est facultatif."
-    - "<green><click:run_command:'/quetes tutoriel oui'><hover:show_text:'<green>Commencer le tutoriel'>[Commencer]</hover></click></green>  <red><click:run_command:'/quetes tutoriel non'><hover:show_text:'<gray>Il restera disponible dans /quetes'>[Plus tard]</hover></click></red>"
+    - "<green><click:run_command:'/classe quetes tutoriel oui'><hover:show_text:'<green>Commencer le tutoriel'>[Commencer]</hover></click></green>  <red><click:run_command:'/classe quetes tutoriel non'><hover:show_text:'<gray>Il restera disponible dans /quetes'>[Plus tard]</hover></click></red>"
     - ""
   any-target: "n'importe quoi"
   category:

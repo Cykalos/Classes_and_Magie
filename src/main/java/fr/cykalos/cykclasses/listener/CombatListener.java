@@ -266,6 +266,12 @@ public final class CombatListener implements Listener {
         if (!(event.getEntity() instanceof AbstractArrow arrow)) {
             return;
         }
+        // Flèche de compétence : la cible ne doit pas être protégée par son court délai d'invincibilité
+        // (sinon la flèche rebondit sans faire de dégâts juste après un autre coup)
+        if (arrow.getPersistentDataContainer().has(ArcherSkills.SKILL_ARROW_KEY)
+                && event.getHitEntity() instanceof LivingEntity target) {
+            target.setNoDamageTicks(0);
+        }
         Double power = arrow.getPersistentDataContainer().get(explosiveKey, PersistentDataType.DOUBLE);
         if (power == null) {
             return;

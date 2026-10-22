@@ -21,7 +21,8 @@ Included files: `tutoriel.yml`, `principale.yml`, `de-classe.yml`, `annexes.yml`
 ## For players
 
 - **Tutorial**: at the end of character creation, a chat message offers to start it (`[Commencer]` / `[Plus tard]`). It stays available in the journal.
-- **Journal** (`/quetes`, or the quest journal button of the `/classe` menu): one tab per category, plus an "In progress" tab. Each quest shows its level, description, state (in progress, available, locked, completed), objectives with progress, missing requirements and rewards.
+- **Offered quests**: when a story or class quest becomes available, it is offered in chat with `[Accepter]` / `[Plus tard]` (accept / later). Nothing starts without the player's consent, except secret quests, which trigger when they are discovered.
+- **Journal** (`/quetes` or `/classe quetes`, or the quest journal button of the `/classe` menu): one tab per category, plus an "In progress" tab. Each quest shows its level, description, state (in progress, available, locked, completed), objectives with progress, missing requirements and rewards.
   - Click an available quest: start it.
   - Click a quest in progress: track it (or stop tracking it) in the sidebar.
   - Shift + right click a quest in progress: abandon it. An abandoned quest does not start again on its own: it stays available in the journal.
@@ -39,7 +40,7 @@ quests:
     level: 30                      # indicative level shown
     icon: QUARTZ
     description: ["<gray>An expedition into the Nether."]
-    start: AUTO                    # MANUAL (journal), AUTO (as soon as available), OFFER (offered)
+    start: OFFER                   # MANUAL (journal), OFFER (offered in chat), AUTO (starts on its own*)
     hidden: false                  # true by default for SECRET
     repeatable: false
     cooldown-hours: 0              # delay before doing it again
@@ -62,6 +63,8 @@ quests:
         - {item: "minecraft:diamond", amount: 3}
     complete-text: ["<gray>Text shown at the end"]
 ```
+
+\* With `quests.ask-before-start: true` (default), a non-secret `AUTO` quest is also offered instead of starting on its own.
 
 Stages follow each other in order; every objective of a stage must be met to move on to the next one.
 
@@ -105,7 +108,7 @@ With `quests.hide-other-classes: true` (config.yml), quests reserved to another 
 |---|---|
 | `LEVEL` · `JOB_LEVEL` | the level reaches `amount` |
 | `CLASS` · `SUBCLASS` · `RACE` · `JOB` · `SPECIALIZATION` | the player has the class, race… listed in `targets` |
-| `COLLECT` | the inventory holds `amount` items (`take: true` removes them at the end of the stage) |
+| `COLLECT` | the inventory holds `amount` items (`take: true` removes them at the end of the stage, with an "items handed over" message) |
 | `REACH` | the player is within `radius` blocks of `x`, `y`, `z` in `world` |
 | `BIOME` | the player is in one of the `targets` biomes |
 | `CONDITION` | the `conditions` block is true (Nether, below layer 0, at night…) |
@@ -177,6 +180,7 @@ Rewards depend on each quest: the included quests give more when their level is 
 quests:
   offer-tutorial: true      # offer the tutorial at the end of character creation
   tutorial: tutoriel        # id of the tutorial quest
+  ask-before-start: true    # offer quests instead of starting them on their own (except secret ones)
   max-active: 0             # quests in progress at the same time (0 = unlimited)
   max-tracked: 3            # quests tracked in the sidebar
   auto-track: true          # track a quest as soon as it starts
@@ -189,10 +193,10 @@ The sidebar is set in `hud.yml → quest-tracker` (title, lines, symbols, party 
 
 ## Administration
 
-- `/quetes admin <player> start <id>`: starts a quest (without checking requirements).
-- `/quetes admin <player> complete <id>`: completes it immediately, rewards included.
-- `/quetes admin <player> reset <id>`: erases it (in progress and completed).
-- `/quetes admin <player> resetall`: erases all of the player's quests and offers the tutorial again.
+- `/classe admin quete <player> start <id>`: starts a quest (without checking requirements).
+- `/classe admin quete <player> complete <id>`: completes it immediately, rewards included.
+- `/classe admin quete <player> reset <id>`: erases it (in progress and completed).
+- `/classe admin quete <player> resetall`: erases all of the player's quests and offers the tutorial again.
 - Placeholders: `%cykclasses_quests_completed%`, `%cykclasses_quests_active%`, `%cykclasses_quests_total%`, `%cykclasses_quest_tracked%`.
 
 ## What cannot be done

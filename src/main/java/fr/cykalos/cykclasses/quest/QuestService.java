@@ -692,6 +692,8 @@ public final class QuestService {
         for (Objective o : objs) {
             if (o.type == Objective.Type.COLLECT && o.take && !moduleSkipped(o)) {
                 takeItems(player, o);
+                player.sendMessage(Text.mm(plugin.messages().raw("quests.items-taken"),
+                        Text.ph("objective", objectiveText(o))));
             }
         }
         if (stage + 1 < q.stages.size()) {
@@ -856,15 +858,47 @@ public final class QuestService {
         }
     }
 
+    /**
+     * Quêtes qui viennent de devenir disponibles. Les quêtes secrètes démarrent seules (c'est leur découverte) ;
+     * les autres quêtes AUTO ou OFFER sont proposées dans le chat, une seule fois, avec [Accepter] / [Plus tard]
+     * (config.yml → quests.ask-before-start: false pour que les quêtes AUTO démarrent sans demander).
+     */
     private void autoStart(Player player, PlayerProfile p) {
+        boolean ask = plugin.getConfig().getBoolean("quests.ask-before-start", true);
+        Quest tuto = tutorial();
         for (Quest q : quests.values()) {
-            if (q.start != Quest.Start.AUTO || q.trigger != null || p.isQuestActive(q.id) || p.isQuestAbandoned(q.id)) {
+            if (q.start == Quest.Start.MANUAL || q.trigger != null || p.isQuestActive(q.id) || p.isQuestAbandoned(q.id)
+                    || q == tuto) {
                 continue;
             }
-            if (status(player, p, q) == Status.AVAILABLE && q.conditions.test(player)) {
+            boolean offer = q.start == Quest.Start.OFFER || (ask && !q.hidden);
+            if (offer && p.isQuestOffered(q.id)) {
+                continue;
+            }
+            if (status(player, p, q) != Status.AVAILABLE || !q.conditions.test(player)) {
+                continue;
+            }
+            if (offer) {
+                p.setQuestOffered(q.id);
+                offer(player, q);
+            } else {
                 startQuest(player, q, false);
             }
         }
+    }
+
+    /** Propose une quête dans le chat : [Accepter] / [Plus tard]. Elle reste disponible dans le journal. */
+    private void offer(Player player, Quest q) {
+        for (String line : plugin.messages().rawList("quests.offer")) {
+            player.sendMessage(Text.mm(line, Text.ph("quest", q.name), Text.ph("id", q.id), Text.ph("level", q.level)));
+        }
+        for (String line : q.description) {
+            player.sendMessage(Text.mm("<dark_gray>  " + line));
+        }
+        for (String line : plugin.messages().rawList("quests.offer-buttons")) {
+            player.sendMessage(Text.mm(line, Text.ph("quest", q.name), Text.ph("id", q.id)));
+        }
+        player.playSound(Sound.sound(Key.key("block.note_block.bell"), Sound.Source.PLAYER, 0.8f, 1.2f));
     }
 
     // ------------------------------------------------------------ Textes

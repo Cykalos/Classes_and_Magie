@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Titres.md) · 🇬🇧 English
 
-File: `personnage/titles.yml`. Command: `/titres` (alias `/titles`), or the Titles button of the `/classe` menu.
+File: `personnage/titles.yml`. Command: `/classe titres` or `/titres` (alias `/titles`), or the Titles button of the `/classe` menu.
 
 Titles are **unlocked by the player's actions**: level reached, monsters killed, quests completed, distance travelled, Minecraft advancements… Only one title is equipped at a time. It is shown **above the head** and **in chat**, and can give **effects**. Some titles are purely honorary.
 
@@ -95,10 +95,10 @@ chat:
 
 ## Administration
 
-- `/titres admin <player> give <id>`: gives a title.
-- `/titres admin <player> take <id>`: removes a title (a unique title becomes available again).
-- `/titres admin <player> reset`: removes all of the player's titles.
-- `/titres admin liberer <id>`: releases a unique title; the former owner loses it (on their next login if offline).
+- `/classe admin titre <player> give <id>`: gives a title.
+- `/classe admin titre <player> take <id>`: removes a title (a unique title becomes available again).
+- `/classe admin titre <player> reset`: removes all of the player's titles.
+- `/classe admin titre liberer <id>`: releases a unique title; the former owner loses it (on their next login if offline).
 - Placeholders: `%cykclasses_title%`, `%cykclasses_title_id%`, `%cykclasses_titles_count%`, `%cykclasses_titles_total%`.
 - Unique title owners are stored in `donnees/titres-uniques.yml`.
 - The module is disabled with `modules.titles: false`.

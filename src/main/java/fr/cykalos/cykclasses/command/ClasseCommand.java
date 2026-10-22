@@ -98,6 +98,20 @@ public final class ClasseCommand implements TabExecutor {
                 plugin.classService().reset(player, false);
             }
             case "admin" -> admin(sender, args);
+            case "quetes", "quests", "quete" -> {
+                if (!plugin.modules().quests()) {
+                    plugin.messages().send(sender, "module-disabled");
+                } else {
+                    new QuetesCommand(plugin).onCommand(sender, command, label, java.util.Arrays.copyOfRange(args, 1, args.length));
+                }
+            }
+            case "titres", "titles", "titre" -> {
+                if (!plugin.modules().titles()) {
+                    plugin.messages().send(sender, "module-disabled");
+                } else {
+                    new TitresCommand(plugin).onCommand(sender, command, label, java.util.Arrays.copyOfRange(args, 1, args.length));
+                }
+            }
             default -> plugin.messages().sendList(sender, "help");
         }
         return true;
@@ -157,6 +171,16 @@ public final class ClasseCommand implements TabExecutor {
             return;
         }
         String action = args[1].toLowerCase(Locale.ROOT);
+        // /classe admin quete <joueur> <start|complete|reset|resetall> [id]
+        if (action.equals("quete") || action.equals("quetes")) {
+            new QuetesCommand(plugin).admin(sender, java.util.Arrays.copyOfRange(args, 1, args.length));
+            return;
+        }
+        // /classe admin titre <joueur> <give|take|reset> [id] · /classe admin titre liberer <id>
+        if (action.equals("titre") || action.equals("titres")) {
+            new TitresCommand(plugin).admin(sender, java.util.Arrays.copyOfRange(args, 1, args.length));
+            return;
+        }
         if (action.equals("libererunique")) {
             if (args.length < 3) {
                 plugin.messages().sendList(sender, "admin-help");
@@ -355,8 +379,27 @@ public final class ClasseCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> options = new ArrayList<>();
+        String first = args[0].toLowerCase(Locale.ROOT);
+        if (args.length >= 2 && List.of("quetes", "quests", "quete").contains(first)) {
+            return new QuetesCommand(plugin).onTabComplete(sender, command, alias, java.util.Arrays.copyOfRange(args, 1, args.length));
+        }
+        if (args.length >= 2 && List.of("titres", "titles", "titre").contains(first)) {
+            return new TitresCommand(plugin).onTabComplete(sender, command, alias, java.util.Arrays.copyOfRange(args, 1, args.length));
+        }
+        if (args.length >= 3 && first.equals("admin") && List.of("quete", "quetes").contains(args[1].toLowerCase(Locale.ROOT))) {
+            return new QuetesCommand(plugin).adminTab(java.util.Arrays.copyOfRange(args, 1, args.length));
+        }
+        if (args.length >= 3 && first.equals("admin") && List.of("titre", "titres").contains(args[1].toLowerCase(Locale.ROOT))) {
+            return new TitresCommand(plugin).adminTab(java.util.Arrays.copyOfRange(args, 1, args.length));
+        }
         if (args.length == 1) {
             options.addAll(List.of("aide", "info", "choisir", "sous-classe", "competences", "reset"));
+            if (plugin.modules().quests()) {
+                options.add("quetes");
+            }
+            if (plugin.modules().titles()) {
+                options.add("titres");
+            }
             if (sender.hasPermission("cykclasses.admin")) {
                 options.add("admin");
             }
@@ -376,7 +419,7 @@ public final class ClasseCommand implements TabExecutor {
                     if (sender.hasPermission("cykclasses.admin")) {
                         options.addAll(List.of("setlevel", "addxp", "setclass", "reset", "mana", "reload", "setrace",
                                 "resetrace", "resettraits", "setjob", "addpoints", "resettree", "resetstats", "kit", "gemme", "forge",
-                                "jobxp", "setjoblevel", "resetspec", "libererunique", "faiblesse"));
+                                "jobxp", "setjoblevel", "resetspec", "libererunique", "faiblesse", "quete", "titre"));
                     }
                 }
                 default -> {

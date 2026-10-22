@@ -21,7 +21,8 @@ Les fichiers fournis : `tutoriel.yml`, `principale.yml`, `de-classe.yml`, `annex
 ## Pour les joueurs
 
 - **Tutoriel** : à la fin de la création du personnage, un message propose de le commencer (`[Commencer]` / `[Plus tard]`). Il reste disponible dans le journal.
-- **Journal** (`/quetes`, ou le bouton « Journal des quêtes » du menu `/classe`) : un onglet par catégorie, plus un onglet « En cours ». Chaque quête affiche son niveau, sa description, son état (en cours, disponible, verrouillée, terminée), ses objectifs avec la progression, les conditions manquantes et les récompenses.
+- **Quêtes proposées** : quand une quête de l'histoire ou de classe devient disponible, elle est proposée dans le chat avec `[Accepter]` / `[Plus tard]`. Rien ne démarre sans l'accord du joueur, sauf les quêtes secrètes, qui se déclenchent quand on les découvre.
+- **Journal** (`/quetes` ou `/classe quetes`, ou le bouton « Journal des quêtes » du menu `/classe`) : un onglet par catégorie, plus un onglet « En cours ». Chaque quête affiche son niveau, sa description, son état (en cours, disponible, verrouillée, terminée), ses objectifs avec la progression, les conditions manquantes et les récompenses.
   - Clic sur une quête disponible : la commencer.
   - Clic sur une quête en cours : la suivre (ou ne plus la suivre) dans le panneau latéral.
   - Maj + clic droit sur une quête en cours : l'abandonner. Une quête abandonnée ne redémarre pas toute seule : elle reste disponible dans le journal.
@@ -39,7 +40,7 @@ quests:
     level: 30                      # niveau indicatif affiché
     icon: QUARTZ
     description: ["<gray>Une expédition dans le Nether."]
-    start: AUTO                    # MANUAL (journal), AUTO (dès que disponible), OFFER (proposée)
+    start: OFFER                   # MANUAL (journal), OFFER (proposée dans le chat), AUTO (démarre seule*)
     hidden: false                  # true par défaut pour SECRET
     repeatable: false
     cooldown-hours: 0              # délai avant de la refaire
@@ -62,6 +63,8 @@ quests:
         - {item: "minecraft:diamond", amount: 3}
     complete-text: ["<gray>Texte affiché à la fin"]
 ```
+
+\* Avec `quests.ask-before-start: true` (par défaut), une quête `AUTO` non secrète est elle aussi proposée au lieu de démarrer seule.
 
 Les étapes s'enchaînent dans l'ordre ; tous les objectifs d'une étape doivent être remplis pour passer à la suivante.
 
@@ -105,7 +108,7 @@ Avec `quests.hide-other-classes: true` (config.yml), les quêtes réservées à 
 |---|---|
 | `LEVEL` · `JOB_LEVEL` | le niveau atteint `amount` |
 | `CLASS` · `SUBCLASS` · `RACE` · `JOB` · `SPECIALIZATION` | le joueur a la classe, la race… listée dans `targets` |
-| `COLLECT` | l'inventaire contient `amount` objets (`take: true` les retire à la fin de l'étape) |
+| `COLLECT` | l'inventaire contient `amount` objets (`take: true` les retire à la fin de l'étape, avec un message « Objets remis ») |
 | `REACH` | le joueur est à moins de `radius` blocs de `x`, `y`, `z` dans `world` |
 | `BIOME` | le joueur est dans un des biomes de `targets` |
 | `CONDITION` | le bloc `conditions` est vrai (Nether, sous la couche 0, de nuit…) |
@@ -177,6 +180,7 @@ Les récompenses dépendent de chaque quête : les quêtes fournies donnent plus
 quests:
   offer-tutorial: true      # proposer le tutoriel à la fin de la création
   tutorial: tutoriel        # id de la quête de tutoriel
+  ask-before-start: true    # proposer les quêtes au lieu de les démarrer seules (sauf secrètes)
   max-active: 0             # quêtes en cours en même temps (0 = illimité)
   max-tracked: 3            # quêtes suivies dans le panneau
   auto-track: true          # suivre une quête dès qu'elle commence
@@ -189,10 +193,10 @@ Le panneau latéral se règle dans `hud.yml → quest-tracker` (titre, lignes, s
 
 ## Administration
 
-- `/quetes admin <joueur> start <id>` : démarre une quête (sans vérifier les conditions).
-- `/quetes admin <joueur> complete <id>` : la termine immédiatement, récompenses comprises.
-- `/quetes admin <joueur> reset <id>` : l'efface (en cours et terminée).
-- `/quetes admin <joueur> resetall` : efface toutes les quêtes du joueur et propose de nouveau le tutoriel.
+- `/classe admin quete <joueur> start <id>` : démarre une quête (sans vérifier les conditions).
+- `/classe admin quete <joueur> complete <id>` : la termine immédiatement, récompenses comprises.
+- `/classe admin quete <joueur> reset <id>` : l'efface (en cours et terminée).
+- `/classe admin quete <joueur> resetall` : efface toutes les quêtes du joueur et propose de nouveau le tutoriel.
 - Placeholders : `%cykclasses_quests_completed%`, `%cykclasses_quests_active%`, `%cykclasses_quests_total%`, `%cykclasses_quest_tracked%`.
 
 ## Ce qu'on ne peut pas faire

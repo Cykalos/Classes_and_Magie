@@ -14,7 +14,8 @@
 #     level: 10               # niveau indicatif affiché dans le journal
 #     icon: BOOK
 #     description: ["<gray>Texte du journal"]
-#     start: MANUAL           # MANUAL (depuis le journal), AUTO (dès qu'elle est disponible), OFFER (proposée)
+#     start: MANUAL           # MANUAL (depuis le journal), OFFER (proposée dans le chat dès qu'elle est disponible),
+#                             # AUTO (démarre seule ; proposée elle aussi si config.yml → quests.ask-before-start: true)
 #     hidden: false           # true = invisible tant qu'elle n'est pas découverte (par défaut pour SECRET)
 #     repeatable: false
 #     cooldown-hours: 0       # délai avant de pouvoir la refaire (quête répétable)

@@ -17,8 +17,8 @@
 | `/metier` | Métier, niveaux, recettes, spécialisation |
 | `/arbre [reset]` · `/stats [reset]` | Arbre de compétences, attributs |
 | `/groupe …` · `/gc` · `/global` | Groupe et chat |
-| `/quetes` | Journal des quêtes |
-| `/titres` · `/titres equiper <id>` · `/titres retirer` | Titres |
+| `/classe quetes` (`/quetes`) | Journal des quêtes |
+| `/classe titres` (`/titres`) · `titres equiper <id>` · `titres retirer` | Titres |
 | `/quetes commencer\|abandonner\|suivre <id>` | Gérer une quête |
 | `/quetes panneau` · `/quetes tutoriel` | Panneau de suivi, tutoriel |
 
@@ -39,9 +39,9 @@
 | `libererunique <id>` | Rend un objet unique de nouveau forgeable |
 | `reload` | Recharge la configuration |
 
-Titres : `/titres admin <joueur> <give|take|reset> [id]` et `/titres admin liberer <id>` (voir [Titres](Titres.md#administration)).
+Titres : `/classe admin titre <joueur> <give|take|reset> [id]` et `/classe admin titre liberer <id>` (voir [Titres](Titres.md#administration)).
 
-Quêtes : `/quetes admin <joueur> <start|complete|reset> <id>` et `/quetes admin <joueur> resetall` (voir [Quêtes](Quêtes.md#administration)).
+Quêtes : `/classe admin quete <joueur> <start|complete|reset> <id>` et `/classe admin quete <joueur> resetall` (voir [Quêtes](Quêtes.md#administration)).
 
 ## Permissions
 

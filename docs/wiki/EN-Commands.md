@@ -19,8 +19,8 @@ Commands are in French. Main English aliases: `/class` (`/classe`), `/skill` (`/
 | `/metier` | Job, levels, recipes, specialization |
 | `/arbre [reset]` · `/stats [reset]` | Skill tree, attributes |
 | `/groupe …` · `/gc` · `/global` | Party and chat |
-| `/quetes` (`/quests`) | Quest journal |
-| `/titres` (`/titles`) · `/titres equiper <id>` · `/titres retirer` | Titles |
+| `/classe quetes` (`/quetes`, `/quests`) | Quest journal |
+| `/classe titres` (`/titres`, `/titles`) · `titres equiper <id>` · `titres retirer` | Titles |
 | `/quetes commencer\|abandonner\|suivre <id>` | Start, abandon, track a quest |
 | `/quetes panneau` · `/quetes tutoriel` | Sidebar, tutorial |
 
@@ -41,9 +41,9 @@ Commands are in French. Main English aliases: `/class` (`/classe`), `/skill` (`/
 | `libererunique <id>` | Makes a unique item forgeable again |
 | `reload` | Reloads the configuration |
 
-Titles: `/titres admin <player> <give|take|reset> [id]` and `/titres admin liberer <id>` (see [Titles](EN-Titles.md#administration)).
+Titles: `/classe admin titre <player> <give|take|reset> [id]` and `/classe admin titre liberer <id>` (see [Titles](EN-Titles.md#administration)).
 
-Quests: `/quetes admin <player> <start|complete|reset> <id>` and `/quetes admin <player> resetall` (see [Quests](EN-Quests.md#administration)).
+Quests: `/classe admin quete <player> <start|complete|reset> <id>` and `/classe admin quete <player> resetall` (see [Quests](EN-Quests.md#administration)).
 
 ## Permissions
 

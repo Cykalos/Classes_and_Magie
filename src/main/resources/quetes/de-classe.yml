@@ -7,6 +7,7 @@ quests:
   guerrier_mur_de_boucliers:
     name: "<red>Le Mur de boucliers"
     category: CLASS
+    start: OFFER
     level: 3
     icon: IRON_AXE
     description: ["<gray>Tenir la ligne et frapper fort."]
@@ -24,6 +25,7 @@ quests:
   guerrier_briseur_de_rangs:
     name: "<red>Briseur de rangs"
     category: CLASS
+    start: OFFER
     level: 15
     icon: MACE
     description: ["<gray>Aucune bête n'arrête un guerrier lancé."]
@@ -43,6 +45,7 @@ quests:
   mage_etincelles:
     name: "<light_purple>Étincelles"
     category: CLASS
+    start: OFFER
     level: 3
     icon: SLIME_BALL
     description: ["<gray>Un bouclier d'abord, des sorts ensuite."]
@@ -60,6 +63,7 @@ quests:
   mage_savoir_interdit:
     name: "<light_purple>Le Savoir interdit"
     category: CLASS
+    start: OFFER
     level: 15
     icon: ENCHANTING_TABLE
     description: ["<gray>Les enchantements cachent des secrets."]
@@ -79,6 +83,7 @@ quests:
   archer_tir_de_precision:
     name: "<green>Tir de précision"
     category: CLASS
+    start: OFFER
     level: 3
     icon: TARGET
     description: ["<gray>Un bon archer recule avant de tirer."]
@@ -96,6 +101,7 @@ quests:
   archer_traque_ardente:
     name: "<green>Traque ardente"
     category: CLASS
+    start: OFFER
     level: 15
     icon: BLAZE_POWDER
     description: ["<gray>Même les flammes ont un point faible."]
@@ -115,6 +121,7 @@ quests:
   assassin_lame_nocturne:
     name: "<dark_gray>Lame nocturne"
     category: CLASS
+    start: OFFER
     level: 3
     icon: SPIDER_EYE
     description: ["<gray>Le poison fait le reste."]
@@ -132,6 +139,7 @@ quests:
   assassin_fantome:
     name: "<dark_gray>Fantôme"
     category: CLASS
+    start: OFFER
     level: 15
     icon: GRAY_DYE
     description: ["<gray>Apparaître, frapper, disparaître."]
@@ -151,6 +159,7 @@ quests:
   clerc_premiers_soins:
     name: "<yellow>Premiers soins"
     category: CLASS
+    start: OFFER
     level: 3
     icon: GLISTERING_MELON_SLICE
     description: ["<gray>Protéger les autres avant soi-même."]
@@ -168,6 +177,7 @@ quests:
   clerc_lumiere_sacree:
     name: "<yellow>Lumière sacrée"
     category: CLASS
+    start: OFFER
     level: 15
     icon: BEACON
     description: ["<gray>Porter la lumière jusque dans le Nether."]

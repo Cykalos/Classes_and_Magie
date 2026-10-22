@@ -40,12 +40,17 @@ public final class ArcherSkills {
         s.register("EXPLOSIVE_ARROW", ArcherSkills::explosiveArrow);
     }
 
+    /** Marque des flèches tirées par une compétence (dégâts garantis même si la cible vient d'être touchée). */
+    public static final org.bukkit.NamespacedKey SKILL_ARROW_KEY =
+            new org.bukkit.NamespacedKey("classes_and_magie", "skill_arrow");
+
     private static Arrow shoot(Player p, Vector velocity, double damage) {
         Arrow arrow = p.launchProjectile(Arrow.class, velocity);
         // Les dégâts vanilla d'une flèche = vitesse x dégâts de base : on normalise.
         arrow.setDamage(damage / Math.max(0.1, velocity.length()));
         arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
         arrow.setCritical(false);
+        arrow.getPersistentDataContainer().set(SKILL_ARROW_KEY, org.bukkit.persistence.PersistentDataType.BYTE, (byte) 1);
         return arrow;
     }
 

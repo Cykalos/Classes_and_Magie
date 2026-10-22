@@ -56,6 +56,7 @@ public final class PlayerProfile {
     private Map<String, Integer> questCounts = new HashMap<>();
     private List<String> questsTracked = new ArrayList<>();
     private List<String> questsAbandoned = new ArrayList<>();
+    private List<String> questsOffered = new ArrayList<>();
     private boolean tutorialOffered;
     private boolean questTrackerHidden;
     // Titres : débloqués (date), titre équipé, progression (« id#objectif »)
@@ -99,6 +100,7 @@ public final class PlayerProfile {
         if (questCounts == null) questCounts = new HashMap<>();
         if (questsTracked == null) questsTracked = new ArrayList<>();
         if (questsAbandoned == null) questsAbandoned = new ArrayList<>();
+        if (questsOffered == null) questsOffered = new ArrayList<>();
         if (titles == null) titles = new HashMap<>();
         if (titleProgress == null) titleProgress = new HashMap<>();
         if (level < 1) level = 1;
@@ -222,12 +224,15 @@ public final class PlayerProfile {
     public void resetQuest(String id) {
         removeActiveQuest(id);
         questsAbandoned.remove(id);
+        questsOffered.remove(id);
         questsCompleted.remove(id);
         questCounts.remove(id);
         markDirty();
     }
     public List<String> questsTracked() { return questsTracked; }
     public boolean isQuestAbandoned(String id) { return questsAbandoned.contains(id); }
+    public boolean isQuestOffered(String id) { return questsOffered.contains(id); }
+    public void setQuestOffered(String id) { if (!questsOffered.contains(id)) { questsOffered.add(id); markDirty(); } }
     public void setQuestAbandoned(String id, boolean abandoned) {
         questsAbandoned.remove(id);
         if (abandoned) {
@@ -335,6 +340,7 @@ public final class PlayerProfile {
         map.put("quest-counts", new HashMap<>(questCounts));
         map.put("quests-tracked", new ArrayList<>(questsTracked));
         map.put("quests-abandoned", new ArrayList<>(questsAbandoned));
+        map.put("quests-offered", new ArrayList<>(questsOffered));
         map.put("tutorial-offered", tutorialOffered);
         map.put("quest-tracker-hidden", questTrackerHidden);
         map.put("titles", new HashMap<>(titles));
@@ -417,6 +423,9 @@ public final class PlayerProfile {
         }
         if (map.get("quests-abandoned") instanceof List<?> l) {
             l.forEach(o -> p.questsAbandoned.add(String.valueOf(o)));
+        }
+        if (map.get("quests-offered") instanceof List<?> l) {
+            l.forEach(o -> p.questsOffered.add(String.valueOf(o)));
         }
         p.tutorialOffered = Boolean.TRUE.equals(map.get("tutorial-offered"));
         p.questTrackerHidden = Boolean.TRUE.equals(map.get("quest-tracker-hidden"));

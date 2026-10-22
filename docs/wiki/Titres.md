@@ -2,7 +2,7 @@
 
 🇫🇷 Français · [🇬🇧 English](EN-Titles.md)
 
-Fichier : `personnage/titles.yml`. Commande : `/titres` (alias `/titles`), ou le bouton « Titres » du menu `/classe`.
+Fichier : `personnage/titles.yml`. Commande : `/classe titres` ou `/titres` (alias `/titles`), ou le bouton « Titres » du menu `/classe`.
 
 Les titres se **débloquent selon les actions du joueur** : niveau atteint, monstres éliminés, quêtes terminées, distance parcourue, progrès Minecraft… Un seul titre est équipé à la fois. Il s'affiche **au-dessus de la tête** et **dans le chat**, et peut donner des **effets**. Certains titres sont purement honorifiques.
 
@@ -95,10 +95,10 @@ chat:
 
 ## Administration
 
-- `/titres admin <joueur> give <id>` : donne un titre.
-- `/titres admin <joueur> take <id>` : retire un titre (un titre unique redevient disponible).
-- `/titres admin <joueur> reset` : retire tous les titres du joueur.
-- `/titres admin liberer <id>` : libère un titre unique ; l'ancien porteur le perd (à sa prochaine connexion s'il est absent).
+- `/classe admin titre <joueur> give <id>` : donne un titre.
+- `/classe admin titre <joueur> take <id>` : retire un titre (un titre unique redevient disponible).
+- `/classe admin titre <joueur> reset` : retire tous les titres du joueur.
+- `/classe admin titre liberer <id>` : libère un titre unique ; l'ancien porteur le perd (à sa prochaine connexion s'il est absent).
 - Placeholders : `%cykclasses_title%`, `%cykclasses_title_id%`, `%cykclasses_titles_count%`, `%cykclasses_titles_total%`.
 - Les porteurs des titres uniques sont enregistrés dans `donnees/titres-uniques.yml`.
 - Le module se désactive avec `modules.titles: false`.
