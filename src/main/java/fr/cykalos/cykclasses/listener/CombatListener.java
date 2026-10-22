@@ -261,6 +261,21 @@ public final class CombatListener implements Listener {
 
     // ------------------------------------------------------------ Divers
 
+    /**
+     * Flèche tirée à l'arc par un joueur : comme les flèches de compétences, elle touche même si la cible vient de
+     * subir des dégâts (sinon elle rebondit, par exemple sur un zombie qui brûle au soleil).
+     * config.yml → combat.bow-ignores-hit-delay. L'arbalète n'est pas concernée (Tir multiple).
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onBowShot(org.bukkit.event.entity.EntityShootBowEvent event) {
+        if (event.getEntity() instanceof Player && event.getBow() != null
+                && event.getBow().getType() == org.bukkit.Material.BOW
+                && event.getProjectile() instanceof AbstractArrow arrow
+                && plugin.getConfig().getBoolean("combat.bow-ignores-hit-delay", true)) {
+            arrow.getPersistentDataContainer().set(ArcherSkills.SKILL_ARROW_KEY, PersistentDataType.BYTE, (byte) 1);
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onProjectileHit(ProjectileHitEvent event) {
         if (!(event.getEntity() instanceof AbstractArrow arrow)) {

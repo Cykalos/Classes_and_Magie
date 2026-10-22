@@ -62,6 +62,10 @@ Mana and cooldown are handled by Classes and Magie, the effect by MythicMobs.
 - `config.yml → mana`: `regen-interval-ticks`, `regen-in-combat`, `combat-regen-multiplier` (regeneration reduced for 5 s after a hit).
 - The `DARKNESS_MANA_BLOCK` weakness stops regeneration in the dark.
 
+## Arrows
+
+Skill arrows, and arrows shot with a bow by players, hit even if the target has just taken damage. In Minecraft they would bounce off without damage, for example on a zombie burning in the sun. For bows, this is set in `config.yml → combat.bow-ignores-hit-delay` (`false` = Minecraft behaviour). Crossbows keep the Minecraft behaviour because of the Multishot enchantment.
+
 ## What cannot be done
 
 - No more than 8 skills in the hotbar.

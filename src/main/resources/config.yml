@@ -73,6 +73,13 @@ mana:
   combat-regen-multiplier: 0.5
 
 # Lancement des compétences
+# Combat
+combat:
+  # Les flèches tirées à l'arc par un joueur touchent même si la cible vient de subir des dégâts.
+  # Sans ça (comportement de Minecraft), elles rebondissent souvent, par exemple sur un zombie qui brûle au soleil.
+  # L'arbalète garde le comportement de Minecraft.
+  bow-ignores-hit-delay: true
+
 casting:
   # Appuyer sur F (échange de main) active le mode compétences :
   # la barre d'objets affiche les icônes des compétences (slots 1 à 8),

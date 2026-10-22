@@ -62,6 +62,10 @@ Le mana et la recharge sont gérés par Classes and Magie, l'effet par MythicMob
 - `config.yml → mana` : `regen-interval-ticks`, `regen-in-combat`, `combat-regen-multiplier` (régénération réduite 5 s après un coup).
 - La faiblesse `DARKNESS_MANA_BLOCK` coupe la régénération dans le noir.
 
+## Flèches
+
+Les flèches des compétences, et celles tirées à l'arc par les joueurs, touchent même si la cible vient de subir des dégâts. Dans Minecraft, elles rebondiraient sans faire de dégâts, par exemple sur un zombie qui brûle au soleil. Pour l'arc, l'option se règle dans `config.yml → combat.bow-ignores-hit-delay` (`false` = comportement de Minecraft). L'arbalète garde le comportement de Minecraft, à cause de l'enchantement Tir multiple.
+
 ## Ce qu'on ne peut pas faire
 
 - Pas plus de 8 compétences dans la barre.

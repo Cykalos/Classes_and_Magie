@@ -40,7 +40,7 @@ public final class ArcherSkills {
         s.register("EXPLOSIVE_ARROW", ArcherSkills::explosiveArrow);
     }
 
-    /** Marque des flèches tirées par une compétence (dégâts garantis même si la cible vient d'être touchée). */
+    /** Flèches qui touchent même si la cible vient d'être touchée : compétences, et arc des joueurs (option). */
     public static final org.bukkit.NamespacedKey SKILL_ARROW_KEY =
             new org.bukkit.NamespacedKey("classes_and_magie", "skill_arrow");
 
