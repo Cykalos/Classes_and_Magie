@@ -3,6 +3,23 @@
 Each version is described in English first, then in French (🇫🇷 En français).
 Chaque version est décrite en anglais, puis en français (🇫🇷 En français).
 
+## [1.11.2](https://github.com/Cykalos/Classes_and_Magie/compare/v1.11.1...v1.11.2) (2026-10-22)
+
+### 🐛 Fixes
+
+- bow arrows no longer bounce off a target that was just hurt ([`50af8a9`](https://github.com/Cykalos/Classes_and_Magie/commit/50af8a932c5d1d35c1c9e9bbad0ed6e9818c7ec0))
+  - Arrows shot with a bow by players hit even if the target has just taken damage (for example a zombie burning in the sun); config.yml → combat.bow-ignores-hit-delay
+  - Crossbows keep the Minecraft behaviour (Multishot)
+
+### 🇫🇷 En français
+
+#### 🐛 Corrections
+
+- les flèches tirées à l'arc ne rebondissent plus sur une cible qui vient d'être blessée
+  - Les flèches tirées à l'arc par les joueurs touchent même si la cible vient de subir des dégâts (par exemple un zombie qui brûle au soleil) ; config.yml → combat.bow-ignores-hit-delay
+  - L'arbalète garde le comportement de Minecraft (Tir multiple)
+
+
 ## [1.11.1](https://github.com/Cykalos/Classes_and_Magie/compare/v1.11.0...v1.11.1) (2026-10-22)
 
 ### 🐛 Fixes
