@@ -3,6 +3,27 @@
 Each version is described in English first, then in French (🇫🇷 En français).
 Chaque version est décrite en anglais, puis en français (🇫🇷 En français).
 
+## [1.11.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.10.1...v1.11.0) (2026-10-22)
+
+### ✨ New features
+
+- new example quests and titles ([`4d8dd42`](https://github.com/Cykalos/Classes_and_Magie/commit/4d8dd42460b834632efa56626879e8439212e4cd))
+  - New example main story: the Adventurers' Guild, 6 ranks from Recruit to Legend (levels 2 to 45)
+  - New example class quests (2 per class), side quests (some repeatable) and secret quests
+  - Story-related example titles replaced: Guild member, Guild legend, Grand Master and The Pioneer (unique), Storm chaser and Deep diver (secret)
+  - Servers that already have a quetes/ folder and a personnage/titles.yml keep their own files
+
+### 🇫🇷 En français
+
+#### ✨ Nouveautés
+
+- nouvelles quêtes et nouveaux titres d'exemple
+  - Nouvelle histoire principale d'exemple : la Guilde des Aventuriers, 6 rangs de Recrue à Légende (niveaux 2 à 45)
+  - Nouvelles quêtes de classe d'exemple (2 par classe), quêtes annexes (dont des répétables) et quêtes secrètes
+  - Titres d'exemple liés à l'histoire remplacés : Membre de la Guilde, Légende de la Guilde, Grand Maître et Le Pionnier (uniques), Chasseur d'orages et Plongeur des profondeurs (secrets)
+  - Les serveurs qui ont déjà un dossier quetes/ et un fichier personnage/titles.yml gardent leurs propres fichiers
+
+
 ## [1.10.1](https://github.com/Cykalos/Classes_and_Magie/compare/v1.10.0...v1.10.1) (2026-10-21)
 
 ### 🐛 Fixes
