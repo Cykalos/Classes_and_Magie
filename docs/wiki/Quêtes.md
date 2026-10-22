@@ -10,11 +10,11 @@ Dossier : `quetes/` (tous les fichiers `.yml` du dossier et de ses sous-dossiers
 
 | Catégorie | Rôle | Fournies par défaut |
 |---|---|---|
-| `TUTORIAL` | Tutoriel, proposé à la fin de la création du personnage | *Premiers pas d'un Éveillé* (5 étapes) |
-| `MAIN` | Histoire principale | 6 chapitres, *Les Éclats de la Fracture* (niveaux 2 à 40) |
+| `TUTORIAL` | Tutoriel, proposé à la fin de la création du personnage | *Premiers pas* (5 étapes) |
+| `MAIN` | Histoire principale | *La Guilde des Aventuriers* : 6 rangs, de Recrue à Légende (niveaux 2 à 45) |
 | `CLASS` | Quêtes réservées à une classe | 2 par classe (niveaux 3 et 15) |
-| `SIDE` | Quêtes annexes, certaines répétables | 5 (pêche, primes, exploration…) |
-| `SECRET` | Invisibles tant qu'elles ne sont pas découvertes | 4 (lune sanglante, abysses, ruines…) |
+| `SIDE` | Quêtes annexes, certaines répétables | 5 (récoltes, concours de pêche, patrouille, cartographie…) |
+| `SECRET` | Invisibles tant qu'elles ne sont pas découvertes | 4 (trésor englouti, nuit d'orage, jardin secret, chant des abeilles) |
 
 Les fichiers fournis : `tutoriel.yml`, `principale.yml`, `de-classe.yml`, `annexes.yml`, `secretes.yml`. Ils ne sont créés que si le dossier `quetes/` n'existe pas : un fichier supprimé ne revient pas.
 
@@ -33,27 +33,27 @@ Les fichiers fournis : `tutoriel.yml`, `principale.yml`, `de-classe.yml`, `annex
 
 ```yaml
 quests:
-  la_porte_brulante:
-    name: "<gold>V. La Porte Brûlante"
+  guilde_platine:
+    name: "<gold>Rang V — Platine"
     category: MAIN                 # TUTORIAL, MAIN, CLASS, SIDE, SECRET
-    level: 25                      # niveau indicatif affiché
-    icon: BLAZE_ROD
-    description: ["<gray>Un passage vers un monde de flammes."]
+    level: 30                      # niveau indicatif affiché
+    icon: QUARTZ
+    description: ["<gray>Une expédition dans le Nether."]
     start: AUTO                    # MANUAL (journal), AUTO (dès que disponible), OFFER (proposée)
     hidden: false                  # true par défaut pour SECRET
     repeatable: false
     cooldown-hours: 0              # délai avant de la refaire
     abandonable: true
     requirements:
-      level: 25
-      quests: [la_nuit_des_eveilles]
+      level: 30
+      quests: [guilde_or]
     stages:
       - text: ["<gray>Texte affiché au début de l'étape"]
         objectives:
           - {type: CONDITION, conditions: {dimensions: [NETHER]}, display: "Entrer dans le Nether"}
       - objectives:
-          - {type: KILL, targets: [BLAZE], amount: 6}
-          - {type: COLLECT, targets: [BLAZE_ROD], amount: 4, take: true}
+          - {type: KILL, targets: [GHAST], amount: 2}
+          - {type: COLLECT, targets: [QUARTZ], amount: 16, take: true}
     rewards:
       xp: 2500
       skill-points: 1

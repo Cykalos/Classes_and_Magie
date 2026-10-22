@@ -85,7 +85,7 @@ titles:
     name: "<gray>Novice"
     rarity: COMMON
     icon: WOODEN_SWORD
-    description: ["<gray>Les premiers pas d'un Éveillé."]
+    description: ["<gray>Les premiers pas d'un aventurier."]
     unlock:
       - {type: LEVEL, amount: 5}
 
@@ -160,7 +160,7 @@ titles:
     name: "<light_purple>Tueur de dragons"
     rarity: EPIC
     icon: DRAGON_HEAD
-    description: ["<gray>Celui qui a vu tomber le gardien du Cœur."]
+    description: ["<gray>Le maître de l'End est tombé sous ses coups."]
     unlock:
       - {type: KILLS_TOTAL, targets: [ender_dragon], amount: 1, display: "Vaincre l'Ender Dragon"}
     flaws:
@@ -315,36 +315,36 @@ titles:
     unlock:
       - {type: TITLES, amount: 15, display: "Débloquer 15 titres"}
 
-  # ─────────────────────────────── Histoire
-  eveille:
-    name: "<dark_aqua>Éveillé"
+  # ─────────────────────────────── Guilde des Aventuriers (histoire d'exemple)
+  membre_de_la_guilde:
+    name: "<gold>Membre de la Guilde"
     rarity: UNCOMMON
-    icon: AMETHYST_SHARD
-    description: ["<gray>Son âme a résonné avec un Éclat."]
+    icon: STRING
+    description: ["<gray>Accepté parmi les aventuriers."]
     unlock:
-      - {type: QUEST, targets: [le_reveil], display: "Terminer « Le Réveil des morts »"}
+      - {type: QUEST, targets: [guilde_recrue], display: "Terminer « Rang I — Recrue »"}
 
-  heros_de_la_fracture:
-    name: "<gradient:#7fd3ff:#c78bff>Héros de la Fracture</gradient>"
+  legende_de_la_guilde:
+    name: "<gradient:#f5d76e:#ff8c3a>Légende de la Guilde</gradient>"
     rarity: LEGENDARY
-    icon: DRAGON_EGG
-    description: ["<gray>Récompense de la dernière quête de l'histoire principale."]
+    icon: NETHER_STAR
+    description: ["<gray>Le plus haut rang de la Guilde des Aventuriers."]
     unlock:
-      - {type: QUEST, targets: [le_coeur_de_la_fracture], display: "Terminer « Le Cœur de la Fracture »"}
+      - {type: QUEST, targets: [guilde_legende], display: "Terminer « Rang VI — Légende »"}
     stats: {health: 4, melee-damage: 1.05, ranged-damage: 1.05, magic-damage: 1.05}
 
   # ─────────────────────────────── Uniques (un seul joueur du serveur)
-  premier_heros:
-    name: "<gradient:#ff5555:#ffaa00>Le Premier Héros</gradient>"
+  grand_maitre:
+    name: "<gradient:#ff5555:#ffaa00>Grand Maître</gradient>"
     rarity: UNIQUE
     icon: GOLDEN_HELMET
-    description: ["<gray>Le premier à avoir terminé l'histoire principale."]
+    description: ["<gray>Le premier à avoir atteint le rang Légende de la Guilde."]
     unlock:
-      - {type: QUEST, targets: [le_coeur_de_la_fracture], display: "Être le premier à terminer l'histoire"}
+      - {type: QUEST, targets: [guilde_legende], display: "Être le premier à atteindre le rang Légende"}
     stats: {health: 2, crit-chance: 0.02}
 
-  premier_des_eveilles:
-    name: "<gradient:#ff5555:#ffaa00>Premier des Éveillés</gradient>"
+  le_pionnier:
+    name: "<gradient:#ff5555:#ffaa00>Le Pionnier</gradient>"
     rarity: UNIQUE
     icon: BEACON
     description: ["<gray>Le premier joueur à atteindre le niveau 50."]
@@ -353,31 +353,27 @@ titles:
     stats: {mana: 10, health: 2}
 
   # ─────────────────────────────── Secrets
-  enfant_de_la_lune:
-    name: "<dark_red>Enfant de la Lune"
+  chasseur_d_orages:
+    name: "<yellow>Chasseur d'orages"
     rarity: SECRET
-    icon: REDSTONE
-    description: ["<gray>Survivant de la Lune sanglante."]
+    icon: LIGHTNING_ROD
+    description: ["<gray>Il sort quand tout le monde rentre."]
     unlock:
-      - {type: QUEST, targets: [la_lune_sanglante]}
+      - {type: QUEST, targets: [la_nuit_d_orage]}
     flaws:
-      - type: EFFECT
-        effects: ["night_vision:1"]
-        conditions: {time: NIGHT}
-        description: "Vision nocturne la nuit"
+      - type: DAMAGE_DEALT
+        multiplier: 1.1
+        conditions: {weather: [RAIN, THUNDER]}
+        description: "+10% de dégâts sous la pluie et l'orage"
 
-  echo_des_abysses:
-    name: "<dark_aqua>Écho des abysses"
+  plongeur_des_profondeurs:
+    name: "<dark_aqua>Plongeur des profondeurs"
     rarity: SECRET
-    icon: ECHO_SHARD
-    description: ["<gray>Le silence des profondeurs l'a accepté."]
+    icon: HEART_OF_THE_SEA
+    description: ["<gray>L'océan lui a confié un trésor."]
     unlock:
-      - {type: QUEST, targets: [le_murmure_des_abysses]}
-    flaws:
-      - type: DAMAGE_TAKEN
-        multiplier: 0.85
-        conditions: {y-below: 0}
-        description: "-15% de dégâts subis sous la couche 0"
+      - {type: QUEST, targets: [le_tresor_englouti]}
+    effects: ["conduit_power:1"]
 
   noctambule:
     name: "<dark_purple>Noctambule"

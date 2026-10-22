@@ -84,7 +84,7 @@ Classe → **race** → **traits** → **faiblesses** → **métier**, chaque é
 `/quetes` ouvre le **journal** : quêtes en cours, disponibles, verrouillées et terminées, par catégorie. Toutes les quêtes sont **facultatives**.
 
 - **Tutoriel** proposé à la fin de la création du personnage (accepter ou refuser, relançable depuis le journal).
-- **Histoire principale** en 6 chapitres (*Les Éclats de la Fracture*), **2 quêtes par classe**, **quêtes annexes** (dont des répétables) et **quêtes secrètes** qui se découvrent sous certaines conditions (de nuit, dans un biome, en pêchant sous l'orage…).
+- **Histoire principale d'exemple** en 6 rangs (*La Guilde des Aventuriers*), **2 quêtes par classe**, **quêtes annexes** (dont des répétables) et **quêtes secrètes** qui se découvrent sous certaines conditions (de nuit, dans un biome, en pêchant sous l'orage…).
 - **Panneau latéral** de suivi des objectifs, partagé avec le panneau du groupe (`/quetes panneau` pour le masquer).
 - Objectifs : éliminer, récolter, fabriquer, pêcher, lancer une compétence, rassembler des objets, explorer un biome, atteindre un lieu, un niveau… avec des conditions (de nuit, épée en main, accroupi…).
 - Récompenses : XP de classe et de métier, points d'arbre et d'attributs, argent (Vault), objets (custom compris), commandes.

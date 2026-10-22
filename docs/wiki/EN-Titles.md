@@ -19,7 +19,7 @@ Rarities are set in `titles.yml → rarities` (name, announcement, unique, secre
 
 ## Included titles
 
-31 titles: progression (Novice, Veteran, Living legend…), combat (Hunter, Bane of the dead, Dragon slayer…), one title per class (Honed blade, Archmage, Lynx eye, Silent shadow, Hand of light), jobs and exploration (Relentless miner, Traveller, Explorer of worlds…), story (Awakened, Hero of the Fracture), 2 unique and 4 secret titles. The included texts are in French and can be renamed freely.
+31 titles: progression (Novice, Veteran, Living legend…), combat (Hunter, Bane of the dead, Dragon slayer…), one title per class (Honed blade, Archmage, Lynx eye, Silent shadow, Hand of light), jobs and exploration (Relentless miner, Traveller, Explorer of worlds…), story (Guild member, Guild legend), 2 unique and 4 secret titles. The included texts are in French and can be renamed freely.
 
 Titles based on totals (kills, mined blocks, statistics, advancements, playtime…) count **everything the player has already done**: a long-time player can unlock several of them right after the update.
 
@@ -66,7 +66,7 @@ titles:
 | `STATISTIC` | `{type: STATISTIC, targets: [DEATHS], amount: 25}` · `MINE_BLOCK:DIAMOND_ORE` · `KILL_ENTITY:ZOMBIE` · `WALK_ONE_CM` |
 | `ADVANCEMENT` | `{type: ADVANCEMENT, targets: ["minecraft:story/enter_the_nether"]}` |
 | `PLAYTIME` | `{type: PLAYTIME, amount: 100}` (hours) |
-| `QUEST` | `{type: QUEST, targets: [la_lune_sanglante]}`; without `targets`: number of completed quests |
+| `QUEST` | `{type: QUEST, targets: [la_nuit_d_orage]}`; without `targets`: number of completed quests |
 | `TITLES` | `{type: TITLES, amount: 15}`; `targets: ["rarity:EPIC"]` to count one rarity |
 | `KILL` (with conditions) | `{type: KILL, amount: 300, conditions: {sneaking: true}}` (counts from when the title is added) |
 

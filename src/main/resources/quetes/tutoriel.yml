@@ -73,7 +73,7 @@
 
 quests:
   tutoriel:
-    name: "<white>Premiers pas d'un Éveillé"
+    name: "<white>Premiers pas"
     category: TUTORIAL
     level: 1
     icon: BOOK
@@ -122,4 +122,4 @@ quests:
         - {item: "minecraft:bread", amount: 16}
         - {item: "minecraft:torch", amount: 16}
     complete-text:
-      - "<gray>Tu connais les bases. L'histoire principale et les quêtes de classe t'attendent dans le journal."
+      - "<gray>Tu connais les bases. La Guilde des Aventuriers et les quêtes de classe t'attendent dans le journal."

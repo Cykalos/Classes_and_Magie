@@ -21,7 +21,7 @@ import java.util.Map;
  *   items:                  # même format que kits.yml
  *     - {item: "minecraft:iron_ingot", amount: 8}
  *     - {item: "mythic:EpeeRunique", name: "<gold>Lame de l'aube"}
- *   titles: [heros_de_la_fracture]   # titres débloqués
+ *   titles: [legende_de_la_guilde]   # titres débloqués
  *   commands: ["lp user %player% permission set monserveur.grade"]
  *   text: ["<gray>Une récompense spéciale"]   # lignes en plus dans le journal
  * </pre>

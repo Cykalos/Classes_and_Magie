@@ -1,230 +1,184 @@
-# Quêtes de classe — deux quêtes par classe (sous-classes comprises)
+# Quêtes de classe d'exemple — deux quêtes par classe (sous-classes comprises)
 # Format complet des quêtes : voir le haut de tutoriel.yml
 # Une quête réservée à une autre classe est masquée dans le journal (config.yml → quests.hide-other-classes).
 
 quests:
   # ─────────────────────────────── Guerrier
-  guerrier_epreuve_du_fer:
-    name: "<red>L'Épreuve du fer"
+  guerrier_mur_de_boucliers:
+    name: "<red>Le Mur de boucliers"
     category: CLASS
     level: 3
-    icon: IRON_SWORD
-    description:
-      - "<gray>Un guerrier se forge au combat,"
-      - "<gray>lame en main."
+    icon: IRON_AXE
+    description: ["<gray>Tenir la ligne et frapper fort."]
     requirements:
       classes: [guerrier]
       level: 3
     stages:
-      - text: ["<red>Le maître d'armes <dark_gray>» <gray><i>« Montre-moi ta lame. Pas de magie, pas de flèches. »</i>"]
-        objectives:
-          - type: KILL
-            targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH]
-            amount: 15
-            conditions: {holding: ["*_SWORD", "*_AXE", "MACE"]}
-            display: "Éliminer des monstres à l'épée, la hache ou la masse"
-          - {type: SKILL, targets: [charge], amount: 5, display: "Utiliser Charge"}
+      - objectives:
+          - {type: DAMAGE, amount: 300, conditions: {holding: ["*_SWORD", "*_AXE", "MACE"]}, display: "Infliger des dégâts au corps à corps"}
+          - {type: SKILL, targets: [tourbillon], amount: 5, display: "Utiliser Tourbillon"}
     rewards:
       xp: 250
       attribute-points: 1
-      items:
-        - {item: "minecraft:iron_ingot", amount: 6}
 
-  guerrier_serment_du_rempart:
-    name: "<red>Le Serment du rempart"
+  guerrier_briseur_de_rangs:
+    name: "<red>Briseur de rangs"
     category: CLASS
     level: 15
-    icon: SHIELD
-    description:
-      - "<gray>Le guerrier se tient devant les autres."
+    icon: MACE
+    description: ["<gray>Aucune bête n'arrête un guerrier lancé."]
     requirements:
       classes: [guerrier]
       level: 15
-      quests: [guerrier_epreuve_du_fer]
+      quests: [guerrier_mur_de_boucliers]
     stages:
-      - text: ["<red>Le maître d'armes <dark_gray>» <gray><i>« Un cri peut sauver une armée. Fais-le entendre. »</i>"]
-        objectives:
-          - {type: SKILL, targets: [cri_de_guerre], amount: 10, display: "Utiliser Cri de guerre"}
-          - {type: DAMAGE, amount: 500, conditions: {holding: ["*_SWORD", "*_AXE", "MACE"]}, display: "Infliger des dégâts au corps à corps"}
-          - {type: KILL, targets: [PILLAGER, VINDICATOR, RAVAGER], amount: 8, display: "Repousser des illageois"}
+      - objectives:
+          - {type: SKILL, targets: [charge], amount: 15, display: "Utiliser Charge"}
+          - {type: KILL, targets: [RAVAGER], amount: 1, display: "Abattre un ravageur"}
     rewards:
       xp: 1200
       skill-points: 1
 
   # ─────────────────────────────── Mage
-  mage_apprenti_des_arcanes:
-    name: "<light_purple>Apprenti des arcanes"
+  mage_etincelles:
+    name: "<light_purple>Étincelles"
     category: CLASS
     level: 3
-    icon: LAPIS_LAZULI
-    description:
-      - "<gray>La magie s'apprend par la pratique."
+    icon: SLIME_BALL
+    description: ["<gray>Un bouclier d'abord, des sorts ensuite."]
     requirements:
       classes: [mage]
       level: 3
     stages:
-      - text: ["<light_purple>L'archimage Solenne <dark_gray>» <gray><i>« Les formules s'oublient si on ne les prononce pas. »</i>"]
-        objectives:
-          - {type: SKILL, targets: [projectile_arcanique], amount: 15, display: "Lancer Projectile arcanique"}
-          - {type: SKILL, targets: [transfert], amount: 5, display: "Utiliser Transfert"}
+      - objectives:
+          - {type: SKILL, targets: [bouclier_de_mana], amount: 5, display: "Utiliser Bouclier de mana"}
+          - {type: KILL, targets: [SLIME, MAGMA_CUBE], amount: 6, display: "Éliminer des slimes"}
     rewards:
       xp: 250
       attribute-points: 1
-      items:
-        - {item: "minecraft:lapis_lazuli", amount: 12}
 
-  mage_lois_elementaires:
-    name: "<light_purple>Les Lois élémentaires"
+  mage_savoir_interdit:
+    name: "<light_purple>Le Savoir interdit"
     category: CLASS
     level: 15
-    icon: ENCHANTED_BOOK
-    description:
-      - "<gray>Feu, givre, arcane : les trois voies"
-      - "<gray>de la magie de combat."
+    icon: ENCHANTING_TABLE
+    description: ["<gray>Les enchantements cachent des secrets."]
     requirements:
       classes: [mage]
       level: 15
-      quests: [mage_apprenti_des_arcanes]
+      quests: [mage_etincelles]
     stages:
-      - text: ["<light_purple>L'archimage Solenne <dark_gray>» <gray><i>« Varenn a écrit ses lois dans des grimoires. Rassemble-les. »</i>"]
-        objectives:
-          - {type: SKILL, amount: 60, display: "Lancer des compétences"}
-          - {type: COLLECT, targets: [BOOK, ENCHANTED_BOOK], amount: 8, take: true, display: "Rassembler des grimoires"}
+      - objectives:
+          - {type: ENCHANT, amount: 5, display: "Enchanter des objets"}
+          - {type: SKILL, targets: [projectile_arcanique], amount: 40, display: "Lancer Projectile arcanique"}
     rewards:
       xp: 1200
       skill-points: 1
 
   # ─────────────────────────────── Archer
-  archer_oeil_de_faucon:
-    name: "<green>Œil de faucon"
+  archer_tir_de_precision:
+    name: "<green>Tir de précision"
     category: CLASS
     level: 3
-    icon: BOW
-    description:
-      - "<gray>Une flèche, une cible."
+    icon: TARGET
+    description: ["<gray>Un bon archer recule avant de tirer."]
     requirements:
       classes: [archer]
       level: 3
     stages:
-      - text: ["<green>La chasseresse Ilwen <dark_gray>» <gray><i>« Garde tes distances et vise juste. »</i>"]
-        objectives:
-          - type: KILL
-            targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH]
-            amount: 12
-            conditions: {holding: [BOW, CROSSBOW]}
-            display: "Éliminer des monstres à l'arc ou à l'arbalète"
-          - {type: SKILL, targets: [fleche_percante], amount: 5, display: "Utiliser Flèche perçante"}
+      - objectives:
+          - {type: KILL, targets: [SKELETON, STRAY, BOGGED], amount: 8, conditions: {holding: [BOW, CROSSBOW]}, display: "Abattre des squelettes à distance"}
+          - {type: SKILL, targets: [bond_arriere], amount: 5, display: "Utiliser Bond arrière"}
     rewards:
       xp: 250
       attribute-points: 1
-      items:
-        - {item: "minecraft:arrow", amount: 64}
 
-  archer_la_traque:
-    name: "<green>La Traque"
+  archer_traque_ardente:
+    name: "<green>Traque ardente"
     category: CLASS
     level: 15
-    icon: SPYGLASS
-    description:
-      - "<gray>Les proies les plus rapides"
-      - "<gray>volent au-dessus de nos têtes."
+    icon: BLAZE_POWDER
+    description: ["<gray>Même les flammes ont un point faible."]
     requirements:
       classes: [archer]
       level: 15
-      quests: [archer_oeil_de_faucon]
+      quests: [archer_tir_de_precision]
     stages:
-      - text: ["<green>La chasseresse Ilwen <dark_gray>» <gray><i>« Les araignées d'abord. Ensuite, le ciel. »</i>"]
-        objectives:
-          - {type: KILL, targets: [SPIDER, CAVE_SPIDER], amount: 10, conditions: {holding: [BOW, CROSSBOW]}, display: "Abattre des araignées à distance"}
-          - {type: KILL, targets: [PHANTOM], amount: 2, display: "Abattre des Phantoms"}
-          - {type: SKILL, targets: [volee], amount: 10, display: "Utiliser Volée"}
+      - objectives:
+          - {type: KILL, targets: [BLAZE], amount: 5, conditions: {holding: [BOW, CROSSBOW]}, display: "Abattre des blazes à distance"}
+          - {type: SKILL, targets: [fleche_percante], amount: 20, display: "Utiliser Flèche perçante"}
     rewards:
       xp: 1200
       skill-points: 1
 
   # ─────────────────────────────── Assassin
-  assassin_pas_silencieux:
-    name: "<dark_gray>Les Pas silencieux"
+  assassin_lame_nocturne:
+    name: "<dark_gray>Lame nocturne"
     category: CLASS
     level: 3
-    icon: BLACK_DYE
-    description:
-      - "<gray>Frapper sans être vu."
+    icon: SPIDER_EYE
+    description: ["<gray>Le poison fait le reste."]
     requirements:
       classes: [assassin]
       level: 3
     stages:
-      - text: ["<dark_gray>L'Ombre <dark_gray>» <gray><i>« Accroupi, dans le silence. Ils ne doivent rien entendre. »</i>"]
-        objectives:
-          - type: KILL
-            targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH]
-            amount: 8
-            conditions: {sneaking: true}
-            display: "Éliminer des monstres en étant accroupi"
-          - {type: SKILL, targets: [pas_de_l_ombre], amount: 5, display: "Utiliser Pas de l'ombre"}
+      - objectives:
+          - {type: KILL, targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH], amount: 10, conditions: {time: NIGHT}, display: "Éliminer des monstres de nuit"}
+          - {type: SKILL, targets: [lame_empoisonnee], amount: 5, display: "Utiliser Lame empoisonnée"}
     rewards:
       xp: 250
       attribute-points: 1
 
-  assassin_contrat_nocturne:
-    name: "<dark_gray>Contrat nocturne"
+  assassin_fantome:
+    name: "<dark_gray>Fantôme"
     category: CLASS
     level: 15
-    icon: IRON_SWORD
-    description:
-      - "<gray>Un contrat, une nuit, aucune trace."
+    icon: GRAY_DYE
+    description: ["<gray>Apparaître, frapper, disparaître."]
     requirements:
       classes: [assassin]
       level: 15
-      quests: [assassin_pas_silencieux]
+      quests: [assassin_lame_nocturne]
     stages:
-      - text: ["<dark_gray>L'Ombre <dark_gray>» <gray><i>« Les illageois servent Varenn. Ce soir, ils tombent. »</i>"]
-        objectives:
-          - {type: KILL, targets: [PILLAGER, VINDICATOR, EVOKER, WITCH], amount: 6, conditions: {time: NIGHT}, display: "Éliminer des illageois de nuit"}
-          - {type: SKILL, targets: [disparition], amount: 10, display: "Utiliser Disparition"}
+      - objectives:
+          - {type: KILL, targets: [WITCH], amount: 5, conditions: {sneaking: true}, display: "Éliminer des sorcières en étant accroupi"}
+          - {type: SKILL, targets: [pas_de_l_ombre], amount: 15, display: "Utiliser Pas de l'ombre"}
     rewards:
       xp: 1200
       skill-points: 1
 
   # ─────────────────────────────── Clerc
-  clerc_devoir_du_guerisseur:
-    name: "<yellow>Le Devoir du guérisseur"
+  clerc_premiers_soins:
+    name: "<yellow>Premiers soins"
     category: CLASS
     level: 3
-    icon: GOLDEN_CARROT
-    description:
-      - "<gray>Soigner les vivants, apaiser les morts."
+    icon: GLISTERING_MELON_SLICE
+    description: ["<gray>Protéger les autres avant soi-même."]
     requirements:
       classes: [clerc]
       level: 3
     stages:
-      - text: ["<yellow>Mère Aube <dark_gray>» <gray><i>« La lumière se partage. Soigne, et renvoie les morts au repos. »</i>"]
-        objectives:
-          - {type: SKILL, targets: [soin], amount: 15, display: "Utiliser Soin"}
-          - {type: KILL, targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, WITHER_SKELETON, PHANTOM, ZOMBIFIED_PIGLIN, ZOGLIN], amount: 10, display: "Apaiser des morts-vivants"}
+      - objectives:
+          - {type: SKILL, targets: [benediction], amount: 8, display: "Utiliser Bénédiction"}
+          - {type: KILL, targets: [SKELETON, STRAY], amount: 8, display: "Éliminer des squelettes"}
     rewards:
       xp: 250
       attribute-points: 1
-      items:
-        - {item: "minecraft:golden_carrot", amount: 8}
 
-  clerc_la_purification:
-    name: "<yellow>La Purification"
+  clerc_lumiere_sacree:
+    name: "<yellow>Lumière sacrée"
     category: CLASS
     level: 15
-    icon: TOTEM_OF_UNDYING
-    description:
-      - "<gray>La corruption des Éclats peut être lavée."
+    icon: BEACON
+    description: ["<gray>Porter la lumière jusque dans le Nether."]
     requirements:
       classes: [clerc]
       level: 15
-      quests: [clerc_devoir_du_guerisseur]
+      quests: [clerc_premiers_soins]
     stages:
-      - text: ["<yellow>Mère Aube <dark_gray>» <gray><i>« Bénis tes alliés, purifie la terre, et les morts n'auront plus de prise. »</i>"]
-        objectives:
-          - {type: SKILL, targets: [purification], amount: 10, display: "Utiliser Purification"}
-          - {type: SKILL, targets: [benediction], amount: 10, display: "Utiliser Bénédiction"}
-          - {type: KILL, targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, WITHER_SKELETON, PHANTOM, ZOMBIFIED_PIGLIN, ZOGLIN], amount: 30, display: "Apaiser des morts-vivants"}
+      - objectives:
+          - {type: SKILL, targets: [soin], amount: 40, display: "Utiliser Soin"}
+          - {type: KILL, targets: [WITHER_SKELETON], amount: 5, display: "Éliminer des wither squelettes"}
     rewards:
       xp: 1200
       skill-points: 1

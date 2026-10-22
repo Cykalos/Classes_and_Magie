@@ -10,11 +10,11 @@ Folder: `quetes/` (every `.yml` file in the folder and its subfolders is read). 
 
 | Category | Role | Included by default |
 |---|---|---|
-| `TUTORIAL` | Tutorial, offered at the end of character creation | *First steps of an Awakened* (5 stages) |
-| `MAIN` | Main story | 6 chapters, *The Shards of the Fracture* (levels 2 to 40) |
+| `TUTORIAL` | Tutorial, offered at the end of character creation | *First steps* (5 stages) |
+| `MAIN` | Main story | *The Adventurers' Guild*: 6 ranks, from Recruit to Legend (levels 2 to 45) |
 | `CLASS` | Quests reserved to a class | 2 per class (levels 3 and 15) |
-| `SIDE` | Side quests, some repeatable | 5 (fishing, bounties, exploration…) |
-| `SECRET` | Invisible until discovered | 4 (blood moon, abyss, ruins…) |
+| `SIDE` | Side quests, some repeatable | 5 (gathering, fishing contest, night patrol, mapping…) |
+| `SECRET` | Invisible until discovered | 4 (sunken treasure, stormy night, secret garden, song of the bees) |
 
 Included files: `tutoriel.yml`, `principale.yml`, `de-classe.yml`, `annexes.yml`, `secretes.yml`. They are only created if the `quetes/` folder does not exist: a deleted file does not come back. The included quest texts are in French and can be rewritten freely.
 
@@ -33,27 +33,27 @@ Included files: `tutoriel.yml`, `principale.yml`, `de-classe.yml`, `annexes.yml`
 
 ```yaml
 quests:
-  la_porte_brulante:
-    name: "<gold>V. The Burning Gate"
+  guilde_platine:
+    name: "<gold>Rank V — Platinum"
     category: MAIN                 # TUTORIAL, MAIN, CLASS, SIDE, SECRET
-    level: 25                      # indicative level shown
-    icon: BLAZE_ROD
-    description: ["<gray>A passage to a world of flames."]
+    level: 30                      # indicative level shown
+    icon: QUARTZ
+    description: ["<gray>An expedition into the Nether."]
     start: AUTO                    # MANUAL (journal), AUTO (as soon as available), OFFER (offered)
     hidden: false                  # true by default for SECRET
     repeatable: false
     cooldown-hours: 0              # delay before doing it again
     abandonable: true
     requirements:
-      level: 25
-      quests: [la_nuit_des_eveilles]
+      level: 30
+      quests: [guilde_or]
     stages:
       - text: ["<gray>Text shown when the stage begins"]
         objectives:
           - {type: CONDITION, conditions: {dimensions: [NETHER]}, display: "Enter the Nether"}
       - objectives:
-          - {type: KILL, targets: [BLAZE], amount: 6}
-          - {type: COLLECT, targets: [BLAZE_ROD], amount: 4, take: true}
+          - {type: KILL, targets: [GHAST], amount: 2}
+          - {type: COLLECT, targets: [QUARTZ], amount: 16, take: true}
     rewards:
       xp: 2500
       skill-points: 1

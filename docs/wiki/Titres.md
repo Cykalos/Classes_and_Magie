@@ -19,7 +19,7 @@ Les raretés se configurent dans `titles.yml → rarities` (nom, annonce, unique
 
 ## Titres fournis
 
-31 titres : progression (Novice, Vétéran, Légende vivante…), combat (Chasseur, Fléau des morts, Tueur de dragons…), un titre par classe (Lame affûtée, Archimage, Œil de lynx, Ombre silencieuse, Main de lumière), métiers et exploration (Mineur acharné, Voyageur, Explorateur des mondes…), histoire (Éveillé, Héros de la Fracture), 2 uniques et 4 secrets.
+31 titres : progression (Novice, Vétéran, Légende vivante…), combat (Chasseur, Fléau des morts, Tueur de dragons…), un titre par classe (Lame affûtée, Archimage, Œil de lynx, Ombre silencieuse, Main de lumière), métiers et exploration (Mineur acharné, Voyageur, Explorateur des mondes…), histoire (Membre de la Guilde, Légende de la Guilde), 2 uniques et 4 secrets.
 
 Les titres basés sur des totaux (éliminations, blocs minés, statistiques, progrès, temps de jeu…) prennent en compte **tout ce que le joueur a déjà fait** : un joueur ancien peut en débloquer plusieurs dès la mise à jour.
 
@@ -66,7 +66,7 @@ titles:
 | `STATISTIC` | `{type: STATISTIC, targets: [DEATHS], amount: 25}` · `MINE_BLOCK:DIAMOND_ORE` · `KILL_ENTITY:ZOMBIE` · `WALK_ONE_CM` |
 | `ADVANCEMENT` | `{type: ADVANCEMENT, targets: ["minecraft:story/enter_the_nether"]}` |
 | `PLAYTIME` | `{type: PLAYTIME, amount: 100}` (heures) |
-| `QUEST` | `{type: QUEST, targets: [la_lune_sanglante]}` ; sans `targets` : nombre de quêtes terminées |
+| `QUEST` | `{type: QUEST, targets: [la_nuit_d_orage]}` ; sans `targets` : nombre de quêtes terminées |
 | `TITLES` | `{type: TITLES, amount: 15}` ; `targets: ["rarity:EPIC"]` pour compter une rareté |
 | `KILL` (avec conditions) | `{type: KILL, amount: 300, conditions: {sneaking: true}}` (compte à partir de l'ajout du titre) |
 

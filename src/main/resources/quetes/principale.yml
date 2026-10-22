@@ -1,182 +1,161 @@
-# Histoire principale — « Les Éclats de la Fracture »
+# Histoire principale d'exemple — « La Guilde des Aventuriers »
 # Format complet des quêtes : voir le haut de tutoriel.yml
 #
-# Lore d'exemple : il y a longtemps, l'archimage Varenn voulut enchaîner le ciel avec la Couronne d'Astre.
-# La Couronne se brisa : c'est la Fracture. Ses Éclats tombèrent sur le monde, réveillant les morts et
-# ouvrant la Porte Brûlante. Ceux dont l'âme a résonné avec un Éclat sont les Éveillés. L'Archiviste Maëlis,
-# gardienne de la mémoire d'avant la Fracture, les guide par la pensée.
+# Lore d'exemple : la Guilde des Aventuriers recrute. Brann, son maître, fait passer les épreuves qui
+# permettent de monter en grade, de Recrue à Légende. Tout est modifiable ou supprimable.
 
 quests:
-  le_reveil:
-    name: "<gold>I. Le Réveil des morts"
+  guilde_recrue:
+    name: "<gold>Rang I — Recrue"
     category: MAIN
     level: 2
-    icon: ROTTEN_FLESH
+    icon: STRING
     start: AUTO
     description:
-      - "<gray>Depuis la Fracture, les morts ne"
-      - "<gray>reposent plus. Une voix t'appelle."
+      - "<gray>La Guilde des Aventuriers recrute."
+      - "<gray>Première épreuve : les araignées."
     requirements:
       level: 2
     stages:
       - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Éveillé… m'entends-tu ? Je suis Maëlis, l'Archiviste.</i>"
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>Depuis la Fracture, les morts se relèvent. Montre-moi ce que vaut ton Éclat. »</i>"
+          - "<gold>Brann <dark_gray>» <gray><i>« Alors comme ça, tu veux rejoindre la Guilde ? Commence par nettoyer les grottes. »</i>"
         objectives:
-          - {type: KILL, targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER], amount: 6, display: "Éliminer des morts-vivants"}
+          - {type: KILL, targets: [SPIDER, CAVE_SPIDER], amount: 4, display: "Éliminer des araignées"}
       - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Leur chair porte la marque des Éclats. Rapporte-m'en, je dois l'étudier. »</i>"
+          - "<gold>Brann <dark_gray>» <gray><i>« Rapporte-moi leur fil, il servira aux cordes de la Guilde. »</i>"
         objectives:
-          - {type: COLLECT, targets: [ROTTEN_FLESH], amount: 8, take: true, display: "Rapporter de la chair putréfiée"}
+          - {type: COLLECT, targets: [STRING], amount: 6, take: true, display: "Rapporter de la ficelle"}
     rewards:
       xp: 120
       items:
-        - {item: "minecraft:bread", amount: 8}
+        - {item: "minecraft:cooked_chicken", amount: 8}
     complete-text:
-      - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Bien. Tu n'es pas comme les autres. Nous nous reparlerons. »</i>"
+      - "<gold>Brann <dark_gray>» <gray><i>« Bienvenue dans la Guilde, recrue. »</i>"
 
-  les_murmures:
-    name: "<gold>II. Les Murmures des profondeurs"
+  guilde_bronze:
+    name: "<gold>Rang II — Bronze"
     category: MAIN
-    level: 5
-    icon: LANTERN
+    level: 6
+    icon: GUNPOWDER
     start: AUTO
     description:
-      - "<gray>Sous la terre, quelque chose murmure"
-      - "<gray>le nom de Varenn."
+      - "<gray>Les creepers menacent les routes"
+      - "<gray>des marchands."
     requirements:
-      level: 5
-      quests: [le_reveil]
+      level: 6
+      quests: [guilde_recrue]
     stages:
       - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Les mineurs entendent des voix sous la roche. Descends, et sois prudent. »</i>"
+          - "<gold>Brann <dark_gray>» <gray><i>« Les marchands se plaignent des explosions en forêt. Va voir ça. »</i>"
         objectives:
-          - {type: CONDITION, conditions: {y-below: 30}, display: "Descendre sous la couche 30"}
-          - {type: KILL, targets: [SKELETON, STRAY, BOGGED], amount: 5, display: "Éliminer des squelettes"}
-      - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Il me faut de quoi alimenter les lanternes des Archives. »</i>"
-        objectives:
-          - {type: COLLECT, targets: [COAL, CHARCOAL], amount: 16, take: true, display: "Rapporter du charbon"}
+          - {type: BIOME, targets: ["*FOREST*"], display: "Patrouiller en forêt"}
+          - {type: KILL, targets: [CREEPER], amount: 3, display: "Éliminer des creepers"}
+      - objectives:
+          - {type: COLLECT, targets: [GUNPOWDER], amount: 5, take: true, display: "Rapporter de la poudre à canon"}
     rewards:
       xp: 300
-      job-xp: 100
       attribute-points: 1
       items:
-        - {item: "minecraft:torch", amount: 32}
+        - {item: "minecraft:arrow", amount: 32}
 
-  les_eclats:
-    name: "<gold>III. Les premiers Éclats"
+  guilde_argent:
+    name: "<gold>Rang III — Argent"
     category: MAIN
-    level: 10
-    icon: AMETHYST_SHARD
+    level: 12
+    icon: GOAT_HORN
     start: AUTO
     description:
-      - "<gray>Les Éclats d'astre brillent dans les"
-      - "<gray>terres sauvages. Il faut les retrouver."
+      - "<gray>Les pillards ont installé un camp"
+      - "<gray>près des montagnes."
     requirements:
-      level: 10
-      quests: [les_murmures]
+      level: 12
+      quests: [guilde_bronze]
     stages:
       - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Les Éclats sont tombés loin d'ici. Voyage, et ouvre l'œil. »</i>"
+          - "<gold>Brann <dark_gray>» <gray><i>« Grimpe et repère leur camp depuis les hauteurs. »</i>"
         objectives:
-          - {type: BIOME, targets: ["*DESERT*", "*BADLANDS*"], display: "Explorer un désert ou des badlands"}
-          - {type: BIOME, targets: ["*JUNGLE*", "*SWAMP*"], display: "Explorer une jungle ou un marais"}
+          - {type: CONDITION, conditions: {y-above: 120}, display: "Atteindre un sommet (au-dessus de la couche 120)"}
       - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Les sorcières ont goûté aux Éclats. Elles en portent encore. »</i>"
+          - "<gold>Brann <dark_gray>» <gray><i>« Tu les as vus ? Alors chasse-les. »</i>"
         objectives:
-          - {type: KILL, targets: [WITCH], amount: 2, display: "Éliminer des sorcières corrompues"}
-          - {type: COLLECT, targets: [AMETHYST_SHARD], amount: 4, take: true, display: "Rassembler des fragments d'astre (améthyste)"}
+          - {type: KILL, targets: [PILLAGER, VINDICATOR], amount: 6, display: "Chasser des pillards"}
     rewards:
-      xp: 600
+      xp: 650
       skill-points: 1
       money: 100
 
-  la_nuit_des_eveilles:
-    name: "<gold>IV. La Nuit des Éveillés"
+  guilde_or:
+    name: "<gold>Rang IV — Or"
     category: MAIN
-    level: 15
-    icon: PHANTOM_MEMBRANE
+    level: 20
+    icon: PRISMARINE_SHARD
     start: AUTO
     description:
-      - "<gray>Chaque nuit, la Fracture s'élargit."
-      - "<gray>Les Éveillés doivent tenir la ligne."
+      - "<gray>Les gardiens des océans attaquent"
+      - "<gray>les navires de la Guilde."
     requirements:
-      level: 15
-      quests: [les_eclats]
+      level: 20
+      quests: [guilde_argent]
     stages:
       - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« La nuit, les créatures de la Fracture sont plus nombreuses. Tiens bon. »</i>"
+          - "<gold>Brann <dark_gray>» <gray><i>« Nos bateaux ne reviennent plus. Plonge et trouve ce qui se passe. »</i>"
         objectives:
-          - type: KILL
-            targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CREEPER, WITCH, ENDERMAN, PHANTOM]
-            amount: 25
-            conditions: {time: NIGHT}
-            display: "Éliminer des monstres de nuit"
-      - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Les Phantoms sont les veilleurs de Varenn. Abats-les. »</i>"
-        objectives:
-          - {type: KILL, targets: [PHANTOM], amount: 3, display: "Abattre des Phantoms"}
+          - {type: CONDITION, conditions: {in-water: true, y-below: 45}, display: "Plonger en eau profonde (sous la couche 45)"}
+          - {type: KILL, targets: [DROWNED], amount: 8, display: "Éliminer des noyés"}
+      - objectives:
+          - {type: KILL, targets: [GUARDIAN], amount: 3, display: "Éliminer des gardiens"}
     rewards:
-      xp: 1000
+      xp: 1100
       attribute-points: 2
       items:
         - {item: "minecraft:golden_apple", amount: 2}
 
-  la_porte_brulante:
-    name: "<gold>V. La Porte Brûlante"
+  guilde_platine:
+    name: "<gold>Rang V — Platine"
     category: MAIN
-    level: 25
-    icon: BLAZE_ROD
+    level: 30
+    icon: QUARTZ
     start: AUTO
     description:
-      - "<gray>La Fracture a ouvert un passage vers"
-      - "<gray>un monde de flammes."
+      - "<gray>Une expédition dans le Nether,"
+      - "<gray>réservée aux meilleurs."
     requirements:
-      level: 25
-      quests: [la_nuit_des_eveilles]
+      level: 30
+      quests: [guilde_or]
     stages:
       - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Varenn a fui par la Porte Brûlante. Il faut la franchir. »</i>"
+          - "<gold>Brann <dark_gray>» <gray><i>« La Guilde finance une expédition dans le Nether. Tu en seras. »</i>"
         objectives:
-          - {type: CONDITION, conditions: {dimensions: [NETHER]}, display: "Franchir la Porte Brûlante (Nether)"}
+          - {type: CONDITION, conditions: {dimensions: [NETHER]}, display: "Entrer dans le Nether"}
       - objectives:
-          - {type: KILL, targets: [BLAZE], amount: 6, display: "Éliminer des Blazes"}
-          - {type: COLLECT, targets: [BLAZE_ROD], amount: 4, take: true, display: "Rapporter des bâtons de Blaze"}
-      - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Les squelettes noirs gardent la forteresse. Brise leur garde. »</i>"
-        objectives:
-          - {type: KILL, targets: [WITHER_SKELETON], amount: 5, display: "Éliminer des Wither squelettes"}
+          - {type: KILL, targets: [GHAST], amount: 2, display: "Abattre des ghasts"}
+          - {type: COLLECT, targets: [QUARTZ], amount: 16, take: true, display: "Rapporter du quartz du Nether"}
     rewards:
-      xp: 2500
+      xp: 2600
       skill-points: 1
       attribute-points: 1
       money: 300
       items:
         - {item: "minecraft:diamond", amount: 3}
 
-  le_coeur_de_la_fracture:
-    name: "<gold>VI. Le Cœur de la Fracture"
+  guilde_legende:
+    name: "<gold>Rang VI — Légende"
     category: MAIN
-    level: 40
-    icon: DRAGON_EGG
+    level: 45
+    icon: NETHER_STAR
     start: AUTO
     description:
-      - "<gray>Au bout du monde bat le Cœur de la"
-      - "<gray>Fracture, gardé par un dragon."
+      - "<gray>L'épreuve finale : deux monstres"
+      - "<gray>que personne n'ose affronter."
     requirements:
-      level: 40
-      quests: [la_porte_brulante]
+      level: 45
+      quests: [guilde_platine]
     stages:
       - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Le dernier Éclat bat au-delà des étoiles, dans la Fin. Le Cœur de la Fracture. »</i>"
+          - "<gold>Brann <dark_gray>» <gray><i>« Il reste une épreuve. Celle qui fait les légendes. »</i>"
         objectives:
-          - {type: CONDITION, conditions: {dimensions: [THE_END]}, display: "Atteindre la Fin"}
-      - text:
-          - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Le dragon est le dernier gardien de Varenn. Tout repose sur toi, Éveillé. »</i>"
-        objectives:
-          - {type: KILL, targets: [ENDERMAN], amount: 10, display: "Éliminer des Endermen"}
-          - {type: KILL, targets: [ENDER_DRAGON], amount: 1, display: "Vaincre le Dragon, gardien du Cœur"}
+          - {type: KILL, targets: [ELDER_GUARDIAN], amount: 1, display: "Vaincre un gardien ancien"}
+          - {type: KILL, targets: [WITHER], amount: 1, display: "Vaincre le Wither"}
     rewards:
       xp: 8000
       skill-points: 2
@@ -184,9 +163,6 @@ quests:
       money: 1000
       items:
         - {item: "minecraft:netherite_ingot", amount: 1}
-      titles: [heros_de_la_fracture]
-      text:
-        - "<light_purple>La gratitude éternelle de l'Archiviste"
+      titles: [legende_de_la_guilde]
     complete-text:
-      - "<dark_aqua>Maëlis <dark_gray>» <gray><i>« Le Cœur s'est tu. La Fracture ne se refermera pas d'un coup…</i>"
-      - "<dark_aqua>Maëlis <dark_gray>» <gray><i>mais grâce à toi, le monde a de nouveau un avenir. Merci, Éveillé. »</i>"
+      - "<gold>Brann <dark_gray>» <gray><i>« Ton nom sera gravé sur le mur de la Guilde. Légende. »</i>"

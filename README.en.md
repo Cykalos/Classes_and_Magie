@@ -86,7 +86,7 @@ Class → **race** → **traits** → **weaknesses** → **job**, each step open
 `/quetes` (alias `/quests`) opens the **journal**: quests in progress, available, locked and completed, by category. Every quest is **optional**.
 
 - **Tutorial** offered at the end of character creation (accept or decline, can be started later from the journal).
-- **Main story** in 6 chapters (*The Shards of the Fracture*), **2 quests per class**, **side quests** (some repeatable) and **secret quests** discovered under specific conditions (at night, in a biome, fishing in a storm…).
+- **Example main story** in 6 ranks (*The Adventurers' Guild*), **2 quests per class**, **side quests** (some repeatable) and **secret quests** discovered under specific conditions (at night, in a biome, fishing in a storm…).
 - **Sidebar** tracking the objectives, shared with the party board (`/quetes panneau` to hide it).
 - Objectives: kill, gather, craft, fish, cast a skill, collect items, explore a biome, reach a place or a level… with conditions (at night, sword in hand, sneaking…).
 - Rewards: class and job XP, skill tree and attribute points, money (Vault), items (custom items included), commands.

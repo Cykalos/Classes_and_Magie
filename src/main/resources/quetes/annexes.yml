@@ -1,90 +1,79 @@
-# Quêtes annexes — facultatives, certaines répétables
+# Quêtes annexes d'exemple — facultatives, certaines répétables
 # Format complet des quêtes : voir le haut de tutoriel.yml
 
 quests:
-  provisions:
-    name: "<aqua>Provisions pour la route"
+  le_boulanger:
+    name: "<aqua>Le Boulanger"
     category: SIDE
     level: 1
-    icon: BREAD
-    description:
-      - "<gray>Les voyageurs ont toujours faim."
+    icon: WHEAT
+    description: ["<gray>Le four du village a besoin de blé."]
     stages:
-      - text: ["<aqua>L'aubergiste <dark_gray>» <gray><i>« Du pain ! Il m'en faut pour les caravanes. »</i>"]
-        objectives:
-          - {type: COLLECT, targets: [BREAD], amount: 16, take: true, display: "Rapporter du pain"}
+      - objectives:
+          - {type: COLLECT, targets: [WHEAT], amount: 32, take: true, display: "Rapporter du blé"}
     rewards:
       xp: 80
-      money: 50
+      money: 40
       items:
-        - {item: "minecraft:cooked_beef", amount: 8}
+        - {item: "minecraft:bread", amount: 12}
 
-  le_coup_de_main:
-    name: "<aqua>Le Coup de main"
+  bois_pour_l_hiver:
+    name: "<aqua>Du bois pour l'hiver"
     category: SIDE
-    level: 3
-    icon: TORCH
-    description:
-      - "<gray>Les rues sont trop sombres la nuit."
+    level: 2
+    icon: OAK_LOG
+    description: ["<gray>Les nuits vont être froides."]
     stages:
       - objectives:
-          - {type: CRAFT, targets: [TORCH], amount: 16, display: "Fabriquer des torches (16 fois)"}
+          - {type: COLLECT, targets: [OAK_LOG, BIRCH_LOG, SPRUCE_LOG], amount: 32, take: true, display: "Rapporter des bûches"}
     rewards:
-      xp: 150
-      job-xp: 150
+      xp: 120
+      job-xp: 100
 
-  peche_du_jour:
-    name: "<aqua>La Pêche du jour"
+  concours_de_peche:
+    name: "<aqua>Concours de pêche"
     category: SIDE
     level: 3
-    icon: FISHING_ROD
-    repeatable: true
-    cooldown-hours: 12
-    description:
-      - "<gray>Répétable toutes les 12 heures."
-    stages:
-      - objectives:
-          - {type: FISH, amount: 15, display: "Pêcher 15 fois"}
-    rewards:
-      xp: 200
-      money: 60
-
-  chasseur_de_primes:
-    name: "<aqua>Chasseur de primes"
-    category: SIDE
-    level: 5
-    icon: CROSSBOW
+    icon: COD
     repeatable: true
     cooldown-hours: 24
-    description:
-      - "<gray>Le tableau des primes se renouvelle"
-      - "<gray>chaque jour."
+    description: ["<gray>Répétable chaque jour."]
     stages:
       - objectives:
-          - type: KILL
-            targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH]
-            amount: 30
-            display: "Éliminer 30 monstres"
+          - {type: FISH, amount: 10, display: "Pêcher 10 fois"}
     rewards:
-      xp: 300
+      xp: 150
+      money: 50
+
+  patrouille_de_nuit:
+    name: "<aqua>Patrouille de nuit"
+    category: SIDE
+    level: 5
+    icon: LANTERN
+    repeatable: true
+    cooldown-hours: 24
+    description: ["<gray>Répétable chaque jour."]
+    stages:
+      - objectives:
+          - {type: KILL, targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH], amount: 20, conditions: {time: NIGHT}, display: "Éliminer 20 monstres de nuit"}
+    rewards:
+      xp: 350
       money: 100
 
-  l_explorateur:
-    name: "<aqua>L'Explorateur"
+  le_cartographe:
+    name: "<aqua>Le Cartographe"
     category: SIDE
-    level: 10
-    icon: FILLED_MAP
-    description:
-      - "<gray>Les cartographes paient bien les"
-      - "<gray>récits de terres lointaines."
+    level: 8
+    icon: COMPASS
+    description: ["<gray>Des cartes à compléter, des terres à décrire."]
     stages:
       - objectives:
-          - {type: BIOME, targets: ["*SNOWY*", "*FROZEN*", "ICE_SPIKES"], display: "Explorer une terre gelée"}
-          - {type: BIOME, targets: [CHERRY_GROVE], display: "Explorer un bosquet de cerisiers"}
-          - {type: BIOME, targets: [MUSHROOM_FIELDS], display: "Explorer une île aux champignons"}
-          - {type: BIOME, targets: ["*OCEAN*"], display: "Naviguer en pleine mer"}
+          - {type: BIOME, targets: ["*SAVANNA*"], display: "Explorer une savane"}
+          - {type: BIOME, targets: ["*TAIGA*"], display: "Explorer une taïga"}
+          - {type: BIOME, targets: ["*BIRCH*"], display: "Explorer une forêt de bouleaux"}
+          - {type: BIOME, targets: ["*BEACH*"], display: "Longer une plage"}
     rewards:
-      xp: 800
+      xp: 700
       money: 150
       items:
-        - {item: "minecraft:spyglass", amount: 1}
+        - {item: "minecraft:map", amount: 4}
