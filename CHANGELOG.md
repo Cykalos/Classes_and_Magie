@@ -3,6 +3,29 @@
 Each version is described in English first, then in French (🇫🇷 En français).
 Chaque version est décrite en anglais, puis en français (🇫🇷 En français).
 
+## [1.11.1](https://github.com/Cykalos/Classes_and_Magie/compare/v1.11.0...v1.11.1) (2026-10-22)
+
+### 🐛 Fixes
+
+- quests are offered instead of starting on their own, skill arrows always hit, commands grouped under /classe ([`de17df0`](https://github.com/Cykalos/Classes_and_Magie/commit/de17df06e0a0ebd881909b990e7c39b03687b0b6))
+  - Story and class quests that become available are offered in chat with [Accept] / [Later] instead of starting on their own; secret quests still start when discovered (config.yml → quests.ask-before-start)
+  - A message confirms the items handed over when a stage takes items from the inventory
+  - Skill arrows (Piercing arrow, Volley…) no longer bounce off a target that was just hit
+  - Administration grouped under /classe admin: /classe admin quete … and /classe admin titre …
+  - /classe quetes and /classe titres for players (/quetes and /titres stay available as shortcuts)
+
+### 🇫🇷 En français
+
+#### 🐛 Corrections
+
+- les quêtes sont proposées au lieu de démarrer seules, les flèches des compétences touchent toujours, commandes regroupées sous /classe
+  - Les quêtes de l'histoire et de classe qui deviennent disponibles sont proposées dans le chat avec [Accepter] / [Plus tard] au lieu de démarrer seules ; les quêtes secrètes démarrent toujours quand elles sont découvertes (config.yml → quests.ask-before-start)
+  - Un message confirme les objets remis quand une étape retire des objets de l'inventaire
+  - Les flèches des compétences (Flèche perçante, Volée…) ne rebondissent plus sur une cible qui vient d'être touchée
+  - Administration regroupée sous /classe admin : /classe admin quete … et /classe admin titre …
+  - /classe quetes et /classe titres pour les joueurs (/quetes et /titres restent disponibles en raccourci)
+
+
 ## [1.11.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.10.1...v1.11.0) (2026-10-22)
 
 ### ✨ New features
