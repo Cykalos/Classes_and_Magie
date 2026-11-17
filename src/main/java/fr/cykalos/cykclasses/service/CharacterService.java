@@ -42,12 +42,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 /**
- * Création du personnage (race, traits, métier), kits de départ, arbre de compétences et attributs.
+ * Character creation (race, traits, job), starter kits, skill tree and attributes.
  */
 public final class CharacterService {
 
     private final CykClasses plugin;
-    /** trait unique -> détenteur */
+    /** unique trait -> owner */
     private final Map<String, UUID> uniqueOwners = new HashMap<>();
     private File uniquesFile;
 
@@ -81,9 +81,9 @@ public final class CharacterService {
         return uniqueOwners.get(traitId.toLowerCase(Locale.ROOT));
     }
 
-    // ------------------------------------------------------------ Étapes de création
+    // ------------------------------------------------------------ Creation steps
 
-    /** Vrai tant qu'il reste une étape de création à faire (classe, race, traits, faiblesses, métier). */
+    /** True while a creation step remains (class, race, traits, weaknesses, job). */
     public boolean creationPending(Player player) {
         PlayerProfile p = plugin.profiles().get(player);
         var mod = plugin.modules();
@@ -94,7 +94,7 @@ public final class CharacterService {
                 || (mod.jobs() && p.getJobId() == null && !p.isJobPromptDone() && !plugin.content().jobs().isEmpty());
     }
 
-    /** Ouvre l'étape suivante de la création du personnage, s'il en reste une. */
+    /** Opens the next character creation step, if one remains. */
     public void continueCreation(Player player) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (!player.isOnline()) {
@@ -107,7 +107,7 @@ public final class CharacterService {
             } else if (mod.races() && p.getRaceId() == null && !plugin.content().races().isEmpty()) {
                 new RaceGui(plugin, player).open();
             } else if (mod.traits() && !p.isTraitsConfirmed() && !plugin.content().traits().isEmpty()) {
-                // Tirés une seule fois : fermer le menu ou se déconnecter ne relance pas le tirage
+                // Rolled only once: closing the menu or disconnecting does not roll again
                 if (!p.isTraitsRolled()) {
                     rollTraits(player, p, false);
                 }
@@ -162,7 +162,7 @@ public final class CharacterService {
         player.playSound(Sound.sound(Key.key("block.amethyst_block.resonate"), Sound.Source.PLAYER, 1f, 1.3f));
     }
 
-    /** Tire de nouveaux traits (libère d'abord un éventuel trait unique). */
+    /** Rolls new traits (first releasing any unique trait). */
     public void rollTraits(Player player, PlayerProfile p, boolean announce) {
         releaseUniques(p);
         YamlConfiguration cfg = plugin.content().traitsConfig();
@@ -262,7 +262,7 @@ public final class CharacterService {
         }
     }
 
-    /** Admin : retire tous les traits (le joueur pourra en retirer de nouveaux). */
+    /** Admin: removes every trait (the player can roll new ones). */
     public void resetTraits(Player player) {
         PlayerProfile p = plugin.profiles().get(player);
         releaseUniques(p);
@@ -283,10 +283,10 @@ public final class CharacterService {
         return wcfg() != null && wcfg().getBoolean("roll.enabled", true);
     }
 
-    /** L'étape « faiblesses » de la création a-t-elle quelque chose à montrer ? */
+    /** Does the "weaknesses" creation step have anything to show? */
     private boolean hasWeaknessStep(Player player, PlayerProfile p) {
         if (!wcfg().getBoolean("roll.show-step", true)) {
-            // Tirage silencieux, sans menu : le joueur les verra avec /faiblesses.
+            // Silent roll, no menu: the player will see them with /faiblesses.
             if (!p.isWeaknessesRolled()) {
                 rollWeaknesses(player, p, false);
             }
@@ -304,7 +304,7 @@ public final class CharacterService {
         String race = plugin.modules().races() ? p.getRaceId() : null;
         List<Weakness> out = new ArrayList<>();
         for (Weakness w : plugin.content().predefinedWeaknesses(race, p.getClassId(), p.getSubclassId())) {
-            // exclude-races / exclude-classes s'appliquent aussi aux faiblesses imposées (évite les doublons)
+            // exclude-races / exclude-classes also apply to imposed weaknesses (avoids duplicates)
             boolean excluded = (race != null && w.excludeRaces().contains(race))
                     || w.excludeClasses().contains(p.getClassId())
                     || (p.getSubclassId() != null && w.excludeClasses().contains(p.getSubclassId()));
@@ -326,7 +326,7 @@ public final class CharacterService {
         return out;
     }
 
-    /** Faiblesses actives : imposées (race, classe, sous-classe) puis tirées au hasard. */
+    /** Active weaknesses: imposed (race, class, subclass), then randomly rolled. */
     public List<Weakness> weaknessesOf(PlayerProfile p) {
         List<Weakness> out = new ArrayList<>(predefinedOf(p));
         for (Weakness w : rolledOf(p)) {
@@ -338,7 +338,7 @@ public final class CharacterService {
     }
 
     /**
-     * Toutes les faiblesses du personnage en texte : classe, race (et malus), traits, imposées et tirées.
+     * Every weakness of the character as text: class, race (and penalty), traits, imposed and rolled.
      */
     public List<String> allWeaknessLabels(PlayerProfile p) {
         java.util.LinkedHashSet<String> out = new java.util.LinkedHashSet<>();
@@ -386,8 +386,8 @@ public final class CharacterService {
     }
 
     /**
-     * Tire les faiblesses : entre roll.min et roll.max, selon les chances de chaque faiblesse
-     * pour la race et la classe du joueur. Les faiblesses imposées ne sont pas tirées en double.
+     * Rolls weaknesses: between roll.min and roll.max, according to each weakness's chance
+     * for the player's race and class. Imposed weaknesses are never rolled a second time.
      */
     public void rollWeaknesses(Player player, PlayerProfile p, boolean announce) {
         List<String> ids = new ArrayList<>();
@@ -449,7 +449,7 @@ public final class CharacterService {
         return false;
     }
 
-    /** Admin : retire les faiblesses tirées (un nouveau tirage aura lieu). */
+    /** Admin: removes the rolled weaknesses (a new roll will happen). */
     public void resetWeaknesses(Player player) {
         PlayerProfile p = plugin.profiles().get(player);
         p.setWeaknesses(List.of());
@@ -459,7 +459,7 @@ public final class CharacterService {
         plugin.stats().apply(player);
     }
 
-    /** Admin : ajoute ou retire une faiblesse précise. */
+    /** Admin: adds or removes a specific weakness. */
     public boolean setWeakness(Player player, String id, boolean add) {
         PlayerProfile p = plugin.profiles().get(player);
         Weakness w = plugin.content().weakness(id);
@@ -479,7 +479,7 @@ public final class CharacterService {
         return true;
     }
 
-    // ------------------------------------------------------------ Métier
+    // ------------------------------------------------------------ Job
 
     public boolean chooseJob(Player player, Job job) {
         PlayerProfile p = plugin.profiles().get(player);
@@ -538,12 +538,12 @@ public final class CharacterService {
         plugin.messages().send(player, "kit-received");
     }
 
-    /** Crée un objet au format de kits.yml (utilisé aussi par les récompenses de quêtes). */
+    /** Creates an item in the kits.yml format (also used by quest rewards). */
     public ItemStack buildItem(KitItem ki, Player player) {
         return build(ki, player);
     }
 
-    /** Donne un objet au joueur (au sol si l'inventaire est plein). */
+    /** Gives an item to the player (dropped on the ground if the inventory is full). */
     public void giveItem(Player player, ItemStack item) {
         place(player, player.getInventory(), item, null);
     }
@@ -555,7 +555,7 @@ public final class CharacterService {
         }
         boolean custom = ki.item().contains(":") && !ki.item().toLowerCase(Locale.ROOT).startsWith("minecraft:");
         if (custom && ki.name() == null && ki.lore().isEmpty() && ki.enchants().isEmpty() && !ki.unbreakable() && ki.itemModel() == null) {
-            return item; // objet custom laissé tel quel
+            return item; // custom item left as is
         }
         ItemMeta meta = item.getItemMeta();
         if (meta == null) {
@@ -619,9 +619,9 @@ public final class CharacterService {
         inv.addItem(item).values().forEach(rest -> player.getWorld().dropItemNaturally(player.getLocation(), rest));
     }
 
-    // ------------------------------------------------------------ Arbre de compétences
+    // ------------------------------------------------------------ Skill tree
 
-    /** Raison pour laquelle le nœud ne peut pas être amélioré, ou null si c'est possible. */
+    /** Reason why the node cannot be upgraded, or null if it can. */
     public String cannotInvest(PlayerProfile p, SkillTree tree, TreeNode node) {
         int rank = p.getNodeRank(tree.classId() + ":" + node.id());
         if (rank >= node.maxRank()) {

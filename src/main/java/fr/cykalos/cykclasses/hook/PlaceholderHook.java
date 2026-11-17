@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Placeholders : %cykclasses_class%, _subclass, _class_id, _level, _xp, _xp_required,
- * _xp_percent, _mana, _max_mana.
+ * PlaceholderAPI placeholders %cykclasses_<name>% (class, subclass, race, job, level, mana, traits, weaknesses,
+ * titles, quests…): see the "Commands" page of the wiki for the full list.
  */
 public final class PlaceholderHook extends PlaceholderExpansion {
 

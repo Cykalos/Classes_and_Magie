@@ -31,8 +31,8 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
- * Restrictions d'objets (items.yml) : classe, race, métier, niveau et attributs requis
- * pour attaquer, tirer, utiliser ou porter un objet.
+ * Item restrictions (items.yml): class, race, job, level and attributes required
+ * to attack with, shoot, use or wear an item.
  */
 public final class ItemRestrictionService implements Listener {
 
@@ -46,7 +46,7 @@ public final class ItemRestrictionService implements Listener {
         this.plugin = plugin;
     }
 
-    /** Règle non respectée par le joueur pour cet usage, ou null si l'utilisation est permise. */
+    /** Rule the player does not meet for this use, or null if the use is allowed. */
     public ItemRule failing(Player player, ItemStack item, ItemRule.Use use) {
         if (item == null || item.getType().isAir() || plugin.content().itemRules().isEmpty()
                 || !plugin.modules().itemRestrictions()) {
@@ -149,7 +149,7 @@ public final class ItemRestrictionService implements Listener {
         return true;
     }
 
-    /** Texte des conditions, ex. « Guerrier, Paladin · niv. 10 · Force 15 ». */
+    /** Text of the conditions, e.g. "Warrior, Paladin · lv. 10 · Strength 15". */
     public String describe(ItemRule rule) {
         List<String> parts = new ArrayList<>();
         if (!rule.classes().isEmpty()) {
@@ -200,7 +200,7 @@ public final class ItemRestrictionService implements Listener {
         }
     }
 
-    // ------------------------------------------------------------ Événements
+    // ------------------------------------------------------------ Events
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent event) {
@@ -244,7 +244,7 @@ public final class ItemRestrictionService implements Listener {
         }
     }
 
-    /** Retire les objets portés qui ne respectent pas leurs conditions (appelé périodiquement). */
+    /** Removes worn items that do not meet their conditions (called periodically). */
     public void enforceArmor(Player player, PlayerProfile profile) {
         if (plugin.content().itemRules().isEmpty() || !plugin.modules().itemRestrictions()) {
             return;

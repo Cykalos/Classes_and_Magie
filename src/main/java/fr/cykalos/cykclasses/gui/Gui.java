@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * Menu d'inventaire simple : chaque slot peut avoir une action au clic.
+ * Simple inventory menu: each slot can have a click action.
  */
 public abstract class Gui implements InventoryHolder {
 
@@ -34,7 +34,7 @@ public abstract class Gui implements InventoryHolder {
 
     protected abstract void build();
 
-    /** Module dont dépend ce menu (config.yml → modules). Désactivé : le menu ne s'ouvre pas. */
+    /** Module this menu depends on (config.yml → modules). Disabled: the menu does not open. */
     protected boolean moduleEnabled() {
         return true;
     }
@@ -69,7 +69,7 @@ public abstract class Gui implements InventoryHolder {
         }
     }
 
-    /** Cadre : bordure en verre noir, intérieur vide pour mettre les boutons en valeur. */
+    /** Frame: black glass border, empty inside to make the buttons stand out. */
     protected void frame() {
         ItemStack border = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).name(" ").build();
         int size = inventory.getSize();
@@ -84,14 +84,14 @@ public abstract class Gui implements InventoryHolder {
     }
 
     /**
-     * Étape obligatoire de la création du personnage : si le joueur ferme ce menu (touche Échap / E),
-     * l'étape en cours est rouverte.
+     * Mandatory character creation step: if the player closes this menu (Esc / E key),
+     * the current step is opened again.
      */
     public boolean isCreationStep() {
         return false;
     }
 
-    /** Appelé quand le joueur ferme lui-même le menu. */
+    /** Called when the player closes the menu themselves. */
     public void onPlayerClose() {
     }
 

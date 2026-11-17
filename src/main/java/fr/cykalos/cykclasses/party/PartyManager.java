@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Gestion des groupes et des invitations (en mémoire : les groupes ne survivent pas à un redémarrage).
+ * Party and invitation management (in memory: parties do not survive a restart).
  */
 public final class PartyManager {
 
@@ -28,7 +28,7 @@ public final class PartyManager {
 
     private final CykClasses plugin;
     private final Map<UUID, Party> byPlayer = new java.util.concurrent.ConcurrentHashMap<>();
-    /** invité -> (groupe -> invitation) */
+    /** invitee -> (party -> invitation) */
     private final Map<UUID, Map<UUID, Invite>> invites = new HashMap<>();
 
     public PartyManager(CykClasses plugin) {
@@ -48,7 +48,7 @@ public final class PartyManager {
         return p != null && p.contains(b.getUniqueId());
     }
 
-    /** Vrai si {@code a} ne doit pas pouvoir blesser {@code b} (même groupe sans dégâts alliés). */
+    /** True if {@code a} must not be able to hurt {@code b} (same party without friendly fire). */
     public boolean isProtectedAlly(Player a, Player b) {
         if (a.equals(b)) {
             return false;
@@ -114,7 +114,7 @@ public final class PartyManager {
         target.sendMessage(Component.text("   ").append(accept).append(Component.text("  ")).append(deny));
     }
 
-    /** @param inviterName nom de l'inviteur, ou null pour la dernière invitation reçue. */
+    /** @param inviterName name of the inviter, or null for the last invitation received. */
     public void accept(Player player, String inviterName) {
         Invite invite = findInvite(player, inviterName, true);
         if (invite == null) {
@@ -276,7 +276,7 @@ public final class PartyManager {
         plugin.chat().sendParty(sender, party, message);
     }
 
-    /** /gc sans argument : bascule le chat du joueur sur le groupe. */
+    /** /gc without arguments: switches the player's chat to the party. */
     public void togglePartyChat(Player player) {
         Party party = get(player);
         var profile = plugin.profiles().get(player);
@@ -355,8 +355,8 @@ public final class PartyManager {
     // ------------------------------------------------------------ XP
 
     /**
-     * Joueurs qui reçoivent l'XP d'une élimination et la part de chacun.
-     * Sans groupe : le tueur seul reçoit 100 %.
+     * Players who receive the XP of a kill, and each one's share.
+     * Without a party: the killer alone gets 100%.
      */
     public Map<Player, Double> xpShares(Player killer, Location where, double xp) {
         Map<Player, Double> out = new LinkedHashMap<>();
@@ -394,7 +394,7 @@ public final class PartyManager {
         return out;
     }
 
-    /** Membres en ligne d'un groupe dans un rayon autour d'un joueur (lui compris). */
+    /** Online members of a party within a radius around a player (the player included). */
     public List<Player> membersNear(Player player, double radius) {
         List<Player> out = new ArrayList<>();
         out.add(player);

@@ -23,12 +23,12 @@ public final class Messages {
     public void load() {
         File file = ConfigFiles.file(plugin, "messages.yml");
         yaml = ConfigFiles.load(plugin, "messages.yml");
-        // Clés ajoutées dans une nouvelle version : texte par défaut du plugin.
+        // Keys added in a new version: the plugin's default text.
         int added = ConfigDefaults.fill(plugin, yaml, ConfigFiles.path("messages.yml"), java.util.Set.of());
         if (added > 0) {
             plugin.getLogger().info(added + " message(s) absent(s) de messages.yml : texte par défaut utilisé.");
         }
-        // Anciens textes par défaut remplacés dans une nouvelle version (si l'admin ne les a pas modifiés)
+        // Old default texts replaced in a new version (if the admin did not change them)
         if ("<red>Défauts :".equals(yaml.getString("gui.flaws-header"))) {
             yaml.set("gui.flaws-header", "<red>Faiblesses :");
         }

@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-/** Arbre de compétences : les nœuds sont placés selon leurs coordonnées x (0-8) / y (0-4). */
+/** Skill tree: nodes are placed according to their x (0-8) / y (0-4) coordinates. */
 public final class SkillTreeGui extends Gui {
 
     @Override

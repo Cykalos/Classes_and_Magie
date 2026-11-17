@@ -34,8 +34,8 @@ import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 /**
- * Forge (objets de qualité avec rareté et stats aléatoires, objets uniques) et gemmes (forge.yml, gems.yml).
- * Les données sont stockées dans l'objet (PersistentDataContainer) et la description est régénérée.
+ * Forge (quality items with rarity and random stats, unique items) and gems (forge.yml, gems.yml).
+ * Data is stored in the item (PersistentDataContainer) and the description is regenerated.
  */
 public final class GearService {
 
@@ -65,9 +65,9 @@ public final class GearService {
     private final List<Rarity> rarities = new ArrayList<>();
     private final Map<String, UniqueTemplate> uniques = new LinkedHashMap<>();
     private final Map<String, Gem> gemDefs = new LinkedHashMap<>();
-    /** template unique -> uid de l'objet créé */
+    /** unique template -> uid of the created item */
     private final Map<String, String> uniqueTaken = new HashMap<>();
-    /** uid des objets uniques libérés par un admin : ces exemplaires ne sont plus valables. */
+    /** uids of unique items released by an admin: these copies are no longer valid. */
     private final java.util.Set<String> releasedUids = new java.util.HashSet<>();
     private File uniquesFile;
 
@@ -90,8 +90,8 @@ public final class GearService {
 
     private YamlConfiguration yaml(String name) {
         YamlConfiguration y = fr.cykalos.cykclasses.config.ConfigFiles.load(plugin, name);
-        // Clés ajoutées dans une nouvelle version : valeurs par défaut du plugin.
-        // Les listes (gemmes, raretés, objets uniques…) ne sont complétées que si elles sont absentes.
+        // Keys added in a new version: the plugin's default values.
+        // Lists (gems, rarities, unique items…) are only filled when they are missing.
         fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, y, fr.cykalos.cykclasses.config.ConfigFiles.path(name), java.util.Set.of(
                 "gems", "uniques", "rarities", "refining.rarities", "crafters", "stat-pool",
                 "refining.always-pure", "drops.targets", "drops.jobs", "refining.jobs"));
@@ -187,13 +187,13 @@ public final class GearService {
 
     public List<Rarity> gemRarities() { return gemRarities; }
 
-    /** Bloc qui sert d'atelier de joaillier (tailleur de pierre par défaut). */
+    /** Block used as the jeweler's workshop (stonecutter by default). */
     public boolean isStation(Material m) {
         Material station = Material.matchMaterial(gems.getString("refining.station", "STONECUTTER"));
         return station != null && station == m;
     }
 
-    /** Métiers autorisés à incruster des gemmes (gems.yml → socketing.jobs, vide = tout le monde). */
+    /** Jobs allowed to socket gems (gems.yml → socketing.jobs, empty = everyone). */
     public boolean canSocket(String jobId) {
         List<String> jobs = gems.getStringList("socketing.jobs");
         return jobs.isEmpty() || (jobId != null && jobs.contains(jobId));
@@ -204,7 +204,7 @@ public final class GearService {
         return jobs.isEmpty() || (jobId != null && jobs.contains(jobId));
     }
 
-    /** Chances (%) de chaque rareté de taille pour un niveau donné. */
+    /** Chance (%) of each cutting rarity for a given level. */
     public Map<String, Double> gemRarityChances(int level) {
         Map<String, Double> out = new LinkedHashMap<>();
         double total = 0;
@@ -258,8 +258,8 @@ public final class GearService {
     private static final String RELEASED_KEY = "_liberes";
 
     /**
-     * Admin : rend un objet unique de nouveau disponible à la forge. L'ancien exemplaire devient
-     * invalide : il se brise dès qu'il est dans l'inventaire d'un joueur.
+     * Admin: makes a unique item available at the forge again. The old copy becomes
+     * invalid: it breaks as soon as it is in a player's inventory.
      */
     public boolean releaseUnique(String templateId) {
         String id = templateId.toLowerCase(Locale.ROOT);
@@ -285,7 +285,7 @@ public final class GearService {
     public Map<String, Gem> gems() { return gemDefs; }
     public List<Rarity> rarities() { return rarities; }
 
-    // ------------------------------------------------------------ Catégories
+    // ------------------------------------------------------------ Categories
 
     public static Category category(Material m) {
         String n = m.name();
@@ -299,7 +299,7 @@ public final class GearService {
         return Category.WEAPON;
     }
 
-    /** Le métier du joueur fabrique-t-il cet objet avec une qualité ? */
+    /** Does the player's job craft this item with a quality? */
     public boolean isQualityCraft(String jobId, Material result) {
         if (jobId == null) {
             return false;
@@ -318,7 +318,7 @@ public final class GearService {
 
     // ------------------------------------------------------------ Forge
 
-    /** Tire la rareté selon le niveau de métier. */
+    /** Rolls the rarity according to the job level. */
     public Rarity rollRarity(int jobLevel) {
         return rollRarity(rarities, jobLevel);
     }
@@ -347,13 +347,13 @@ public final class GearService {
     }
 
     /**
-     * Applique une qualité à un objet fabriqué. Retourne l'objet modifié.
+     * Applies a quality to a crafted item. Returns the modified item.
      */
     public ItemStack forge(ItemStack item, Player crafter, int jobLevel, String forcedRarity) {
         return forge(item, crafter, jobLevel, forcedRarity, 0);
     }
 
-    /** @param powerBonus bonus de spécialisation (+0.15 = stats 15 % plus fortes) */
+    /** @param powerBonus specialization bonus (+0.15 = stats 15% stronger) */
     public ItemStack forge(ItemStack item, Player crafter, int jobLevel, String forcedRarity, double powerBonus) {
         Rarity rarity = forcedRarity == null ? rollRarity(jobLevel) : rarityById(forcedRarity);
         if (rarity == null) {
@@ -368,7 +368,7 @@ public final class GearService {
         if (rarity.id().equals("UNIQUE")) {
             UniqueTemplate tpl = freeUnique(item.getType());
             if (tpl == null) {
-                // Plus d'unique disponible pour cet objet : la meilleure rareté suivante.
+                // No unique left for this item: the next best rarity.
                 rarity = bestNonUnique();
                 if (rarity == null) {
                     return item;
@@ -516,7 +516,7 @@ public final class GearService {
         return raw == null || raw.isBlank() ? new ArrayList<>() : new ArrayList<>(Arrays.asList(raw.split(",")));
     }
 
-    /** Bonus total d'un objet (stats + gemmes), ou null si ce n'est pas un objet forgé. */
+    /** Total bonus of an item (stats + gems), or null if it is not a forged item. */
     public StatModifier modifiers(ItemStack item) {
         if (!isGear(item)) {
             return null;
@@ -533,8 +533,8 @@ public final class GearService {
         return m;
     }
 
-    /** Bonus de l'équipement porté : arme en main (si arme), armures, main secondaire (bouclier). */
-    /** Exemplaire d'un objet unique libéré depuis (/classe admin libererunique) ? */
+    /** Bonus of the worn equipment: weapon in hand (if it is a weapon), armour, off hand (shield). */
+    /** Copy of a unique item released since then (/classe admin libererunique)? */
     public boolean isObsoleteUnique(ItemStack item) {
         if (item == null || item.getType().isAir() || !item.hasItemMeta() || releasedUids.isEmpty()) {
             return false;
@@ -544,7 +544,7 @@ public final class GearService {
         return uid != null && pdc.has(kUnique, PersistentDataType.STRING) && releasedUids.contains(uid);
     }
 
-    /** Brise les exemplaires invalides d'objets uniques présents dans l'inventaire du joueur. */
+    /** Breaks invalid copies of unique items in the player's inventory. */
     public void breakObsoleteUniques(Player player) {
         if (releasedUids.isEmpty()) {
             return;
@@ -592,7 +592,7 @@ public final class GearService {
         return total;
     }
 
-    /** Empreinte de l'équipement (pour savoir quand recalculer les stats). */
+    /** Equipment fingerprint (to know when to recalculate stats). */
     public int signature(Player player) {
         PlayerInventory inv = player.getInventory();
         int h = 1;
@@ -678,7 +678,7 @@ public final class GearService {
 
     // ------------------------------------------------------------ Gemmes
 
-    /** Gemme incrustée : identifiant, rareté de taille (null = ancienne gemme) et pureté (-1 = inconnue). */
+    /** Socketed gem: id, cutting rarity (null = old gem) and purity (-1 = unknown). */
     public record Socketed(String id, String rarity, double purity) {
         static Socketed parse(String entry) {
             String[] p = entry.split("\\|");
@@ -710,7 +710,7 @@ public final class GearService {
         return null;
     }
 
-    /** Multiplicateur des stats d'une gemme taillée selon sa rareté et sa pureté (1 pour les anciennes gemmes). */
+    /** Stat multiplier of a cut gem according to its rarity and purity (1 for old gems). */
     public double gemFactor(String rarityId, double purity) {
         Rarity r = gemRarityById(rarityId);
         if (r == null) {
@@ -725,7 +725,7 @@ public final class GearService {
         return gemId(item) != null && item.getItemMeta().getPersistentDataContainer().has(kGemRaw, PersistentDataType.BYTE);
     }
 
-    /** Gemme brute (à faire tailler par un joaillier). */
+    /** Raw gem (to be cut by a jeweler). */
     public ItemStack createRawGem(Gem gem, int amount) {
         ItemStack it = new ItemStack(gem.material(), Math.max(1, amount));
         ItemMeta meta = it.getItemMeta();
@@ -747,12 +747,12 @@ public final class GearService {
         return it;
     }
 
-    /** Gemme taillée sans rareté (compatibilité / commande admin sans rareté). */
+    /** Cut gem without rarity (compatibility / admin command without rarity). */
     public ItemStack createGem(Gem gem, int amount) {
         return createGem(gem, amount, null, -1);
     }
 
-    /** Gemme taillée avec rareté et pureté. */
+    /** Cut gem with rarity and purity. */
     public ItemStack createGem(Gem gem, int amount, String rarityId, double purity) {
         ItemStack it = new ItemStack(gem.material(), Math.max(1, amount));
         ItemMeta meta = it.getItemMeta();
@@ -789,7 +789,7 @@ public final class GearService {
         return it;
     }
 
-    /** Taille une gemme brute : rareté selon le niveau, pureté aléatoire. */
+    /** Cuts a raw gem: rarity according to the level, random purity. */
     public ItemStack refine(Gem gem, int jobLevel, int bonusLevels, double bonusPurity) {
         Rarity r = rollRarity(gemRarities, jobLevel + bonusLevels);
         ThreadLocalRandom rnd = ThreadLocalRandom.current();
@@ -804,7 +804,7 @@ public final class GearService {
         return createGem(gem, 1, r == null ? null : r.id(), purity);
     }
 
-    /** Résultat d'une tentative d'incrustation. */
+    /** Result of a socketing attempt. */
     public enum SocketResult { OK, NOT_GEAR, NO_SOCKET, WRONG_TYPE, UNKNOWN_GEM, RAW }
 
     public SocketResult socket(ItemStack target, ItemStack gemItem) {
@@ -839,7 +839,7 @@ public final class GearService {
         return SocketResult.OK;
     }
 
-    /** Gemme tirée au hasard lors du minage, ou null. */
+    /** Gem rolled while mining, or null. */
     public Gem rollGemDrop(String jobId, int jobLevel, Material block, double extraChance) {
         ConfigurationSection d = gems.getConfigurationSection("drops");
         if (d == null || gemDefs.isEmpty()) {

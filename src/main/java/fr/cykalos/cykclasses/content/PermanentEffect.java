@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/** Effet de potion permanent (« speed:1 » = Vitesse I). */
+/** Permanent potion effect ("speed:1" = Speed I). */
 public record PermanentEffect(PotionEffectType type, int amplifier) {
 
     public static List<PermanentEffect> parse(List<String> raw) {

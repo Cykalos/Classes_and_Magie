@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-/** Un fichier JSON par joueur dans {@code playerdata/}. */
+/** One JSON file per player in {@code donnees/joueurs/}. */
 public final class JsonStorage implements Storage {
 
     static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();

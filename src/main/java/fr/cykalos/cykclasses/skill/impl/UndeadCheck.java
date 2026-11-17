@@ -5,7 +5,7 @@ import org.bukkit.entity.Entity;
 import java.util.Locale;
 import java.util.Set;
 
-/** Détection simple des morts-vivants (indépendante des tags de version). */
+/** Simple undead detection (independent of version tags). */
 final class UndeadCheck {
 
     private static final Set<String> UNDEAD = Set.of(

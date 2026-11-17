@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Race : bonus/malus permanents, défauts, et pénalités si la race ne convient pas à la classe.
+ * Race: permanent bonuses/penalties, weaknesses, and penalties when the race does not suit the class.
  */
 public record Race(String id, String name, Material icon, List<String> description, StatModifier modifiers,
                    List<Flaw> flaws, List<PermanentEffect> effects, List<String> recommended,
                    Map<String, Affinity> penalties) {
 
-    /** Pénalité appliquée quand la race joue une classe (ou sous-classe) pour laquelle elle n'est pas faite. */
+    /** Penalty applied when the race plays a class (or subclass) it is not suited for. */
     public record Affinity(String description, StatModifier modifiers, List<Flaw> flaws) {
     }
 
-    /** Pénalité pour la classe effective : la sous-classe a priorité, sinon la classe de base. */
+    /** Penalty for the effective class: the subclass takes priority, otherwise the base class. */
     public Affinity penaltyFor(String classId, String subclassId) {
         if (subclassId != null && penalties.containsKey(subclassId)) {
             return penalties.get(subclassId);

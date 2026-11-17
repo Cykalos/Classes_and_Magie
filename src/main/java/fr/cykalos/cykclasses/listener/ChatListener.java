@@ -19,12 +19,12 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Chat : mode « groupe » (/gc) ou global (/global), avec la classe et le niveau affichés.
+ * Chat: "party" mode (/gc) or global (/global), with class and level shown.
  */
 public final class ChatListener implements Listener {
 
     private final CykClasses plugin;
-    /** Joueurs dont le prochain message doit partir dans le chat global (commande /global <message>). */
+    /** Players whose next message must go to global chat (/global <message> command). */
     private final Set<UUID> forceGlobal = ConcurrentHashMap.newKeySet();
 
     public ChatListener(CykClasses plugin) {
@@ -65,7 +65,7 @@ public final class ChatListener implements Listener {
         }
     }
 
-    /** Ligne de chat formatée selon config.yml (chat.global-format / chat.party-format). */
+    /** Chat line formatted according to config.yml (chat.global-format / chat.party-format). */
     public Component format(String path, Player source, Component displayName, Component message) {
         String fmt = plugin.getConfig().getString(path, "<name>: <message>");
         Component title = plugin.titles() == null ? Component.empty() : plugin.titles().chatTag(source);
@@ -85,7 +85,7 @@ public final class ChatListener implements Listener {
                 Text.ph("race", race == null ? "" : race.name()));
     }
 
-    /** Message de groupe ponctuel (/gc message). */
+    /** One-off party message (/gc message). */
     public void sendParty(Player sender, Party party, String message) {
         Component line = format("chat.party-format", sender, sender.displayName(), Component.text(message));
         for (Player p : party.onlineMembers()) {

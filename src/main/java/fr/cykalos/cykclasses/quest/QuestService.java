@@ -33,14 +33,14 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Système de quêtes : chargement du dossier quetes/, progression des joueurs, récompenses.
- * Les quêtes sont toutes facultatives.
+ * Quest system: loading of the quetes/ folder, player progress, rewards.
+ * Every quest is optional.
  */
 public final class QuestService {
 
     public enum Status { COMPLETED, ACTIVE, AVAILABLE, COOLDOWN, LOCKED, HIDDEN }
 
-    /** Fichiers fournis par défaut, créés si le dossier quetes/ n'existe pas encore. */
+    /** Files provided by default, created if the quetes/ folder does not exist yet. */
     private static final String[] DEFAULT_FILES = {
             "quetes/tutoriel.yml", "quetes/principale.yml", "quetes/de-classe.yml",
             "quetes/annexes.yml", "quetes/secretes.yml"};
@@ -143,7 +143,7 @@ public final class QuestService {
         return plugin.profiles().getIfLoaded(player.getUniqueId());
     }
 
-    // ------------------------------------------------------------ État d'une quête
+    // ------------------------------------------------------------ Quest state
 
     public Status status(Player player, PlayerProfile p, Quest q) {
         if (p.isQuestActive(q.id)) {
@@ -171,12 +171,12 @@ public final class QuestService {
         return missingRequirements(player, p, r).isEmpty();
     }
 
-    /** Conditions non remplies, sous forme de lignes lisibles (vide = disponible). */
+    /** Unmet requirements, as readable lines (empty = available). */
     public List<Component> missingRequirements(Player player, PlayerProfile p, Quest q) {
         return missingRequirements(player, p, q.requirements);
     }
 
-    /** Conditions non remplies (quêtes et titres). */
+    /** Unmet requirements (quests and titles). */
     public List<Component> missingRequirements(Player player, PlayerProfile p, QuestRequirements r) {
         List<Component> out = new ArrayList<>();
         if (r.level() > 0 && p.getLevel() < r.level()) {
@@ -247,7 +247,7 @@ public final class QuestService {
         return String.join(", ", out);
     }
 
-    /** Une quête apparaît-elle dans le journal de ce joueur ? */
+    /** Does a quest appear in this player's journal? */
     public boolean visible(Player player, PlayerProfile p, Quest q) {
         Status st = status(player, p, q);
         if (st == Status.HIDDEN) {
@@ -269,7 +269,7 @@ public final class QuestService {
         return true;
     }
 
-    /** Quête réservée à une sous-classe de la classe du joueur : visible (il peut encore la choisir). */
+    /** Quest reserved to a subclass of the player's class: visible (they can still choose it). */
     private boolean parentMatches(PlayerProfile p, List<String> ids) {
         if (p.getClassId() == null || p.getSubclassId() != null) {
             return false;
@@ -287,7 +287,7 @@ public final class QuestService {
         return p.questStages().size();
     }
 
-    // ------------------------------------------------------------ Démarrer, abandonner
+    // ------------------------------------------------------------ Start, abandon
 
     public boolean startQuest(Player player, Quest q, boolean force) {
         PlayerProfile p = profile(player);
@@ -350,7 +350,7 @@ public final class QuestService {
         }
         boolean wasTracked = p.questsTracked().contains(q.id);
         p.removeActiveQuest(q.id);
-        // Une quête abandonnée ne redémarre plus d'elle-même (elle reste disponible dans le journal)
+        // An abandoned quest no longer starts again on its own (it stays available in the journal)
         p.setQuestAbandoned(q.id, true);
         if (wasTracked) {
             trackNext(p);
@@ -359,7 +359,7 @@ public final class QuestService {
         return true;
     }
 
-    /** La quête suivie vient de se terminer ou d'être abandonnée : une autre quête en cours prend sa place. */
+    /** The tracked quest has just been completed or abandoned: another quest in progress takes its place. */
     private void trackNext(PlayerProfile p) {
         if (!plugin.getConfig().getBoolean("quests.auto-track", true) || !p.questsTracked().isEmpty()) {
             return;
@@ -411,7 +411,7 @@ public final class QuestService {
 
     // ------------------------------------------------------------ Tutoriel
 
-    /** Fin de la création du personnage : propose le tutoriel une seule fois. */
+    /** End of character creation: offers the tutorial only once. */
     public void onCreationFinished(Player player) {
         if (!enabled() || !plugin.getConfig().getBoolean("quests.offer-tutorial", true)) {
             return;
@@ -434,7 +434,7 @@ public final class QuestService {
 
     // ------------------------------------------------------------ Progression
 
-    /** Action d'un joueur (tuer, casser, fabriquer…) : fait avancer les objectifs correspondants. */
+    /** Player action (kill, break, craft…): advances the matching objectives. */
     public void progress(Player player, Objective.Type type, List<String> candidates, double amount, String entityName) {
         if (player == null) {
             return;
@@ -484,7 +484,7 @@ public final class QuestService {
                 }
             }
         }
-        // Déclencheurs des quêtes (secrètes en général) qui démarrent sur une action précise
+        // Triggers of quests (usually secret ones) that start on a specific action
         for (Quest q : quests.values()) {
             Objective t = q.trigger;
             if (t == null || t.type != type || p.isQuestActive(q.id) || p.isQuestAbandoned(q.id) || !t.matchesAny(candidates)
@@ -528,7 +528,7 @@ public final class QuestService {
         };
     }
 
-    /** Valeur actuelle d'un objectif (stockée pour les actions, calculée pour les états). */
+    /** Current value of an objective (stored for actions, computed for states). */
     public double value(Player player, PlayerProfile p, Quest q, int stage, int index) {
         Objective o = q.stages.get(stage).objectives().get(index);
         if (moduleSkipped(o)) {
@@ -540,7 +540,7 @@ public final class QuestService {
         return stateValue(player, p, o);
     }
 
-    /** Valeur d'un objectif « état » (niveau, objets, statistiques…), partagée avec les titres. */
+    /** Value of a "state" objective (level, items, statistics…), shared with titles. */
     public double stateValue(Player player, PlayerProfile p, Objective o) {
         if (player == null) {
             return 0;
@@ -580,7 +580,7 @@ public final class QuestService {
         };
     }
 
-    /** Statistique Minecraft : « DEATHS », « WALK_ONE_CM », « MINE_BLOCK:DIAMOND_ORE », « KILL_ENTITY:ZOMBIE »… */
+    /** Minecraft statistic: "DEATHS", "WALK_ONE_CM", "MINE_BLOCK:DIAMOND_ORE", "KILL_ENTITY:ZOMBIE"… */
     private static double statistic(Player player, String raw) {
         try {
             String[] parts = raw.toUpperCase(Locale.ROOT).split(":", 2);
@@ -677,7 +677,7 @@ public final class QuestService {
         return value(player, p, q, stage, index) >= o.amount;
     }
 
-    /** Si tous les objectifs de l'étape sont remplis : étape suivante ou fin de la quête. */
+    /** If every objective of the stage is met: next stage, or end of the quest. */
     public void checkStage(Player player, PlayerProfile p, Quest q) {
         int stage = p.getQuestStage(q.id);
         if (stage < 0 || stage >= q.stages.size()) {
@@ -706,7 +706,7 @@ public final class QuestService {
         }
     }
 
-    /** Administration : termine une quête immédiatement (récompenses comprises). */
+    /** Administration: completes a quest immediately (rewards included). */
     public void forceComplete(Player player, Quest q) {
         PlayerProfile p = profile(player);
         if (p != null) {
@@ -728,7 +728,7 @@ public final class QuestService {
                 Title.Times.times(Duration.ofMillis(200), Duration.ofMillis(2000), Duration.ofMillis(500))));
         player.playSound(Sound.sound(Key.key("ui.toast.challenge_complete"), Sound.Source.PLAYER, 0.8f, 1.1f));
         giveRewards(player, p, q.rewards);
-        // Les quêtes suivantes peuvent démarrer automatiquement
+        // The next quests may start automatically
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (player.isOnline()) {
                 autoStart(player, p);
@@ -780,7 +780,7 @@ public final class QuestService {
         }
     }
 
-    /** Argent via Vault, sans dépendance de compilation (réflexion). */
+    /** Money through Vault, without a compile-time dependency (reflection). */
     private boolean deposit(Player player, double amount) {
         try {
             Class<?> eco = Class.forName("net.milkbowl.vault.economy.Economy");
@@ -827,7 +827,7 @@ public final class QuestService {
         return s.isEmpty() ? id : Character.toUpperCase(s.charAt(0)) + s.substring(1);
     }
 
-    // ------------------------------------------------------------ Vérification régulière
+    // ------------------------------------------------------------ Periodic check
 
     private void tick() {
         if (!enabled()) {
@@ -850,7 +850,7 @@ public final class QuestService {
                     checkStage(player, p, q);
                 }
             }
-            // Démarrage automatique (toutes les 5 vérifications)
+            // Automatic start (every 5 checks)
             if (tickCount % 5 == 0 && !plugin.character().creationPending(player)) {
                 onCreationFinished(player);
                 autoStart(player, p);
@@ -859,9 +859,9 @@ public final class QuestService {
     }
 
     /**
-     * Quêtes qui viennent de devenir disponibles. Les quêtes secrètes démarrent seules (c'est leur découverte) ;
-     * les autres quêtes AUTO ou OFFER sont proposées dans le chat, une seule fois, avec [Accepter] / [Plus tard]
-     * (config.yml → quests.ask-before-start: false pour que les quêtes AUTO démarrent sans demander).
+     * Quests that have just become available. Secret quests start on their own (that is their discovery);
+     * other AUTO or OFFER quests are offered in chat, only once, with [Accepter] / [Plus tard]
+     * (config.yml → quests.ask-before-start: false so that AUTO quests start without asking).
      */
     private void autoStart(Player player, PlayerProfile p) {
         boolean ask = plugin.getConfig().getBoolean("quests.ask-before-start", true);
@@ -887,7 +887,7 @@ public final class QuestService {
         }
     }
 
-    /** Propose une quête dans le chat : [Accepter] / [Plus tard]. Elle reste disponible dans le journal. */
+    /** Offers a quest in chat: [Accepter] / [Plus tard]. It stays available in the journal. */
     private void offer(Player player, Quest q) {
         for (String line : plugin.messages().rawList("quests.offer")) {
             player.sendMessage(Text.mm(line, Text.ph("quest", q.name), Text.ph("id", q.id), Text.ph("level", q.level)));
@@ -920,7 +920,7 @@ public final class QuestService {
         return Text.format(Math.min(value, amount)) + "/" + Text.format(amount);
     }
 
-    /** Lignes du panneau latéral de suivi (vide si rien à afficher). */
+    /** Lines of the quest tracker sidebar (empty if there is nothing to show). */
     public List<Component> trackerLines(Player player, int maxQuests) {
         List<Component> out = new ArrayList<>();
         PlayerProfile p = profile(player);

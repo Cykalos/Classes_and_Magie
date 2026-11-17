@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Choix de la spécialisation (sous-métier) du métier actuel. */
+/** Specialization (sub-job) choice for the current job. */
 public final class SpecGui extends Gui {
 
     @Override

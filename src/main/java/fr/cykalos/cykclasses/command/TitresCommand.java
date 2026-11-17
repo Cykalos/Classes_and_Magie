@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * /classe titres (ou /titres)        collection de titres
+ * /classe titres (or /titres)        title collection
  * /classe titres equiper <id> · /classe titres retirer
- * /classe admin titre <joueur> <give|take|reset> [id] · /classe admin titre liberer <id>
+ * /classe admin titre <player> <give|take|reset> [id] · /classe admin titre liberer <id>
  */
 public final class TitresCommand implements TabExecutor {
 
@@ -54,7 +54,7 @@ public final class TitresCommand implements TabExecutor {
         return true;
     }
 
-    /** Administration : args = [titre, joueur|liberer, action|id, id] (depuis /classe admin titre …). */
+    /** Administration: args = [titre, player|liberer, action|id, id] (from /classe admin titre …). */
     public boolean admin(CommandSender sender, String[] args) {
         if (!sender.hasPermission("cykclasses.admin")) {
             plugin.messages().send(sender, "no-permission");
@@ -105,7 +105,7 @@ public final class TitresCommand implements TabExecutor {
         return true;
     }
 
-    /** Complétion de /classe admin titre … (args = [titre, joueur|liberer, action|id, id]). */
+    /** Tab completion of /classe admin titre … (args = [titre, player|liberer, action|id, id]). */
     public List<String> adminTab(String[] args) {
         List<String> out = new ArrayList<>();
         if (args.length == 2) {

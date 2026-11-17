@@ -19,12 +19,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Journal des quêtes : quêtes en cours, disponibles, verrouillées et terminées, par catégorie.
- * Clic : commencer ou suivre dans le panneau latéral · Maj + clic droit : abandonner.
+ * Quest journal: quests in progress, available, locked and completed, by category.
+ * Click: start, or track in the sidebar · Shift + right click: abandon.
  */
 public final class QuestJournalGui extends Gui {
 
-    /** Onglets : null = quêtes en cours (toutes catégories). */
+    /** Tabs: null = quests in progress (every category). */
     private static final Quest.Category[] TABS = {null, Quest.Category.TUTORIAL, Quest.Category.MAIN,
             Quest.Category.CLASS, Quest.Category.SIDE, Quest.Category.SECRET};
     private static final Material[] TAB_ICONS = {Material.WRITABLE_BOOK, Material.BOOK, Material.NETHER_STAR,
@@ -82,7 +82,7 @@ public final class QuestJournalGui extends Gui {
             set(1 + i, b.build(), e -> new QuestJournalGui(plugin, viewer, t, 0).open());
         }
 
-        // Quêtes de l'onglet
+        // Quests of the tab
         List<Quest> list = new ArrayList<>();
         for (Quest q : qs.all()) {
             if (TABS[tab] == null ? p.isQuestActive(q.id) : q.category == TABS[tab] && qs.visible(viewer, p, q)) {
@@ -104,7 +104,7 @@ public final class QuestJournalGui extends Gui {
             set(AREA[i], questItem(qs, p, q), e -> click(qs, q, e.getClick()));
         }
 
-        // Barre du bas
+        // Bottom bar
         if (current > 0) {
             set(46, new ItemBuilder(Material.ARROW).name(plugin.messages().item("quests.gui.previous")).build(),
                     e -> new QuestJournalGui(plugin, viewer, tab, current - 1).open());
@@ -164,7 +164,7 @@ public final class QuestJournalGui extends Gui {
         };
     }
 
-    /** [terminées, total visible, secrètes restantes à découvrir] */
+    /** [completed, visible total, secret quests left to discover] */
     private int[] counts(QuestService qs, PlayerProfile p, Quest.Category cat) {
         int done = 0, total = 0, secrets = 0;
         if (cat == null) {

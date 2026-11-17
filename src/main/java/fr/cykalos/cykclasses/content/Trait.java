@@ -6,7 +6,7 @@ import fr.cykalos.cykclasses.model.StatModifier;
 import java.util.List;
 
 /**
- * Trait de personnage tiré au hasard.
+ * Randomly rolled character trait.
  */
 public record Trait(String id, String name, List<String> description, Rarity rarity, Kind kind, double weight,
                     StatModifier modifiers, List<Flaw> flaws, List<PermanentEffect> effects, List<String> conflicts) {

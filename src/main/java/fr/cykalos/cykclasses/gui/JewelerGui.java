@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Atelier du joaillier : les gemmes brutes de l'inventaire, à tailler une par une (clic) ou toutes (Maj + clic).
+ * Jeweler's workshop: the raw gems from the inventory, cut one at a time (click) or all of them (Shift + click).
  */
 public final class JewelerGui extends Gui {
 
@@ -38,7 +38,7 @@ public final class JewelerGui extends Gui {
         int level = plugin.jobs().level(p);
         var bonusAll = plugin.jobs().bonus(p, "*");
 
-        // En-tête : chances de rareté et pureté au niveau actuel
+        // Header: rarity chances and purity at the current level
         ItemBuilder info = new ItemBuilder(Material.STONECUTTER)
                 .name(plugin.messages().raw("gems.gui-info").replace("<level>", String.valueOf(level)));
         plugin.gear().gemRarityChances(level + bonusAll.rarityLevels()).forEach((id, pct) -> {
@@ -52,7 +52,7 @@ public final class JewelerGui extends Gui {
                 .replace("<min>", String.valueOf(Math.round(range[0]))).replace("<max>", String.valueOf(Math.round(range[1]))));
         set(4, info.build(), null);
 
-        // Gemmes brutes de l'inventaire, regroupées par type
+        // Raw gems from the inventory, grouped by type
         Map<String, Integer> counts = new LinkedHashMap<>();
         for (ItemStack it : viewer.getInventory().getStorageContents()) {
             if (plugin.gear().isRawGem(it)) {

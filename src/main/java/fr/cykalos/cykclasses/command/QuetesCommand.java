@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * /classe quetes (ou /quetes)              journal
+ * /classe quetes (or /quetes)              journal
  * /classe quetes commencer|abandonner|suivre <id>
- * /classe quetes accepter|refuser <id>     répondre à une quête proposée dans le chat
- * /classe quetes panneau                   afficher / masquer le panneau de suivi
- * /classe quetes tutoriel [oui|non]        lancer ou refuser le tutoriel
- * /classe admin quete <joueur> <start|complete|reset|resetall> [id]
+ * /classe quetes accepter|refuser <id>     answer a quest offered in chat
+ * /classe quetes panneau                   show / hide the quest tracker
+ * /classe quetes tutoriel [oui|non]        start or decline the tutorial
+ * /classe admin quete <player> <start|complete|reset|resetall> [id]
  */
 public final class QuetesCommand implements TabExecutor {
 
@@ -83,7 +83,7 @@ public final class QuetesCommand implements TabExecutor {
         return true;
     }
 
-    /** Administration : args = [quete, joueur, action, id] (depuis /classe admin quete …). */
+    /** Administration: args = [quete, player, action, id] (from /classe admin quete …). */
     public boolean admin(CommandSender sender, String[] args) {
         if (!sender.hasPermission("cykclasses.admin")) {
             plugin.messages().send(sender, "no-permission");
@@ -126,7 +126,7 @@ public final class QuetesCommand implements TabExecutor {
         return true;
     }
 
-    /** Complétion de /classe admin quete … (args = [quete, joueur, action, id]). */
+    /** Tab completion of /classe admin quete … (args = [quete, player, action, id]). */
     public List<String> adminTab(String[] args) {
         List<String> out = new ArrayList<>();
         if (args.length == 2) {

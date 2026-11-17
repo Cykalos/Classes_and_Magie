@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
- * Cache des profils en ligne + accès au stockage sur un thread dédié.
+ * Cache of online profiles + storage access on a dedicated thread.
  */
 public final class ProfileManager {
 
@@ -53,7 +53,7 @@ public final class ProfileManager {
         autosave = Bukkit.getScheduler().runTaskTimer(plugin, this::saveDirty, interval, interval);
     }
 
-    /** Appelé depuis l'AsyncPlayerPreLoginEvent (hors thread principal). */
+    /** Called from AsyncPlayerPreLoginEvent (off the main thread). */
     public PlayerProfile loadBlocking(UUID uuid) {
         try {
             return io.submit(() -> {
@@ -82,7 +82,7 @@ public final class ProfileManager {
         return profiles.values();
     }
 
-    /** Sauvegarde asynchrone d'un instantané pris sur le thread principal. */
+    /** Asynchronous save of a snapshot taken on the main thread. */
     public void saveAsync(PlayerProfile profile) {
         PlayerProfile snapshot = PlayerProfile.fromMap(profile.getUuid(), profile.toMap());
         profile.clearDirty();

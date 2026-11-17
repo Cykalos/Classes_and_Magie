@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Menu principal : choix d'une classe de base.
+ * Main menu: base class choice (or character menu once a class is chosen).
  */
 public final class ClassSelectGui extends Gui {
 
@@ -46,7 +46,7 @@ public final class ClassSelectGui extends Gui {
         frame();
     }
 
-    /** Pas encore de classe : choix parmi les classes de base. */
+    /** No class yet: choice among the base classes. */
     private void buildChoice(PlayerProfile profile) {
         List<RpgClass> classes = new ArrayList<>(plugin.classes().baseClasses());
         int[] slots = centeredSlots(classes.size());
@@ -65,12 +65,12 @@ public final class ClassSelectGui extends Gui {
         set(last + 4, new ItemBuilder(Material.BARRIER).name(plugin.messages().raw("gui.close")).build(), e -> viewer.closeInventory());
     }
 
-    /** Classe choisie : menu du personnage, boutons rangés par thème et centrés sur chaque ligne. */
+    /** Class chosen: character menu, buttons grouped by theme and centred on each row. */
     private void buildProfile(PlayerProfile profile) {
         var mod = plugin.modules();
         set(4, profileHead(profile), null);
 
-        // Ligne 1 : la classe
+        // Row 1: the class
         List<Button> classRow = new ArrayList<>();
         RpgClass rc = plugin.classes().effective(profile);
         if (rc != null) {
@@ -82,7 +82,7 @@ public final class ClassSelectGui extends Gui {
         classRow.add(new Button(new ItemBuilder(Material.NETHER_STAR).name(plugin.messages().raw("gui.subclasses-button")).build(),
                 () -> new SubclassGui(plugin, viewer).open()));
 
-        // Ligne 2 : le personnage
+        // Row 2: the character
         List<Button> charRow = new ArrayList<>();
         var race = plugin.content().race(profile.getRaceId());
         if (mod.races() && !plugin.content().races().isEmpty()) {
@@ -109,7 +109,7 @@ public final class ClassSelectGui extends Gui {
                     () -> new JobGui(plugin, viewer).open()));
         }
 
-        // Ligne 3 : la progression
+        // Row 3: progression
         List<Button> progressRow = new ArrayList<>();
         if (mod.skillTree()) {
             progressRow.add(new Button(new ItemBuilder(Material.OAK_SAPLING).name(plugin.messages().raw("gui.tree-button"))
@@ -139,7 +139,7 @@ public final class ClassSelectGui extends Gui {
     private record Button(org.bukkit.inventory.ItemStack item, Runnable action) {
     }
 
-    /** Place les boutons au centre de la ligne, espacés d'une case quand c'est possible. */
+    /** Places the buttons in the centre of the row, one slot apart when possible. */
     private void placeRow(int row, List<Button> buttons) {
         int n = Math.min(7, buttons.size());
         if (n == 0) {
@@ -154,7 +154,7 @@ public final class ClassSelectGui extends Gui {
         }
     }
 
-    /** Tête du joueur résumant tout son personnage. */
+    /** Player head summarising the whole character. */
     private org.bukkit.inventory.ItemStack profileHead(PlayerProfile p) {
         org.bukkit.inventory.ItemStack head = new org.bukkit.inventory.ItemStack(Material.PLAYER_HEAD);
         var meta = (org.bukkit.inventory.meta.SkullMeta) head.getItemMeta();
@@ -188,7 +188,7 @@ public final class ClassSelectGui extends Gui {
         return head;
     }
 
-    /** Répartit les icônes au centre des lignes intérieures. */
+    /** Spreads the icons across the centre of the inner rows. */
     private int[] centeredSlots(int count) {
         int rows = getInventory().getSize() / 9;
         List<Integer> out = new ArrayList<>();

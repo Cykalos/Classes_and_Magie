@@ -171,12 +171,12 @@ public final class ClasseCommand implements TabExecutor {
             return;
         }
         String action = args[1].toLowerCase(Locale.ROOT);
-        // /classe admin quete <joueur> <start|complete|reset|resetall> [id]
+        // /classe admin quete <player> <start|complete|reset|resetall> [id]
         if (action.equals("quete") || action.equals("quetes")) {
             new QuetesCommand(plugin).admin(sender, java.util.Arrays.copyOfRange(args, 1, args.length));
             return;
         }
-        // /classe admin titre <joueur> <give|take|reset> [id] · /classe admin titre liberer <id>
+        // /classe admin titre <player> <give|take|reset> [id] · /classe admin titre liberer <id>
         if (action.equals("titre") || action.equals("titres")) {
             new TitresCommand(plugin).admin(sender, java.util.Arrays.copyOfRange(args, 1, args.length));
             return;
@@ -254,7 +254,7 @@ public final class ClasseCommand implements TabExecutor {
                 plugin.messages().send(sender, "admin-done");
             }
             case "faiblesse" -> {
-                // /classe admin faiblesse <joueur> <reset|add|remove> [id]
+                // /classe admin faiblesse <player> <reset|add|remove> [id]
                 String op = args.length > 3 ? args[3].toLowerCase(Locale.ROOT) : "";
                 if (op.equals("reset")) {
                     plugin.character().resetWeaknesses(target);
@@ -283,7 +283,7 @@ public final class ClasseCommand implements TabExecutor {
                 plugin.messages().send(sender, "admin-done");
             }
             case "addpoints" -> {
-                // /classe admin addpoints <joueur> <competence|stats> <n>
+                // /classe admin addpoints <player> <competence|stats> <n>
                 String type = args.length > 3 ? args[3].toLowerCase(Locale.ROOT) : "";
                 int n = parseInt(args, 4, 1);
                 if (type.startsWith("comp") || type.startsWith("skill") || type.startsWith("arbre")) {
@@ -313,7 +313,7 @@ public final class ClasseCommand implements TabExecutor {
                     plugin.messages().send(sender, "unknown-class", Text.ph("class", args.length > 3 ? args[3] : "?"));
                     return;
                 }
-                // /classe admin gemme <joueur> <id> [n] [rareté] [pureté] : brute sans rareté, taillée sinon
+                // /classe admin gemme <player> <id> [n] [rarity] [purity]: raw without a rarity, cut otherwise
                 var stack = args.length > 5
                         ? plugin.gear().createGem(gem, parseInt(args, 4, 1), args[5].toUpperCase(Locale.ROOT), parseInt(args, 6, 100))
                         : plugin.gear().createRawGem(gem, parseInt(args, 4, 1));
@@ -321,7 +321,7 @@ public final class ClasseCommand implements TabExecutor {
                 plugin.messages().send(sender, "admin-done");
             }
             case "forge" -> {
-                // /classe admin forge <joueur> <rareté> : applique une rareté à l'objet en main (tests)
+                // /classe admin forge <player> <rarity>: applies a rarity to the item in hand (testing)
                 var hand = target.getInventory().getItemInMainHand();
                 if (hand.getType().isAir() || args.length < 4) {
                     plugin.messages().sendList(sender, "admin-help");

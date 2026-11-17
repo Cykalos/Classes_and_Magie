@@ -183,6 +183,8 @@ Java 25 requis.
 # -> build/libs/Classes_and_Magie-<version>.jar
 ```
 
+Les commentaires du code source sont en anglais ; les textes affichés en jeu et les fichiers de configuration sont en français (traduisibles dans `messages.yml`).
+
 ## Releases
 
 Chaque push sur `main` publie automatiquement une release GitHub avec le `.jar` et le changelog généré à partir des messages de commit ([Conventional Commits](https://www.conventionalcommits.org/fr/)) :

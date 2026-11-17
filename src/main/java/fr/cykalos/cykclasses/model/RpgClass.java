@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * Une classe (ou sous-classe si {@link #parent} n'est pas nul).
+ * A class (or a subclass if {@link #parent} is not null).
  */
 public final class RpgClass {
 
@@ -116,7 +116,7 @@ public final class RpgClass {
         return parent == null ? this : parent;
     }
 
-    /** Compétences disponibles : celles du parent puis celles de la sous-classe. */
+    /** Available skills: the parent's, then the subclass's own. */
     public Map<String, SkillDefinition> skills() {
         if (parent == null) {
             return Collections.unmodifiableMap(ownSkills);
@@ -139,7 +139,7 @@ public final class RpgClass {
         return all;
     }
 
-    /** Faiblesses imposées par cette classe (weaknesses: [...]), héritées du parent sauf inherit-flaws: false. */
+    /** Weaknesses imposed by this class (weaknesses: [...]), inherited from the parent unless inherit-flaws: false. */
     public List<String> weaknessIds() {
         if (parent == null || !inheritFlaws) {
             return ownWeaknesses;

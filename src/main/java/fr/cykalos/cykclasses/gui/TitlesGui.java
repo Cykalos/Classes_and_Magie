@@ -18,14 +18,14 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Collection de titres : débloqués et à débloquer, avec les conditions et les effets.
- * Clic sur un titre débloqué : l'équiper (ou le retirer s'il est déjà équipé).
+ * Title collection: unlocked and locked titles, with their conditions and effects.
+ * Click an unlocked title: equip it (or remove it if it is already equipped).
  */
 public final class TitlesGui extends Gui {
 
     private static final int[] AREA = {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25,
             28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
-    /** 0 = tous, 1 = débloqués, 2 = à débloquer */
+    /** 0 = all, 1 = unlocked, 2 = locked */
     private final int filter;
     private final int page;
 

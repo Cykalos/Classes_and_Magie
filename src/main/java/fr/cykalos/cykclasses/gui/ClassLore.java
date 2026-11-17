@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Construit la description (lore) d'une classe pour les menus.
+ * Builds the description (lore) of a class for menus.
  */
 final class ClassLore {
 
@@ -28,13 +28,13 @@ final class ClassLore {
                 + "</white> <dark_gray>(+" + Text.format(s.healthPerLevel) + "/niv.)"));
         lore.add(Text.item("<gray>• Mana : <aqua>" + Text.format(s.mana) + "</aqua> <dark_gray>(+" + Text.format(s.manaPerLevel)
                 + "/niv., " + Text.format(s.manaRegen) + "/s)"));
-        // Le libellé prend la couleur de sa valeur (vert = bonus, rouge = malus, blanc = neutre)
+        // The label takes the colour of its value (green = bonus, red = penalty, white = neutral)
         lore.add(Text.item("<gray>• " + color("Mêlée", s.meleeDamage) + " <dark_gray>·</dark_gray> " + color("Distance", s.rangedDamage)
                 + " <dark_gray>·</dark_gray> " + color("Magie", s.magicDamage)));
         lore.add(Text.item("<gray>• " + colorInverse("Dégâts subis", s.damageTaken)
                 + (s.speed != 0 ? " <dark_gray>·</dark_gray> " + color("Vitesse", 1 + s.speed) : "")
                 + (s.critChance > 0 ? " <dark_gray>·</dark_gray> <yellow>Critique " + Math.round(s.critChance * 100) + "%</yellow>" : "")));
-        // Faiblesses : défauts de la classe + faiblesses imposées, sous un seul titre
+        // Weaknesses: class flaws + imposed weaknesses, under a single heading
         List<Flaw> flaws = rc.flaws();
         var imposed = plugin.modules().weaknesses()
                 ? plugin.content().predefinedWeaknesses(null, rc.root().id, rc.isSubclass() ? rc.id : null)

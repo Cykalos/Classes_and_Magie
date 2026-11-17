@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 /**
- * Choix des règles du groupe avant sa création (elles ne pourront plus être changées).
+ * Choice of the party rules before it is created (they cannot be changed afterwards).
  */
 public final class PartyCreateGui extends Gui {
 

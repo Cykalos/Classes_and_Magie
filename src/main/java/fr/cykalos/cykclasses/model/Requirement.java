@@ -7,14 +7,14 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Condition à remplir pour débloquer une sous-classe.
+ * Condition to meet to unlock a subclass.
  *
  * <ul>
- *     <li>LEVEL : niveau minimum ({@code amount})</li>
- *     <li>KILLS : tuer {@code amount} entités ({@code target} = type d'entité, {@code any} ou {@code player})</li>
- *     <li>SKILL_USES : utiliser une compétence ({@code target} = id de compétence, ou {@code any})</li>
- *     <li>COUNTER : compteur interne (blocks_mined, damage_dealt, damage_taken, healing_done, mana_spent)</li>
- *     <li>PERMISSION : posséder la permission {@code target}</li>
+ *     <li>LEVEL: minimum level ({@code amount})</li>
+ *     <li>KILLS: kill {@code amount} entities ({@code target} = entity type, {@code any} or {@code player})</li>
+ *     <li>SKILL_USES: use a skill ({@code target} = skill id, or {@code any})</li>
+ *     <li>COUNTER: internal counter (blocks_mined, damage_dealt, damage_taken, healing_done, mana_spent)</li>
+ *     <li>PERMISSION: have the {@code target} permission</li>
  * </ul>
  */
 public final class Requirement {

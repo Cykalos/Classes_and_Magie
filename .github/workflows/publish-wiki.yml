@@ -1,6 +1,6 @@
 name: Wiki
 
-# Publie docs/wiki sur le wiki GitHub du dépôt à chaque modification sur main.
+# Publishes docs/wiki to the repository's GitHub wiki on every change on main.
 on:
   push:
     branches: [main]

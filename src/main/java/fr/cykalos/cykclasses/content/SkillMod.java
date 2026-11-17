@@ -3,8 +3,8 @@ package fr.cykalos.cykclasses.content;
 import java.util.Map;
 
 /**
- * Bonus appliqué à une compétence : damage +0.1 = +10 % de dégâts/soins, cooldown -0.1 = -10 % de recharge,
- * mana -0.1 = -10 % de coût.
+ * Bonus applied to a skill: damage +0.1 = +10% damage/healing, cooldown -0.1 = -10% cooldown,
+ * mana -0.1 = -10% cost.
  */
 public final class SkillMod {
 

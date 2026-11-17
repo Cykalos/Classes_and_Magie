@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/** Appelé quand un joueur choisit une classe ou une sous-classe (ou la perd : {@code newClass} nul). */
+/** Called when a player chooses a class or a subclass (or loses it: {@code newClass} is null). */
 public final class PlayerClassChangeEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();

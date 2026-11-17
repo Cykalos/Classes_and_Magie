@@ -14,7 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Charge les classes et sous-classes depuis classes.yml.
+ * Loads classes and subclasses from classes.yml.
  */
 public final class ClassRegistry {
 
@@ -50,7 +50,7 @@ public final class ClassRegistry {
                 allClasses.put(sub.id, sub);
             }
         }
-        // Vérifie que chaque type de compétence existe.
+        // Checks that every skill type exists.
         for (RpgClass rc : allClasses.values()) {
             for (SkillDefinition def : rc.ownSkills().values()) {
                 if (!plugin.skills().hasType(def.type)) {
@@ -72,7 +72,7 @@ public final class ClassRegistry {
         return allClasses.values();
     }
 
-    /** La classe effective du joueur : sa sous-classe si elle existe, sinon sa classe de base. */
+    /** The player's effective class: their subclass if they have one, otherwise their base class. */
     public RpgClass effective(PlayerProfile profile) {
         if (profile == null || !profile.hasClass()) {
             return null;

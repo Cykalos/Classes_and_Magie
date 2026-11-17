@@ -7,7 +7,7 @@ import org.bukkit.World;
 import org.bukkit.util.Vector;
 
 /**
- * Effets de particules réutilisables.
+ * Reusable particle effects.
  */
 public final class Fx {
 

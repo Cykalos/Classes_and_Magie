@@ -5,7 +5,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
-/** Appelé quand un joueur gagne un niveau de classe. */
+/** Called when a player gains a class level. */
 public final class PlayerClassLevelUpEvent extends PlayerEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();

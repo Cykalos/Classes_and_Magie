@@ -6,7 +6,7 @@ import fr.cykalos.cykclasses.content.JobRule;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-/** Texte court et lisible d'une action réservée (utilise « display » si défini dans jobs.yml). */
+/** Short, readable text of a reserved action (uses "display" if set in jobs.yml). */
 public final class JobDescriptions {
 
     private final CykClasses plugin;
@@ -28,7 +28,7 @@ public final class JobDescriptions {
         for (Pattern p : r.targets()) {
             String raw = p.pattern();
             if (raw.contains("(") || raw.contains("|")) {
-                continue; // motif complexe : illisible en jeu, utiliser « display »
+                continue; // complex pattern: unreadable in game, use "display"
             }
             if (shown == 2) {
                 sb.append("…");

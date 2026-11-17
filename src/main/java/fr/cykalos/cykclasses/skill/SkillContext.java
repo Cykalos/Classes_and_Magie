@@ -13,7 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.function.Consumer;
 
 /**
- * Tout ce dont une compétence a besoin pour s'exécuter.
+ * Everything a skill needs to run.
  */
 public record SkillContext(CykClasses plugin, Player player, PlayerProfile profile, SkillDefinition def) {
 
@@ -21,7 +21,7 @@ public record SkillContext(CykClasses plugin, Player player, PlayerProfile profi
         return plugin.combat();
     }
 
-    /** Les paramètres de puissance (damage, amount...) incluent les bonus de l'arbre de compétences. */
+    /** Power parameters (damage, amount...) include the skill tree bonuses. */
     private static final java.util.Set<String> POWER_KEYS = java.util.Set.of(
             "damage", "amount", "damage-per-second", "counter-damage", "bonus-health");
 
@@ -45,7 +45,7 @@ public record SkillContext(CykClasses plugin, Player player, PlayerProfile profi
         loc.getWorld().playSound(Sound.sound(Key.key(key), Sound.Source.PLAYER, volume, pitch), loc.getX(), loc.getY(), loc.getZ());
     }
 
-    /** Lance une tâche répétée {@code times} fois, toutes les {@code period} ticks. */
+    /** Runs a task {@code times} times, every {@code period} ticks. */
     public BukkitTask repeat(long delay, long period, int times, Consumer<Integer> tick) {
         int[] count = {0};
         BukkitTask[] holder = new BukkitTask[1];

@@ -5,11 +5,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Map;
 
 /**
- * Modificateur de statistiques (race, trait, point d'attribut, nœud d'arbre...).
+ * Stat modifier (race, trait, attribute point, tree node...).
  *
- * <p>Valeurs <b>additives</b> : health, health-per-level, mana, mana-per-level, mana-regen,
+ * <p><b>Additive</b> values: health, health-per-level, mana, mana-per-level, mana-regen,
  * mana-regen-per-level, speed, armor, attack-speed, crit-chance, crit-multiplier.<br>
- * Valeurs <b>multiplicatives</b> (1.1 = +10 %) : melee-damage, ranged-damage, magic-damage, damage-taken.</p>
+ * <b>Multiplicative</b> values (1.1 = +10%): melee-damage, ranged-damage, magic-damage, damage-taken.</p>
  */
 public final class StatModifier {
 
@@ -53,7 +53,7 @@ public final class StatModifier {
         return o instanceof Number n ? n.doubleValue() : def;
     }
 
-    /** Ajoute {@code times} fois le modificateur {@code o} à celui-ci. */
+    /** Adds modifier {@code o} to this one {@code times} times. */
     public StatModifier add(StatModifier o, int times) {
         if (o == null || times <= 0) {
             return this;
@@ -76,7 +76,7 @@ public final class StatModifier {
         return this;
     }
 
-    /** Copie dont la force est multipliée par {@code factor} (additifs × factor, multiplicateurs 1 + (v - 1) × factor). */
+    /** Copy whose strength is multiplied by {@code factor} (additive × factor, multipliers 1 + (v - 1) × factor). */
     public StatModifier scaled(double factor) {
         StatModifier m = new StatModifier();
         m.health = health * factor;
@@ -107,7 +107,7 @@ public final class StatModifier {
                 && critMultiplier == 0 && meleeDamage == 1 && rangedDamage == 1 && magicDamage == 1 && damageTaken == 1;
     }
 
-    /** Description courte pour les menus, ex. « +4 PV, +10% Mêlée, -5% Dégâts subis ». */
+    /** Short description for menus, e.g. "+4 health, +10% Melee, -5% Damage taken". */
     public java.util.List<String> describe() {
         java.util.List<String> out = new java.util.ArrayList<>();
         addLine(out, health, "PV", false);

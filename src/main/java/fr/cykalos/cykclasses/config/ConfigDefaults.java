@@ -10,20 +10,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 /**
- * Complète un fichier de configuration avec les clés ajoutées dans une nouvelle version du plugin.
+ * Fills a configuration file with the keys added in a new version of the plugin.
  * <p>
- * Bukkit ignore les valeurs par défaut quand on appelle {@code getString(clé, défaut)} : les clés absentes
- * du fichier du serveur sont donc copiées en mémoire (le fichier sur le disque n'est pas modifié).
- * Les sections listées dans {@code userMaps} (listes de gemmes, d'objets uniques…) appartiennent à
- * l'administrateur : on ne les complète que si elles sont entièrement absentes, pour ne pas
- * faire réapparaître une entrée supprimée volontairement.
+ * Bukkit ignores default values when calling {@code getString(key, default)}: keys missing from
+ * the server's file are therefore copied in memory (the file on disk is not changed).
+ * Sections listed in {@code userMaps} (gem lists, unique items…) belong to the
+ * administrator: they are only filled when they are entirely missing, so that an entry
+ * removed on purpose does not come back.
  */
 public final class ConfigDefaults {
 
     private ConfigDefaults() {
     }
 
-    /** @return le nombre de clés ajoutées */
+    /** @return the number of keys added */
     public static int fill(JavaPlugin plugin, YamlConfiguration target, String resource, Set<String> userMaps) {
         InputStream stream = plugin.getResource(resource);
         if (stream == null) {

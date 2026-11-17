@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Nœud d'arbre de compétences. Chaque rang coûte {@code cost} points et donne {@code modifiers}
- * et {@code skillMods} (cumulés par rang).
+ * Skill tree node. Each rank costs {@code cost} points and gives {@code modifiers}
+ * and {@code skillMods} (stacked per rank).
  */
 public record TreeNode(String id, String name, Material icon, List<String> description, int x, int y, int maxRank,
                        int cost, List<String> requires, int requiredLevel, String requiredSubclass,

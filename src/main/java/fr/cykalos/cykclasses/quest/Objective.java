@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Objectif d'une étape de quête.
+ * Objective of a quest stage.
  * <p>
- * Objectifs « événements » (comptés à chaque action) : KILL, BREAK, PLACE, CRAFT, SMELT, FISH, BREED, TAME,
+ * "Event" objectives (counted on each action): KILL, BREAK, PLACE, CRAFT, SMELT, FISH, BREED, TAME,
  * ENCHANT, BREW, REFINE, CONSUME, SKILL, INTERACT_ENTITY, INTERACT_BLOCK, COMMAND, DAMAGE.
  * <br>
- * Objectifs « état » (vérifiés chaque seconde) : LEVEL, JOB_LEVEL, CLASS, SUBCLASS, RACE, JOB, SPECIALIZATION,
+ * "State" objectives (checked every second): LEVEL, JOB_LEVEL, CLASS, SUBCLASS, RACE, JOB, SPECIALIZATION,
  * COLLECT, REACH, BIOME, CONDITION, TREE_POINTS, ATTRIBUTE_POINTS, QUEST, TITLES, KILLS_TOTAL, SKILL_USES_TOTAL,
- * COUNTER, STATISTIC, ADVANCEMENT, PLAYTIME (totaux depuis l'arrivée du joueur : comptent aussi le passé).
+ * COUNTER, STATISTIC, ADVANCEMENT, PLAYTIME (totals since the player first joined: they also count the past).
  */
 public final class Objective {
 
@@ -38,17 +38,17 @@ public final class Objective {
     private final List<Pattern> patterns;
     public final double amount;
     public final String display;
-    /** Nom (texte contenu) d'une entité à cibler : INTERACT_ENTITY, KILL. */
+    /** Name (contained text) of an entity to target: INTERACT_ENTITY, KILL. */
     public final String entityName;
-    /** Conditions supplémentaires : contexte de l'action (KILL de nuit…) ou objectif CONDITION. */
+    /** Extra conditions: context of the action (KILL at night…) or a CONDITION objective. */
     public final FlawCondition conditions;
-    /** COLLECT : retirer les objets de l'inventaire quand l'étape est terminée. */
+    /** COLLECT: remove the items from the inventory when the stage is completed. */
     public final boolean take;
-    /** REACH : monde, coordonnées et rayon (sans coordonnées : être dans le monde suffit). */
+    /** REACH: world, coordinates and radius (without coordinates: being in the world is enough). */
     public final String world;
     public final Double x, y, z;
     public final double radius;
-    /** Module requis (config.yml → modules) : objectif validé d'office si le module est désactivé. */
+    /** Required module (config.yml → modules): objective met automatically if the module is disabled. */
     public final String module;
 
     private Objective(Type type, List<String> targets, double amount, String display, String entityName,
@@ -95,7 +95,7 @@ public final class Objective {
         return s == null ? null : load(s.getValues(false), where);
     }
 
-    /** Vrai si la cible correspond (liste vide = tout correspond). Insensible à la casse, * = joker. */
+    /** True if the target matches (empty list = everything matches). Case-insensitive, * = wildcard. */
     public boolean matches(String target) {
         if (patterns.isEmpty()) {
             return true;
@@ -132,7 +132,7 @@ public final class Objective {
         return m.get(key) instanceof Number n ? n.doubleValue() : null;
     }
 
-    /** Compilation des motifs « *_SWORD », « mythic:Boss »… en expressions régulières. */
+    /** Compiles patterns such as "*_SWORD", "mythic:Boss"… into regular expressions. */
     static final class FlawConditionPatterns {
         static List<Pattern> of(List<String> raw) {
             List<Pattern> out = new ArrayList<>();

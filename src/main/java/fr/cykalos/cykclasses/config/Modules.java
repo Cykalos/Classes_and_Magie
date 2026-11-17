@@ -3,8 +3,8 @@ package fr.cykalos.cykclasses.config;
 import org.bukkit.configuration.file.FileConfiguration;
 
 /**
- * Modules activables dans config.yml → modules. Un module désactivé disparaît du jeu :
- * étape de création sautée, commande indisponible, aucun effet sur les stats.
+ * Modules that can be toggled in config.yml → modules. A disabled module disappears from the game:
+ * creation step skipped, command unavailable, no effect on stats.
  */
 public final class Modules {
 
@@ -52,7 +52,7 @@ public final class Modules {
     public boolean quests() { return quests; }
     public boolean titles() { return titles; }
 
-    /** Module associé à une commande (null = toujours disponible). */
+    /** Module linked to a command (null = always available). */
     public boolean commandEnabled(String command) {
         return switch (command) {
             case "race" -> races;

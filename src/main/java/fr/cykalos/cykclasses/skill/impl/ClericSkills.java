@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Clerc, Prêtre, Druide.
+ * Cleric, Priest, Druid.
  */
 public final class ClericSkills {
 
@@ -39,7 +39,7 @@ public final class ClericSkills {
         s.register("WILD_SPIRIT", ClericSkills::wildSpirit);
     }
 
-    /** Soigne l'allié visé, sinon soi-même. */
+    /** Heals the targeted ally, otherwise oneself. */
     private static boolean heal(SkillContext c) {
         Player p = c.player();
         Player target = c.combat().allyInSight(p, c.d("range", 15));
@@ -56,7 +56,7 @@ public final class ClericSkills {
         return true;
     }
 
-    /** Bénédiction : régénération pour soi et les alliés proches. */
+    /** Blessing: regeneration for oneself and nearby allies. */
     private static boolean blessing(SkillContext c) {
         Player p = c.player();
         int duration = (int) (c.d("duration", 10) * 20);
@@ -70,7 +70,7 @@ public final class ClericSkills {
         return true;
     }
 
-    /** Purification : retire les effets négatifs des alliés proches. */
+    /** Purify: removes negative effects from nearby allies. */
     private static boolean purify(SkillContext c) {
         Player p = c.player();
         for (Player ally : c.combat().alliesAround(p, c.d("radius", 8))) {
@@ -87,7 +87,7 @@ public final class ClericSkills {
         return true;
     }
 
-    /** Grâce divine : gros soin de zone. */
+    /** Divine grace: large area heal. */
     private static boolean divineGrace(SkillContext c) {
         Player p = c.player();
         double amount = c.d("amount", 12);
@@ -100,7 +100,7 @@ public final class ClericSkills {
         return true;
     }
 
-    /** Lumière sacrée : explosion de lumière, surtout efficace contre les morts-vivants. */
+    /** Holy light: burst of light, especially effective against the undead. */
     private static boolean holyLight(SkillContext c) {
         Player p = c.player();
         double radius = c.d("radius", 6);
@@ -121,7 +121,7 @@ public final class ClericSkills {
         return true;
     }
 
-    /** Racines : immobilise et blesse les ennemis autour. */
+    /** Roots: immobilises and hurts nearby enemies. */
     private static boolean entanglingRoots(SkillContext c) {
         Player p = c.player();
         double radius = c.d("radius", 6);
@@ -150,7 +150,7 @@ public final class ClericSkills {
         return true;
     }
 
-    /** Esprit sauvage : PV bonus, force et résistance temporaires. */
+    /** Wild spirit: temporary bonus health, strength and resistance. */
     private static boolean wildSpirit(SkillContext c) {
         Player p = c.player();
         double seconds = c.d("duration", 15);

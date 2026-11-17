@@ -12,9 +12,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
 /**
- * Protège le joueur tant que la création de son personnage n'est pas terminée :
- * il ne subit aucun dégât, les monstres ne le ciblent pas, et il ne peut pas attaquer.
- * config.yml → creation-protection (true par défaut).
+ * Protects the player until their character creation is finished:
+ * they take no damage, monsters do not target them, and they cannot attack.
+ * config.yml → creation-protection (true by default).
  */
 public final class CreationProtectionListener implements Listener {
 
@@ -41,7 +41,7 @@ public final class CreationProtectionListener implements Listener {
             event.getEntity().setFireTicks(0);
             return;
         }
-        // Un joueur protégé ne peut pas attaquer non plus (pas d'abus de l'invulnérabilité)
+        // A protected player cannot attack either (no abuse of the invulnerability)
         if (event instanceof EntityDamageByEntityEvent byEntity) {
             Entity damager = byEntity.getDamager();
             if (damager instanceof Projectile projectile && projectile.getShooter() instanceof Entity shooter) {

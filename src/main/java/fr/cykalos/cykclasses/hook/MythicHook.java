@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.Optional;
 
 /**
- * Pont vers MythicMobs. Cette classe n'est chargée que si MythicMobs est présent.
+ * Bridge to MythicMobs. This class is only loaded when MythicMobs is present.
  */
 public final class MythicHook {
 
@@ -35,7 +35,7 @@ public final class MythicHook {
         return info(entity).isPresent();
     }
 
-    /** Nom affiché d'un mob MythicMobs (codes couleur & ou § acceptés). */
+    /** Display name of a MythicMobs mob (& or § colour codes accepted). */
     public Component displayName(Entity entity) {
         return info(entity).map(i -> {
             String raw = i.displayName() == null ? i.internalName() : i.displayName();
@@ -45,7 +45,7 @@ public final class MythicHook {
         }).orElse(null);
     }
 
-    /** Objet MythicMobs (MythicCrucible compris) par son nom interne, ou null. */
+    /** MythicMobs item (MythicCrucible included) by its internal name, or null. */
     public org.bukkit.inventory.ItemStack item(String name, int amount) {
         try {
             org.bukkit.inventory.ItemStack it = MythicBukkit.inst().getItemManager().getItemStack(name);
@@ -58,7 +58,7 @@ public final class MythicHook {
         }
     }
 
-    /** Nom interne de l'objet MythicMobs, ou null. */
+    /** Internal name of the MythicMobs item, or null. */
     public String itemId(org.bukkit.inventory.ItemStack item) {
         try {
             return MythicBukkit.inst().getItemManager().getMythicTypeFromItem(item);

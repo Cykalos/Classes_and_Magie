@@ -18,7 +18,7 @@ import org.bukkit.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Mage, Pyromancien, Cryomancien.
+ * Mage, Pyromancer, Cryomancer.
  */
 public final class MageSkills {
 

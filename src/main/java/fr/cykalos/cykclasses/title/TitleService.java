@@ -51,12 +51,12 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 /**
- * Titres des joueurs (personnage/titles.yml) : déblocage selon les actions du joueur, raretés jusqu'à
- * unique et secret, effets du titre équipé, affichage au-dessus de la tête et dans le chat.
+ * Player titles (personnage/titles.yml): unlocked by the player's actions, rarities up to
+ * unique and secret, effects of the equipped title, display above the head and in chat.
  */
 public final class TitleService implements Listener {
 
-    /** Rareté d'un titre (titles.yml → rarities). */
+    /** Rarity of a title (titles.yml → rarities). */
     public record Rarity(String id, String label, int order, boolean unique, boolean hidden, boolean broadcast) {
     }
 
@@ -158,7 +158,7 @@ public final class TitleService implements Listener {
             try {
                 uniqueOwners.put(k, UUID.fromString(y.getString(k, "")));
             } catch (IllegalArgumentException ignored) {
-                // entrée invalide
+                // invalid entry
             }
         }
     }
@@ -195,7 +195,7 @@ public final class TitleService implements Listener {
         displayed.clear();
     }
 
-    // ------------------------------------------------------------ Accès
+    // ------------------------------------------------------------ Access
 
     public boolean enabled() {
         return plugin.modules().titles();
@@ -217,7 +217,7 @@ public final class TitleService implements Listener {
         return rarities.getOrDefault(t.rarity(), rarities.values().iterator().next());
     }
 
-    /** Titre équipé (null si aucun, ou si le module est désactivé). */
+    /** Equipped title (null if none, or if the module is disabled). */
     public PlayerTitle equipped(PlayerProfile p) {
         if (!enabled() || p == null || p.getEquippedTitle() == null) {
             return null;
@@ -230,13 +230,13 @@ public final class TitleService implements Listener {
         return uniqueOwners.get(t.id());
     }
 
-    /** Titre unique déjà possédé par un autre joueur. */
+    /** Unique title already owned by another player. */
     public boolean takenByOther(PlayerTitle t, UUID uuid) {
         UUID owner = uniqueOwners.get(t.id());
         return t.unique() && owner != null && !owner.equals(uuid);
     }
 
-    /** Nombre de titres débloqués (TITLES : ids ou « rarity:EPIC » dans targets). */
+    /** Number of unlocked titles (TITLES: ids or "rarity:EPIC" in targets). */
     public int countUnlocked(PlayerProfile p, Objective o) {
         int n = 0;
         for (String id : p.titles().keySet()) {
@@ -248,9 +248,9 @@ public final class TitleService implements Listener {
         return n;
     }
 
-    // ------------------------------------------------------------ Progression et déblocage
+    // ------------------------------------------------------------ Progress and unlocking
 
-    /** Action d'un joueur : fait avancer les objectifs « action » des titres non débloqués. */
+    /** Player action: advances the "action" objectives of titles not yet unlocked. */
     public void progress(Player player, Objective.Type type, List<String> candidates, double amount, String entityName) {
         if (!enabled()) {
             return;
@@ -331,7 +331,7 @@ public final class TitleService implements Listener {
         }
     }
 
-    /** Titre unique libéré par un administrateur : l'ancien porteur le perd. */
+    /** Unique title released by an administrator: the former owner loses it. */
     private void checkUniqueStillOwned(Player player, PlayerProfile p, PlayerTitle t) {
         if (!t.unique()) {
             return;
@@ -354,7 +354,7 @@ public final class TitleService implements Listener {
         }
     }
 
-    /** Débloque un titre (quête, condition remplie, administration). */
+    /** Unlocks a title (quest, condition met, administration). */
     public boolean unlock(Player player, String id, boolean announce) {
         PlayerTitle t = get(id);
         PlayerProfile p = plugin.profiles().getIfLoaded(player.getUniqueId());
@@ -388,7 +388,7 @@ public final class TitleService implements Listener {
         return true;
     }
 
-    /** Retire un titre à un joueur (administration). Un titre unique redevient disponible. */
+    /** Removes a title from a player (administration). A unique title becomes available again. */
     public void revoke(Player player, String id) {
         PlayerTitle t = get(id);
         PlayerProfile p = plugin.profiles().getIfLoaded(player.getUniqueId());
@@ -403,7 +403,7 @@ public final class TitleService implements Listener {
         refresh(player);
     }
 
-    /** Libère un titre unique : n'importe qui peut de nouveau l'obtenir, l'ancien porteur le perd. */
+    /** Releases a unique title: anyone can get it again, the former owner loses it. */
     public boolean release(String id) {
         PlayerTitle t = get(id);
         if (t == null || !t.unique()) {
@@ -440,7 +440,7 @@ public final class TitleService implements Listener {
         }
     }
 
-    /** Stats et affichage à jour après un changement de titre. */
+    /** Stats and display updated after a title change. */
     private void refresh(Player player) {
         plugin.stats().invalidate(player.getUniqueId());
         plugin.stats().apply(player);
@@ -449,7 +449,7 @@ public final class TitleService implements Listener {
 
     // ------------------------------------------------------------ Chat
 
-    /** Titre pour le chat (« <title> » dans les formats de config.yml → chat). */
+    /** Title for chat ("<title>" in the config.yml → chat formats). */
     public Component chatTag(Player player) {
         PlayerTitle t = equipped(plugin.profiles().getIfLoaded(player.getUniqueId()));
         if (t == null) {
@@ -458,7 +458,7 @@ public final class TitleService implements Listener {
         return Text.mm(cfg.getString("chat.format", "<title> "), Text.ph("title", t.name()));
     }
 
-    // ------------------------------------------------------------ Au-dessus de la tête
+    // ------------------------------------------------------------ Above the head
 
     private void updateDisplays() {
         ConfigurationSection d = cfg.getConfigurationSection("display");
@@ -519,7 +519,7 @@ public final class TitleService implements Listener {
                 try {
                     e.setBackgroundColor(Color.fromARGB((int) Long.parseLong(bg.substring(1), 16)));
                 } catch (NumberFormatException ignored) {
-                    // couleur par défaut
+                    // default colour
                 }
             }
         });

@@ -32,7 +32,7 @@ public final class LevelService {
         return plugin.getConfig().getInt("leveling.max-level", 100);
     }
 
-    /** XP nécessaire pour passer du niveau {@code level} au suivant. */
+    /** XP needed to go from level {@code level} to the next one. */
     public double xpRequired(int level) {
         double base = plugin.getConfig().getDouble("leveling.base-xp", 100);
         double exp = plugin.getConfig().getDouble("leveling.exponent", 1.5);
@@ -53,7 +53,7 @@ public final class LevelService {
     }
 
     /**
-     * @param unlockedBefore sous-classes déjà disponibles avant l'action (pour annoncer les nouvelles), ou null.
+     * @param unlockedBefore subclasses already available before the action (to announce new ones), or null.
      */
     public void addXp(Player player, double amount, Set<String> unlockedBefore) {
         PlayerProfile profile = plugin.profiles().get(player);
@@ -113,7 +113,7 @@ public final class LevelService {
                 Title.Times.times(Duration.ofMillis(250), Duration.ofSeconds(2), Duration.ofMillis(500))));
         player.playSound(Sound.sound(Key.key("entity.player.levelup"), Sound.Source.PLAYER, 1f, 1.2f));
         player.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING, player.getLocation().add(0, 1, 0), 40, 0.4, 0.8, 0.4, 0.3);
-        // Annonce des compétences débloquées
+        // Announce unlocked skills
         rc.skills().values().stream()
                 .filter(s -> s.unlockLevel > oldLevel && s.unlockLevel <= newLevel)
                 .forEach(s -> player.sendMessage(Text.mm("<light_purple>✦ Nouvelle compétence : ").append(Text.mm(s.name))));
@@ -137,7 +137,7 @@ public final class LevelService {
         return out;
     }
 
-    /** Prévient le joueur si de nouvelles sous-classes viennent d'être débloquées. */
+    /** Notifies the player if new subclasses have just been unlocked. */
     public void checkNewSubclasses(Player player, PlayerProfile profile, Set<String> before) {
         for (String id : availableSubclasses(player, profile)) {
             if (!before.contains(id)) {

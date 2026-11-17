@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Défauts « environnementaux » vérifiés périodiquement : armure interdite, eau, soleil.
+ * "Environmental" flaws checked periodically: forbidden armour, water, sun.
  */
 public final class FlawService {
 
@@ -31,7 +31,7 @@ public final class FlawService {
 
     private final CykClasses plugin;
     private BukkitTask task;
-    /** Dernier déclenchement des défauts PERIODIC_DAMAGE, par joueur. */
+    /** Last trigger of PERIODIC_DAMAGE flaws, per player. */
     private final Map<UUID, Map<Flaw, Long>> periodic = new HashMap<>();
 
     public FlawService(CykClasses plugin) {

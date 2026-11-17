@@ -7,20 +7,20 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Conditions pour qu'une quête soit disponible :
+ * Requirements for a quest to be available:
  * <pre>
  * requirements:
- *   level: 10                 # niveau de classe minimum
- *   max-level: 40             # niveau maximum (facultatif)
- *   classes: [guerrier]       # classe ou sous-classe (vide = toutes)
+ *   level: 10                 # minimum class level
+ *   max-level: 40             # maximum level (optional)
+ *   classes: [guerrier]       # class or subclass (empty = all)
  *   races: [nain]
  *   jobs: [mineur]
- *   job-level: 15             # niveau du métier actuel
- *   quests: [le_reveil]       # quêtes à avoir terminées
- *   not-quests: [autre_voie]  # quêtes à NE PAS avoir terminées (choix de camp…)
- *   permission: "monserveur.chapitre2"
- *   titles: [tueur_de_dragons]  # titres à avoir débloqués
- *   checks:                   # objectifs « état » à remplir (statistiques, progrès, totaux…)
+ *   job-level: 15             # level of the current job
+ *   quests: [guilde_recrue]   # quests that must be completed
+ *   not-quests: [other_path]  # quests that must NOT be completed (choosing a side…)
+ *   permission: "myserver.chapter2"
+ *   titles: [tueur_de_dragons]  # titles that must be unlocked
+ *   checks:                   # "state" objectives to meet (statistics, advancements, totals…)
  *     - {type: STATISTIC, targets: [DEATHS], amount: 10}
  * </pre>
  */

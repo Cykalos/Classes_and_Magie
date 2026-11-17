@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-/** Choix du métier (un seul). */
+/** Job choice (only one). */
 public final class JobGui extends Gui {
 
     @Override
@@ -18,7 +18,7 @@ public final class JobGui extends Gui {
         return plugin.modules().jobs();
     }
 
-    /** Fermer le menu pendant la création = « choisir plus tard ». */
+    /** Closing the menu during character creation = "choose later". */
     @Override
     public void onPlayerClose() {
         var p = plugin.profiles().get(viewer);

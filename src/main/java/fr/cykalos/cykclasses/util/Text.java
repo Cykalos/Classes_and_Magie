@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Petits utilitaires MiniMessage.
+ * Small MiniMessage helpers.
  */
 public final class Text {
 
@@ -27,7 +27,7 @@ public final class Text {
         return MM.deserialize(input, resolvers);
     }
 
-    /** Composant pour un nom/lore d'objet (sans italique par défaut). */
+    /** Component for an item name/lore (not italic by default). */
     public static Component item(String input, TagResolver... resolvers) {
         return mm(input, resolvers).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }

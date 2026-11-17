@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
-/** Appelé avant qu'une compétence soit lancée. Le coût en mana peut être modifié. */
+/** Called before a skill is cast. The mana cost can be changed. */
 public final class SkillCastEvent extends PlayerEvent implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();

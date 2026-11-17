@@ -5,12 +5,12 @@ import fr.cykalos.cykclasses.skill.SkillService;
 import fr.cykalos.cykclasses.util.Text;
 
 /**
- * Type de compétence {@code MYTHIC} : lance une compétence MythicMobs depuis le joueur.
+ * {@code MYTHIC} skill type: casts a MythicMobs skill from the player.
  *
  * <pre>
- * ma_competence:
+ * my_skill:
  *   type: MYTHIC
- *   params: {skill: "NomDeLaCompetenceMythic", power: 1.0}
+ *   params: {skill: "MythicSkillName", power: 1.0}
  * </pre>
  */
 public final class MythicSkills {

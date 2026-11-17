@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Traits tirés au hasard, avec possibilité de relancer. */
+/** Randomly rolled traits, with rerolls. */
 public final class TraitsGui extends Gui {
 
     @Override

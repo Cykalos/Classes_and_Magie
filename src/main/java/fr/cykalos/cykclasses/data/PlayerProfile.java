@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Données persistantes d'un joueur. Les champs {@code transient} ne sont jamais sauvegardés.
+ * Persistent data of a player. {@code transient} fields are never saved.
  */
 public final class PlayerProfile {
 
@@ -35,21 +35,21 @@ public final class PlayerProfile {
     private String jobId;
     private long jobChangedAt;
     private boolean jobPromptDone;
-    /** Points investis par attribut. */
+    /** Points invested per attribute. */
     private Map<String, Integer> attributes = new HashMap<>();
-    /** Rangs des nœuds d'arbre, clé « arbre:nœud ». */
+    /** Skill tree node ranks, key "tree:node". */
     private Map<String, Integer> treeNodes = new HashMap<>();
     private int bonusSkillPoints;
     private int bonusAttributePoints;
     private long lastTreeReset;
     private long lastAttributeReset;
     private List<String> kitsReceived = new ArrayList<>();
-    /** Niveau et XP par métier (conservés si le joueur change de métier). */
+    /** Level and XP per job (kept if the player changes job). */
     private Map<String, Integer> jobLevels = new HashMap<>();
     private Map<String, Double> jobXp = new HashMap<>();
-    /** Spécialisation choisie par métier. */
+    /** Specialization chosen per job. */
     private Map<String, String> jobSpecs = new HashMap<>();
-    // Quêtes : étape en cours, progression (« id#objectif »), terminées (date), nombre de réussites, suivies
+    // Quests: current stage, progress ("id#objective"), completed (date), completion count, tracked
     private Map<String, Integer> questStages = new HashMap<>();
     private Map<String, Double> questProgress = new HashMap<>();
     private Map<String, Long> questsCompleted = new HashMap<>();
@@ -59,7 +59,7 @@ public final class PlayerProfile {
     private List<String> questsOffered = new ArrayList<>();
     private boolean tutorialOffered;
     private boolean questTrackerHidden;
-    // Titres : débloqués (date), titre équipé, progression (« id#objectif »)
+    // Titles: unlocked (date), equipped title, progress ("id#objective")
     private Map<String, Long> titles = new HashMap<>();
     private String equippedTitle;
     private Map<String, Double> titleProgress = new HashMap<>();
@@ -71,7 +71,7 @@ public final class PlayerProfile {
     private transient boolean dirty;
     private transient boolean partyChat;
 
-    /** Requis par Gson. */
+    /** Required by Gson. */
     @SuppressWarnings("unused")
     private PlayerProfile() {
     }
@@ -80,7 +80,7 @@ public final class PlayerProfile {
         this.uuid = uuid;
     }
 
-    /** Ré-initialise les champs transients après une désérialisation Gson. */
+    /** Re-initialises transient fields after Gson deserialisation. */
     public PlayerProfile normalize() {
         if (kills == null) kills = new HashMap<>();
         if (skillUses == null) skillUses = new HashMap<>();
@@ -200,7 +200,7 @@ public final class PlayerProfile {
         markDirty();
     }
 
-    // --- Quêtes ---
+    // --- Quests ---
     public Map<String, Integer> questStages() { return questStages; }
     public boolean isQuestActive(String id) { return questStages.containsKey(id); }
     public int getQuestStage(String id) { return questStages.getOrDefault(id, -1); }
@@ -245,7 +245,7 @@ public final class PlayerProfile {
     public boolean isQuestTrackerHidden() { return questTrackerHidden; }
     public void setQuestTrackerHidden(boolean v) { this.questTrackerHidden = v; markDirty(); }
 
-    // --- Titres ---
+    // --- Titles ---
     public Map<String, Long> titles() { return titles; }
     public boolean hasTitle(String id) { return titles.containsKey(id.toLowerCase(Locale.ROOT)); }
     public void addTitle(String id) { titles.putIfAbsent(id.toLowerCase(Locale.ROOT), System.currentTimeMillis()); markDirty(); }
@@ -282,7 +282,7 @@ public final class PlayerProfile {
     public void markDirty() { this.dirty = true; }
     public void clearDirty() { this.dirty = false; }
 
-    /** Remet la progression de classe à zéro. */
+    /** Resets class progression. */
     public void resetClass(boolean keepLevel) {
         classId = null;
         subclassId = null;
@@ -297,7 +297,7 @@ public final class PlayerProfile {
         markDirty();
     }
 
-    // --- Sérialisation YAML (Map) ---
+    // --- YAML serialisation (Map) ---
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
@@ -377,7 +377,7 @@ public final class PlayerProfile {
             wl.forEach(o -> p.weaknesses.add(String.valueOf(o)));
         }
         p.weaknessesRolled = Boolean.TRUE.equals(map.get("weaknesses-rolled"));
-        // Anciennes sauvegardes (sans ces champs) : tirage déjà fait = déjà validé
+        // Old saves (without these fields): roll already done = already confirmed
         p.traitsConfirmed = map.containsKey("traits-confirmed") ? Boolean.TRUE.equals(map.get("traits-confirmed")) : p.traitsRolled;
         p.weaknessesConfirmed = map.containsKey("weaknesses-confirmed") ? Boolean.TRUE.equals(map.get("weaknesses-confirmed")) : p.weaknessesRolled;
         p.weaknessRerollsUsed = map.get("weakness-rerolls-used") instanceof Number n ? n.intValue() : 0;

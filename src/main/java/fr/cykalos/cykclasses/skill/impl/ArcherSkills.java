@@ -20,11 +20,11 @@ import org.bukkit.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Archer, Chasseur, Rôdeur.
+ * Archer, Hunter, Ranger.
  */
 public final class ArcherSkills {
 
-    /** Marqueur PDC des flèches explosives (valeur = puissance). */
+    /** PDC marker of explosive arrows (value = power). */
     public static final String EXPLOSIVE_KEY = "explosive_arrow";
 
     private ArcherSkills() {
@@ -40,13 +40,13 @@ public final class ArcherSkills {
         s.register("EXPLOSIVE_ARROW", ArcherSkills::explosiveArrow);
     }
 
-    /** Flèches qui touchent même si la cible vient d'être touchée : compétences, et arc des joueurs (option). */
+    /** Arrows that hit even if the target has just been hit: skills, and player bows (option). */
     public static final org.bukkit.NamespacedKey SKILL_ARROW_KEY =
             new org.bukkit.NamespacedKey("classes_and_magie", "skill_arrow");
 
     private static Arrow shoot(Player p, Vector velocity, double damage) {
         Arrow arrow = p.launchProjectile(Arrow.class, velocity);
-        // Les dégâts vanilla d'une flèche = vitesse x dégâts de base : on normalise.
+        // Vanilla arrow damage = speed x base damage: normalise it.
         arrow.setDamage(damage / Math.max(0.1, velocity.length()));
         arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
         arrow.setCritical(false);

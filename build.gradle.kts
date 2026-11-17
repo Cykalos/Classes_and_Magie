@@ -17,7 +17,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:${findProperty("paperVersion") ?: "26.1.2.build.+"}")
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("io.lumine:Mythic-Dist:5.12.1")
-    // Embarqué et relocalisé dans le jar (objets CraftEngine, ExecutableItems, ItemsAdder, Oraxen, Nexo, MMOItems...)
+    // Shaded and relocated into the jar (CraftEngine, ExecutableItems, ItemsAdder, Oraxen, Nexo, MMOItems items...)
     implementation("io.github.projectunified:uni-item-all:2.7.2")
 }
 
@@ -39,7 +39,7 @@ tasks.processResources {
     }
 }
 
-// Nom du fichier : "Classes_and_Magie-1.2.3.jar"
+// File name: "Classes_and_Magie-1.2.3.jar"
 val jarName = "Classes_and_Magie"
 
 tasks.jar {

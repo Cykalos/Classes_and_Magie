@@ -7,11 +7,11 @@ import fr.cykalos.cykclasses.skill.SkillExecutor;
 import org.bukkit.entity.Player;
 
 /**
- * Point d'entrée pour les autres plugins.
+ * Entry point for other plugins.
  *
  * <pre>{@code
  * RpgClass rc = CykClassesAPI.getClass(player);
- * CykClassesAPI.registerSkillType("MON_SORT", ctx -> { ...; return true; });
+ * CykClassesAPI.registerSkillType("MY_SPELL", ctx -> { ...; return true; });
  * }</pre>
  */
 public final class CykClassesAPI {
@@ -27,7 +27,7 @@ public final class CykClassesAPI {
         return plugin().profiles().get(player);
     }
 
-    /** Classe effective (sous-classe si choisie). */
+    /** Effective class (subclass if one was chosen). */
     public static RpgClass getClass(Player player) {
         return plugin().classes().effective(getProfile(player));
     }
@@ -53,7 +53,7 @@ public final class CykClassesAPI {
         return plugin().skills().cast(player, skillId);
     }
 
-    /** Ajoute un nouveau type de compétence utilisable dans classes.yml. */
+    /** Registers a new skill type usable in classes.yml. */
     public static void registerSkillType(String type, SkillExecutor executor) {
         plugin().skills().register(type, executor);
     }

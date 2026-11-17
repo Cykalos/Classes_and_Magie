@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Suit les éliminations, les blocs minés et donne l'XP de classe.
+ * Tracks kills and mined blocks, and gives class XP.
  */
 public final class ProgressListener implements Listener {
 

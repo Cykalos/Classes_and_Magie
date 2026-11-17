@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Actions qui font avancer les quêtes. Casser, poser, fabriquer, cuire, pêcher, élever, apprivoiser, enchanter,
- * distiller et tailler des gemmes passent par JobService (mêmes règles anti-abus que les métiers).
+ * Actions that advance quests. Breaking, placing, crafting, smelting, fishing, breeding, taming, enchanting,
+ * brewing and cutting gems go through JobService (same anti-abuse rules as jobs).
  */
 public final class QuestListener implements Listener {
 

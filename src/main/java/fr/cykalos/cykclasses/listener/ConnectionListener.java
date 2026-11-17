@@ -45,7 +45,7 @@ public final class ConnectionListener implements Listener {
         Player player = event.getPlayer();
         PlayerProfile profile = pending.remove(player.getUniqueId());
         if (profile == null) {
-            // Rechargement à chaud : le profil n'est pas passé par la pré-connexion.
+            // Hot reload: the profile did not go through the pre-login.
             profile = plugin.profiles().getIfLoaded(player.getUniqueId());
             if (profile == null) {
                 profile = new PlayerProfile(player.getUniqueId());
@@ -90,7 +90,7 @@ public final class ConnectionListener implements Listener {
                 PlayerProfile profile = plugin.profiles().get(player);
                 profile.setMana(plugin.stats().maxMana(profile) * 0.5);
                 profile.setCastMode(false);
-                // Mort pendant la création : le menu a été fermé par la mort, on reprend l'étape
+                // Death during character creation: the menu was closed by the death, resume the step
                 if (plugin.getConfig().getBoolean("force-class-selection", true)) {
                     plugin.character().continueCreation(player);
                 }

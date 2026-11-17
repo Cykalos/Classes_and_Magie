@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 /**
- * Registre des types de compétences et logique de lancement (mana, recharge, niveau).
+ * Skill type registry and casting logic (mana, cooldown, level).
  */
 public final class SkillService {
 
@@ -43,7 +43,7 @@ public final class SkillService {
         MythicSkills.register(this);
     }
 
-    /** Permet à d'autres plugins d'ajouter leurs propres types de compétences. */
+    /** Lets other plugins add their own skill types. */
     public void register(String type, SkillExecutor executor) {
         executors.put(type.toUpperCase(Locale.ROOT), executor);
     }
@@ -69,7 +69,7 @@ public final class SkillService {
         return rc.skills().get(id.toLowerCase(Locale.ROOT));
     }
 
-    /** Lance la compétence numéro {@code index} (0 = première) de la classe du joueur. */
+    /** Casts skill number {@code index} (0 = first) of the player's class. */
     public boolean castSlot(Player player, int index) {
         PlayerProfile profile = plugin.profiles().get(player);
         List<SkillDefinition> skills = skillsOf(profile);
@@ -154,7 +154,7 @@ public final class SkillService {
         profile.addSkillUse(def.id);
         plugin.levels().checkNewSubclasses(player, profile, before);
         if (plugin.quests() != null) {
-            // Compté seulement quand la compétence a vraiment été lancée (mana dépensé, cible trouvée)
+            // Only counted when the skill was actually cast (mana spent, target found)
             plugin.quests().progress(player, fr.cykalos.cykclasses.quest.Objective.Type.SKILL, def.id, 1);
         }
         profile.touchCastActivity();
@@ -167,7 +167,7 @@ public final class SkillService {
         player.playSound(Sound.sound(Key.key("block.note_block.bass"), Sound.Source.PLAYER, 0.6f, 0.6f));
     }
 
-    // --- Mode compétences (F puis 1-8) : délégué à SkillBar ---
+    // --- Skill mode (F then 1-8): delegated to SkillBar ---
 
     public void toggleCastMode(Player player) {
         plugin.skillBar().toggle(player);

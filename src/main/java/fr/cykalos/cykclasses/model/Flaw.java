@@ -12,35 +12,35 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Un défaut (classe, race, trait, faiblesse…). Tous les types acceptent un bloc « conditions »
- * (voir {@link FlawCondition}) : le défaut ne s'applique que lorsque les conditions sont remplies.
+ * A flaw (class, race, trait, weakness…). Every type accepts a "conditions" block
+ * (see {@link FlawCondition}): the flaw only applies when the conditions are met.
  */
 public final class Flaw {
 
     public enum Type {
-        /** Dégâts reçus multipliés (causes : FIRE, FALL, MAGIC… ; damagers : ZOMBIE, *SKELETON, PLAYER, mythic:Nom). */
+        /** Damage taken multiplied (causes: FIRE, FALL, MAGIC…; damagers: ZOMBIE, *SKELETON, PLAYER, mythic:Name). */
         DAMAGE_TAKEN,
-        /** Dégâts infligés multipliés (targets : types d'entités ; kinds : MELEE, RANGED, SKILL). */
+        /** Damage dealt multiplied (targets: entity types; kinds: MELEE, RANGED, SKILL). */
         DAMAGE_DEALT,
-        /** Objets interdits dans les slots d'armure / main secondaire : ils sont retirés. */
+        /** Items forbidden in armour / off-hand slots: they are removed. */
         FORBIDDEN_ARMOR,
-        /** Armes pénalisées : dégâts multipliés quand l'objet est tenu. */
+        /** Penalised weapons: damage multiplied while the item is held. */
         WEAPON_PENALTY,
-        /** Affaibli et ralenti dans l'eau. */
+        /** Weakened and slowed in water. */
         WATER_WEAKNESS,
-        /** Affaibli en plein soleil. */
+        /** Weakened in full sunlight. */
         SUNLIGHT_WEAKNESS,
-        /** Faim plus rapide (multiplicateur d'épuisement). */
+        /** Faster hunger (exhaustion multiplier). */
         HUNGER,
-        /** Soins reçus réduits (multiplicateur). */
+        /** Reduced healing received (multiplier). */
         HEALING_REDUCTION,
-        /** Pas de régénération de mana dans l'obscurité. */
+        /** No mana regeneration in the dark. */
         DARKNESS_MANA_BLOCK,
-        /** Régénération de mana multipliée (0 = bloquée). */
+        /** Mana regeneration multiplied (0 = blocked). */
         MANA_REGEN,
-        /** Effets de potion appliqués tant que les conditions sont remplies (effects: ["slowness:1"]). */
+        /** Potion effects applied while the conditions are met (effects: ["slowness:1"]). */
         EFFECT,
-        /** Dégâts réguliers tant que les conditions sont remplies (damage, interval en secondes, fire-ticks). */
+        /** Periodic damage while the conditions are met (damage, interval in seconds, fire-ticks). */
         PERIODIC_DAMAGE
     }
 
@@ -51,19 +51,19 @@ public final class Flaw {
     public final double multiplier;
     public final List<String> causes;
     public final List<Pattern> materials;
-    /** DAMAGE_TAKEN : qui inflige les dégâts. */
+    /** DAMAGE_TAKEN: who deals the damage. */
     public final List<Pattern> damagers;
-    /** DAMAGE_DEALT : qui reçoit les dégâts. */
+    /** DAMAGE_DEALT: who receives the damage. */
     public final List<Pattern> targets;
-    /** DAMAGE_DEALT : type d'attaque. */
+    /** DAMAGE_DEALT: attack kind. */
     public final List<Kind> kinds;
-    /** EFFECT : effets appliqués. */
+    /** EFFECT: applied effects. */
     public final List<PermanentEffect> effects;
-    /** PERIODIC_DAMAGE : dégâts par déclenchement (demi-cœurs). */
+    /** PERIODIC_DAMAGE: damage per trigger (half-hearts). */
     public final double damage;
-    /** PERIODIC_DAMAGE : intervalle en secondes. */
+    /** PERIODIC_DAMAGE: interval in seconds. */
     public final double interval;
-    /** PERIODIC_DAMAGE : ticks de feu ajoutés. */
+    /** PERIODIC_DAMAGE: fire ticks added. */
     public final int fireTicks;
     public final FlawCondition condition;
 
@@ -124,7 +124,7 @@ public final class Flaw {
         return section == null ? null : load(section.getValues(false));
     }
 
-    /** Les conditions sont-elles remplies pour ce joueur ? */
+    /** Are the conditions met for this player? */
     public boolean active(Player player) {
         return condition.test(player);
     }
@@ -137,7 +137,7 @@ public final class Flaw {
         return causes.isEmpty() || causes.contains(cause.toUpperCase(Locale.ROOT));
     }
 
-    /** Vide = tous ; sinon le nom d'entité (ZOMBIE) ou « MYTHIC:Nom » doit correspondre. */
+    /** Empty = all; otherwise the entity name (ZOMBIE) or "MYTHIC:Name" must match. */
     public static boolean matchesName(List<Pattern> patterns, String... names) {
         if (patterns.isEmpty()) {
             return true;

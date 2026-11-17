@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Métiers : actions réservées (avec niveau requis) et gain d'XP de métier.
+ * Jobs: reserved actions (with required level) and job XP gain.
  */
 public final class JobListener implements Listener {
 
@@ -44,16 +44,16 @@ public final class JobListener implements Listener {
 
     private final CykClasses plugin;
     private final Map<UUID, Long> lastMessage = new HashMap<>();
-    /** Dernier joueur ayant ouvert chaque alambic (pour l'XP d'alchimie). */
+    /** Last player who opened each brewing stand (for alchemy XP). */
     private final Map<Location, UUID> brewers = new HashMap<>();
 
     public JobListener(CykClasses plugin) {
         this.plugin = plugin;
     }
 
-    /** @return true si l'action est bloquée (l'événement est annulé et le message envoyé). */
+    /** @return true if the action is blocked (the event is cancelled and the message sent). */
     /**
-     * Élevage refusé AVANT que la nourriture soit consommée (sinon le joueur perd ses carottes, blé…).
+     * Breeding refused BEFORE the food is consumed (otherwise the player loses their carrots, wheat…).
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onFeed(org.bukkit.event.player.PlayerInteractEntityEvent e) {
@@ -66,14 +66,14 @@ public final class JobListener implements Listener {
         }
     }
 
-    /** USE_ITEM : clic droit avec un objet (poudre d'os, houe pour labourer…). */
+    /** USE_ITEM: right click with an item (bone meal, hoe for tilling…). */
     @EventHandler(priority = EventPriority.LOW)
     public void onUseItem(PlayerInteractEvent e) {
         if ((e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) || e.getItem() == null
                 || e.useItemInHand() == org.bukkit.event.Event.Result.DENY) {
             return;
         }
-        // On refuse seulement l'utilisation de l'objet : ouvrir un coffre avec une houe en main reste possible.
+        // Only the item use is refused: opening a chest with a hoe in hand is still possible.
         Cancellable itemOnly = new Cancellable() {
             private boolean cancelled;
             @Override public boolean isCancelled() { return cancelled; }
@@ -142,7 +142,7 @@ public final class JobListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBreakXp(BlockBreakEvent e) {
-        // Pas d'XP pour un bloc posé par un joueur (anti-abus), ni pour une culture pas mûre.
+        // No XP for a block placed by a player (anti-abuse), nor for an unripe crop.
         if (e.getBlock().hasMetadata(PLACED)) {
             return;
         }
@@ -185,7 +185,7 @@ public final class JobListener implements Listener {
         }
         Material type = e.getClickedBlock().getType();
         if (e.getPlayer().isSneaking() && e.getItem() != null && e.getItem().getType().isBlock()) {
-            return; // pose d'un bloc contre la station
+            return; // placing a block against the station
         }
         if (!blocked(e.getPlayer(), JobRule.Action.INTERACT_BLOCK, type.name(), e) && type == Material.BREWING_STAND) {
             brewers.put(e.getClickedBlock().getLocation(), e.getPlayer().getUniqueId());
@@ -267,7 +267,7 @@ public final class JobListener implements Listener {
         for (JobRule rule : plugin.content().jobRules()) {
             if (rule.action() == JobRule.Action.SMELT && rule.matches(e.getItemType().name())
                     && (p.getJobId() == null || !rule.jobs().contains(p.getJobId()) || plugin.jobs().level(p) < rule.minLevel())) {
-                e.setExpToDrop(0); // l'extraction ne peut pas être annulée : seule l'XP vanilla est retirée
+                e.setExpToDrop(0); // extraction cannot be cancelled: only the vanilla XP is removed
                 return;
             }
         }

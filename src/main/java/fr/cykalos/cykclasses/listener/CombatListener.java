@@ -39,7 +39,7 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Applique statistiques, défauts et états temporaires aux dégâts.
+ * Applies stats, weaknesses and temporary states to damage.
  */
 public final class CombatListener implements Listener {
 
@@ -54,7 +54,7 @@ public final class CombatListener implements Listener {
 
     // ------------------------------------------------------------ Attaquant
 
-    /** Une entité étourdie (Pas de l'ombre…) ne peut ni attaquer ni cibler. */
+    /** A stunned entity (Shadow step…) can neither attack nor target. */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onStunnedAttack(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();
@@ -85,7 +85,7 @@ public final class CombatListener implements Listener {
             kind = DamageKind.RANGED;
         }
 
-        // Groupe sans dégâts alliés : aucun coup entre membres.
+        // Party without friendly fire: no hits between members.
         if (attacker != null && event.getEntity() instanceof Player victimPlayer
                 && plugin.parties().isProtectedAlly(attacker, victimPlayer)) {
             event.setCancelled(true);
@@ -94,7 +94,7 @@ public final class CombatListener implements Listener {
 
         double damage = event.getDamage();
 
-        // Marque du chasseur : bonus quel que soit l'attaquant.
+        // Hunter's mark: bonus whoever the attacker is.
         CombatService.Mark mark = plugin.combat().markOf(event.getEntity());
         if (mark != null) {
             damage *= 1 + mark.bonus();
@@ -227,7 +227,7 @@ public final class CombatListener implements Listener {
             }
         }
 
-        // Bouclier de mana : une partie des dégâts est payée en mana (1 dégât = 2 mana).
+        // Mana shield: part of the damage is paid with mana (1 damage = 2 mana).
         if (st != null && st.manaShieldUntil > now && damage > 0) {
             double absorbed = damage * st.manaShieldRatio;
             double cost = absorbed * 2;
@@ -249,7 +249,7 @@ public final class CombatListener implements Listener {
         }
     }
 
-    /** Noms utilisables dans damagers / targets : type d'entité et « MYTHIC:Nom » pour les mobs MythicMobs. */
+    /** Names usable in damagers / targets: entity type and "MYTHIC:Name" for MythicMobs mobs. */
     private String[] entityNames(Entity entity) {
         if (entity == null) {
             return new String[0];
@@ -262,9 +262,9 @@ public final class CombatListener implements Listener {
     // ------------------------------------------------------------ Divers
 
     /**
-     * Flèche tirée à l'arc par un joueur : comme les flèches de compétences, elle touche même si la cible vient de
-     * subir des dégâts (sinon elle rebondit, par exemple sur un zombie qui brûle au soleil).
-     * config.yml → combat.bow-ignores-hit-delay. L'arbalète n'est pas concernée (Tir multiple).
+     * Arrow shot with a bow by a player: like skill arrows, it hits even if the target has just
+     * taken damage (otherwise it bounces off, for example on a zombie burning in the sun).
+     * config.yml → combat.bow-ignores-hit-delay. Crossbows are not affected (Multishot).
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBowShot(org.bukkit.event.entity.EntityShootBowEvent event) {
@@ -281,8 +281,8 @@ public final class CombatListener implements Listener {
         if (!(event.getEntity() instanceof AbstractArrow arrow)) {
             return;
         }
-        // Flèche de compétence : la cible ne doit pas être protégée par son court délai d'invincibilité
-        // (sinon la flèche rebondit sans faire de dégâts juste après un autre coup)
+        // Skill arrow: the target must not be protected by its short invulnerability delay
+        // (otherwise the arrow bounces off without damage right after another hit)
         if (arrow.getPersistentDataContainer().has(ArcherSkills.SKILL_ARROW_KEY)
                 && event.getHitEntity() instanceof LivingEntity target) {
             target.setNoDamageTicks(0);

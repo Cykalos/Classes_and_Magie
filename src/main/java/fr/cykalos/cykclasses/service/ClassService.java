@@ -12,7 +12,7 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 /**
- * Choix, évolution et réinitialisation de classe.
+ * Class choice, evolution and reset.
  */
 public final class ClassService {
 
@@ -22,7 +22,7 @@ public final class ClassService {
         this.plugin = plugin;
     }
 
-    /** Choix d'une classe de base par le joueur. */
+    /** A player chooses a base class. */
     public boolean choose(Player player, RpgClass rc) {
         PlayerProfile profile = plugin.profiles().get(player);
         if (profile.hasClass()) {
@@ -35,7 +35,7 @@ public final class ClassService {
         return apply(player, profile, rc, false);
     }
 
-    /** Évolution vers une sous-classe si les conditions sont remplies. */
+    /** Evolution into a subclass if the conditions are met. */
     public boolean chooseSubclass(Player player, RpgClass sub) {
         PlayerProfile profile = plugin.profiles().get(player);
         if (!profile.hasClass()) {
@@ -58,7 +58,7 @@ public final class ClassService {
     }
 
     /**
-     * Applique directement une classe ou sous-classe (sans vérifier les conditions si {@code force}).
+     * Applies a class or subclass directly (without checking the conditions if {@code force}).
      */
     public boolean apply(Player player, PlayerProfile profile, RpgClass rc, boolean force) {
         RpgClass old = plugin.classes().effective(profile);

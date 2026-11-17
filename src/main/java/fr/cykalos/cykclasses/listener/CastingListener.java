@@ -20,8 +20,8 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 /**
- * F active/désactive le mode compétences ; les touches 1-8 lancent alors les compétences.
- * Protège aussi les icônes (impossible de les déplacer, jeter ou poser).
+ * F toggles skill mode; keys 1-8 then cast skills.
+ * Also protects the icons (they cannot be moved, dropped or placed).
  */
 public final class CastingListener implements Listener {
 
@@ -134,7 +134,7 @@ public final class CastingListener implements Listener {
         }
     }
 
-    /** Les icônes de la barre (flèche spectrale…) ne servent jamais de munitions à un arc ou une arbalète. */
+    /** Hotbar icons (spectral arrow…) are never used as ammunition by a bow or a crossbow. */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onReadyArrow(com.destroystokyo.paper.event.player.PlayerReadyArrowEvent event) {
         if (plugin.skillBar().isIcon(event.getArrow())) {

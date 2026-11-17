@@ -10,7 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Emplacement de chaque fichier dans le dossier du plugin, rangé par thème :
+ * Location of each file in the plugin folder, organised by theme:
  * <pre>
  * config.yml
  * classes/      classes.yml, skilltree.yml, attributes.yml
@@ -18,10 +18,10 @@ import java.util.Map;
  * metiers/      jobs.yml, forge.yml, gems.yml
  * objets/       kits.yml, items.yml
  * affichage/    hud.yml, messages.yml
- * quetes/       un ou plusieurs fichiers de quêtes (tous les .yml du dossier sont lus)
- * donnees/      données du serveur et des joueurs (ne pas modifier à la main)
+ * quetes/       one or more quest files (every .yml file in the folder is read)
+ * donnees/      server and player data (do not edit by hand)
  * </pre>
- * Les fichiers des anciennes versions (tous à la racine) sont déplacés automatiquement au démarrage.
+ * Files from older versions (all at the root) are moved automatically on startup.
  */
 public final class ConfigFiles {
 
@@ -48,7 +48,7 @@ public final class ConfigFiles {
         }
     }
 
-    /** Chemin relatif d'un fichier (ex. « classes.yml » → « classes/classes.yml »). */
+    /** Relative path of a file (e.g. "classes.yml" → "classes/classes.yml"). */
     public static String path(String name) {
         return PATHS.getOrDefault(name, name);
     }
@@ -61,7 +61,7 @@ public final class ConfigFiles {
         return new File(plugin.getDataFolder(), DATA);
     }
 
-    /** Charge un fichier de configuration, en créant la version par défaut s'il n'existe pas. */
+    /** Loads a configuration file, creating the default version if it does not exist. */
     public static YamlConfiguration load(JavaPlugin plugin, String name) {
         File file = file(plugin, name);
         if (!file.exists() && plugin.getResource(path(name)) != null) {
@@ -70,7 +70,7 @@ public final class ConfigFiles {
         return YamlConfiguration.loadConfiguration(file);
     }
 
-    /** Déplace les fichiers des anciennes versions (à la racine) vers leur dossier. */
+    /** Moves files from older versions (at the root) to their folder. */
     public static void migrate(JavaPlugin plugin) {
         File root = plugin.getDataFolder();
         if (!root.isDirectory()) {
@@ -80,7 +80,7 @@ public final class ConfigFiles {
         for (Map.Entry<String, String> e : PATHS.entrySet()) {
             moved += move(plugin, new File(root, e.getKey()), new File(root, e.getValue()));
         }
-        // Données des joueurs et sauvegardes
+        // Player data and backups
         moved += move(plugin, new File(root, "playerdata"), new File(dataFolder(plugin), "joueurs"));
         String sqlite = plugin.getConfig().getString("storage.sqlite-file", "data.db");
         if (!sqlite.contains("/")) {

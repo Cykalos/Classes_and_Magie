@@ -9,8 +9,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * Projectile magique simulé à base de particules : avance pas à pas et touche
- * la première entité valide ou le premier bloc solide. Ne casse aucun bloc.
+ * Particle-based simulated magic projectile: moves step by step and hits
+ * the first valid entity or the first solid block. Breaks no block.
  */
 final class SpellProjectile {
 
@@ -18,10 +18,10 @@ final class SpellProjectile {
     }
 
     /**
-     * @param speed   blocs par tick
-     * @param range   portée maximale
-     * @param trail   dessin à chaque étape
-     * @param onHit   appelé une fois à l'impact (entité touchée ou null, position)
+     * @param speed   blocks per tick
+     * @param range   maximum range
+     * @param trail   drawn at each step
+     * @param onHit   called once on impact (hit entity or null, position)
      */
     static void launch(SkillContext c, Location start, Vector direction, double speed, double range,
                        Consumer<Location> trail, BiConsumer<LivingEntity, Location> onHit) {

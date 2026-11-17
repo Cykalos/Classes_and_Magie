@@ -10,8 +10,8 @@ import java.util.Locale;
 import java.util.logging.Level;
 
 /**
- * Création et identification d'objets : vanilla (« minecraft:iron_sword »), MythicMobs (« mythic:Nom »)
- * ou tout plugin supporté par UniItem (« craftengine:pack:id », « executableitems:id », « itemsadder:ns:id »...).
+ * Item creation and identification: vanilla ("minecraft:iron_sword"), MythicMobs ("mythic:Name")
+ * or any plugin supported by UniItem ("craftengine:pack:id", "executableitems:id", "itemsadder:ns:id"...).
  */
 public final class ItemFactory {
 
@@ -22,7 +22,7 @@ public final class ItemFactory {
         this.plugin = plugin;
     }
 
-    /** À appeler une fois tous les plugins chargés. */
+    /** To call once every plugin is loaded. */
     public void init() {
         try {
             uni = new UniItemBridge();
@@ -58,7 +58,7 @@ public final class ItemFactory {
         return null;
     }
 
-    /** Identifiant custom en minuscules (« craftengine:pack:epee », « mythic:epee »...), ou null si vanilla. */
+    /** Lower-case custom id ("craftengine:pack:sword", "mythic:sword"...), or null if vanilla. */
     public String customId(ItemStack item) {
         if (item == null || item.getType().isAir()) {
             return null;

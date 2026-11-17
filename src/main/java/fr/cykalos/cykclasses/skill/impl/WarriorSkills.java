@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Guerrier, Berserker, Paladin.
+ * Warrior, Berserker, Paladin.
  */
 public final class WarriorSkills {
 
@@ -36,7 +36,7 @@ public final class WarriorSkills {
         s.register("JUDGMENT", WarriorSkills::judgment);
     }
 
-    /** Fonce en avant et percute les ennemis sur le chemin. */
+    /** Charges forward and rams the enemies on the way. */
     private static boolean charge(SkillContext c) {
         Player p = c.player();
         double power = c.d("power", 1.6);
@@ -59,7 +59,7 @@ public final class WarriorSkills {
         return true;
     }
 
-    /** Cri qui renforce le guerrier et les alliés proches. */
+    /** Shout that strengthens the warrior and nearby allies. */
     private static boolean warCry(SkillContext c) {
         Player p = c.player();
         double radius = c.d("radius", 8);
@@ -78,7 +78,7 @@ public final class WarriorSkills {
         return true;
     }
 
-    /** Tournoiement : frappe tous les ennemis autour. */
+    /** Whirlwind: hits every enemy around. */
     private static boolean whirlwind(SkillContext c) {
         Player p = c.player();
         double radius = c.d("radius", 4);
@@ -100,7 +100,7 @@ public final class WarriorSkills {
         return true;
     }
 
-    /** Rage sanguinaire : vol de vie et dégâts bonus, coûte des PV. */
+    /** Blood rage: life steal and bonus damage, costs health. */
     private static boolean bloodRage(SkillContext c) {
         Player p = c.player();
         Status st = c.combat().status(p);
@@ -114,7 +114,7 @@ public final class WarriorSkills {
         return true;
     }
 
-    /** Prochaine attaque de mêlée infligeant des dégâts massifs. */
+    /** Next melee attack deals massive damage. */
     private static boolean shatteringBlow(SkillContext c) {
         Player p = c.player();
         Status st = c.combat().status(p);
@@ -125,7 +125,7 @@ public final class WarriorSkills {
         return true;
     }
 
-    /** Bouclier sacré : absorption pour les alliés proches. */
+    /** Holy shield: absorption for nearby allies. */
     private static boolean holyShield(SkillContext c) {
         Player p = c.player();
         double radius = c.d("radius", 8);
@@ -139,7 +139,7 @@ public final class WarriorSkills {
         return true;
     }
 
-    /** Jugement : un éclair sacré frappe la cible visée. Bonus contre les morts-vivants. */
+    /** Judgment: a holy lightning bolt strikes the targeted enemy. Bonus against the undead. */
     private static boolean judgment(SkillContext c) {
         Player p = c.player();
         LivingEntity target = c.combat().targetInSight(p, c.d("range", 20));

@@ -20,8 +20,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * /groupe — création (avec règles), invitations, gestion et chat de groupe.
- * /gc <message> — raccourci du chat de groupe.
+ * /groupe — creation (with rules), invitations, management and party chat.
+ * /gc <message> — party chat shortcut.
  */
 public final class GroupeCommand implements TabExecutor {
 

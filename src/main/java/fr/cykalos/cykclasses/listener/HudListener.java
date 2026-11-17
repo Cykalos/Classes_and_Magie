@@ -14,8 +14,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
- * Dégâts flottants et PV de la cible. Écoute en MONITOR : fonctionne aussi pour les dégâts
- * infligés par d'autres plugins (MythicMobs...).
+ * Floating damage and target health. Listens at MONITOR: also works for damage
+ * dealt by other plugins (MythicMobs...).
  */
 public final class HudListener implements Listener {
 

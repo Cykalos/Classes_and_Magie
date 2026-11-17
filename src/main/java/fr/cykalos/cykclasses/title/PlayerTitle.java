@@ -10,11 +10,11 @@ import org.bukkit.Material;
 import java.util.List;
 
 /**
- * Un titre : nom affiché, rareté, conditions de déblocage et effets quand il est équipé.
+ * A title: display name, rarity, unlock conditions and effects while equipped.
  *
- * @param unique  un seul joueur du serveur peut le posséder
- * @param hidden  affiché « ??? » tant qu'il n'est pas débloqué
- * @param unlock  objectifs à remplir (vide = titre donné uniquement par une quête ou un administrateur)
+ * @param unique  only one player on the server can own it
+ * @param hidden  shown as "???" until it is unlocked
+ * @param unlock  objectives to meet (empty = title only given by a quest or an administrator)
  */
 public record PlayerTitle(String id, String name, String rarity, Material icon, List<String> description,
                           boolean unique, boolean hidden, QuestRequirements requirements, List<Objective> unlock,

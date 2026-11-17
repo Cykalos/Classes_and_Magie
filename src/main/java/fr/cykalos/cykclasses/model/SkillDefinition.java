@@ -11,8 +11,8 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Compétence telle que déclarée dans classes.yml.
- * Le {@code type} pointe vers l'implémentation Java ; les {@code params} règlent ses valeurs.
+ * Skill as declared in classes.yml.
+ * The {@code type} points to the Java implementation; the {@code params} tune its values.
  */
 public final class SkillDefinition {
 
@@ -24,11 +24,11 @@ public final class SkillDefinition {
     public final double manaCost;
     public final double cooldown;
     public final int unlockLevel;
-    /** Coût en PV (en demi-cœurs) au lieu ou en plus du mana. */
+    /** Health cost (in half-hearts) instead of, or on top of, mana. */
     public final double healthCost;
-    /** Modèle d'objet (composant item_model, ex. "monpack:skills/charge") pour l'icône, ou null. */
+    /** Item model (item_model component, e.g. "mypack:skills/charge") for the icon, or null. */
     public final String iconModel;
-    /** Custom model data (float) pour l'icône, ou null. */
+    /** Custom model data (float) for the icon, or null. */
     public final Float customModelData;
     private final Map<String, Object> params;
 

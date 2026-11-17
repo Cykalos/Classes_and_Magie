@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * /competence <id|numéro> — utile pour les macros et les liaisons de touches.
+ * /competence <id|number> — useful for macros and key bindings.
  */
 public final class CompetenceCommand implements TabExecutor {
 

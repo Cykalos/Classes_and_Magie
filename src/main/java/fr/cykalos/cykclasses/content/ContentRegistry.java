@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * Charge races.yml, traits.yml, jobs.yml, skilltree.yml, attributes.yml, kits.yml et items.yml.
+ * Loads races.yml, traits.yml, jobs.yml, skilltree.yml, attributes.yml, kits.yml and items.yml.
  */
 public final class ContentRegistry {
 
@@ -35,9 +35,9 @@ public final class ContentRegistry {
     private final Map<String, Kit> kits = new LinkedHashMap<>();
     private final List<ItemRule> itemRules = new ArrayList<>();
     private final Map<String, Weakness> weaknesses = new LinkedHashMap<>();
-    /** race -> faiblesses imposées */
+    /** race -> imposed weaknesses */
     private final Map<String, List<String>> raceWeaknesses = new HashMap<>();
-    /** classe ou sous-classe -> faiblesses imposées */
+    /** class or subclass -> imposed weaknesses */
     private final Map<String, List<String>> classWeaknesses = new HashMap<>();
     private YamlConfiguration weaknessesConfig;
     private final Set<String> warnedClassWeaknesses = new java.util.HashSet<>();
@@ -72,7 +72,7 @@ public final class ContentRegistry {
         loadTraits(traitsConfig);
         jobsConfig = yaml("jobs.yml");
         if (!jobsConfig.contains("leveling") || !jobsConfig.contains("jobs.joaillier")) {
-            // Ancien format (avant les niveaux de métier) : sauvegarde puis nouveau fichier par défaut.
+            // Old format (before job levels): backup, then new default file.
             File old = fr.cykalos.cykclasses.config.ConfigFiles.file(plugin, "jobs.yml");
             File backup = new File(fr.cykalos.cykclasses.config.ConfigFiles.dataFolder(plugin), "sauvegardes/jobs-ancien-" + System.currentTimeMillis() + ".yml");
             backup.getParentFile().mkdirs();
@@ -231,7 +231,7 @@ public final class ContentRegistry {
         }
         readPredefined(y.getConfigurationSection("predefined.races"), raceWeaknesses);
         readPredefined(y.getConfigurationSection("predefined.classes"), classWeaknesses);
-        // Faiblesses imposées dans races.yml (weaknesses: [...]) : on retire les identifiants inconnus.
+        // Weaknesses imposed in races.yml (weaknesses: [...]): unknown ids are removed.
         raceWeaknesses.forEach((race, ids) -> ids.removeIf(w -> {
             boolean unknown = !weaknesses.containsKey(w);
             if (unknown) {
@@ -460,7 +460,7 @@ public final class ContentRegistry {
         }
     }
 
-    // ------------------------------------------------------------ Accès
+    // ------------------------------------------------------------ Access
 
     public Race race(String id) { return id == null ? null : races.get(id.toLowerCase(Locale.ROOT)); }
     public Collection<Race> races() { return races.values(); }
@@ -479,7 +479,7 @@ public final class ContentRegistry {
     public Collection<Weakness> weaknesses() { return weaknesses.values(); }
     public YamlConfiguration weaknessesConfig() { return weaknessesConfig; }
 
-    /** Faiblesses imposées par la race, la classe et la sous-classe (sans doublon). */
+    /** Weaknesses imposed by the race, the class and the subclass (no duplicates). */
     public List<Weakness> predefinedWeaknesses(String raceId, String classId, String subclassId) {
         java.util.LinkedHashSet<String> ids = new java.util.LinkedHashSet<>();
         if (raceId != null) {
@@ -491,7 +491,7 @@ public final class ContentRegistry {
         if (subclassId != null) {
             ids.addAll(classWeaknesses.getOrDefault(subclassId.toLowerCase(Locale.ROOT), List.of()));
         }
-        // Faiblesses imposées dans classes.yml (weaknesses: [...]) de la sous-classe (ou de la classe)
+        // Weaknesses imposed in classes.yml (weaknesses: [...]) of the subclass (or of the class)
         var rc = plugin.classes() == null ? null
                 : plugin.classes().get(subclassId != null ? subclassId : classId);
         if (rc == null && classId != null && plugin.classes() != null) {

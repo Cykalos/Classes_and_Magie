@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Assassin, Ombre, Duelliste.
+ * Assassin, Shadow, Duelist.
  */
 public final class AssassinSkills {
 
@@ -38,7 +38,7 @@ public final class AssassinSkills {
         s.register("LUNGE", AssassinSkills::lunge);
     }
 
-    /** Se téléporte dans le dos de la cible, la frappe et l'étourdit (params : range, damage, stun en secondes). */
+    /** Teleports behind the target, strikes and stuns it (params: range, damage, stun in seconds). */
     private static boolean shadowStep(SkillContext c) {
         Player p = c.player();
         LivingEntity target = c.combat().targetInSight(p, c.d("range", 15));
@@ -61,13 +61,13 @@ public final class AssassinSkills {
         Fx.particle(behind.clone().add(0, 1, 0), Particle.LARGE_SMOKE, 25, 0.3, 0.02);
         c.sound("entity.enderman.teleport", 0.8f, 0.6f);
         p.setFallDistance(0);
-        // Damage d'abord (la cible se retourne), puis étourdissement : la cible ne riposte pas tout de suite
+        // Damage first (the target turns around), then stun: the target does not strike back right away
         c.combat().damage(p, target, c.d("damage", 6), DamageKind.MELEE);
         c.combat().stun(target, c.d("stun", 1.0));
         return true;
     }
 
-    /** Disparaît : invisibilité, vitesse, et les monstres perdent leur cible. */
+    /** Vanishes: invisibility, speed, and monsters lose their target. */
     private static boolean vanish(SkillContext c) {
         Player p = c.player();
         int duration = (int) (c.d("duration", 6) * 20);
@@ -83,7 +83,7 @@ public final class AssassinSkills {
         return true;
     }
 
-    /** Les prochaines attaques empoisonnent la cible. */
+    /** The next attacks poison the target. */
     private static boolean poisonBlade(SkillContext c) {
         Player p = c.player();
         Status st = c.combat().status(p);
@@ -95,7 +95,7 @@ public final class AssassinSkills {
         return true;
     }
 
-    /** Voile d'ombre : aveugle et ralentit les ennemis autour. */
+    /** Shadow veil: blinds and slows nearby enemies. */
     private static boolean shadowVeil(SkillContext c) {
         Player p = c.player();
         double radius = c.d("radius", 6);
@@ -115,7 +115,7 @@ public final class AssassinSkills {
         return true;
     }
 
-    /** Exécution : dégâts croissants selon les PV manquants de la cible. */
+    /** Execution: damage increasing with the target's missing health. */
     private static boolean execution(SkillContext c) {
         Player p = c.player();
         LivingEntity target = c.combat().targetInSight(p, c.d("range", 4));
@@ -134,7 +134,7 @@ public final class AssassinSkills {
         return true;
     }
 
-    /** Parade : annule le prochain coup reçu et riposte. */
+    /** Parry: cancels the next hit taken and strikes back. */
     private static boolean parry(SkillContext c) {
         Player p = c.player();
         Status st = c.combat().status(p);
@@ -145,7 +145,7 @@ public final class AssassinSkills {
         return true;
     }
 
-    /** Fente : bond vers l'avant qui transperce les ennemis. */
+    /** Lunge: leaps forward, piercing through enemies. */
     private static boolean lunge(SkillContext c) {
         Player p = c.player();
         Vector dir = p.getLocation().getDirection().normalize().multiply(c.d("power", 1.3));

@@ -8,8 +8,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 /**
- * Pont vers la bibliothèque UniItem (CraftEngine, ExecutableItems, ItemsAdder, Oraxen, Nexo, MMOItems, MythicMobs...).
- * Chargée seulement si la bibliothèque est disponible.
+ * Bridge to the UniItem library (CraftEngine, ExecutableItems, ItemsAdder, Oraxen, Nexo, MMOItems, MythicMobs...).
+ * Only loaded when the library is available.
  */
 public final class UniItemBridge {
 
@@ -27,7 +27,7 @@ public final class UniItemBridge {
         }
     }
 
-    /** Identifiant « type:id » d'un objet custom, ou null pour un objet vanilla. */
+    /** "type:id" identifier of a custom item, or null for a vanilla item. */
     public String key(ItemStack item) {
         try {
             ItemKey k = provider.key(item);

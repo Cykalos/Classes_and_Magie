@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Toutes les faiblesses du personnage au même endroit, regroupées par origine :
- * classe, race, traits, faiblesses imposées et faiblesses tirées au hasard.
+ * Every weakness of the character in one place, grouped by origin:
+ * class, race, traits, imposed weaknesses and randomly rolled weaknesses.
  */
 public final class WeaknessGui extends Gui {
 
@@ -43,14 +43,14 @@ public final class WeaknessGui extends Gui {
         PlayerProfile p = plugin.profiles().get(viewer);
         List<ItemStack> items = new ArrayList<>();
 
-        // Classe
+        // Class
         RpgClass rc = plugin.classes().effective(p);
         if (rc != null && !rc.flaws().isEmpty()) {
             ItemBuilder b = new ItemBuilder(rc.icon).name(rc.name);
             flaws(b, rc.flaws());
             items.add(b.lore("").lore(plugin.messages().raw("weaknesses.from-class")).build());
         }
-        // Race (+ malus si la race ne convient pas à la classe)
+        // Race (+ penalty if the race does not suit the class)
         Race race = plugin.modules().races() ? plugin.content().race(p.getRaceId()) : null;
         if (race != null) {
             List<Flaw> raceFlaws = new ArrayList<>(race.flaws());
@@ -64,7 +64,7 @@ public final class WeaknessGui extends Gui {
                 items.add(b.lore("").lore(plugin.messages().raw("weaknesses.from-race")).build());
             }
         }
-        // Traits qui comportent des faiblesses
+        // Traits that include weaknesses
         if (plugin.modules().traits()) {
             for (String id : p.getTraits()) {
                 Trait t = plugin.content().trait(id);
@@ -75,7 +75,7 @@ public final class WeaknessGui extends Gui {
                 }
             }
         }
-        // Faiblesses imposées puis tirées
+        // Imposed, then rolled weaknesses
         List<Weakness> imposed = plugin.character().predefinedOf(p);
         List<Weakness> rolled = new ArrayList<>(plugin.character().rolledOf(p));
         rolled.removeAll(imposed);

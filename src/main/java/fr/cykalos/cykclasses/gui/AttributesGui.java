@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Répartition des points d'attributs. Clic = +1, clic avec Maj = +5. */
+/** Attribute point allocation. Click = +1, Shift + click = +5. */
 public final class AttributesGui extends Gui {
 
     @Override

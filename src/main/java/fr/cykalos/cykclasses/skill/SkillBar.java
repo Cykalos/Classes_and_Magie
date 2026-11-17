@@ -28,15 +28,15 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 /**
- * Mode compétences : la barre d'action (slots 1 à 8) est remplacée par les icônes des compétences,
- * l'objet tenu est déplacé dans le slot 9 et reste en main.
+ * Skill mode: the hotbar (slots 1 to 8) is replaced by the skill icons,
+ * the held item is moved to slot 9 and stays in hand.
  *
- * <p>Pourquoi : le client n'envoie aucun paquet quand on appuie sur la touche du slot déjà sélectionné.
- * En gardant toujours la main sur le slot 9, chaque touche 1-8 provoque un changement de slot,
- * que l'on annule pour lancer la compétence.</p>
+ * <p>Why: the client sends no packet when the key of the already selected slot is pressed.
+ * By always keeping the hand on slot 9, each key 1-8 causes a slot change,
+ * which is cancelled to cast the skill.</p>
  *
- * <p>Les objets d'origine sont gardés en mémoire ET dans les données persistantes du joueur,
- * pour être restaurés même après un crash du serveur.</p>
+ * <p>The original items are kept in memory AND in the player's persistent data,
+ * so they are restored even after a server crash.</p>
  */
 public final class SkillBar {
 
@@ -114,7 +114,7 @@ public final class SkillBar {
     }
 
     /**
-     * Restaure la barre d'origine. L'objet du slot 9 (l'arme tenue, éventuellement usée) retourne à sa place.
+     * Restores the original hotbar. The slot 9 item (the held weapon, possibly damaged) goes back to its place.
      */
     public void exit(Player player, boolean feedback) {
         Saved s = saved.remove(player.getUniqueId());
@@ -145,7 +145,7 @@ public final class SkillBar {
                 inv.setItem(i, null);
             }
         }
-        // Un objet arrivé entre-temps sur un slot (ramassage) ne doit pas être écrasé.
+        // An item that arrived in a slot in the meantime (pickup) must not be overwritten.
         List<ItemStack> overflow = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             if (i == HAND_SLOT) {
@@ -175,7 +175,7 @@ public final class SkillBar {
         }
     }
 
-    /** À la connexion : restaure une barre restée active (crash) et supprime toute icône égarée. */
+    /** On login: restores a hotbar left active (crash) and removes any stray icon. */
     public void recover(Player player) {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         byte[] bytes = pdc.get(savedKey, PersistentDataType.BYTE_ARRAY);
@@ -203,8 +203,8 @@ public final class SkillBar {
     }
 
     /**
-     * À la mort : retire les icônes des objets lâchés et remet les objets d'origine
-     * (dans l'inventaire si keepInventory, sinon dans les objets lâchés).
+     * On death: removes the icons from the dropped items and puts the original items back
+     * (in the inventory with keepInventory, otherwise among the dropped items).
      */
     public void handleDeath(Player player, List<ItemStack> drops, boolean keepInventory) {
         drops.removeIf(this::isIcon);
@@ -243,9 +243,9 @@ public final class SkillBar {
         }
     }
 
-    // ------------------------------------------------------------ Icônes
+    // ------------------------------------------------------------ Icons
 
-    /** Met à jour les icônes (recharge, verrouillage, mana). */
+    /** Updates the icons (cooldown, lock, mana). */
     public void refresh(Player player) {
         if (!isActive(player)) {
             return;
@@ -261,13 +261,13 @@ public final class SkillBar {
         for (int i = 0; i < SKILL_SLOTS; i++) {
             ItemStack current = inv.getItem(i);
             if (current != null && !current.isEmpty() && !isIcon(current)) {
-                continue; // objet ramassé : on n'écrase rien
+                continue; // picked-up item: overwrite nothing
             }
-            // Slot sans compétence : case de remplissage, pour que le butin ramassé aille dans l'inventaire
+            // Slot without a skill: filler, so that picked-up loot goes to the inventory
             ItemStack icon = i < skills.size() ? icon(profile, skills.get(i), i) : filler();
             if (icon == null ? current == null || current.isEmpty()
                     : current != null && current.isSimilar(icon) && current.getAmount() == icon.getAmount()) {
-                continue; // inchangé : évite d'envoyer des paquets inutiles
+                continue; // unchanged: avoids sending useless packets
             }
             inv.setItem(i, icon);
         }
@@ -324,7 +324,7 @@ public final class SkillBar {
             cmd.setFloats(List.of(s.customModelData));
             meta.setCustomModelDataComponent(cmd);
         }
-        // Groupe de recharge propre à chaque compétence : permet l'animation de recharge du client.
+        // Cooldown group specific to each skill: enables the client's cooldown animation.
         UseCooldownComponent useCd = meta.getUseCooldown();
         useCd.setCooldownSeconds((float) Math.max(0.05, s.cooldown));
         useCd.setCooldownGroup(cooldownGroup(s));
@@ -339,7 +339,7 @@ public final class SkillBar {
         return new NamespacedKey(plugin, "skill/" + s.id.replaceAll("[^a-z0-9_./-]", "_"));
     }
 
-    /** Affiche l'animation de recharge sur l'icône de la compétence. */
+    /** Shows the cooldown animation on the skill icon. */
     public void showCooldown(Player player, SkillDefinition s) {
         if (!isActive(player) || s.cooldown <= 0) {
             return;

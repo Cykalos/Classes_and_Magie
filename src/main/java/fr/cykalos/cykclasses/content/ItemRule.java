@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * Restriction d'utilisation d'objets : quels objets (filtre) et quelles conditions pour s'en servir.
+ * Item usage restriction: which items (filter) and which conditions are needed to use them.
  */
 public record ItemRule(String id, List<Pattern> materials, List<Pattern> customIds, List<String> nameContains,
                        List<String> loreContains, List<String> classes, List<String> races, List<String> jobs,

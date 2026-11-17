@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Régénération du mana et affichage du HUD (barre d'action).
+ * Mana regeneration and HUD display (action bar).
  */
 public final class ManaService {
 

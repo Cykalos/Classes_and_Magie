@@ -8,21 +8,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Faiblesse / vulnérabilité (weaknesses.yml) : tirée au hasard selon la race et la classe, ou imposée.
+ * Weakness / vulnerability (weaknesses.yml): rolled randomly depending on race and class, or imposed.
  *
- * @param races          races qui peuvent la recevoir (vide = toutes)
- * @param classes        classes ou sous-classes qui peuvent la recevoir (vide = toutes)
- * @param excludeRaces   races qui ne la reçoivent jamais
- * @param excludeClasses classes ou sous-classes qui ne la reçoivent jamais
- * @param raceWeights    multiplicateur de chance par race (0 = jamais)
- * @param classWeights   multiplicateur de chance par classe ou sous-classe (0 = jamais)
+ * @param races          races that can receive it (empty = all)
+ * @param classes        classes or subclasses that can receive it (empty = all)
+ * @param excludeRaces   races that never receive it
+ * @param excludeClasses classes or subclasses that never receive it
+ * @param raceWeights    chance multiplier per race (0 = never)
+ * @param classWeights   chance multiplier per class or subclass (0 = never)
  */
 public record Weakness(String id, String name, Material icon, List<String> description, String severity, double weight,
                        List<String> races, List<String> classes, List<String> excludeRaces, List<String> excludeClasses,
                        Map<String, Double> raceWeights, Map<String, Double> classWeights,
                        StatModifier modifiers, List<Flaw> flaws, List<PermanentEffect> effects, List<String> conflicts) {
 
-    /** Chance relative pour ce personnage (0 = impossible). */
+    /** Relative chance for this character (0 = impossible). */
     public double weightFor(String raceId, String classId, String subclassId) {
         if (!races.isEmpty() && (raceId == null || !races.contains(raceId))) {
             return 0;

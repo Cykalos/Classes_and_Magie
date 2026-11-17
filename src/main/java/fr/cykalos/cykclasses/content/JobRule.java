@@ -8,9 +8,9 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
- * Action réservée à certains métiers.
- * Actions : BREAK, PLACE, CRAFT, INTERACT_BLOCK, FISH, BREED, TAME, SMELT, ENCHANT, BREW.
- * {@code minLevel} : niveau de métier requis (recette débloquée à ce niveau).
+ * Action reserved to some jobs.
+ * Actions: BREAK, PLACE, CRAFT, INTERACT_BLOCK, FISH, BREED, TAME, SMELT, ENCHANT, BREW.
+ * {@code minLevel}: required job level (recipe unlocked at that level).
  */
 public record JobRule(Action action, List<Pattern> targets, List<String> jobs, String message, int minLevel, String display) {
 

@@ -46,7 +46,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.logging.Level;
 
 /**
- * CykClasses — classes, sous-classes, compétences, statistiques, défauts et mana.
+ * Classes and Magie — classes, subclasses, skills, stats, weaknesses and mana.
  */
 public final class CykClasses extends JavaPlugin {
 
@@ -90,8 +90,8 @@ public final class CykClasses extends JavaPlugin {
     }
 
     /**
-     * Le plugin s'appelait « CykClasses » : son dossier plugins/CykClasses est renommé
-     * en plugins/Classes_and_Magie au premier démarrage (configuration et données conservées).
+     * The plugin used to be called "CykClasses": its plugins/CykClasses folder is renamed
+     * to plugins/Classes_and_Magie on first start (configuration and data are kept).
      */
     private void migrateDataFolder() {
         java.io.File target = getDataFolder();
@@ -209,7 +209,7 @@ public final class CykClasses extends JavaPlugin {
             }
         }
 
-        // Les plugins d'objets (CraftEngine, ExecutableItems...) peuvent se charger après nous.
+        // Item plugins (CraftEngine, ExecutableItems...) may load after us.
         Bukkit.getScheduler().runTask(this, () -> itemFactory.init());
 
         if (pm.isPluginEnabled("PlaceholderAPI")) {
@@ -217,7 +217,7 @@ public final class CykClasses extends JavaPlugin {
             getLogger().info("PlaceholderAPI détecté : placeholders %cykclasses_*% activés.");
         }
 
-        // Rechargement à chaud : charge les joueurs déjà connectés.
+        // Hot reload: load the players who are already online.
         for (Player player : Bukkit.getOnlinePlayers()) {
             PlayerProfile p = profiles.loadBlocking(player.getUniqueId());
             if (p != null) {
@@ -237,7 +237,7 @@ public final class CykClasses extends JavaPlugin {
         if (cmd == null) {
             return;
         }
-        // Commande d'un module désactivé dans config.yml → modules : message au lieu d'exécuter.
+        // Command of a module disabled in config.yml → modules: message instead of running it.
         cmd.setExecutor((sender, command, label, args) -> {
             if (!modules.commandEnabled(name)) {
                 messages.send(sender, "module-disabled");
@@ -322,7 +322,7 @@ public final class CykClasses extends JavaPlugin {
     public HudService hud() { return hud; }
     public fr.cykalos.cykclasses.quest.QuestService quests() { return quests; }
     public fr.cykalos.cykclasses.title.TitleService titles() { return titles; }
-    /** @return le pont MythicMobs, ou null si MythicMobs n'est pas installé. */
+    /** @return the MythicMobs bridge, or null if MythicMobs is not installed. */
     public MythicHook mythic() { return mythic; }
     public ContentRegistry content() { return content; }
     public CharacterService character() { return character; }
@@ -334,7 +334,7 @@ public final class CykClasses extends JavaPlugin {
     public JobService jobs() { return jobs; }
     public JobDescriptions jobDescriptions() { return jobDescriptions; }
 
-    /** Met à jour les anciennes valeurs par défaut copiées dans config.yml par les versions précédentes. */
+    /** Updates the old default values copied into config.yml by previous versions. */
     private void migrateConfig() {
         var c = getConfig();
         String oldTag = "<dark_gray>[</dark_gray><class> <gray><level></gray><dark_gray>]</dark_gray>";
@@ -342,7 +342,7 @@ public final class CykClasses extends JavaPlugin {
             c.set("chat.class-tag", "<dark_gray>[</dark_gray><class> <gray>Niv. <level></gray><dark_gray>]</dark_gray>");
             saveConfig();
         }
-        // Options ajoutées dans une nouvelle version : valeur par défaut en mémoire
+        // Options added in a new version: default value in memory
         if (c.getDefaults() != null) {
             fr.cykalos.cykclasses.config.ConfigDefaults.fill(c, c.getDefaults(),
                     java.util.Set.of("leveling.mob-xp", "mythicmobs.mob-xp"));

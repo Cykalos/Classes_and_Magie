@@ -11,15 +11,15 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Un groupe de joueurs. Les règles sont fixées à la création et ne changent plus.
+ * A group of players. The rules are set at creation and never change.
  */
 public final class Party {
 
-    /** Répartition de l'XP d'une élimination. */
+    /** How the XP of a kill is shared. */
     public enum XpMode {
-        /** L'XP est divisée entre les membres proches (avec un bonus de groupe). */
+        /** XP is split between nearby members (with a party bonus). */
         SHARED,
-        /** Chaque membre proche reçoit l'XP complète de l'élimination. */
+        /** Each nearby member gets the full XP of the kill. */
         EQUAL
     }
 

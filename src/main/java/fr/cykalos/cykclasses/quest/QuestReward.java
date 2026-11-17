@@ -10,20 +10,20 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Récompenses d'une quête :
+ * Rewards of a quest:
  * <pre>
  * rewards:
- *   xp: 200                 # XP de classe
- *   job-xp: 100             # XP du métier actuel
- *   skill-points: 1         # points d'arbre
- *   attribute-points: 1     # points d'attributs
- *   money: 150              # argent (Vault et un plugin d'économie)
- *   items:                  # même format que kits.yml
+ *   xp: 200                 # class XP
+ *   job-xp: 100             # XP for the current job
+ *   skill-points: 1         # skill tree points
+ *   attribute-points: 1     # attribute points
+ *   money: 150              # money (Vault and an economy plugin)
+ *   items:                  # same format as kits.yml
  *     - {item: "minecraft:iron_ingot", amount: 8}
- *     - {item: "mythic:EpeeRunique", name: "<gold>Lame de l'aube"}
- *   titles: [legende_de_la_guilde]   # titres débloqués
- *   commands: ["lp user %player% permission set monserveur.grade"]
- *   text: ["<gray>Une récompense spéciale"]   # lignes en plus dans le journal
+ *     - {item: "mythic:RuneBlade", name: "<gold>Dawn blade"}
+ *   titles: [legende_de_la_guilde]   # unlocked titles
+ *   commands: ["lp user %player% permission set myserver.rank"]
+ *   text: ["<gray>A special reward"]   # extra lines in the journal
  * </pre>
  */
 public record QuestReward(double xp, double jobXp, int skillPoints, int attributePoints, double money,

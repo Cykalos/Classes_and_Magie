@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 import java.time.Duration;
 
 /**
- * Niveaux et XP de métier. L'XP vient des actions listées dans jobs.yml → xp-sources.
+ * Job levels and XP. XP comes from the actions listed in jobs.yml → xp-sources.
  */
 public final class JobService {
 
@@ -40,7 +40,7 @@ public final class JobService {
         return p.getJobId() == null ? 0 : p.getJobLevel(p.getJobId());
     }
 
-    /** Spécialisation actuelle du joueur pour son métier, ou null. */
+    /** The player's current specialization for their job, or null. */
     public Job.Specialization spec(PlayerProfile p) {
         Job job = plugin.content().job(p.getJobId());
         if (job == null) {
@@ -50,7 +50,7 @@ public final class JobService {
         return id == null ? null : job.specializations().get(id);
     }
 
-    /** Bonus de spécialisation cumulés pour une cible (matériau fabriqué, id de gemme...). */
+    /** Specialization bonuses stacked for a target (crafted material, gem id...). */
     public Job.BonusTotal bonus(PlayerProfile p, String target) {
         Job.Specialization spec = spec(p);
         if (spec == null) {
@@ -91,15 +91,15 @@ public final class JobService {
         return true;
     }
 
-    /** Donne l'XP correspondant à une action, si le métier du joueur la récompense. */
+    /** Gives the XP matching an action, if the player's job rewards it. */
     public void reward(Player player, JobRule.Action action, String target, int amount) {
-        // Les quêtes comptent ces actions pour tout le monde, quel que soit le métier
+        // Quests count these actions for everyone, whatever the job
         if (plugin.quests() != null) {
             try {
                 plugin.quests().progress(player, fr.cykalos.cykclasses.quest.Objective.Type.valueOf(action.name()),
                         target, Math.max(1, amount));
             } catch (IllegalArgumentException ignored) {
-                // action sans objectif de quête correspondant
+                // action without a matching quest objective
             }
         }
         PlayerProfile p = plugin.profiles().getIfLoaded(player.getUniqueId());
@@ -148,7 +148,7 @@ public final class JobService {
                     break;
                 }
             }
-            // Recettes débloquées à ce niveau
+            // Recipes unlocked at this level
             for (JobRule r : plugin.content().jobRules()) {
                 if (r.jobs().contains(job.id()) && r.minLevel() > level && r.minLevel() <= newLevel) {
                     plugin.messages().send(player, "job.unlocked", Text.ph("what", plugin.jobDescriptions().describe(r)));

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Un fichier YAML par joueur dans {@code playerdata/}. */
+/** One YAML file per player in {@code donnees/joueurs/}. */
 public final class YamlStorage implements Storage {
 
     private final File folder;

@@ -29,12 +29,12 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Statistiques effectives d'un joueur = classe + race (+ pénalité de classe) + traits + métier
- * + points d'attributs + arbre de compétences. Appliquées en modificateurs d'attributs transitoires.
+ * Effective stats of a player = class + race (+ class penalty) + traits + weaknesses + job
+ * + equipped title + attribute points + skill tree + equipment. Applied as transient attribute modifiers.
  */
 public final class StatsService {
 
-    /** Arbre commun à toutes les classes. */
+    /** Tree shared by every class. */
     public static final String COMMON_TREE = "commun";
 
     private record Computed(ClassStats stats, List<Flaw> flaws, List<PermanentEffect> effects, Map<String, SkillMod> skillMods) {
@@ -141,7 +141,7 @@ public final class StatsService {
         return cache.computeIfAbsent(profile.getUuid(), k -> compute(profile));
     }
 
-    /** Arbres disponibles : celui de la classe de base puis l'arbre commun. */
+    /** Available trees: the base class's, then the shared tree. */
     public List<SkillTree> treesOf(PlayerProfile profile) {
         List<SkillTree> out = new ArrayList<>();
         SkillTree own = plugin.content().tree(profile.getClassId());
@@ -175,7 +175,7 @@ public final class StatsService {
         return computed(profile).effects();
     }
 
-    /** Bonus cumulés de l'arbre pour une compétence (jamais nul). */
+    /** Stacked tree bonuses for a skill (never null). */
     public SkillMod skillMod(PlayerProfile profile, String skillId) {
         SkillMod m = computed(profile).skillMods().get(skillId.toLowerCase(java.util.Locale.ROOT));
         return m == null ? new SkillMod() : m;
@@ -260,7 +260,7 @@ public final class StatsService {
         }
     }
 
-    /** Bonus de PV temporaire (compétences type Esprit sauvage). */
+    /** Temporary health bonus (skills such as Wild spirit). */
     public void setHealthBuff(Player player, double amount) {
         set(player, Attribute.MAX_HEALTH, buffKey, amount, AttributeModifier.Operation.ADD_NUMBER);
         AttributeInstance health = player.getAttribute(Attribute.MAX_HEALTH);

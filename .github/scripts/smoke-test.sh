@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Démarre un vrai serveur Paper avec le plugin et vérifie qu'il s'active sans erreur.
-# Simule aussi une ancienne installation (fichiers à la racine) pour tester le rangement automatique.
-# Usage : smoke-test.sh <version Paper (ex. 26.2)> <jar du plugin>
+# Starts a real Paper server with the plugin and checks that it enables without errors.
+# Also simulates an old installation (files at the root) to test the automatic file reorganisation.
+# Usage: smoke-test.sh <Paper version (e.g. 26.2)> <plugin jar>
 set -euo pipefail
 VERSION="$1"
 JAR="$(realpath "$2")"
@@ -20,7 +20,7 @@ echo "eula=true" > eula.txt
 printf 'online-mode=false\nlevel-type=minecraft\\:flat\ngenerate-structures=false\nspawn-protection=0\n' > server.properties
 mkdir -p plugins/Classes_and_Magie/playerdata
 cp "$JAR" plugins/
-# Ancienne installation : fichiers à la racine du dossier du plugin
+# Old installation: files at the root of the plugin folder
 for f in classes races jobs messages hud; do
   src=$(find "$ROOT/src/main/resources" -name "$f.yml" | head -1)
   cp "$src" "plugins/Classes_and_Magie/$f.yml"

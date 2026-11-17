@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Choix de la race (après la classe). Affiche bonus, défauts et l'adéquation avec la classe choisie. */
+/** Race choice (after the class). Shows bonuses, weaknesses and how well it suits the chosen class. */
 public final class RaceGui extends Gui {
 
     @Override
@@ -57,7 +57,7 @@ public final class RaceGui extends Gui {
             if (!race.effects().isEmpty()) {
                 race.effects().forEach(e -> b.lore("<gray>• <aqua>" + e.type().getKey().getKey().replace('_', ' ') + " " + (e.amplifier() + 1)));
             }
-            // Faiblesses : défauts de la race + faiblesses imposées, sous un seul titre
+            // Weaknesses: race flaws + imposed weaknesses, under a single heading
             var imposed = plugin.modules().weaknesses()
                     ? plugin.content().predefinedWeaknesses(race.id(), null, null)
                     : java.util.List.<fr.cykalos.cykclasses.content.Weakness>of();

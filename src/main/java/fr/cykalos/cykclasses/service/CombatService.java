@@ -24,13 +24,13 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Dégâts des compétences, ciblage, et états temporaires (rage, parade, marque...).
+ * Skill damage, targeting, and temporary states (rage, parry, mark...).
  */
 public final class CombatService {
 
     public enum DamageKind { MAGIC, MELEE, RANGED, TRUE }
 
-    /** États temporaires d'un joueur. Les horodatages sont en millisecondes. */
+    /** Temporary states of a player. Timestamps are in milliseconds. */
     public static final class Status {
         public long rageUntil;
         public double rageLifesteal;
@@ -53,9 +53,9 @@ public final class CombatService {
     private final CykClasses plugin;
     private final Map<UUID, Status> statuses = new HashMap<>();
     private final Map<UUID, Mark> marks = new HashMap<>();
-    /** Lanceurs en train d'infliger des dégâts de compétence (évite le double calcul). */
+    /** Casters currently dealing skill damage (avoids applying the multiplier twice). */
     private final Set<UUID> skillDamage = new HashSet<>();
-    /** Entités étourdies (fin de l'étourdissement en millisecondes). */
+    /** Stunned entities (end of the stun in milliseconds). */
     private final Map<UUID, Long> stunned = new HashMap<>();
 
     public CombatService(CykClasses plugin) {
@@ -104,9 +104,9 @@ public final class CombatService {
     }
 
     /**
-     * Inflige des dégâts de compétence en appliquant le multiplicateur de la classe du lanceur.
+     * Deals skill damage, applying the caster's class multiplier.
      *
-     * @return les dégâts réellement demandés, ou 0 si la cible est invalide.
+     * @return the damage actually requested, or 0 if the target is invalid.
      */
     public double damage(Player caster, LivingEntity target, double base, DamageKind kind) {
         if (!isValidTarget(caster, target)) {
@@ -126,8 +126,8 @@ public final class CombatService {
     }
 
     /**
-     * Étourdit une entité : elle ne peut plus attaquer ni cibler pendant {@code seconds} secondes,
-     * et elle est fortement ralentie. Sans effet si {@code seconds} vaut 0 ou moins.
+     * Stuns an entity: it can no longer attack or target for {@code seconds} seconds,
+     * and it is heavily slowed. No effect if {@code seconds} is 0 or less.
      */
     public void stun(LivingEntity target, double seconds) {
         if (seconds <= 0 || target instanceof Player) {
@@ -198,14 +198,14 @@ public final class CombatService {
     }
 
     /**
-     * Cibles des compétences de soutien : le lanceur et les membres de son groupe dans le rayon.
-     * Sans groupe, seul le lanceur est concerné.
+     * Targets of support skills: the caster and their party members within the radius.
+     * Without a party, only the caster is affected.
      */
     public Collection<Player> alliesAround(Player caster, double radius) {
         return plugin.parties().membersNear(caster, radius);
     }
 
-    /** Première entité valide dans la ligne de mire (les blocs bloquent la vue). */
+    /** First valid entity in the line of sight (blocks obstruct the view). */
     public LivingEntity targetInSight(Player caster, double range) {
         Location eye = caster.getEyeLocation();
         Vector dir = eye.getDirection();
@@ -217,7 +217,7 @@ public final class CombatService {
         return null;
     }
 
-    /** Membre du groupe dans la ligne de mire, ou {@code null}. */
+    /** Party member in the line of sight, or {@code null}. */
     public Player allyInSight(Player caster, double range) {
         Location eye = caster.getEyeLocation();
         RayTraceResult result = caster.getWorld().rayTrace(eye, eye.getDirection(), range, FluidCollisionMode.NEVER, true, 0.6,
@@ -228,7 +228,7 @@ public final class CombatService {
         return null;
     }
 
-    /** Point visé (bloc ou fin de portée). */
+    /** Targeted point (block or end of range). */
     public Location targetLocation(Player caster, double range) {
         Location eye = caster.getEyeLocation();
         RayTraceResult result = caster.getWorld().rayTraceBlocks(eye, eye.getDirection(), range, FluidCollisionMode.NEVER, true);

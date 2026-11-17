@@ -3,31 +3,31 @@ package fr.cykalos.cykclasses.model;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
- * Statistiques d'une classe. Les sous-classes héritent des valeurs de leur parent
- * et ne redéfinissent que ce qu'elles souhaitent changer.
+ * Stats of a class. Subclasses inherit their parent's values
+ * and only redefine what they want to change.
  */
 public final class ClassStats {
 
-    /** PV bonus (en demi-cœurs) ajoutés aux 20 PV de base. Peut être négatif. */
+    /** Bonus health (in half-hearts) added to the base 20 health. Can be negative. */
     public final double health;
     public final double healthPerLevel;
     public final double mana;
     public final double manaPerLevel;
-    /** Mana régénéré par seconde. */
+    /** Mana regenerated per second. */
     public final double manaRegen;
     public final double manaRegenPerLevel;
     public final double meleeDamage;
     public final double rangedDamage;
     public final double magicDamage;
-    /** Multiplicateur des dégâts reçus (0.8 = -20% de dégâts subis). */
+    /** Damage taken multiplier (0.8 = -20% damage taken). */
     public final double damageTaken;
-    /** Bonus de vitesse de déplacement (0.1 = +10%). */
+    /** Movement speed bonus (0.1 = +10%). */
     public final double speed;
-    /** Points d'armure bonus. */
+    /** Bonus armour points. */
     public final double armor;
-    /** Bonus de vitesse d'attaque (0.1 = +10%). */
+    /** Attack speed bonus (0.1 = +10%). */
     public final double attackSpeed;
-    /** Chance de coup critique (0.0 - 1.0) pour les attaques de mêlée. */
+    /** Critical hit chance (0.0 - 1.0) for melee attacks. */
     public final double critChance;
     public final double critMultiplier;
 
@@ -78,7 +78,7 @@ public final class ClassStats {
         );
     }
 
-    /** Statistiques résultant de l'application d'un modificateur (race, traits, points, arbre...). */
+    /** Stats resulting from applying a modifier (race, traits, points, tree...). */
     public ClassStats apply(StatModifier m) {
         if (m == null || m.isEmpty()) {
             return this;

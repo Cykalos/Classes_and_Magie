@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Calcule la prochaine version (Conventional Commits) et génère le changelog bilingue (EN + FR) en Markdown.
-# Sorties : version, tag, skip (dans $GITHUB_OUTPUT) et le fichier release-notes.md
+# Computes the next version (Conventional Commits) and generates the bilingual (EN + FR) changelog in Markdown.
+# Outputs: version, tag, skip (in $GITHUB_OUTPUT) and the release-notes.md file
 set -euo pipefail
 
 REPO_URL="${GITHUB_SERVER_URL:-https://github.com}/${GITHUB_REPOSITORY:-}"
@@ -14,11 +14,11 @@ else
   CURRENT="${LAST_TAG#v}"
 fi
 
-# Commits à prendre en compte (hors commits de release automatiques)
+# Commits to take into account (except automatic release commits)
 mapfile -t SHAS < <(git log --no-merges --format='%H' "$RANGE" | while read -r sha; do
   subject=$(git log -1 --format='%s' "$sha")
   [[ "$subject" == chore\(release\)* ]] && continue
-  # Commits publiés sans version (« [skip release] ») : absents des notes suivantes
+  # Commits published without a version ("[skip release]"): left out of the next notes
   [[ "$subject" == *"[skip release]"* ]] && continue
   echo "$sha"
 done)
@@ -52,12 +52,12 @@ else
   esac
 fi
 
-# Notes bilingues : anglais d'abord, puis français.
-# Convention du corps de commit (facultative) :
-#   - English detail line          <- détails anglais
-#   FR: résumé en français         <- remplace le sujet dans la partie française
-#   - ligne de détail en français  <- détails français (après FR:)
-# Sans ligne FR:, la partie française reprend le texte anglais.
+# Bilingual notes: English first, then French.
+# Commit body convention (optional):
+#   - English detail line          <- English details
+#   FR: résumé en français         <- replaces the subject in the French part
+#   - ligne de détail en français  <- French details (after FR:)
+# Without an FR: line, the French part reuses the English text.
 declare -A TITLES_EN=(
   [feat]="✨ New features" [fix]="🐛 Fixes" [perf]="⚡ Performance" [refactor]="♻️ Refactoring"
   [docs]="📚 Documentation" [style]="🎨 Style" [test]="🧪 Tests" [build]="🔧 Build" [ci]="🔧 CI"
@@ -82,7 +82,7 @@ for sha in "${SHAS[@]}"; do
   fi
   [[ -z "${TITLES_EN[$type]+x}" ]] && type="other"
 
-  # Sépare le corps en partie anglaise (avant FR:) et partie française (après FR:)
+  # Splits the body into an English part (before FR:) and a French part (after FR:)
   body_en=$(awk '/^[[:space:]]*FR:/{exit} {print}' <<< "$body")
   body_fr=$(awk 'f{print} /^[[:space:]]*FR:/{f=1}' <<< "$body")
   desc_fr=$(grep -m1 -E '^[[:space:]]*FR:' <<< "$body" | sed -E 's/^[[:space:]]*FR:[[:space:]]*//' || true)

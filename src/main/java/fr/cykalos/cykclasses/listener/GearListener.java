@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Forge (qualité à la fabrication), incrustation des gemmes, gemmes trouvées en minant,
- * et recalcul des stats quand l'équipement change.
+ * Forge (quality when crafting), gem socketing, gems found while mining,
+ * and stat recalculation when the equipment changes.
  */
 public final class GearListener implements Listener {
 
@@ -38,7 +38,7 @@ public final class GearListener implements Listener {
         this.plugin = plugin;
     }
 
-    /** Recalcule les stats si l'équipement porté a changé. */
+    /** Recalculates stats if the worn equipment has changed. */
     public void checkEquipment(Player player) {
         plugin.gear().breakObsoleteUniques(player);
         int sig = plugin.gear().signature(player);
@@ -93,7 +93,7 @@ public final class GearListener implements Listener {
         player.playSound(Sound.sound(Key.key("block.anvil.use"), Sound.Source.PLAYER, 0.6f, 1.2f));
     }
 
-    /** Amélioration à la table de forgeron (diamant → netherite) : nom et description mis à jour. */
+    /** Upgrade at the smithing table (diamond → netherite): name and description updated. */
     @EventHandler(priority = EventPriority.HIGH)
     public void onSmith(org.bukkit.event.inventory.PrepareSmithingEvent e) {
         ItemStack result = e.getResult();
@@ -153,7 +153,7 @@ public final class GearListener implements Listener {
                 plugin.messages().send(player, "gems.raw-socket");
             }
             default -> {
-                // NOT_GEAR : clic normal, on laisse faire
+                // NOT_GEAR: normal click, let it through
             }
         }
     }
@@ -198,7 +198,7 @@ public final class GearListener implements Listener {
         new fr.cykalos.cykclasses.gui.JewelerGui(plugin, player).open();
     }
 
-    // ------------------------------------------------------------ Équipement
+    // ------------------------------------------------------------ Equipment
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHeld(PlayerItemHeldEvent e) {

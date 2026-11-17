@@ -15,32 +15,32 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 /**
- * Conditions facultatives d'un défaut ou d'une faiblesse : le défaut ne s'applique que si TOUTES
- * les conditions renseignées sont vraies. Sans condition, il s'applique toujours.
+ * Optional conditions of a flaw or a weakness: the flaw only applies if ALL the
+ * given conditions are true. Without conditions, it always applies.
  * <pre>
  * conditions:
- *   time: NIGHT                 # DAY ou NIGHT
+ *   time: NIGHT                 # DAY or NIGHT
  *   weather: [RAIN, THUNDER]    # CLEAR, RAIN, THUNDER
  *   dimensions: [NETHER]        # NORMAL, NETHER, THE_END
  *   worlds: [world_pvp]
  *   biomes: ["*DESERT*", "BADLANDS"]
- *   light-below: 8              # niveau de lumière du bloc
+ *   light-below: 8              # block light level
  *   light-above: 12
- *   under-sky: true             # à ciel ouvert
+ *   under-sky: true             # under open sky
  *   in-water: true
  *   in-rain: true
  *   in-lava: true
- *   health-below: 0.3           # fraction des PV max (0.3 = 30 %)
+ *   health-below: 0.3           # fraction of max health (0.3 = 30%)
  *   health-above: 0.9
  *   y-below: 0
  *   y-above: 120
  *   sneaking: true
  *   sprinting: true
  *   gliding: true
- *   holding: ["*_SWORD"]        # objet en main principale
- *   wearing: ["GOLDEN_*"]       # au moins une pièce d'armure
- *   permission: "monserveur.malediction"
- *   chance: 0.25                # 25 % de chances à chaque vérification
+ *   holding: ["*_SWORD"]        # item in main hand
+ *   wearing: ["GOLDEN_*"]       # at least one armour piece
+ *   permission: "myserver.curse"
+ *   chance: 0.25                # 25% chance at each check
  * </pre>
  */
 public final class FlawCondition {
@@ -115,7 +115,7 @@ public final class FlawCondition {
         return empty;
     }
 
-    /** Vrai si toutes les conditions sont remplies pour ce joueur (null = hors ligne : on considère vrai). */
+    /** True if every condition is met for this player (null = offline: considered true). */
     public boolean test(Player p) {
         if (empty || p == null) {
             return true;

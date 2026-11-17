@@ -1,13 +1,13 @@
 name: Release
 
-# Chaque push sur main publie automatiquement une release :
-#  - version calculée depuis les messages de commit (Conventional Commits)
-#      fix: ...                 -> correctif   (1.2.0 -> 1.2.1)
-#      feat: ...                -> mineure     (1.2.0 -> 1.3.0)
-#      feat!: / BREAKING CHANGE -> majeure     (1.2.0 -> 2.0.0)
-#  - changelog généré depuis les commits, ajouté à la release et à CHANGELOG.md
-#  - le .jar compilé est attaché à la release
-# Ajoute [skip release] dans le message de commit pour ne rien publier.
+# Every push to main automatically publishes a release:
+#  - version computed from the commit messages (Conventional Commits)
+#      fix: ...                 -> patch       (1.2.0 -> 1.2.1)
+#      feat: ...                -> minor       (1.2.0 -> 1.3.0)
+#      feat!: / BREAKING CHANGE -> major       (1.2.0 -> 2.0.0)
+#  - changelog generated from the commits, added to the release and to CHANGELOG.md
+#  - the compiled .jar is attached to the release
+# Add [skip release] to the commit message to publish nothing.
 
 on:
   push:
@@ -70,13 +70,13 @@ jobs:
           files: build/libs/Classes_and_Magie-${{ steps.info.outputs.version }}.jar
           make_latest: true
 
-      # Publication sur Modrinth : active seulement si le secret MODRINTH_TOKEN
-      # et la variable MODRINTH_PROJECT_ID existent (Settings → Secrets and variables → Actions).
-      # Variables facultatives : MODRINTH_VERSION_TYPE (release, beta, alpha ; beta par défaut)
-      #                          MODRINTH_GAME_VERSIONS (">=26.1" par défaut)
+      # Publishing to Modrinth: only active if the MODRINTH_TOKEN secret
+      # and the MODRINTH_PROJECT_ID variable exist (Settings → Secrets and variables → Actions).
+      # Optional variables: MODRINTH_VERSION_TYPE (release, beta, alpha; beta by default)
+      #                     MODRINTH_GAME_VERSIONS (">=26.1" by default)
       - name: Publication Modrinth
         if: steps.info.outputs.skip != 'true' && env.MODRINTH_TOKEN != '' && vars.MODRINTH_PROJECT_ID != ''
-        # Un échec Modrinth (jeton expiré…) ne doit pas bloquer la release GitHub ni le CHANGELOG
+        # A Modrinth failure (expired token…) must not block the GitHub release or the CHANGELOG
         continue-on-error: true
         uses: Kir-Antipov/mc-publish@v3.3
         with:
@@ -97,7 +97,7 @@ jobs:
         if: steps.info.outputs.skip != 'true'
         run: |
           [ -f CHANGELOG.md ] || echo "# Changelog" > CHANGELOG.md
-          # Insère les notes avant la première version (« ## »), après l'en-tête du fichier
+          # Inserts the notes before the first version ("## "), after the file header
           awk 'FNR==NR{notes=notes $0 "\n"; next} !done && /^## /{printf "%s\n", notes; done=1} {print} END{if(!done) printf "\n%s", notes}' release-notes.md CHANGELOG.md > CHANGELOG.tmp
           mv CHANGELOG.tmp CHANGELOG.md
           git add CHANGELOG.md

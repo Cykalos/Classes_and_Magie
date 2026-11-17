@@ -15,14 +15,14 @@ public final class GuiListener implements Listener {
         this.plugin = plugin;
     }
 
-    /** Fermer un menu de création (Échap / E) ne permet pas de sauter l'étape : elle est rouverte. */
+    /** Closing a creation menu (Esc / E) does not skip the step: it is opened again. */
     @EventHandler
     public void onClose(InventoryCloseEvent event) {
         if (!(event.getInventory().getHolder(false) instanceof Gui gui)) {
             return;
         }
-        // Fermetures forcées par le jeu (téléportation, monde déchargé…) : l'étape est rouverte aussi.
-        // La mort est gérée à la réapparition, la déconnexion à la reconnexion.
+        // Closes forced by the game (teleport, unloaded world…): the step is opened again too.
+        // Death is handled on respawn, disconnection on reconnection.
         switch (event.getReason()) {
             case PLAYER -> gui.onPlayerClose();
             case TELEPORT, CANT_USE, UNLOADED -> { }

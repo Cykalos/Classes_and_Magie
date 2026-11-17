@@ -44,7 +44,7 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Affichages : XP gagnée, dégâts flottants, PV de la cible, panneau du groupe. Réglages dans hud.yml.
+ * Displays: XP gained, floating damage, target health, sidebar. Settings in hud.yml.
  */
 public final class HudService {
 
@@ -126,7 +126,7 @@ public final class HudService {
         floating.clear();
     }
 
-    /** Nettoie tout ce qui concerne un joueur (déconnexion). */
+    /** Cleans up everything related to a player (disconnection). */
     public void clear(Player player) {
         XpState x = xp.remove(player.getUniqueId());
         if (x != null && x.bar != null) {
@@ -181,7 +181,7 @@ public final class HudService {
             boolean gone = !(target instanceof LivingEntity le) || !le.isValid() || le.isDead();
             if (viewer == null || st.until < now || (gone && st.until - now > 1000)) {
                 if (gone && viewer != null && st.until >= now) {
-                    st.until = now + 1000; // laisse voir la barre vide une seconde
+                    st.until = now + 1000; // let the empty bar show for a second
                     st.bar.progress(0f);
                     continue;
                 }
@@ -193,7 +193,7 @@ public final class HudService {
                 updateTargetBar(st, (LivingEntity) target);
             }
         }
-        // Au-dessus de la tête
+        // Above the head
         for (Iterator<Map.Entry<UUID, HeadState>> it = heads.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<UUID, HeadState> e = it.next();
             HeadState h = e.getValue();
@@ -205,7 +205,7 @@ public final class HudService {
                 h.display.text(headText(le));
             }
         }
-        // Panneau latéral : groupe et quêtes suivies (toutes les 10 ticks)
+        // Sidebar: party and tracked quests (every 10 ticks)
         if (tickCount % 2 == 0) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 refreshSidebar(p);
@@ -254,7 +254,7 @@ public final class HudService {
         }
     }
 
-    /** XP de métier : barre de boss séparée (hud.yml → job-xp-display). */
+    /** Job XP: separate boss bar (hud.yml → job-xp-display). */
     public void showJobXp(Player player, double amount, fr.cykalos.cykclasses.content.Job job, int level, float progress) {
         if (!cfg.getBoolean("job-xp-display.enabled", true)) {
             return;
@@ -277,15 +277,15 @@ public final class HudService {
         }
     }
 
-    /** Texte d'XP à afficher dans la barre d'action pendant sa durée de vie, sinon null. */
+    /** XP text to show in the action bar during its lifetime, otherwise null. */
     public Component xpActionbar(Player player) {
         XpState st = xp.get(player.getUniqueId());
         return st == null || st.until < System.currentTimeMillis() ? null : st.actionbar;
     }
 
-    // ------------------------------------------------------------ Dégâts
+    // ------------------------------------------------------------ Damage
 
-    /** Marque le prochain coup sur cette victime comme critique (critique de classe). */
+    /** Marks the next hit on this victim as critical (class critical hit). */
     public void markCritical(Entity victim) {
         pendingCrit.put(victim.getUniqueId(), Boolean.TRUE);
     }
@@ -322,7 +322,7 @@ public final class HudService {
         spawnFloating(target, comp, (float) s.getDouble("scale", 1.0), viewers(s.getString("visible-to", "INVOLVED"), healer, target));
     }
 
-    /** @return null = visible par tous, sinon la liste des joueurs autorisés. */
+    /** @return null = visible to everyone, otherwise the list of allowed players. */
     private List<Player> viewers(String mode, Player attacker, LivingEntity victim) {
         mode = mode.toUpperCase(Locale.ROOT);
         if (mode.equals("ALL")) {
@@ -330,7 +330,7 @@ public final class HudService {
         }
         List<Player> out = new ArrayList<>();
         if (attacker != null) {
-            // En groupe : les alliés proches voient aussi les dégâts de leurs coéquipiers
+            // In a party: nearby allies also see their teammates' damage
             out.addAll(cfg.getBoolean("party.share-with-party", true) ? partyNear(attacker) : List.of(attacker));
         }
         if (mode.equals("INVOLVED") && victim instanceof Player p && !out.contains(p)) {
@@ -390,9 +390,9 @@ public final class HudService {
         return rounded == Math.floor(rounded) ? String.valueOf((long) rounded) : String.valueOf(rounded);
     }
 
-    // ------------------------------------------------------------ PV de la cible
+    // ------------------------------------------------------------ Target health
 
-    /** Appelé quand {@code attacker} touche {@code victim} (mis à jour au tick suivant, après les dégâts). */
+    /** Called when {@code attacker} hits {@code victim} (updated on the next tick, after the damage). */
     public void onHit(Player attacker, LivingEntity victim) {
         ConfigurationSection s = cfg.getConfigurationSection("target-health");
         if (s == null || !s.getBoolean("enabled", true) || attacker.equals(victim)) {
@@ -410,7 +410,7 @@ public final class HudService {
             }
             boolean alive = victim.isValid() && !victim.isDead();
             List<Player> group = cfg.getBoolean("party.share-with-party", true) ? partyNear(attacker) : List.of(attacker);
-            // En groupe : pas de bossbar (barre au-dessus de la tête à la place), visible par les alliés
+            // In a party: no boss bar (bar above the head instead), visible to allies
             boolean partyHead = group.size() > 1 && cfg.getBoolean("party.no-bossbar-in-party", true);
             if (!partyHead && (mode.equals("BOSSBAR") || mode.equals("BOTH"))) {
                 TargetState st = targets.get(attacker.getUniqueId());
@@ -439,7 +439,7 @@ public final class HudService {
         });
     }
 
-    /** Le joueur et les membres de son groupe proches de lui (même monde, 48 blocs). */
+    /** The player and their party members close to them (same world, 48 blocks). */
     private List<Player> partyNear(Player player) {
         List<Player> out = new ArrayList<>();
         out.add(player);
@@ -508,7 +508,7 @@ public final class HudService {
         return loc;
     }
 
-    /** Fait suivre les affichages au-dessus des têtes (sans monter sur l'entité, pour ne pas bloquer ses téléportations). */
+    /** Makes the above-head displays follow (without riding the entity, so its teleports are not blocked). */
     private void followHeads() {
         for (Map.Entry<UUID, HeadState> e : heads.entrySet()) {
             Entity target = Bukkit.getEntity(e.getKey());
@@ -588,9 +588,9 @@ public final class HudService {
         return attr == null ? 20 : Math.max(1, attr.getValue());
     }
 
-    // ------------------------------------------------------------ Panneau du groupe
+    // ------------------------------------------------------------ Sidebar
 
-    /** Met à jour le panneau des membres d'un groupe. */
+    /** Updates the sidebar of a party's members. */
     public void refreshPartyBoard(Party party) {
         for (Player p : party.onlineMembers()) {
             refreshSidebar(p);
@@ -598,8 +598,8 @@ public final class HudService {
     }
 
     /**
-     * Panneau latéral d'un joueur : membres du groupe, puis quêtes suivies (hud.yml → party-board, quest-tracker).
-     * Minecraft n'affiche qu'un seul panneau latéral : les deux partagent donc le même.
+     * A player's sidebar: party members, then tracked quests (hud.yml → party-board, quest-tracker).
+     * Minecraft only shows one sidebar, so both share it.
      */
     public void refreshSidebar(Player player) {
         List<Component> lines = new ArrayList<>();
@@ -727,7 +727,7 @@ public final class HudService {
         }
     }
 
-    /** Le joueur quitte un groupe : le panneau est recalculé (il peut rester les quêtes suivies). */
+    /** The player leaves a party: the sidebar is recalculated (tracked quests may remain). */
     public void removePartyBoard(Player player) {
         removeBoard(player);
         Bukkit.getScheduler().runTask(plugin, () -> {

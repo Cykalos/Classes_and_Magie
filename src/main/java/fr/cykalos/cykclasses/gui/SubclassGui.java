@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sous-classes de la classe du joueur, avec la progression de chaque condition.
+ * Subclasses of the player's class, with the progress of each condition.
  */
 public final class SubclassGui extends Gui {
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Liste des compétences du joueur. Cliquer en lance une.
+ * List of the player's skills. Clicking one casts it.
  */
 public final class SkillsGui extends Gui {
 

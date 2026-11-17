@@ -11,8 +11,8 @@ import java.sql.Statement;
 import java.util.UUID;
 
 /**
- * Base SQLite : une ligne par joueur, colonnes indexées + profil complet en JSON.
- * Le pilote est téléchargé par Paper via le champ {@code libraries} du plugin.yml.
+ * SQLite database: one row per player, indexed columns + full profile as JSON.
+ * The driver is downloaded by Paper through the {@code libraries} field of plugin.yml.
  */
 public final class SqliteStorage implements Storage {
 

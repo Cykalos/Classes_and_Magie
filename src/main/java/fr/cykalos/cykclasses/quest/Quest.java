@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/** Une quête : informations, conditions, étapes et récompenses. */
+/** A quest: information, requirements, stages and rewards. */
 public final class Quest {
 
     public enum Category { TUTORIAL, MAIN, CLASS, SIDE, SECRET }
 
-    /** MANUAL : depuis le journal · AUTO : dès qu'elle est disponible · OFFER : proposée dans le chat. */
+    /** MANUAL: from the journal · AUTO: as soon as it is available · OFFER: offered in chat. */
     public enum Start { MANUAL, AUTO, OFFER }
 
     public record Stage(List<String> text, List<Objective> objectives) {

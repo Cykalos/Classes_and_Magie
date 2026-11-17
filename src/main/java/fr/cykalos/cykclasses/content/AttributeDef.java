@@ -5,7 +5,7 @@ import org.bukkit.Material;
 
 import java.util.List;
 
-/** Attribut améliorable avec des points (Force, Intelligence...). Les effets sont donnés par point. */
+/** Attribute improved with points (Strength, Intelligence...). Effects are given per point. */
 public record AttributeDef(String id, String name, Material icon, List<String> description, int max,
                            StatModifier perPoint) {
 }
