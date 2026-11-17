@@ -18,7 +18,7 @@ public final class JobDescriptions {
     public String describe(JobRule r) {
         String action = plugin.messages().raw("job.action-" + r.action().name().toLowerCase(Locale.ROOT));
         if (r.display() != null && !r.display().isBlank()) {
-            return action + " : " + r.display();
+            return action + fr.cykalos.cykclasses.config.Lang.tr(" : ", ": ") + r.display();
         }
         if (r.targets().isEmpty()) {
             return action;
@@ -40,6 +40,6 @@ public final class JobDescriptions {
             sb.append(raw.replace(".*", "").replace("\\.", ".").replace('_', ' ').toLowerCase(Locale.ROOT).trim());
             shown++;
         }
-        return shown == 0 ? action : action + " : " + sb;
+        return shown == 0 ? action : action + fr.cykalos.cykclasses.config.Lang.tr(" : ", ": ") + sb;
     }
 }

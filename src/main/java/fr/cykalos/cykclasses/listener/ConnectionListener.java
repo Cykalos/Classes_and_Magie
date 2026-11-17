@@ -34,7 +34,7 @@ public final class ConnectionListener implements Listener {
         PlayerProfile profile = plugin.profiles().loadBlocking(event.getUniqueId());
         if (profile == null) {
             event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
-                    Component.text("CykClasses : impossible de charger tes données, réessaie dans un instant."));
+                    Component.text(fr.cykalos.cykclasses.config.Lang.tr("Classes and Magie : impossible de charger tes données, réessaie dans un instant.", "Classes and Magie: could not load your data, please try again in a moment.")));
             return;
         }
         pending.put(event.getUniqueId(), profile);

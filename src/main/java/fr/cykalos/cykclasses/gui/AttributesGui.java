@@ -52,13 +52,13 @@ public final class AttributesGui extends Gui {
                         .replace("<per_level>", String.valueOf(plugin.getConfig().getInt("progression.attribute-points-per-level", 2))))
                 .lore("")
                 .lore(plugin.messages().raw("gui.stats-header"))
-                .lore("<gray>• PV max : <white>" + Text.format(Math.ceil(20 + s.bonusHealth(p.getLevel()))))
-                .lore("<gray>• Mana max : <aqua>" + Text.format(Math.round(s.maxMana(p.getLevel()))) + " <gray>(+" + Text.format(s.regen(p.getLevel())) + "/s)")
-                .lore("<gray>• Mêlée <white>" + Text.percent(s.meleeDamage) + "</white> · Distance <white>" + Text.percent(s.rangedDamage)
-                        + "</white> · Magie <white>" + Text.percent(s.magicDamage))
-                .lore("<gray>• Dégâts subis <white>" + Text.percent(s.damageTaken) + "</white> · Critique <white>"
+                .lore("<gray>• " + fr.cykalos.cykclasses.config.Lang.tr("PV max : ", "Max health: ") + "<white>" + Text.format(Math.ceil(20 + s.bonusHealth(p.getLevel()))))
+                .lore("<gray>• " + fr.cykalos.cykclasses.config.Lang.tr("Mana max : ", "Max mana: ") + "<aqua>" + Text.format(Math.round(s.maxMana(p.getLevel()))) + " <gray>(+" + Text.format(s.regen(p.getLevel())) + "/s)")
+                .lore("<gray>• " + fr.cykalos.cykclasses.config.Lang.tr("Mêlée", "Melee") + " <white>" + Text.percent(s.meleeDamage) + "</white> · " + fr.cykalos.cykclasses.config.Lang.tr("Distance", "Ranged") + " <white>" + Text.percent(s.rangedDamage)
+                        + "</white> · " + fr.cykalos.cykclasses.config.Lang.tr("Magie", "Magic") + " <white>" + Text.percent(s.magicDamage))
+                .lore("<gray>• " + fr.cykalos.cykclasses.config.Lang.tr("Dégâts subis", "Damage taken") + " <white>" + Text.percent(s.damageTaken) + "</white> · " + fr.cykalos.cykclasses.config.Lang.tr("Critique", "Critical") + " <white>"
                         + Math.round(s.critChance * 100) + "% <gray>(x" + Text.format(s.critMultiplier) + ")")
-                .lore("<gray>• Armure <white>+" + Text.format(s.armor) + "</white> · Vitesse <white>" + Text.percent(1 + s.speed));
+                .lore("<gray>• " + fr.cykalos.cykclasses.config.Lang.tr("Armure", "Armor") + " <white>+" + Text.format(s.armor) + "</white> · " + fr.cykalos.cykclasses.config.Lang.tr("Vitesse", "Speed") + " <white>" + Text.percent(1 + s.speed));
         set(31, summary.build(), null);
         set(27, new ItemBuilder(Material.ARROW).name(plugin.messages().raw("gui.back")).build(), e -> new ClassSelectGui(plugin, viewer).open());
         set(29, new ItemBuilder(Material.TNT).name(plugin.messages().raw("attributes.reset-button"))

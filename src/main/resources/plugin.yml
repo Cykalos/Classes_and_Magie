@@ -2,7 +2,7 @@ name: Classes_and_Magie
 version: '${version}'
 main: fr.cykalos.cykclasses.CykClasses
 api-version: '26.1'
-description: Système de classes RPG avec sous-classes, compétences uniques, statistiques, défauts et mana.
+description: RPG classes with subclasses, unique skills, stats, weaknesses, mana, jobs, quests and titles.
 authors: [Cykalos]
 website: https://github.com/Cykalos/Classes_and_Magie
 softdepend: [PlaceholderAPI, Vault, MythicMobs, CraftEngine, ExecutableItems, ItemsAdder, Oraxen, Nexo, MMOItems]
@@ -11,72 +11,72 @@ libraries:
 
 commands:
   classe:
-    description: Ouvre le menu des classes et gère sa classe.
-    usage: /classe [info|choisir|sous-classe|competences|reset|admin]
+    description: Opens the class menu and manages your class.
+    usage: /class [info|choose|subclass|skills|reset|quests|titles|admin]
     aliases: [class, classes]
   competence:
-    description: Lance une compétence de sa classe.
-    usage: /competence <id>
+    description: Casts a skill of your class.
+    usage: /skill <id>
     aliases: [skill, cast]
   groupe:
-    description: Crée et gère un groupe (règles fixées à la création).
-    usage: /groupe [creer|inviter|accepter|refuser|quitter|expulser|chef|dissoudre|info|chat]
+    description: Creates and manages a party (rules set on creation).
+    usage: /party [create|invite|accept|decline|leave|kick|leader|disband|info|chat]
     aliases: [party, grp]
   gc:
-    description: Chat de groupe (sans message = bascule le chat sur le groupe).
-    usage: /gc [message]
+    description: Party chat (without a message, switches your chat to the party).
+    usage: /pc [message]
     aliases: [pc]
   global:
-    description: Revient au chat global (ou envoie un message global).
+    description: Back to global chat (or sends one global message).
     usage: /global [message]
     aliases: [all]
   race:
-    description: Race de ton personnage.
+    description: Your character's race.
     usage: /race
   traits:
-    description: Tes traits (et relance).
-    usage: /traits [relancer]
+    description: Your traits (and reroll).
+    usage: /traits [reroll]
   faiblesses:
-    description: Faiblesses de ton personnage (et relance).
-    usage: /faiblesses [relancer]
+    description: Your character's weaknesses (and reroll).
+    usage: /weaknesses [reroll]
     aliases: [weaknesses, faiblesse]
   metier:
-    description: Choisir ou voir ton métier.
-    usage: /metier
-    aliases: [job, metiers]
+    description: Choose or view your job.
+    usage: /job
+    aliases: [job, jobs, metiers]
   arbre:
-    description: Arbre de compétences.
-    usage: /arbre [reset]
+    description: Skill tree.
+    usage: /skilltree [reset]
     aliases: [skilltree, talents]
   stats:
-    description: Points d'attributs.
+    description: Attribute points.
     usage: /stats [reset]
-    aliases: [attributs]
+    aliases: [attributs, attributes]
   titres:
-    description: Collection de titres et titre équipé.
-    usage: /titres [equiper <id>|retirer|admin]
+    description: Title collection and equipped title.
+    usage: /titles [equip <id>|unequip]
     aliases: [titles, titre, title]
   quetes:
-    description: Journal des quêtes, suivi et tutoriel.
-    usage: /quetes [commencer|abandonner|suivre|panneau|tutoriel|admin]
+    description: Quest journal, tracking and tutorial.
+    usage: /quests [start|abandon|track|tracker|tutorial]
     aliases: [quests, quest, quete, journal]
 
 permissions:
   cykclasses.use:
-    description: Utiliser le système de classes.
+    description: Use the class system.
     default: true
   cykclasses.reset:
-    description: Réinitialiser sa propre classe.
+    description: Reset your own class.
     default: true
   cykclasses.bypass.items:
-    description: Ignore les restrictions d'objets.
+    description: Ignores item restrictions.
     default: false
   cykclasses.bypass.jobs:
-    description: Ignore les restrictions de métier.
+    description: Ignores job restrictions.
     default: false
   cykclasses.chat.spy:
-    description: Voir les chats de groupe.
+    description: See party chats.
     default: false
   cykclasses.admin:
-    description: Commandes d'administration.
+    description: Administration commands.
     default: op

@@ -1,0 +1,257 @@
+# ╔══════════════════════════════════════════════╗
+# ║           Classes and Magie - jobs.yml       ║
+# ╚══════════════════════════════════════════════╝
+# One job per player. Offered after the class, race and traits (or later with /job).
+# Each job's level is kept if the player switches and then comes back.
+# specializations : sub-jobs chosen once from min-level (see blacksmith).
+
+# Can the job be changed? Delay between two changes (hours)
+allow-change: true
+change-cooldown-hours: 24
+
+# Job levels: required XP = base-xp × level ^ exponent
+leveling:
+  max-level: 50
+  base-xp: 50
+  exponent: 1.5
+
+# Actions: BREAK, PLACE, CRAFT, INTERACT_BLOCK (use a block),
+#          FISH, BREED, TAME, SMELT (take out of a furnace),
+#          ENCHANT, BREW (brewing stand), REFINE (cut a gem; target = gem id),
+#          USE_ITEM (right click with an item: bone meal, hoe…; target = the held item)
+# targets: materials / entities ("*" = wildcard, "(A|B)" = A or B). No targets: every target.
+#
+# xp-sources: what earns job XP (no XP for a block placed by a player).
+#   ENCHANT gives xp × levels spent, BREW gives xp × potions, SMELT gives xp × items.
+
+jobs:
+  miner:
+    name: "<gray><bold>Miner"
+    icon: IRON_PICKAXE
+    description: ["<gray>Extracts precious ores.", "<gray>Sometimes finds gems."]
+    effects: ["haste:1"]
+    xp-sources:
+      - {action: BREAK, targets: ["*COAL_ORE", "*COPPER_ORE"], xp: 2}
+      - {action: BREAK, targets: ["*IRON_ORE", "*REDSTONE_ORE", "*LAPIS_ORE"], xp: 4}
+      - {action: BREAK, targets: ["*GOLD_ORE"], xp: 6}
+      - {action: BREAK, targets: ["*DIAMOND_ORE", "*EMERALD_ORE"], xp: 15}
+      - {action: BREAK, targets: ["ANCIENT_DEBRIS"], xp: 30}
+      - {action: BREAK, targets: ["STONE", "DEEPSLATE", "TUFF"], xp: 0.2}
+    specializations:
+      prospector:
+        name: "<aqua><bold>Prospector"
+        icon: AMETHYST_SHARD
+        min-level: 20
+        description: ["<gray>Sniffs out gems in the rock."]
+        bonuses:
+          - {targets: ["*_ORE", "ANCIENT_DEBRIS"], gem-chance: 0.03, xp-multiplier: 1.1}
+      driller:
+        name: "<gray><bold>Driller"
+        icon: DIAMOND_PICKAXE
+        min-level: 20
+        description: ["<gray>Digs faster and deeper."]
+        effects: ["haste:2"]
+        bonuses:
+          - {targets: ["*_ORE", "ANCIENT_DEBRIS", "STONE", "DEEPSLATE"], xp-multiplier: 1.3}
+  blacksmith:
+    name: "<dark_gray><bold>Blacksmith"
+    icon: ANVIL
+    description: ["<gray>Forges quality weapons and armor.", "<gray>The higher the level, the better the quality."]
+    stats: {armor: 1}
+    xp-sources:
+      - {action: CRAFT, targets: ["IRON_*", "CHAINMAIL_*", "SHIELD"], xp: 8}
+      - {action: CRAFT, targets: ["GOLDEN_*"], xp: 10}
+      - {action: CRAFT, targets: ["DIAMOND_*", "CROSSBOW", "MACE"], xp: 25}
+      - {action: SMELT, targets: ["IRON_INGOT", "GOLD_INGOT", "COPPER_INGOT"], xp: 1}
+    # Sub-jobs: chosen once at the given level, bonus on a specific area of the forge
+    #   rarity-levels: levels added for the rarity roll · power: stronger stats · xp-multiplier
+    specializations:
+      armorer:
+        name: "<gray><bold>Armorer"
+        icon: IRON_CHESTPLATE
+        min-level: 20
+        description: ["<gray>Specialist in armor and shields."]
+        stats: {armor: 1}
+        bonuses:
+          - {targets: ["*_HELMET", "*_CHESTPLATE", "*_LEGGINGS", "*_BOOTS", "SHIELD"], rarity-levels: 10, power: 0.15, xp-multiplier: 1.25}
+      weaponsmith:
+        name: "<red><bold>Weaponsmith"
+        icon: IRON_SWORD
+        min-level: 20
+        description: ["<gray>Specialist in swords, axes and maces."]
+        stats: {melee-damage: 1.03}
+        bonuses:
+          - {targets: ["*_SWORD", "*_AXE", "MACE"], rarity-levels: 10, power: 0.15, xp-multiplier: 1.25}
+      bowyer:
+        name: "<green><bold>Bowyer"
+        icon: BOW
+        min-level: 20
+        description: ["<gray>Specialist in bows and crossbows."]
+        stats: {ranged-damage: 1.03}
+        bonuses:
+          - {targets: ["BOW", "CROSSBOW"], rarity-levels: 12, power: 0.2, xp-multiplier: 1.5}
+  jeweler:
+    name: "<light_purple><bold>Jeweler"
+    icon: AMETHYST_CLUSTER
+    description: ["<gray>Cuts raw gems at the stonecutter.", "<gray>The higher the level, the rarer and purer they are."]
+    stats: {mana: 10}
+    xp-sources:
+      - {action: REFINE, targets: ["RUBY", "SAPPHIRE", "EMERALD", "TOPAZ", "ONYX"], xp: 10}
+      - {action: REFINE, targets: ["HAWK_EYE"], xp: 14}
+      - {action: REFINE, targets: ["PURE_DIAMOND"], xp: 40}
+    specializations:
+      lapidary:
+        name: "<aqua><bold>Lapidary"
+        icon: PRISMARINE_CRYSTALS
+        min-level: 20
+        description: ["<gray>Extremely precise cutting: purer gems."]
+        bonuses:
+          - {targets: [], purity: 12, xp-multiplier: 1.2}
+      goldsmith:
+        name: "<gold><bold>Goldsmith"
+        icon: GOLD_BLOCK
+        min-level: 20
+        description: ["<gray>Knows how to reveal the rarest gems."]
+        bonuses:
+          - {targets: [], rarity-levels: 12, xp-multiplier: 1.2}
+  lumberjack:
+    name: "<gold><bold>Lumberjack"
+    icon: IRON_AXE
+    description: ["<gray>Fells dark and exotic trees."]
+    stats: {health: 2}
+    xp-sources:
+      - {action: BREAK, targets: ["*_LOG", "*_STEM"], xp: 1}
+  farmer:
+    name: "<green><bold>Farmer"
+    icon: WHEAT
+    description: ["<gray>Raises animals and grows rare plants."]
+    stats: {health: 2}
+    xp-sources:
+      - {action: BREAK, targets: ["WHEAT", "CARROTS", "POTATOES", "BEETROOTS"], xp: 1}
+      - {action: BREAK, targets: ["PUMPKIN", "MELON", "COCOA", "NETHER_WART"], xp: 2}
+      - {action: BREED, xp: 5}
+  alchemist:
+    name: "<light_purple><bold>Alchemist"
+    icon: BREWING_STAND
+    description: ["<gray>The only one who masters the brewing stand."]
+    stats: {mana: 20}
+    xp-sources:
+      - {action: BREW, xp: 6}
+  enchanter:
+    name: "<aqua><bold>Enchanter"
+    icon: ENCHANTING_TABLE
+    description: ["<gray>The only one who can use the enchanting table."]
+    stats: {mana-regen: 0.5}
+    xp-sources:
+      - {action: ENCHANT, xp: 4}
+  fisher:
+    name: "<blue><bold>Fisher"
+    icon: FISHING_ROD
+    description: ["<gray>The only one who knows how to fish."]
+    effects: ["luck:1"]
+    xp-sources:
+      - {action: FISH, xp: 5}
+  tamer:
+    name: "<yellow><bold>Tamer"
+    icon: LEAD
+    description: ["<gray>Tames wolves, cats, horses and parrots."]
+    stats: {speed: 0.03}
+    xp-sources:
+      - {action: TAME, xp: 20}
+      - {action: BREED, xp: 3}
+
+# Reserved actions. Fields:
+#   jobs      : allowed jobs
+#   min-level : required job level (= recipe or action unlocked at this level)
+#   display   : short text shown in the job menu (otherwise generated from targets)
+#   message   : custom message when the action is blocked
+restrictions:
+  # Miner
+  - action: BREAK
+    targets: ["*IRON_ORE", "*GOLD_ORE", "*LAPIS_ORE", "*REDSTONE_ORE"]
+    jobs: [miner]
+    display: "Iron, gold, lapis and redstone ores"
+  - action: BREAK
+    targets: ["*DIAMOND_ORE", "*EMERALD_ORE"]
+    jobs: [miner]
+    min-level: 10
+    display: "Diamond and emerald ores"
+  - action: BREAK
+    targets: ["ANCIENT_DEBRIS"]
+    jobs: [miner]
+    min-level: 25
+    display: "Ancient debris"
+
+  # Blacksmith: recipes unlock with level
+  - action: CRAFT
+    targets: ["(IRON|CHAINMAIL)_(SWORD|AXE|PICKAXE|SHOVEL|HOE|HELMET|CHESTPLATE|LEGGINGS|BOOTS)", "SHIELD"]
+    jobs: [blacksmith]
+    display: "Iron weapons and armor, shield"
+  - action: CRAFT
+    targets: ["GOLDEN_(SWORD|AXE|PICKAXE|SHOVEL|HOE|HELMET|CHESTPLATE|LEGGINGS|BOOTS)", "CROSSBOW"]
+    jobs: [blacksmith]
+    min-level: 5
+    display: "Gold equipment, crossbow"
+  - action: CRAFT
+    targets: ["DIAMOND_(SWORD|AXE|PICKAXE|SHOVEL|HOE|HELMET|CHESTPLATE|LEGGINGS|BOOTS)", "MACE"]
+    jobs: [blacksmith]
+    min-level: 15
+    display: "Diamond equipment, mace"
+  - action: INTERACT_BLOCK
+    targets: ["ANVIL", "CHIPPED_ANVIL", "DAMAGED_ANVIL", "GRINDSTONE"]
+    jobs: [blacksmith]
+    display: "Anvil and grindstone"
+  - action: INTERACT_BLOCK
+    targets: ["SMITHING_TABLE"]
+    jobs: [blacksmith]
+    min-level: 30
+    display: "Smithing table (netherite)"
+
+  # Lumberjack
+  - action: BREAK
+    targets: ["DARK_OAK_LOG", "JUNGLE_LOG", "ACACIA_LOG", "MANGROVE_LOG", "CHERRY_LOG", "PALE_OAK_LOG"]
+    jobs: [lumberjack]
+    display: "Dark oak, jungle, acacia, mangrove, cherry wood"
+  - action: BREAK
+    targets: ["CRIMSON_STEM", "WARPED_STEM"]
+    jobs: [lumberjack]
+    min-level: 10
+    display: "Nether stems"
+
+  # Farmer / tamer
+  - action: BREED
+    jobs: [farmer, tamer]
+    display: "Breed animals"
+  - action: BREAK
+    targets: ["PUMPKIN", "MELON", "COCOA", "SWEET_BERRY_BUSH"]
+    jobs: [farmer]
+    display: "Pumpkins, melons, cocoa, berries"
+  - action: BREAK
+    targets: ["NETHER_WART"]
+    jobs: [farmer]
+    min-level: 10
+    display: "Nether wart"
+  - action: PLACE
+    targets: ["WHEAT", "CARROTS", "POTATOES", "BEETROOTS", "MELON_STEM", "PUMPKIN_STEM", "TORCHFLOWER_CROP", "PITCHER_CROP"]
+    jobs: [farmer]
+    display: "Plant crops"
+  - action: USE_ITEM
+    targets: ["BONE_MEAL", "*_HOE"]
+    jobs: [farmer]
+    display: "Bone meal, tilling"
+
+  # Alchemist / enchanter / fisher / tamer
+  - action: INTERACT_BLOCK
+    targets: ["BREWING_STAND"]
+    jobs: [alchemist]
+    display: "Brewing stand"
+  - action: INTERACT_BLOCK
+    targets: ["ENCHANTING_TABLE"]
+    jobs: [enchanter]
+    display: "Enchanting table"
+  - action: FISH
+    jobs: [fisher]
+    display: "Fishing"
+  - action: TAME
+    jobs: [tamer]
+    display: "Taming"

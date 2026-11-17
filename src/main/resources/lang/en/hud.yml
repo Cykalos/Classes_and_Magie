@@ -1,0 +1,135 @@
+# ╔══════════════════════════════════════════════╗
+# ║            Classes and Magie - hud.yml       ║
+# ╚══════════════════════════════════════════════╝
+# Texts use the MiniMessage format: https://docs.advntr.dev/minimessage/format.html
+# Bossbar colors: PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+# Bossbar styles: PROGRESS, NOTCHED_6, NOTCHED_10, NOTCHED_12, NOTCHED_20
+
+# ───────────────────────── XP gained ─────────────────────────
+xp-display:
+  # BOSSBAR, ACTIONBAR, BOTH or NONE
+  mode: BOSSBAR
+  # Display time after the last gain (seconds)
+  duration-seconds: 5
+  # Adds up successive gains while the display is visible
+  combo: true
+  bossbar:
+    format: "<aqua>+<xp> XP</aqua> <dark_gray>|</dark_gray> <class> <gray>lv. <white><level></white> <dark_gray>(<percent>%)"
+    color: BLUE
+    style: NOTCHED_10
+  actionbar:
+    format: "<aqua>+<xp> XP <gray>(<class><gray>, <percent>%)"
+
+# ───────────────────────── Job XP ─────────────────────────
+job-xp-display:
+  enabled: true
+  duration-seconds: 4
+  # Placeholders: <xp>, <job>, <level>, <percent>
+  format: "<gold>+<xp> XP</gold> <dark_gray>|</dark_gray> <job> <gray>Lv. <white><level></white> <dark_gray>(<percent>%)"
+  color: YELLOW
+  style: NOTCHED_10
+
+# ───────────────────── Floating damage ─────────────────────
+damage-indicators:
+  enabled: true
+  # Who sees the numbers: ALL (everyone), INVOLVED (attacker + victim), ATTACKER (attacker only)
+  visible-to: INVOLVED
+  show-on-mobs: true
+  show-on-players: true
+  # Damage without an attacker (fall, fire, lava...)
+  show-environmental: false
+  # Lifetime (ticks) and rising speed (blocks/tick)
+  duration-ticks: 22
+  rise-per-tick: 0.035
+  # Text size (1.0 = normal)
+  scale: 1.0
+  critical-scale: 1.4
+  decimals: 1
+  # Placeholders: <damage>
+  formats:
+    normal: "<#ff5555>-<damage>"
+    critical: "<gold><bold>✦ -<damage> ✦</bold>"
+    skill: "<#d68cff>-<damage>"
+    # Damage taken by a player
+    player-hit: "<red>-<damage> ❤"
+    # Skill healing, placeholder <amount>
+    heal: "<green>+<amount> ❤"
+
+# ───────────────────── Target health ─────────────────────
+target-health:
+  enabled: true
+  # BOSSBAR (top of the screen), ABOVE_HEAD (above the target), BOTH or NONE
+  mode: BOTH
+  show-for-mobs: true
+  show-for-players: true
+  # Disappears X seconds after the last hit
+  duration-seconds: 5
+  # Level format (MythicMobs mobs with a level), placeholder <level>
+  level-format: " <gray>[Lv. <white><level></white>]"
+  # Placeholders: <name>, <level_tag>, <health>, <max_health>, <percent>, <bar>
+  bossbar:
+    format: "<name><level_tag> <dark_gray>|</dark_gray> <red><health></red><gray>/<max_health> ❤"
+    style: PROGRESS
+    # Color depending on remaining health
+    color-high: GREEN
+    color-medium: YELLOW
+    color-low: RED
+  above-head:
+    format: "<name><level_tag>\n<bar> <white><health></white><gray>/<max_health>"
+    # Who sees the display: ALL or DAMAGERS (players who hit the target)
+    visible-to: DAMAGERS
+    height-offset: 0.45
+    scale: 0.9
+    # Health bar
+    bar-length: 10
+    bar-char: "▌"
+    bar-full: "<green>"
+    bar-medium: "<yellow>"
+    bar-low: "<red>"
+    bar-empty: "<dark_gray>"
+    # Text background (hexadecimal ARGB, 00000000 = transparent)
+    background: "40000000"
+  # Thresholds (in % of health) for the colors
+  medium-threshold: 60
+  low-threshold: 30
+
+# ───────────────────── In a party ─────────────────────
+party:
+  # Nearby allies see the floating damage and health bar of their teammates' targets
+  share-with-party: true
+  # In a party, no target bossbar: bar above the head, shared with the party
+  no-bossbar-in-party: true
+  # Maximum distance of allies (blocks)
+  range: 48
+
+# ───────────────────── Party board ─────────────────────
+party-board:
+  enabled: true
+  title: "<gradient:#f5a623:#e8432e><bold>Party</bold></gradient>"
+  # Lines shown for each member.
+  # Placeholders: <leader> (★ or empty), <name>, <health>, <max_health>, <bar>, <mana>, <max_mana>, <class>, <race>, <level>
+  member-lines:
+    - "<leader><white><name></white> <class> <gray>Lv. <level>"
+    - "  <bar> <red><health></red><gray>/<max_health> <aqua><mana>✦"
+  offline-line: "<dark_gray><name> (away)"
+  leader-symbol: "<gold>★ "
+  bar-length: 6
+  # Information line under the list (empty to hide). Placeholders: <xp_mode>, <friendly_fire>
+  footer: "<gray>XP: <white><xp_mode></white>"
+
+# Quest tracker sidebar (/quests tracker to hide it)
+# Minecraft shows only one sidebar: in a party, quests are shown under the members.
+quest-tracker:
+  enabled: true
+  title: "<gradient:#f5d76e:#f5a623><bold>Quests</bold></gradient>"
+  max-quests: 3
+  # In a party: BELOW (under the party members) or HIDE (hidden)
+  in-party: BELOW
+  max-quests-in-party: 1
+  party-separator: "<gold><bold>Quest"
+  # Placeholders: <name>, <stage>, <stages>
+  quest-line: "<yellow><name>"
+  # Placeholders: <status>, <objective>, <progress>
+  objective-line: " <status> <white><objective> <gray><progress>"
+  done-symbol: "<green>✔"
+  todo-symbol: "<gray>•"

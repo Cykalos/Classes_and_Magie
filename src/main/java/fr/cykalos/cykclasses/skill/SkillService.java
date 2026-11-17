@@ -136,7 +136,7 @@ public final class SkillService {
         try {
             ok = executor.cast(new SkillContext(plugin, player, profile, def));
         } catch (Exception e) {
-            plugin.getLogger().log(Level.SEVERE, "Erreur pendant la compétence " + def.id, e);
+            plugin.getLogger().log(Level.SEVERE, "Error during skill " + def.id, e);
             return false;
         }
         if (!ok) {

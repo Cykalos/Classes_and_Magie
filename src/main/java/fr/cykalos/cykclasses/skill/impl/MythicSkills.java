@@ -25,17 +25,17 @@ public final class MythicSkills {
     private static boolean mythic(SkillContext c) {
         String skill = c.def().s("skill", null);
         if (skill == null || skill.isBlank()) {
-            c.plugin().getLogger().warning("Compétence " + c.def().id + " : paramètre 'skill' manquant (type MYTHIC).");
+            c.plugin().getLogger().warning("Skill " + c.def().id + ": missing 'skill' parameter (type MYTHIC).");
             return false;
         }
         if (c.plugin().mythic() == null) {
-            c.player().sendMessage(Text.mm("<red>Cette compétence nécessite MythicMobs."));
+            c.player().sendMessage(Text.mm(fr.cykalos.cykclasses.config.Lang.tr("<red>Cette compétence nécessite MythicMobs.", "<red>This skill requires MythicMobs.")));
             return false;
         }
         float power = (float) c.d("power", 1.0);
         boolean ok = c.plugin().mythic().castSkill(c.player(), skill, power);
         if (!ok) {
-            c.plugin().getLogger().warning("Compétence MythicMobs introuvable ou échouée : " + skill);
+            c.plugin().getLogger().warning("MythicMobs skill not found or failed: " + skill);
         }
         return ok;
     }

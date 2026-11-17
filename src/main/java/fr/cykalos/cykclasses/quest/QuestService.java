@@ -40,10 +40,9 @@ public final class QuestService {
 
     public enum Status { COMPLETED, ACTIVE, AVAILABLE, COOLDOWN, LOCKED, HIDDEN }
 
-    /** Files provided by default, created if the quetes/ folder does not exist yet. */
-    private static final String[] DEFAULT_FILES = {
-            "quetes/tutoriel.yml", "quetes/principale.yml", "quetes/de-classe.yml",
-            "quetes/annexes.yml", "quetes/secretes.yml"};
+    /** Files provided by default (per language), created if the quest folder does not exist yet. */
+    private static final String[] DEFAULT_FILES_EN = {"tutorial.yml", "main.yml", "class.yml", "side.yml", "secret.yml"};
+    private static final String[] DEFAULT_FILES_FR = {"tutoriel.yml", "principale.yml", "de-classe.yml", "annexes.yml", "secretes.yml"};
 
     private final CykClasses plugin;
     private final Map<String, Quest> quests = new LinkedHashMap<>();
@@ -58,12 +57,10 @@ public final class QuestService {
 
     public void load() {
         quests.clear();
-        File folder = new File(plugin.getDataFolder(), ConfigFiles.QUESTS);
+        File folder = new File(plugin.getDataFolder(), ConfigFiles.quests());
         if (!folder.exists()) {
-            for (String res : DEFAULT_FILES) {
-                if (plugin.getResource(res) != null) {
-                    plugin.saveResource(res, false);
-                }
+            for (String res : fr.cykalos.cykclasses.config.Lang.french() ? DEFAULT_FILES_FR : DEFAULT_FILES_EN) {
+                fr.cykalos.cykclasses.config.Lang.saveDefault(plugin, "quests/" + res, new File(folder, res));
             }
         }
         List<Quest> loaded = new ArrayList<>();
@@ -72,12 +69,12 @@ public final class QuestService {
         loaded.sort(Comparator.comparing((Quest q) -> q.category).thenComparingInt(q -> q.order));
         for (Quest q : loaded) {
             if (quests.containsKey(q.id)) {
-                plugin.getLogger().warning("Quête « " + q.id + " » définie deux fois (" + q.file + ") : la seconde est ignorée.");
+                plugin.getLogger().warning("Quest '" + q.id + "' defined twice (" + q.file + "): the second one is ignored.");
                 continue;
             }
             quests.put(q.id, q);
         }
-        plugin.getLogger().info(quests.size() + " quêtes chargées.");
+        plugin.getLogger().info(quests.size() + " quests loaded.");
     }
 
     private void loadFolder(File root, File dir, List<Quest> out, int[] order) {
@@ -108,7 +105,7 @@ public final class QuestService {
                 try {
                     out.add(Quest.load(id, qs, rel, order[0]++));
                 } catch (Exception e) {
-                    plugin.getLogger().warning("Quête ignorée : " + e.getMessage());
+                    plugin.getLogger().warning("Quest ignored: " + e.getMessage());
                 }
             }
         }
@@ -417,7 +414,7 @@ public final class QuestService {
             return;
         }
         PlayerProfile p = profile(player);
-        Quest tuto = get(plugin.getConfig().getString("quests.tutorial", "tutoriel"));
+        Quest tuto = get(plugin.getConfig().getString("quests.tutorial", fr.cykalos.cykclasses.config.Lang.tr("tutoriel", "tutorial")));
         if (p == null || tuto == null || p.isTutorialOffered() || p.isQuestActive(tuto.id) || p.hasCompletedQuest(tuto.id)) {
             return;
         }
@@ -429,7 +426,7 @@ public final class QuestService {
     }
 
     public Quest tutorial() {
-        return get(plugin.getConfig().getString("quests.tutorial", "tutoriel"));
+        return get(plugin.getConfig().getString("quests.tutorial", fr.cykalos.cykclasses.config.Lang.tr("tutoriel", "tutorial")));
     }
 
     // ------------------------------------------------------------ Progression
@@ -759,12 +756,12 @@ public final class QuestService {
             p.setBonusAttributePoints(p.getBonusAttributePoints() + r.attributePoints());
         }
         if (r.money() > 0 && !deposit(player, r.money())) {
-            plugin.getLogger().warning("Récompense d'argent ignorée : Vault ou plugin d'économie absent.");
+            plugin.getLogger().warning("Money reward ignored: Vault or economy plugin missing.");
         }
         for (KitItem ki : r.items()) {
             ItemStack item = plugin.character().buildItem(ki, player);
             if (item == null) {
-                plugin.getLogger().warning("Récompense de quête : objet introuvable « " + ki.item() + " »");
+                plugin.getLogger().warning("Quest reward: item not found '" + ki.item() + "'");
                 continue;
             }
             plugin.character().giveItem(player, item);

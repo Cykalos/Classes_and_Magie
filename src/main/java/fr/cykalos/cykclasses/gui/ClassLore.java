@@ -24,16 +24,16 @@ final class ClassLore {
         lore.add(Component.empty());
         ClassStats s = rc.stats;
         lore.add(plugin.messages().item("gui.stats-header"));
-        lore.add(Text.item("<gray>• PV : <white>" + (s.health >= 0 ? "+" : "") + Text.format(s.health)
-                + "</white> <dark_gray>(+" + Text.format(s.healthPerLevel) + "/niv.)"));
-        lore.add(Text.item("<gray>• Mana : <aqua>" + Text.format(s.mana) + "</aqua> <dark_gray>(+" + Text.format(s.manaPerLevel)
-                + "/niv., " + Text.format(s.manaRegen) + "/s)"));
+        lore.add(Text.item("<gray>• " + fr.cykalos.cykclasses.config.Lang.tr("PV", "Health") + ": <white>" + (s.health >= 0 ? "+" : "") + Text.format(s.health)
+                + "</white> <dark_gray>(+" + Text.format(s.healthPerLevel) + "/" + fr.cykalos.cykclasses.config.Lang.tr("niv.", "lv.") + ")"));
+        lore.add(Text.item("<gray>• Mana: <aqua>" + Text.format(s.mana) + "</aqua> <dark_gray>(+" + Text.format(s.manaPerLevel)
+                + "/" + fr.cykalos.cykclasses.config.Lang.tr("niv.", "lv.") + ", " + Text.format(s.manaRegen) + "/s)"));
         // The label takes the colour of its value (green = bonus, red = penalty, white = neutral)
-        lore.add(Text.item("<gray>• " + color("Mêlée", s.meleeDamage) + " <dark_gray>·</dark_gray> " + color("Distance", s.rangedDamage)
-                + " <dark_gray>·</dark_gray> " + color("Magie", s.magicDamage)));
-        lore.add(Text.item("<gray>• " + colorInverse("Dégâts subis", s.damageTaken)
-                + (s.speed != 0 ? " <dark_gray>·</dark_gray> " + color("Vitesse", 1 + s.speed) : "")
-                + (s.critChance > 0 ? " <dark_gray>·</dark_gray> <yellow>Critique " + Math.round(s.critChance * 100) + "%</yellow>" : "")));
+        lore.add(Text.item("<gray>• " + color(fr.cykalos.cykclasses.config.Lang.tr("Mêlée", "Melee"), s.meleeDamage) + " <dark_gray>·</dark_gray> " + color(fr.cykalos.cykclasses.config.Lang.tr("Distance", "Ranged"), s.rangedDamage)
+                + " <dark_gray>·</dark_gray> " + color(fr.cykalos.cykclasses.config.Lang.tr("Magie", "Magic"), s.magicDamage)));
+        lore.add(Text.item("<gray>• " + colorInverse(fr.cykalos.cykclasses.config.Lang.tr("Dégâts subis", "Damage taken"), s.damageTaken)
+                + (s.speed != 0 ? " <dark_gray>·</dark_gray> " + color(fr.cykalos.cykclasses.config.Lang.tr("Vitesse", "Speed"), 1 + s.speed) : "")
+                + (s.critChance > 0 ? " <dark_gray>·</dark_gray> <yellow>" + fr.cykalos.cykclasses.config.Lang.tr("Critique", "Critical") + " " + Math.round(s.critChance * 100) + "%</yellow>" : "")));
         // Weaknesses: class flaws + imposed weaknesses, under a single heading
         List<Flaw> flaws = rc.flaws();
         var imposed = plugin.modules().weaknesses()
@@ -51,7 +51,7 @@ final class ClassLore {
             lore.add(Component.empty());
             lore.add(plugin.messages().item("gui.skills-header"));
             for (SkillDefinition sk : rc.skills().values()) {
-                lore.add(Text.item("<light_purple>• </light_purple>" + sk.name + " <dark_gray>(niv. " + sk.unlockLevel + ")"));
+                lore.add(Text.item("<light_purple>• </light_purple>" + sk.name + " <dark_gray>(" + fr.cykalos.cykclasses.config.Lang.tr("niv.", "lv.") + " " + sk.unlockLevel + ")"));
             }
         }
         return lore;

@@ -47,7 +47,7 @@ public final class ProfileManager {
             default -> new YamlStorage(fr.cykalos.cykclasses.config.ConfigFiles.dataFolder(plugin));
         };
         storage.init();
-        plugin.getLogger().info("Stockage des joueurs : " + type);
+        plugin.getLogger().info("Player storage: " + type);
 
         long interval = Math.max(30, plugin.getConfig().getLong("storage.autosave-interval", 300)) * 20L;
         autosave = Bukkit.getScheduler().runTaskTimer(plugin, this::saveDirty, interval, interval);
@@ -61,7 +61,7 @@ public final class ProfileManager {
                 return p == null ? new PlayerProfile(uuid) : p;
             }).get(10, TimeUnit.SECONDS);
         } catch (Exception e) {
-            plugin.getLogger().log(Level.SEVERE, "Chargement impossible du profil " + uuid, e);
+            plugin.getLogger().log(Level.SEVERE, "Could not load profile " + uuid, e);
             return null;
         }
     }
@@ -90,7 +90,7 @@ public final class ProfileManager {
             try {
                 storage.save(snapshot);
             } catch (Exception e) {
-                plugin.getLogger().log(Level.SEVERE, "Sauvegarde impossible du profil " + snapshot.getUuid(), e);
+                plugin.getLogger().log(Level.SEVERE, "Could not save profile " + snapshot.getUuid(), e);
             }
         });
     }
@@ -107,7 +107,7 @@ public final class ProfileManager {
             try {
                 storage.delete(uuid);
             } catch (Exception e) {
-                plugin.getLogger().log(Level.WARNING, "Suppression impossible du profil " + uuid, e);
+                plugin.getLogger().log(Level.WARNING, "Could not delete profile " + uuid, e);
             }
         });
     }
@@ -130,7 +130,7 @@ public final class ProfileManager {
         io.shutdown();
         try {
             if (!io.awaitTermination(15, TimeUnit.SECONDS)) {
-                plugin.getLogger().warning("Certaines sauvegardes n'ont pas pu se terminer à temps.");
+                plugin.getLogger().warning("Some saves could not finish in time.");
             }
         } catch (InterruptedException ignored) {
             Thread.currentThread().interrupt();

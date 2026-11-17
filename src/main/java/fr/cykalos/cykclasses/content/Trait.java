@@ -14,13 +14,20 @@ public record Trait(String id, String name, List<String> description, Rarity rar
     public enum Kind { POSITIVE, NEGATIVE, MIXED }
 
     public enum Rarity {
-        COMMON("<white>Commun"), UNCOMMON("<green>Peu commun"), RARE("<aqua>Rare"), EPIC("<light_purple>Épique"),
-        UNIQUE("<gold><bold>UNIQUE</bold>");
+        COMMON("<white>Commun", "<white>Common"), UNCOMMON("<green>Peu commun", "<green>Uncommon"), RARE("<aqua>Rare", "<aqua>Rare"),
+        EPIC("<light_purple>Épique", "<light_purple>Epic"), UNIQUE("<gold><bold>UNIQUE</bold>", "<gold><bold>UNIQUE</bold>");
 
-        public final String label;
+        private final String fr;
+        private final String en;
 
-        Rarity(String label) {
-            this.label = label;
+        Rarity(String fr, String en) {
+            this.fr = fr;
+            this.en = en;
+        }
+
+        /** Label in the plugin language. */
+        public String label() {
+            return fr.cykalos.cykclasses.config.Lang.tr(fr, en);
         }
     }
 

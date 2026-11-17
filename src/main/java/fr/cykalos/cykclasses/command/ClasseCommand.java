@@ -170,7 +170,7 @@ public final class ClasseCommand implements TabExecutor {
             plugin.messages().sendList(sender, "admin-help");
             return;
         }
-        String action = args[1].toLowerCase(Locale.ROOT);
+        String action = adminAlias(args[1].toLowerCase(Locale.ROOT));
         // /classe admin quete <player> <start|complete|reset|resetall> [id]
         if (action.equals("quete") || action.equals("quetes")) {
             new QuetesCommand(plugin).admin(sender, java.util.Arrays.copyOfRange(args, 1, args.length));
@@ -376,6 +376,22 @@ public final class ClasseCommand implements TabExecutor {
         }
     }
 
+    /** English names of the admin actions → internal (French) names. */
+    private static String adminAlias(String action) {
+        return switch (action) {
+            case "gem" -> "gemme";
+            case "weakness" -> "faiblesse";
+            case "releaseunique" -> "libererunique";
+            case "quest", "quests" -> "quete";
+            case "title", "titles" -> "titre";
+            default -> action;
+        };
+    }
+
+    private static boolean fr() {
+        return fr.cykalos.cykclasses.config.Lang.french();
+    }
+
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> options = new ArrayList<>();
@@ -386,19 +402,20 @@ public final class ClasseCommand implements TabExecutor {
         if (args.length >= 2 && List.of("titres", "titles", "titre").contains(first)) {
             return new TitresCommand(plugin).onTabComplete(sender, command, alias, java.util.Arrays.copyOfRange(args, 1, args.length));
         }
-        if (args.length >= 3 && first.equals("admin") && List.of("quete", "quetes").contains(args[1].toLowerCase(Locale.ROOT))) {
+        if (args.length >= 3 && first.equals("admin") && adminAlias(args[1].toLowerCase(Locale.ROOT)).equals("quete")) {
             return new QuetesCommand(plugin).adminTab(java.util.Arrays.copyOfRange(args, 1, args.length));
         }
-        if (args.length >= 3 && first.equals("admin") && List.of("titre", "titres").contains(args[1].toLowerCase(Locale.ROOT))) {
+        if (args.length >= 3 && first.equals("admin") && adminAlias(args[1].toLowerCase(Locale.ROOT)).equals("titre")) {
             return new TitresCommand(plugin).adminTab(java.util.Arrays.copyOfRange(args, 1, args.length));
         }
         if (args.length == 1) {
-            options.addAll(List.of("aide", "info", "choisir", "sous-classe", "competences", "reset"));
+            options.addAll(fr() ? List.of("aide", "info", "choisir", "sous-classe", "competences", "reset")
+                    : List.of("help", "info", "choose", "subclass", "skills", "reset"));
             if (plugin.modules().quests()) {
-                options.add("quetes");
+                options.add(fr() ? "quetes" : "quests");
             }
             if (plugin.modules().titles()) {
-                options.add("titres");
+                options.add(fr() ? "titres" : "titles");
             }
             if (sender.hasPermission("cykclasses.admin")) {
                 options.add("admin");
@@ -418,32 +435,34 @@ public final class ClasseCommand implements TabExecutor {
                 case "admin" -> {
                     if (sender.hasPermission("cykclasses.admin")) {
                         options.addAll(List.of("setlevel", "addxp", "setclass", "reset", "mana", "reload", "setrace",
-                                "resetrace", "resettraits", "setjob", "addpoints", "resettree", "resetstats", "kit", "gemme", "forge",
-                                "jobxp", "setjoblevel", "resetspec", "libererunique", "faiblesse", "quete", "titre"));
+                                "resetrace", "resettraits", "setjob", "addpoints", "resettree", "resetstats", "kit", "forge",
+                                "jobxp", "setjoblevel", "resetspec"));
+                        options.addAll(fr() ? List.of("gemme", "libererunique", "faiblesse", "quete", "titre")
+                                : List.of("gem", "releaseunique", "weakness", "quest", "title"));
                     }
                 }
                 default -> {
                 }
             }
         } else if (args.length == 3 && args[0].equalsIgnoreCase("admin")) {
-            if (args[1].equalsIgnoreCase("libererunique")) {
+            if (adminAlias(args[1].toLowerCase(Locale.ROOT)).equals("libererunique")) {
                 options.addAll(plugin.gear().uniqueTaken().keySet());
             } else {
                 Bukkit.getOnlinePlayers().forEach(p -> options.add(p.getName()));
             }
         } else if (args.length == 4 && args[0].equalsIgnoreCase("admin")) {
-            switch (args[1].toLowerCase(Locale.ROOT)) {
+            switch (adminAlias(args[1].toLowerCase(Locale.ROOT))) {
                 case "setclass", "kit" -> plugin.classes().all().forEach(c -> options.add(c.id));
                 case "setrace" -> plugin.content().races().forEach(r -> options.add(r.id()));
                 case "setjob" -> plugin.content().jobs().forEach(j -> options.add(j.id()));
-                case "addpoints" -> options.addAll(List.of("competences", "stats"));
+                case "addpoints" -> options.addAll(List.of(fr() ? "competences" : "skills", "stats"));
                 case "gemme" -> options.addAll(plugin.gear().gems().keySet());
                 case "forge" -> plugin.gear().rarities().forEach(r -> options.add(r.id().toLowerCase(Locale.ROOT)));
                 case "faiblesse" -> options.addAll(List.of("reset", "add", "remove"));
                 default -> {
                 }
             }
-        } else if (args.length == 5 && args[0].equalsIgnoreCase("admin") && args[1].equalsIgnoreCase("faiblesse")) {
+        } else if (args.length == 5 && args[0].equalsIgnoreCase("admin") && adminAlias(args[1].toLowerCase(Locale.ROOT)).equals("faiblesse")) {
             plugin.content().weaknesses().forEach(w -> options.add(w.id()));
         }
         String last = args[args.length - 1].toLowerCase(Locale.ROOT);

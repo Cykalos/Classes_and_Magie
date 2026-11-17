@@ -34,8 +34,9 @@ import java.util.UUID;
  */
 public final class StatsService {
 
-    /** Tree shared by every class. */
+    /** Tree shared by every class ("common" in English files, "commun" in French files). */
     public static final String COMMON_TREE = "commun";
+    public static final String COMMON_TREE_EN = "common";
 
     private record Computed(ClassStats stats, List<Flaw> flaws, List<PermanentEffect> effects, Map<String, SkillMod> skillMods) {
     }
@@ -149,6 +150,9 @@ public final class StatsService {
             out.add(own);
         }
         SkillTree common = plugin.content().tree(COMMON_TREE);
+        if (common == null) {
+            common = plugin.content().tree(COMMON_TREE_EN);
+        }
         if (common != null) {
             out.add(common);
         }

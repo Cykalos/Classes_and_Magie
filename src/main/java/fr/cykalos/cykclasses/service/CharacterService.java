@@ -73,7 +73,7 @@ public final class CharacterService {
         try {
             y.save(uniquesFile);
         } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Sauvegarde impossible de uniques.yml", e);
+            plugin.getLogger().log(Level.WARNING, "Could not save uniques.yml", e);
         }
     }
 
@@ -526,7 +526,7 @@ public final class CharacterService {
         for (KitItem ki : kit.items()) {
             ItemStack item = build(ki, player);
             if (item == null) {
-                plugin.getLogger().warning("Kit " + classId + " : objet introuvable « " + ki.item() + " »");
+                plugin.getLogger().warning("Kit " + classId + ": item not found '" + ki.item() + "'");
                 continue;
             }
             place(player, inv, item, ki.slot());

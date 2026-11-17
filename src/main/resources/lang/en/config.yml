@@ -1,0 +1,204 @@
+# ╔══════════════════════════════════════════════╗
+# ║           Classes and Magie - config         ║
+# ╚══════════════════════════════════════════════╝
+#
+# File layout:
+#   classes/     classes.yml, skilltree.yml, attributes.yml
+#   character/   races.yml, traits.yml, weaknesses.yml, titles.yml
+#   jobs/        jobs.yml, forge.yml, gems.yml
+#   items/       kits.yml, items.yml
+#   display/     hud.yml, messages.yml
+#   quests/      quests (every .yml file in the folder is read)
+#   data/        player and server data (do not edit by hand)
+
+# Plugin language: en or fr (French).
+# Only files that do not exist yet are created in this language:
+# to switch everything to another language, rename or delete the configuration files.
+language: en
+
+# Modules: turn off what the server does not need.
+# A disabled module disappears from the game (creation step skipped, command unavailable, no effect).
+modules:
+  races: true              # /race, character/races.yml
+  traits: true             # /traits, character/traits.yml
+  weaknesses: true         # /weaknesses, character/weaknesses.yml
+  jobs: true               # /job, jobs/jobs.yml (reserved actions and job XP)
+  skill-tree: true         # /skilltree, classes/skilltree.yml
+  attributes: true         # /stats, classes/attributes.yml
+  parties: true            # /party, /pc
+  forge: true              # quality items (jobs/forge.yml)
+  gems: true               # gems, jewelcrafting (jobs/gems.yml)
+  kits: true               # starter kits (items/kits.yml)
+  item-restrictions: true  # item usage requirements (items/items.yml)
+  quests: true             # /quests, journal and tracker (quests/ folder)
+  titles: true             # /titles, unlockable titles (character/titles.yml)
+
+# Player data storage: YAML, JSON or SQLITE
+storage:
+  type: YAML
+  # Automatic save (in seconds)
+  autosave-interval: 300
+  sqlite-file: data.db       # in the data/ folder
+
+# Levels and experience
+leveling:
+  max-level: 100
+  # XP required for the next level = base * (level ^ exponent)
+  base-xp: 100
+  exponent: 1.5
+  # Default XP for killing a monster (if missing from the list)
+  default-mob-xp: 5
+  # XP for killing a player
+  player-kill-xp: 50
+  mob-xp:
+    zombie: 10
+    skeleton: 12
+    spider: 10
+    creeper: 15
+    enderman: 25
+    witch: 30
+    blaze: 30
+    wither_skeleton: 40
+    evoker: 60
+    ravager: 80
+    warden: 500
+    ender_dragon: 2000
+    wither: 1500
+  # Animals do not give class XP
+  ignore-passive-mobs: true
+  # Fully heal the player on level up
+  level-up-heal: true
+
+# Mana
+mana:
+  # Regeneration interval (in ticks, 20 = 1 second)
+  regen-interval-ticks: 20
+  # Does mana regenerate in combat? (5 seconds after a hit)
+  regen-in-combat: true
+  combat-regen-multiplier: 0.5
+
+# Combat
+combat:
+  # Arrows shot from a bow by a player hit even if the target was just hurt.
+  # Without this (Minecraft behaviour), they often bounce off, for example on a zombie burning in the sun.
+  # Crossbows keep the Minecraft behaviour.
+  bow-ignores-hit-delay: true
+
+# Casting skills
+casting:
+  # Pressing F (swap hands) toggles skill mode:
+  # the hotbar shows the skill icons (slots 1 to 8),
+  # your weapon stays in hand in slot 9. Keys 1 to 8 cast the skills.
+  # F again (or a click in the inventory) to go back to your normal hotbar.
+  swap-hands-toggle: true
+  # Must the player sneak to toggle skill mode with F?
+  require-sneak: false
+  # Automatic exit after X seconds without casting a skill (0 = never)
+  timeout-seconds: 15
+  # Icon of skills not unlocked yet
+  locked-icon: GRAY_DYE
+  # Filler for slots without a skill (picked up loot then goes into the inventory)
+  empty-slot-icon: GRAY_STAINED_GLASS_PANE
+  # Can offensive skills hit players outside your party?
+  pvp: true
+
+# Parties
+party:
+  max-size: 5
+  invite-timeout-seconds: 60
+  # Can members (and not only the leader) invite?
+  members-can-invite: false
+  # Disband the party when only one member is left
+  disband-when-alone: true
+  # Radius in which members receive the XP of a kill
+  xp-share-range: 40
+  # SHARED mode: total XP bonus per extra member (0.1 = +10%)
+  shared-bonus-per-member: 0.1
+  # Default values offered in the creation menu (SHARED or EQUAL)
+  default-xp-mode: SHARED
+  default-friendly-fire: true
+
+# MythicMobs (if installed)
+mythicmobs:
+  # XP per MythicMobs mob (internal name). Missing = default-xp
+  default-xp: 15
+  # XP added per mob level above level 1
+  xp-per-level: 2
+  mob-xp:
+    ExampleBoss: 500
+
+# Points earned when levelling up
+progression:
+  # Skill tree points (/skilltree)
+  starting-skill-points: 1
+  skill-points-per-level: 1
+  # Attribute points (/stats)
+  starting-attribute-points: 3
+  attribute-points-per-level: 2
+  # Delay between two free resets (hours)
+  tree-reset-cooldown-hours: 24
+  attribute-reset-cooldown-hours: 24
+
+# Character creation: class -> race -> traits -> job
+character:
+  # Can the race be changed afterwards with /race?
+  race-can-change: false
+
+# Chat
+chat:
+  # Formats the global chat with the class and level (turn off if another plugin handles chat:
+  # then use the placeholders %cykclasses_class%, %cykclasses_level%...)
+  format-enabled: true
+  # Placeholders: <class_tag>, <title> (equipped title, empty otherwise), <name>, <message>
+  global-format: "<class_tag> <title><white><name></white><dark_gray> » </dark_gray><gray><message>"
+  party-format: "<dark_aqua>[Party]</dark_aqua> <class_tag> <title><aqua><name></aqua><dark_gray> » </dark_gray><white><message>"
+  # Placeholders: <class>, <level>, <race>
+  class-tag: "<dark_gray>[</dark_gray><class> <gray>Lv. <level></gray><dark_gray>]</dark_gray>"
+  no-class-tag: "<dark_gray>[<gray>Novice</gray>]</dark_gray>"
+  spy-prefix: "<dark_gray>[Spy] "
+
+# Display (action bar)
+hud:
+  enabled: true
+  # Prefix shown in front of the HUD while skill mode is active
+  cast-mode-prefix: "<light_purple>✦ </light_purple>"
+  interval-ticks: 10
+  format: "<red>❤ <health>/<max_health></red>  <aqua>✦ <mana>/<max_mana></aqua>  <gold>Lv. <level></gold> <gray>(<xp_percent>%)</gray>"
+
+# Class reset
+reset:
+  enabled: true
+  # Keep the level on reset?
+  keep-level: false
+  # Delay between two resets (in minutes)
+  cooldown-minutes: 60
+  # Keep the race on a class reset? (traits are always kept)
+  keep-race: true
+
+# Is choosing a class mandatory? (opens the menu on join)
+force-class-selection: true
+# Protect the player during character creation? (no damage, ignored by monsters,
+# cannot attack). Only works if force-class-selection is enabled.
+creation-protection: true
+
+# Quests (files in the quests/ folder; every quest is optional)
+quests:
+  # Offer the tutorial at the end of character creation
+  offer-tutorial: true
+  # Id of the tutorial quest
+  tutorial: tutorial
+  # Offer quests in chat ([Accept] / [Later]) instead of starting them on their own.
+  # Secret quests always start on their own when they are discovered.
+  ask-before-start: true
+  # Maximum number of quests in progress at the same time (0 = unlimited)
+  max-active: 0
+  # Number of quests tracked in the sidebar
+  max-tracked: 3
+  # Automatically track a quest when it starts
+  auto-track: true
+  # Hide quests reserved for another class or race in the journal
+  hide-other-classes: true
+  # Show progress in the action bar
+  progress-actionbar: true
+  # How often state objectives (level, items, location…) are checked, in ticks (20 = 1 s)
+  check-interval-ticks: 20

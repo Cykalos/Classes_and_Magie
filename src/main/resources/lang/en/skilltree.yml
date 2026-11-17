@@ -1,0 +1,497 @@
+# ╔══════════════════════════════════════════════╗
+# ║        Classes and Magie - skilltree.yml     ║
+# ╚══════════════════════════════════════════════╝
+# One tree per base class (key = class id) + the "common" tree available to everyone.
+# Points earned per level: config.yml → progression.
+#
+# Node:
+#   x (0-8), y (0-4)    position in the menu
+#   max-rank, cost      max ranks and point cost per rank
+#   requires            nodes to unlock first (at least 1 rank)
+#   required-level      minimum level
+#   required-subclass   required subclass (specialisation branches)
+#   stats               bonus PER RANK (same keys as classes.yml)
+#   skills              bonus PER RANK on a skill:
+#                         damage: 0.1 (+10% damage/healing) · cooldown: -0.1 (-10% cooldown) · mana: -0.1 (-10% cost)
+
+trees:
+  common:
+    title: "Common Tree"
+    nodes:
+      vigor:
+        name: "<red>Vigor"
+        icon: APPLE
+        x: 2
+        y: 0
+        max-rank: 5
+        cost: 1
+        description: ["<gray>More health."]
+        stats: {health: 1}
+      meditation:
+        name: "<aqua>Meditation"
+        icon: LAPIS_LAZULI
+        x: 6
+        y: 0
+        max-rank: 5
+        cost: 1
+        description: ["<gray>More mana and regeneration."]
+        stats: {mana: 5, mana-regen: 0.1}
+      second_skin:
+        name: "<gray>Second Skin"
+        icon: LEATHER_CHESTPLATE
+        x: 2
+        y: 2
+        max-rank: 3
+        cost: 2
+        requires: [vigor]
+        required-level: 10
+        description: ["<gray>Reduces damage taken."]
+        stats: {damage-taken: 0.97}
+      focus:
+        name: "<light_purple>Focus"
+        icon: CLOCK
+        x: 6
+        y: 2
+        max-rank: 3
+        cost: 2
+        requires: [meditation]
+        required-level: 10
+        description: ["<gray>More frequent critical hits."]
+        stats: {crit-chance: 0.02}
+      mastery:
+        name: "<gold>Mastery"
+        icon: NETHER_STAR
+        x: 4
+        y: 4
+        max-rank: 1
+        cost: 5
+        requires: [second_skin, focus]
+        required-level: 40
+        description: ["<gray>The culmination of training."]
+        stats: {melee-damage: 1.05, ranged-damage: 1.05, magic-damage: 1.05}
+
+  warrior:
+    title: "Warrior Tree"
+    nodes:
+      brutal_charge:
+        name: "<red>Brutal Charge"
+        icon: IRON_HORSE_ARMOR
+        x: 4
+        y: 0
+        max-rank: 3
+        description: ["<gray>Stronger Charge."]
+        skills: {charge: {damage: 0.15}}
+      commanding_voice:
+        name: "<red>Commanding Voice"
+        icon: GOAT_HORN
+        x: 4
+        y: 1
+        max-rank: 3
+        requires: [brutal_charge]
+        description: ["<gray>War Cry more often."]
+        skills: {war_cry: {cooldown: -0.1}}
+      blade_master:
+        name: "<red>Blade Master"
+        icon: IRON_SWORD
+        x: 4
+        y: 2
+        max-rank: 5
+        requires: [commanding_voice]
+        required-level: 10
+        description: ["<gray>Increased melee damage."]
+        stats: {melee-damage: 1.03}
+      steel_tornado:
+        name: "<red>Steel Tornado"
+        icon: IRON_AXE
+        x: 4
+        y: 3
+        max-rank: 3
+        requires: [blade_master]
+        required-level: 15
+        description: ["<gray>Whirlwind deals more damage and costs less."]
+        skills: {whirlwind: {damage: 0.12, mana: -0.1}}
+      bloodlust:
+        name: "<dark_red>Bloodlust"
+        icon: REDSTONE
+        x: 1
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [blade_master]
+        required-subclass: berserker
+        description: ["<gray>Stronger Blood Rage."]
+        skills: {blood_rage: {damage: 0.2, cooldown: -0.1}}
+      annihilation:
+        name: "<dark_red>Annihilation"
+        icon: MACE
+        x: 1
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [bloodlust]
+        required-subclass: berserker
+        description: ["<gray>Shattering Blow more often."]
+        skills: {shattering_blow: {cooldown: -0.15}}
+      holy_bulwark:
+        name: "<gold>Holy Bulwark"
+        icon: SHIELD
+        x: 7
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [blade_master]
+        required-subclass: paladin
+        description: ["<gray>Withstands hits better."]
+        stats: {damage-taken: 0.96, health: 2}
+      retribution:
+        name: "<gold>Retribution"
+        icon: LIGHTNING_ROD
+        x: 7
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [holy_bulwark]
+        required-subclass: paladin
+        description: ["<gray>Stronger Judgment."]
+        skills: {judgment: {damage: 0.15}}
+
+  mage:
+    title: "Mage Tree"
+    nodes:
+      focusing:
+        name: "<light_purple>Focusing"
+        icon: AMETHYST_SHARD
+        x: 4
+        y: 0
+        max-rank: 3
+        description: ["<gray>Stronger Arcane Bolt."]
+        skills: {arcane_bolt: {damage: 0.15}}
+      flash_step:
+        name: "<light_purple>Flash Step"
+        icon: ENDER_PEARL
+        x: 4
+        y: 1
+        max-rank: 3
+        requires: [focusing]
+        description: ["<gray>Blink more often."]
+        skills: {blink: {cooldown: -0.12}}
+      mana_well:
+        name: "<light_purple>Mana Well"
+        icon: LAPIS_BLOCK
+        x: 4
+        y: 2
+        max-rank: 5
+        requires: [flash_step]
+        required-level: 10
+        description: ["<gray>Larger mana pool."]
+        stats: {mana: 10, mana-regen: 0.2}
+      arcane_power:
+        name: "<light_purple>Arcane Power"
+        icon: END_CRYSTAL
+        x: 4
+        y: 3
+        max-rank: 5
+        requires: [mana_well]
+        required-level: 15
+        description: ["<gray>Every spell hits harder."]
+        stats: {magic-damage: 1.03}
+      combustion:
+        name: "<gold>Combustion"
+        icon: FIRE_CHARGE
+        x: 1
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [arcane_power]
+        required-subclass: pyromancer
+        description: ["<gray>Stronger and cheaper Fireball."]
+        skills: {fireball: {damage: 0.15, mana: -0.1}}
+      apocalypse:
+        name: "<gold>Apocalypse"
+        icon: MAGMA_BLOCK
+        x: 1
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [combustion]
+        required-subclass: pyromancer
+        description: ["<gray>Devastating Meteor Shower."]
+        skills: {meteor_shower: {damage: 0.15, cooldown: -0.1}}
+      eternal_winter:
+        name: "<aqua>Eternal Winter"
+        icon: BLUE_ICE
+        x: 7
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [arcane_power]
+        required-subclass: cryomancer
+        description: ["<gray>Frost Nova more often."]
+        skills: {frost_nova: {cooldown: -0.12, damage: 0.1}}
+      ice_shard:
+        name: "<aqua>Ice Shard"
+        icon: PRISMARINE_SHARD
+        x: 7
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [eternal_winter]
+        required-subclass: cryomancer
+        description: ["<gray>Stronger Ice Lance."]
+        skills: {ice_lance: {damage: 0.15}}
+
+  archer:
+    title: "Archer Tree"
+    nodes:
+      steel_tip:
+        name: "<green>Steel Tip"
+        icon: SPECTRAL_ARROW
+        x: 4
+        y: 0
+        max-rank: 3
+        description: ["<gray>Stronger Piercing Arrow."]
+        skills: {piercing_arrow: {damage: 0.15}}
+      full_quiver:
+        name: "<green>Full Quiver"
+        icon: ARROW
+        x: 4
+        y: 1
+        max-rank: 3
+        requires: [steel_tip]
+        description: ["<gray>Volley more often and cheaper."]
+        skills: {volley: {cooldown: -0.1, mana: -0.1}}
+      sharpshooter:
+        name: "<green>Sharpshooter"
+        icon: BOW
+        x: 4
+        y: 2
+        max-rank: 5
+        requires: [full_quiver]
+        required-level: 10
+        description: ["<gray>Increased ranged damage."]
+        stats: {ranged-damage: 1.03}
+      light_feet:
+        name: "<green>Light Feet"
+        icon: FEATHER
+        x: 4
+        y: 3
+        max-rank: 3
+        requires: [sharpshooter]
+        required-level: 15
+        description: ["<gray>Faster, Disengage more often."]
+        stats: {speed: 0.02}
+        skills: {disengage: {cooldown: -0.1}}
+      predator:
+        name: "<dark_green>Predator"
+        icon: TARGET
+        x: 1
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [sharpshooter]
+        required-subclass: hunter
+        description: ["<gray>Hunter's Mark more often."]
+        skills: {hunters_mark: {cooldown: -0.12}}
+      sharpened_traps:
+        name: "<dark_green>Sharpened Traps"
+        icon: TRIPWIRE_HOOK
+        x: 1
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [predator]
+        required-subclass: hunter
+        description: ["<gray>Stronger Bear Trap."]
+        skills: {bear_trap: {damage: 0.2}}
+      deluge:
+        name: "<yellow>Deluge"
+        icon: DISPENSER
+        x: 7
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [sharpshooter]
+        required-subclass: ranger
+        description: ["<gray>Stronger Arrow Rain."]
+        skills: {arrow_rain: {damage: 0.15}}
+      pyrotechnician:
+        name: "<yellow>Pyrotechnician"
+        icon: TNT
+        x: 7
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [deluge]
+        required-subclass: ranger
+        description: ["<gray>Explosive Arrow more often."]
+        skills: {explosive_arrow: {cooldown: -0.15}}
+
+  assassin:
+    title: "Assassin Tree"
+    nodes:
+      fleeting_shadow:
+        name: "<dark_gray>Fleeting Shadow"
+        icon: BLACK_DYE
+        x: 4
+        y: 0
+        max-rank: 3
+        description: ["<gray>Shadow Step more often."]
+        skills: {shadow_step: {cooldown: -0.1}}
+      venom:
+        name: "<dark_gray>Venom"
+        icon: SPIDER_EYE
+        x: 4
+        y: 1
+        max-rank: 3
+        requires: [fleeting_shadow]
+        description: ["<gray>Cheaper Poison Blade."]
+        skills: {poison_blade: {mana: -0.15}}
+      twin_blades:
+        name: "<dark_gray>Twin Blades"
+        icon: IRON_SWORD
+        x: 4
+        y: 2
+        max-rank: 5
+        requires: [venom]
+        required-level: 10
+        description: ["<gray>More frequent critical hits."]
+        stats: {crit-chance: 0.015}
+      evanescence:
+        name: "<dark_gray>Evanescence"
+        icon: GLASS
+        x: 4
+        y: 3
+        max-rank: 3
+        requires: [twin_blades]
+        required-level: 15
+        description: ["<gray>Vanish more often."]
+        skills: {vanish: {cooldown: -0.12}}
+      coup_de_grace:
+        name: "<dark_purple>Coup de Grâce"
+        icon: NETHERITE_SWORD
+        x: 1
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [twin_blades]
+        required-subclass: shadow
+        description: ["<gray>Deadlier Execution."]
+        skills: {execution: {damage: 0.15}}
+      darkness:
+        name: "<dark_purple>Darkness"
+        icon: INK_SAC
+        x: 1
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [coup_de_grace]
+        required-subclass: shadow
+        description: ["<gray>Shadow Veil more often."]
+        skills: {shadow_veil: {cooldown: -0.12}}
+      riposte:
+        name: "<white>Riposte"
+        icon: SHIELD
+        x: 7
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [twin_blades]
+        required-subclass: duelist
+        description: ["<gray>Stronger Parry."]
+        skills: {parry: {damage: 0.2, cooldown: -0.1}}
+      secret_thrust:
+        name: "<white>Secret Thrust"
+        icon: TRIDENT
+        x: 7
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [riposte]
+        required-subclass: duelist
+        description: ["<gray>Stronger Lunge."]
+        skills: {lunge: {damage: 0.15}}
+
+  cleric:
+    title: "Cleric Tree"
+    nodes:
+      healing_hands:
+        name: "<yellow>Healing Hands"
+        icon: GLISTERING_MELON_SLICE
+        x: 4
+        y: 0
+        max-rank: 3
+        description: ["<gray>More effective Heal."]
+        skills: {heal: {damage: 0.15}}
+      fervor:
+        name: "<yellow>Fervor"
+        icon: HONEY_BOTTLE
+        x: 4
+        y: 1
+        max-rank: 3
+        requires: [healing_hands]
+        description: ["<gray>Blessing more often."]
+        skills: {blessing: {cooldown: -0.12}}
+      unshakable_faith:
+        name: "<yellow>Unshakable Faith"
+        icon: TOTEM_OF_UNDYING
+        x: 4
+        y: 2
+        max-rank: 5
+        requires: [fervor]
+        required-level: 10
+        description: ["<gray>Increased mana and health."]
+        stats: {mana: 8, health: 1}
+      sanctuary:
+        name: "<yellow>Sanctuary"
+        icon: MILK_BUCKET
+        x: 4
+        y: 3
+        max-rank: 3
+        requires: [unshakable_faith]
+        required-level: 15
+        description: ["<gray>Cheaper and more frequent Purify."]
+        skills: {purify: {mana: -0.15, cooldown: -0.1}}
+      miracle:
+        name: "<white>Miracle"
+        icon: BEACON
+        x: 1
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [unshakable_faith]
+        required-subclass: priest
+        description: ["<gray>Stronger Divine Grace."]
+        skills: {divine_grace: {damage: 0.15, cooldown: -0.1}}
+      dawn:
+        name: "<white>Dawn"
+        icon: GLOWSTONE_DUST
+        x: 1
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [miracle]
+        required-subclass: priest
+        description: ["<gray>Stronger Holy Light."]
+        skills: {holy_light: {damage: 0.15}}
+      brambles:
+        name: "<dark_green>Brambles"
+        icon: VINE
+        x: 7
+        y: 3
+        max-rank: 3
+        cost: 2
+        requires: [unshakable_faith]
+        required-subclass: druid
+        description: ["<gray>More painful Entangling Roots."]
+        skills: {entangling_roots: {damage: 0.2}}
+      feral_form:
+        name: "<dark_green>Feral Form"
+        icon: RABBIT_FOOT
+        x: 7
+        y: 4
+        max-rank: 3
+        cost: 2
+        requires: [brambles]
+        required-subclass: druid
+        description: ["<gray>Stronger and more frequent Wild Spirit."]
+        skills: {wild_spirit: {damage: 0.15, cooldown: -0.1}}

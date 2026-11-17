@@ -32,7 +32,7 @@ public final class ClassRegistry {
         YamlConfiguration yaml = ConfigFiles.load(plugin, "classes.yml");
         ConfigurationSection root = yaml.getConfigurationSection("classes");
         if (root == null) {
-            plugin.getLogger().severe("classes.yml ne contient aucune section 'classes' !");
+            plugin.getLogger().severe("classes.yml has no 'classes' section!");
             return;
         }
         for (String key : root.getKeys(false)) {
@@ -45,7 +45,7 @@ public final class ClassRegistry {
             allClasses.put(rc.id, rc);
             for (RpgClass sub : rc.subclasses().values()) {
                 if (allClasses.containsKey(sub.id)) {
-                    plugin.getLogger().warning("Identifiant de sous-classe en double : " + sub.id);
+                    plugin.getLogger().warning("Duplicate subclass id: " + sub.id);
                 }
                 allClasses.put(sub.id, sub);
             }
@@ -54,7 +54,7 @@ public final class ClassRegistry {
         for (RpgClass rc : allClasses.values()) {
             for (SkillDefinition def : rc.ownSkills().values()) {
                 if (!plugin.skills().hasType(def.type)) {
-                    plugin.getLogger().warning("Compétence '" + def.id + "' (" + rc.id + ") : type inconnu " + def.type);
+                    plugin.getLogger().warning("Skill '" + def.id + "' (" + rc.id + "): unknown type " + def.type);
                 }
             }
         }

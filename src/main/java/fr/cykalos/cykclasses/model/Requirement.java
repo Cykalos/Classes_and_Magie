@@ -53,11 +53,11 @@ public final class Requirement {
     private static String defaultDescription(Type type, String target, double amount) {
         long a = (long) amount;
         return switch (type) {
-            case LEVEL -> "Atteindre le niveau " + a;
-            case KILLS -> "Tuer " + a + " " + ("any".equals(target) ? "créatures" : target);
-            case SKILL_USES -> "Utiliser " + ("any".equals(target) ? "des compétences" : target) + " " + a + " fois";
+            case LEVEL -> fr.cykalos.cykclasses.config.Lang.tr("Atteindre le niveau ", "Reach level ") + a;
+            case KILLS -> fr.cykalos.cykclasses.config.Lang.tr("Tuer ", "Kill ") + a + " " + ("any".equals(target) ? fr.cykalos.cykclasses.config.Lang.tr("créatures", "creatures") : target);
+            case SKILL_USES -> fr.cykalos.cykclasses.config.Lang.tr("Utiliser " + ("any".equals(target) ? "des compétences" : target) + " " + a + " fois", "Use " + ("any".equals(target) ? "skills" : target) + " " + a + " times");
             case COUNTER -> target + " : " + a;
-            case PERMISSION -> "Permission requise";
+            case PERMISSION -> fr.cykalos.cykclasses.config.Lang.tr("Permission requise", "Permission required");
         };
     }
 

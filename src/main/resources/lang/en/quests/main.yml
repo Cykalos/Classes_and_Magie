@@ -1,0 +1,168 @@
+# Example main story — "The Adventurers' Guild"
+# Full quest format: see the top of tutorial.yml
+#
+# Example lore: the Adventurers' Guild is recruiting. Brann, its master, runs the trials that
+# let you rise through the ranks, from Recruit to Legend. Everything can be changed or removed.
+
+quests:
+  guild_recruit:
+    name: "<gold>Rank I — Recruit"
+    category: MAIN
+    level: 2
+    icon: STRING
+    start: AUTO
+    description:
+      - "<gray>The Adventurers' Guild is recruiting."
+      - "<gray>First trial: the spiders."
+    requirements:
+      level: 2
+    stages:
+      - text:
+          - "<gold>Brann <dark_gray>» <gray><i>\"So you want to join the Guild? Start by clearing out the caves.\"</i>"
+        objectives:
+          - {type: KILL, targets: [SPIDER, CAVE_SPIDER], amount: 4, display: "Kill spiders"}
+      - text:
+          - "<gold>Brann <dark_gray>» <gray><i>\"Bring me their silk, it will make ropes for the Guild.\"</i>"
+        objectives:
+          - {type: COLLECT, targets: [STRING], amount: 6, take: true, display: "Bring back string"}
+    rewards:
+      xp: 120
+      items:
+        - {item: "minecraft:cooked_chicken", amount: 8}
+    complete-text:
+      - "<gold>Brann <dark_gray>» <gray><i>\"Welcome to the Guild, recruit.\"</i>"
+
+  guild_bronze:
+    name: "<gold>Rank II — Bronze"
+    category: MAIN
+    level: 6
+    icon: GUNPOWDER
+    start: AUTO
+    description:
+      - "<gray>Creepers threaten the merchants'"
+      - "<gray>roads."
+    requirements:
+      level: 6
+      quests: [guild_recruit]
+    stages:
+      - text:
+          - "<gold>Brann <dark_gray>» <gray><i>\"The merchants complain about explosions in the forest. Go and see.\"</i>"
+        objectives:
+          - {type: BIOME, targets: ["*FOREST*"], display: "Patrol a forest"}
+          - {type: KILL, targets: [CREEPER], amount: 3, display: "Kill creepers"}
+      - objectives:
+          - {type: COLLECT, targets: [GUNPOWDER], amount: 5, take: true, display: "Bring back gunpowder"}
+    rewards:
+      xp: 300
+      attribute-points: 1
+      items:
+        - {item: "minecraft:arrow", amount: 32}
+
+  guild_silver:
+    name: "<gold>Rank III — Silver"
+    category: MAIN
+    level: 12
+    icon: GOAT_HORN
+    start: AUTO
+    description:
+      - "<gray>Pillagers have set up a camp"
+      - "<gray>near the mountains."
+    requirements:
+      level: 12
+      quests: [guild_bronze]
+    stages:
+      - text:
+          - "<gold>Brann <dark_gray>» <gray><i>\"Climb up and spot their camp from the heights.\"</i>"
+        objectives:
+          - {type: CONDITION, conditions: {y-above: 120}, display: "Reach a summit (above layer 120)"}
+      - text:
+          - "<gold>Brann <dark_gray>» <gray><i>\"You saw them? Then drive them out.\"</i>"
+        objectives:
+          - {type: KILL, targets: [PILLAGER, VINDICATOR], amount: 6, display: "Hunt pillagers"}
+    rewards:
+      xp: 650
+      skill-points: 1
+      money: 100
+
+  guild_gold:
+    name: "<gold>Rank IV — Gold"
+    category: MAIN
+    level: 20
+    icon: PRISMARINE_SHARD
+    start: AUTO
+    description:
+      - "<gray>The guardians of the oceans attack"
+      - "<gray>the Guild's ships."
+    requirements:
+      level: 20
+      quests: [guild_silver]
+    stages:
+      - text:
+          - "<gold>Brann <dark_gray>» <gray><i>\"Our boats no longer come back. Dive and find out what is going on.\"</i>"
+        objectives:
+          - {type: CONDITION, conditions: {in-water: true, y-below: 45}, display: "Dive into deep water (below layer 45)"}
+          - {type: KILL, targets: [DROWNED], amount: 8, display: "Kill drowned"}
+      - objectives:
+          - {type: KILL, targets: [GUARDIAN], amount: 3, display: "Kill guardians"}
+    rewards:
+      xp: 1100
+      attribute-points: 2
+      items:
+        - {item: "minecraft:golden_apple", amount: 2}
+
+  guild_platinum:
+    name: "<gold>Rank V — Platinum"
+    category: MAIN
+    level: 30
+    icon: QUARTZ
+    start: AUTO
+    description:
+      - "<gray>An expedition into the Nether,"
+      - "<gray>for the best only."
+    requirements:
+      level: 30
+      quests: [guild_gold]
+    stages:
+      - text:
+          - "<gold>Brann <dark_gray>» <gray><i>\"The Guild is funding an expedition into the Nether. You will be part of it.\"</i>"
+        objectives:
+          - {type: CONDITION, conditions: {dimensions: [NETHER]}, display: "Enter the Nether"}
+      - objectives:
+          - {type: KILL, targets: [GHAST], amount: 2, display: "Shoot down ghasts"}
+          - {type: COLLECT, targets: [QUARTZ], amount: 16, take: true, display: "Bring back Nether quartz"}
+    rewards:
+      xp: 2600
+      skill-points: 1
+      attribute-points: 1
+      money: 300
+      items:
+        - {item: "minecraft:diamond", amount: 3}
+
+  guild_legend:
+    name: "<gold>Rank VI — Legend"
+    category: MAIN
+    level: 45
+    icon: NETHER_STAR
+    start: AUTO
+    description:
+      - "<gray>The final trial: two monsters"
+      - "<gray>no one dares to face."
+    requirements:
+      level: 45
+      quests: [guild_platinum]
+    stages:
+      - text:
+          - "<gold>Brann <dark_gray>» <gray><i>\"One trial remains. The one that makes legends.\"</i>"
+        objectives:
+          - {type: KILL, targets: [ELDER_GUARDIAN], amount: 1, display: "Defeat an elder guardian"}
+          - {type: KILL, targets: [WITHER], amount: 1, display: "Defeat the Wither"}
+    rewards:
+      xp: 8000
+      skill-points: 2
+      attribute-points: 3
+      money: 1000
+      items:
+        - {item: "minecraft:netherite_ingot", amount: 1}
+      titles: [guild_legend]
+    complete-text:
+      - "<gold>Brann <dark_gray>» <gray><i>\"Your name will be carved on the Guild's wall. Legend.\"</i>"

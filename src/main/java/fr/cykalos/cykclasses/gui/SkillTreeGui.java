@@ -67,12 +67,12 @@ public final class SkillTreeGui extends Gui {
                     SkillDefinition sd = rc == null ? null : rc.skills().get(e.getKey());
                     String name = sd == null ? e.getKey() : Text.plain(sd.name);
                     SkillMod m = e.getValue();
-                    if (m.damage != 0) b.lore("<gray>• <light_purple>" + name + "</light_purple> : " + pct(m.damage, false) + " puissance");
-                    if (m.cooldown != 0) b.lore("<gray>• <light_purple>" + name + "</light_purple> : " + pct(m.cooldown, true) + " recharge");
-                    if (m.mana != 0) b.lore("<gray>• <light_purple>" + name + "</light_purple> : " + pct(m.mana, true) + " mana");
+                    if (m.damage != 0) b.lore("<gray>• <light_purple>" + name + "</light_purple>: " + pct(m.damage, false) + " " + fr.cykalos.cykclasses.config.Lang.tr("puissance", "power"));
+                    if (m.cooldown != 0) b.lore("<gray>• <light_purple>" + name + "</light_purple>: " + pct(m.cooldown, true) + " " + fr.cykalos.cykclasses.config.Lang.tr("recharge", "cooldown"));
+                    if (m.mana != 0) b.lore("<gray>• <light_purple>" + name + "</light_purple>: " + pct(m.mana, true) + " mana");
                 }
             }
-            b.lore("").lore("<gray>Coût : <white>" + node.cost() + "</white> point" + (node.cost() > 1 ? "s" : "") + " par rang");
+            b.lore("").lore("<gray>" + fr.cykalos.cykclasses.config.Lang.tr("Coût : ", "Cost: ") + "<white>" + node.cost() + "</white> point" + (node.cost() > 1 ? "s" : "") + " " + fr.cykalos.cykclasses.config.Lang.tr("par rang", "per rank"));
             if (maxed) {
                 b.lore(plugin.messages().raw("tree.maxed-line"));
             } else if (available) {

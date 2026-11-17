@@ -26,10 +26,10 @@ public final class ItemFactory {
     public void init() {
         try {
             uni = new UniItemBridge();
-            plugin.getLogger().info("Objets custom (UniItem) : " + String.join(", ", uni.types()));
+            plugin.getLogger().info("Custom items (UniItem): " + String.join(", ", uni.types()));
         } catch (Throwable t) {
             uni = null;
-            plugin.getLogger().log(Level.WARNING, "UniItem indisponible : seuls les objets vanilla et MythicMobs sont gérés.", t);
+            plugin.getLogger().log(Level.WARNING, "UniItem unavailable: only vanilla and MythicMobs items are supported.", t);
         }
     }
 

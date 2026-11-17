@@ -11,6 +11,11 @@
 #   quetes/      quêtes (tous les fichiers .yml du dossier sont lus)
 #   donnees/     données des joueurs et du serveur (ne pas modifier à la main)
 
+# Langue du plugin : fr ou en (anglais).
+# Seuls les fichiers qui n'existent pas encore sont créés dans cette langue :
+# pour tout passer dans une autre langue, renommer ou supprimer les fichiers de configuration.
+language: fr
+
 # Modules : désactiver ce dont le serveur n'a pas besoin.
 # Un module désactivé disparaît du jeu (étape de création sautée, commande indisponible, aucun effet).
 modules:

@@ -90,7 +90,7 @@ public final class Quest {
             stages.add(new Stage(text, objectives));
         }
         if (stages.isEmpty()) {
-            throw new IllegalArgumentException(where + " : aucune étape (stages)");
+            throw new IllegalArgumentException(where + ": no stages");
         }
         return new Quest(id.toLowerCase(Locale.ROOT), s.getString("name", id), category,
                 icon == null ? Material.WRITABLE_BOOK : icon, s.getInt("level", 1), s.getStringList("description"),

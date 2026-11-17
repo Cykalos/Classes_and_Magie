@@ -25,7 +25,7 @@
 #       - {type: DAMAGE_DEALT, targets: [ENDERMAN], multiplier: 1.1, description: "+10% contre les Endermen"}
 #
 # Sans « unlock », le titre ne se débloque pas tout seul : il est donné par une quête (rewards → titles)
-# ou par un administrateur (/titres admin <joueur> give <id>).
+# ou par un administrateur (/classe admin titre <joueur> give <id>).
 #
 # Objectifs utiles pour les titres (ils comptent aussi tout ce que le joueur a fait avant) :
 #   KILLS_TOTAL (éliminations par type), SKILL_USES_TOTAL, COUNTER (blocks_mined, damage_dealt, damage_taken,

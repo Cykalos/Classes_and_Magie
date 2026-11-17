@@ -75,7 +75,7 @@ public final class Objective {
         try {
             type = Type.valueOf(String.valueOf(m.get("type")).toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(where + " : type d'objectif inconnu « " + m.get("type") + " »");
+            throw new IllegalArgumentException(where + ": unknown objective type '" + m.get("type") + "'");
         }
         List<String> targets = new ArrayList<>();
         Object t = m.containsKey("targets") ? m.get("targets") : m.get("target");

@@ -86,7 +86,30 @@ public final class CykClasses extends JavaPlugin {
     @Override
     public void onLoad() {
         migrateDataFolder();
+        fr.cykalos.cykclasses.config.Lang.init(this);
+        fr.cykalos.cykclasses.config.ConfigFiles.init();
         fr.cykalos.cykclasses.config.ConfigFiles.migrate(this);
+    }
+
+    /** config.yml is written in the plugin language (resource lang/<code>/config.yml). */
+    @Override
+    public void saveDefaultConfig() {
+        fr.cykalos.cykclasses.config.Lang.saveDefault(this, "config.yml", new java.io.File(getDataFolder(), "config.yml"));
+    }
+
+    /** Same as Bukkit, but the default values come from the language resource. */
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+        try (java.io.InputStream in = fr.cykalos.cykclasses.config.Lang.open(this, "config.yml")) {
+            if (in != null) {
+                getConfig().setDefaults(org.bukkit.configuration.file.YamlConfiguration.loadConfiguration(
+                        new java.io.InputStreamReader(in, java.nio.charset.StandardCharsets.UTF_8)));
+            }
+        } catch (java.io.IOException ignored) {
+            // no defaults: every option keeps its built-in fallback
+        }
+        fr.cykalos.cykclasses.config.Lang.reload(this, getConfig().getString("language"));
     }
 
     /**
@@ -101,18 +124,18 @@ public final class CykClasses extends JavaPlugin {
         }
         String[] existing = target.list();
         if (target.exists() && existing != null && existing.length > 0) {
-            getLogger().warning("Les dossiers plugins/CykClasses et plugins/" + target.getName()
-                    + " existent tous les deux : c'est " + target.getName() + " qui est utilisé. "
-                    + "L'ancien dossier CykClasses peut être fusionné ou supprimé.");
+            getLogger().warning("The folders plugins/CykClasses and plugins/" + target.getName()
+                    + " both exist: " + target.getName() + " is used. "
+                    + "The old CykClasses folder can be merged or deleted.");
             return;
         }
         if (target.exists() && !target.delete()) {
             return;
         }
         if (old.renameTo(target)) {
-            getLogger().info("Ancien dossier plugins/CykClasses renommé en plugins/" + target.getName() + ".");
+            getLogger().info("Old folder plugins/CykClasses renamed to plugins/" + target.getName() + ".");
         } else {
-            getLogger().warning("Impossible de renommer plugins/CykClasses : il faut le renommer à la main en plugins/" + target.getName() + ".");
+            getLogger().warning("Could not rename plugins/CykClasses: rename it by hand to plugins/" + target.getName() + ".");
         }
     }
 
@@ -136,7 +159,7 @@ public final class CykClasses extends JavaPlugin {
         try {
             profiles.init();
         } catch (Exception e) {
-            getLogger().log(Level.SEVERE, "Impossible d'initialiser le stockage, désactivation du plugin.", e);
+            getLogger().log(Level.SEVERE, "Could not initialise storage, disabling the plugin.", e);
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -202,10 +225,10 @@ public final class CykClasses extends JavaPlugin {
         if (pm.isPluginEnabled("MythicMobs")) {
             try {
                 mythic = new MythicHook();
-                getLogger().info("MythicMobs détecté : mobs custom, XP par mob et compétences de type MYTHIC activés.");
+                getLogger().info("MythicMobs detected: custom mobs, per-mob XP and MYTHIC skills enabled.");
             } catch (Throwable t) {
                 mythic = null;
-                getLogger().log(Level.WARNING, "Intégration MythicMobs impossible (version incompatible ?)", t);
+                getLogger().log(Level.WARNING, "MythicMobs integration failed (incompatible version?)", t);
             }
         }
 
@@ -214,7 +237,7 @@ public final class CykClasses extends JavaPlugin {
 
         if (pm.isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderHook(this).register();
-            getLogger().info("PlaceholderAPI détecté : placeholders %cykclasses_*% activés.");
+            getLogger().info("PlaceholderAPI detected: %cykclasses_*% placeholders enabled.");
         }
 
         // Hot reload: load the players who are already online.
@@ -229,7 +252,7 @@ public final class CykClasses extends JavaPlugin {
         }
 
         getLogger().info(classes.baseClasses().size() + " classes, " + (classes.all().size() - classes.baseClasses().size())
-                + " sous-classes et " + classes.skillCount() + " compétences chargées.");
+                + " subclasses and " + classes.skillCount() + " skills loaded.");
     }
 
     private void registerCommand(String name, TabExecutor executor) {

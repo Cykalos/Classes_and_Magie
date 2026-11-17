@@ -1,0 +1,283 @@
+# ╔══════════════════════════════════════════════╗
+# ║       Classes and Magie - weaknesses.yml     ║
+# ╚══════════════════════════════════════════════╝
+# Character weaknesses. For the player, everything is a "weakness": the ones written directly in
+# classes.yml / races.yml / traits.yml (flaws key) and the ones in this file, reusable everywhere.
+#   - IMPOSED: always applied to a race or a class. Two ways to impose them:
+#       • in races.yml or classes.yml:   weaknesses: [hydrophobic]   (recommended, everything in one place)
+#       • or here, in the "predefined" section below.
+#   - RANDOM: rolled after the traits, with chances that depend on the race and class.
+# The player sees ALL their weaknesses (class, race, traits, imposed, rolled) with /weaknesses.
+# Module toggled in config.yml → modules.weaknesses.
+
+roll:
+  # Random roll enabled? (false = imposed weaknesses only)
+  enabled: true
+  # Number of weaknesses rolled: random between min and max
+  min: 1
+  max: 2
+  # Rerolls allowed per player (/weaknesses reroll)
+  rerolls: 1
+  # Show the menu during character creation (false = silent roll)
+  show-step: true
+
+# Another way to impose weaknesses: key = race, class or subclass id → list.
+# By default, they are imposed directly in races.yml (weaknesses: [...]).
+# An imposed weakness is never rolled twice.
+predefined:
+  races: {}
+  #  elf: [claustrophobic]
+  classes: {}
+  #  pyromancer: [fire_vulnerable]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# A weakness:
+#   name, icon, description, severity (free text shown under the name)
+#   weight          : relative roll chance (0 = never rolled, only imposed)
+#   races / classes : who can receive it (empty = everyone; classes accepts subclasses)
+#   exclude-races / exclude-classes : who never receives it
+#   race-weights / class-weights    : chance multiplier (2 = twice as likely, 0 = never)
+#   conflicts       : weaknesses never rolled together
+#   stats           : permanent modifiers (same keys as classes.yml)
+#   effects         : permanent potion effects ("slowness:1")
+#   flaws           : flaws, with optional conditions (see below)
+#
+# Flaw types (flaws) — also usable in classes.yml, races.yml and traits.yml:
+#   DAMAGE_TAKEN       multiplier; causes: [FIRE, FALL, DROWNING, FREEZE, MAGIC, POISON, ENTITY_ATTACK, PROJECTILE…]
+#                      damagers: [ZOMBIE, "*SKELETON", PLAYER, "mythic:MobName"]
+#   DAMAGE_DEALT       multiplier; kinds: [MELEE, RANGED, SKILL]; targets: [ZOMBIE, "*SPIDER", PLAYER…]
+#   HEALING_REDUCTION  multiplier of healing received
+#   HUNGER             hunger multiplier
+#   MANA_REGEN         mana regeneration multiplier (0 = blocked)
+#   EFFECT             effects: ["slowness:1", "weakness:1"] applied while the conditions are true
+#   PERIODIC_DAMAGE    damage (half-hearts), interval (seconds), fire-ticks (seconds × 20)
+#   FORBIDDEN_ARMOR / WEAPON_PENALTY (materials), WATER_WEAKNESS, SUNLIGHT_WEAKNESS, DARKNESS_MANA_BLOCK
+#
+# Conditions (all optional, all must be true):
+#   time: DAY|NIGHT · weather: [CLEAR, RAIN, THUNDER] · dimensions: [NORMAL, NETHER, THE_END] · worlds: [world]
+#   biomes: ["*DESERT*"] · light-below / light-above: 0-15 · under-sky: true · in-water / in-rain / in-lava: true
+#   health-below / health-above: 0.3 (= 30% of health) · y-below / y-above: height
+#   sneaking / sprinting / gliding: true · holding / wearing: ["*_SWORD"] · permission: node · chance: 0.25
+# ─────────────────────────────────────────────────────────────────────────────
+
+weaknesses:
+  hydrophobic:
+    name: "<blue>Hydrophobic"
+    icon: WATER_BUCKET
+    severity: "<gray>Minor weakness"
+    description: ["<gray>Water chills your blood."]
+    weight: 10
+    # Felys and Tieflings are already weak in water, Dwarves already drown faster
+    exclude-races: [felys, tiefling, dwarf]
+    exclude-classes: [pyromancer]
+    flaws:
+      - type: EFFECT
+        effects: ["slowness:1"]
+        conditions: {in-water: true}
+        description: "Slowed in water"
+      - type: DAMAGE_TAKEN
+        causes: [DROWNING]
+        multiplier: 1.5
+        description: "+50% drowning damage"
+
+  photosensitive:
+    name: "<yellow>Photosensitive"
+    icon: SUNFLOWER
+    severity: "<gray>Minor weakness"
+    description: ["<gray>The sun burns your eyes."]
+    weight: 8
+    race-weights: {tiefling: 3}
+    exclude-races: [orc]
+    exclude-classes: [assassin, shadow, duelist]
+    flaws:
+      - type: EFFECT
+        effects: ["weakness:1"]
+        conditions: {time: DAY, under-sky: true, weather: [CLEAR]}
+        description: "Weakened in direct sunlight"
+
+  fire_vulnerable:
+    name: "<red>Vulnerable to Fire"
+    icon: BLAZE_POWDER
+    severity: "<gold>Moderate weakness"
+    description: ["<gray>Flames devour you faster."]
+    weight: 10
+    race-weights: {elf: 2, felys: 2}
+    exclude-races: [tiefling]
+    # already vulnerable to fire through their class
+    exclude-classes: [pyromancer, cryomancer, druid]
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [FIRE, FIRE_TICK, LAVA, HOT_FLOOR, CAMPFIRE]
+        multiplier: 1.3
+        description: "+30% fire damage"
+
+  cold_sensitive:
+    name: "<aqua>Cold-Sensitive"
+    icon: SNOWBALL
+    severity: "<gray>Minor weakness"
+    description: ["<gray>The cold paralyses you."]
+    weight: 8
+    race-weights: {tiefling: 2}
+    exclude-classes: [pyromancer]
+    flaws:
+      - type: EFFECT
+        effects: ["slowness:1", "mining_fatigue:1"]
+        conditions: {biomes: ["*SNOW*", "*FROZEN*", "*ICE*", "GROVE", "JAGGED_PEAKS"]}
+        description: "Slowed in frozen biomes"
+      - type: DAMAGE_TAKEN
+        causes: [FREEZE]
+        multiplier: 1.5
+        description: "+50% freezing damage"
+
+  brittle_bones:
+    name: "<white>Brittle Bones"
+    icon: BONE
+    severity: "<gray>Minor weakness"
+    description: ["<gray>The slightest fall could break you."]
+    weight: 10
+    race-weights: {dwarf: 0.3, orc: 0.5}
+    exclude-races: [felys]
+    exclude-classes: [paladin]
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [FALL]
+        multiplier: 1.5
+        description: "+50% fall damage"
+
+  prey_of_the_dead:
+    name: "<dark_green>Prey of the Dead"
+    icon: ROTTEN_FLESH
+    severity: "<gold>Moderate weakness"
+    description: ["<gray>The undead smell your fear."]
+    weight: 8
+    race-weights: {tiefling: 2}
+    exclude-classes: [cleric, paladin, priest]
+    flaws:
+      - type: DAMAGE_TAKEN
+        damagers: [ZOMBIE, "*ZOMBIE*", HUSK, DROWNED, "*SKELETON*", STRAY, BOGGED, PHANTOM, WITHER]
+        multiplier: 1.25
+        description: "+25% damage from the undead"
+
+  fear_of_the_dark:
+    name: "<dark_gray>Fear of the Dark"
+    icon: BLACK_CANDLE
+    severity: "<gray>Minor weakness"
+    description: ["<gray>In the dark, your hand trembles."]
+    weight: 8
+    exclude-races: [orc, dwarf]
+    flaws:
+      - type: DAMAGE_DEALT
+        multiplier: 0.85
+        conditions: {light-below: 7}
+        description: "-15% damage in the dark"
+
+  unstable_mana:
+    name: "<light_purple>Unstable Mana"
+    icon: AMETHYST_SHARD
+    severity: "<gold>Moderate weakness"
+    description: ["<gray>When wounded, your magic slips away."]
+    weight: 10
+    classes: [mage, cleric, pyromancer, cryomancer, priest, druid]
+    flaws:
+      - type: MANA_REGEN
+        multiplier: 0.5
+        conditions: {health-below: 0.5}
+        description: "Mana regenerates half as fast below 50% health"
+
+  poor_shot:
+    name: "<green>Poor Shot"
+    icon: ARROW
+    severity: "<gray>Minor weakness"
+    description: ["<gray>You aim… and miss."]
+    weight: 8
+    # already penalised at range by their class
+    exclude-classes: [archer, hunter, ranger, warrior, berserker, paladin, duelist, cleric, priest]
+    flaws:
+      - type: DAMAGE_DEALT
+        kinds: [RANGED]
+        multiplier: 0.85
+        description: "-15% ranged damage"
+
+  panic:
+    name: "<red>Panic"
+    icon: GOAT_HORN
+    severity: "<gold>Moderate weakness"
+    description: ["<gray>Close to death, you lose your nerve."]
+    weight: 6
+    class-weights: {berserker: 0, warrior: 0.5}
+    flaws:
+      - type: DAMAGE_DEALT
+        multiplier: 0.8
+        conditions: {health-below: 0.25}
+        description: "-20% damage below 25% health"
+
+  vertigo:
+    name: "<gray>Vertigo"
+    icon: FEATHER
+    severity: "<gray>Minor weakness"
+    description: ["<gray>The void pulls at you."]
+    weight: 6
+    exclude-races: [felys]
+    flaws:
+      - type: EFFECT
+        effects: ["nausea:1"]
+        conditions: {y-above: 160}
+        description: "Nausea at high altitude"
+
+  claustrophobic:
+    name: "<dark_gray>Claustrophobic"
+    icon: COBBLED_DEEPSLATE
+    severity: "<gray>Minor weakness"
+    description: ["<gray>Underground, you suffocate."]
+    weight: 6
+    exclude-races: [dwarf]
+    flaws:
+      - type: EFFECT
+        effects: ["slowness:1"]
+        conditions: {y-below: 20, under-sky: false}
+        description: "Slowed in the depths"
+
+  anemia:
+    name: "<dark_red>Anemia"
+    icon: RED_DYE
+    severity: "<gold>Moderate weakness"
+    description: ["<gray>Your blood renews itself poorly."]
+    weight: 6
+    # healing already reduced
+    exclude-races: [tiefling]
+    exclude-classes: [berserker, shadow]
+    stats: {health: -2}
+    flaws:
+      - type: HEALING_REDUCTION
+        multiplier: 0.8
+        description: "Healing received -20%"
+
+  moon_cursed:
+    name: "<dark_purple>Moon-Cursed"
+    icon: ENDER_EYE
+    severity: "<red>Severe weakness"
+    description: ["<gray>On cloudless nights, the moon gnaws at you."]
+    weight: 2
+    flaws:
+      - type: PERIODIC_DAMAGE
+        damage: 1
+        interval: 20
+        conditions: {time: NIGHT, under-sky: true, weather: [CLEAR], dimensions: [NORMAL]}
+        description: "Lose ½ ❤ every 20 s under the moon"
+
+  # Imposed only (weight: 0): see races.yml → tiefling
+  infernal_blood:
+    name: "<dark_red>Infernal Blood"
+    icon: MAGMA_CREAM
+    severity: "<red>Race weakness"
+    description: ["<gray>Cold and rain put out your flame."]
+    weight: 0
+    flaws:
+      - type: DAMAGE_TAKEN
+        causes: [FREEZE]
+        multiplier: 1.5
+        description: "+50% freezing damage"
+      - type: EFFECT
+        effects: ["weakness:1"]
+        conditions: {in-rain: true}
+        description: "Weakened in the rain"

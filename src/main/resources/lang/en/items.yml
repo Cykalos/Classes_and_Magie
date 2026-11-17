@@ -1,0 +1,57 @@
+# ╔══════════════════════════════════════════════╗
+# ║          Classes and Magie - items.yml       ║
+# ╚══════════════════════════════════════════════╝
+# Item usage requirements. The stats of the items themselves are managed in
+# CraftEngine / MythicCrucible / ExecutableItems; here you decide WHO can use them.
+#
+# match (at least one criterion must match):
+#   materials    : ["DIAMOND_SWORD", "NETHERITE_*"]
+#   custom-ids   : ["craftengine:mypack:sword_*", "mythic:excalibur", "executableitems:grimoire"]
+#   name-contains / lore-contains : text found in the name / description
+# conditions (all must be met):
+#   classes      : allowed classes or subclasses
+#   races, jobs  : allowed races / jobs
+#   min-level    : minimum level
+#   attributes   : minimum attribute points {strength: 15}
+# block: usages blocked when the conditions are not met (default: all)
+#   ATTACK (hit), SHOOT (bow/crossbow), USE (right click), WEAR (wear as armor / off hand)
+# message: custom text (otherwise the conditions are shown)
+# Permission cykclasses.bypass.items: ignores all these rules.
+
+rules:
+  heavy_weapons:
+    match:
+      materials: ["NETHERITE_AXE", "MACE"]
+    conditions:
+      classes: [warrior, berserker, paladin]
+    block: [ATTACK]
+  bows:
+    match:
+      materials: ["BOW", "CROSSBOW"]
+    conditions:
+      classes: [archer, hunter, ranger]
+      min-level: 1
+    block: [SHOOT]
+  netherite_armor:
+    match:
+      materials: ["NETHERITE_HELMET", "NETHERITE_CHESTPLATE", "NETHERITE_LEGGINGS", "NETHERITE_BOOTS"]
+    conditions:
+      min-level: 30
+      attributes: {endurance: 10}
+    block: [WEAR]
+  trident:
+    match:
+      materials: ["TRIDENT"]
+    conditions:
+      min-level: 15
+    block: [ATTACK, USE]
+
+  # Example of a reserved custom item (uncomment and adapt):
+  # fire_staff:
+  #   match:
+  #     custom-ids: ["craftengine:mypack:fire_staff"]
+  #   conditions:
+  #     classes: [pyromancer]
+  #     min-level: 20
+  #     attributes: {intelligence: 10}
+  #   message: "Only an experienced pyromancer can wield this staff."

@@ -116,7 +116,7 @@ public final class LevelService {
         // Announce unlocked skills
         rc.skills().values().stream()
                 .filter(s -> s.unlockLevel > oldLevel && s.unlockLevel <= newLevel)
-                .forEach(s -> player.sendMessage(Text.mm("<light_purple>✦ Nouvelle compétence : ").append(Text.mm(s.name))));
+                .forEach(s -> player.sendMessage(Text.mm(fr.cykalos.cykclasses.config.Lang.tr("<light_purple>✦ Nouvelle compétence : ", "<light_purple>✦ New skill: ")).append(Text.mm(s.name))));
         Bukkit.getPluginManager().callEvent(new PlayerClassLevelUpEvent(player, oldLevel, newLevel));
     }
 

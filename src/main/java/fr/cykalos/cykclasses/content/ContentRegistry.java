@@ -74,10 +74,10 @@ public final class ContentRegistry {
         if (!jobsConfig.contains("leveling") || !jobsConfig.contains("jobs.joaillier")) {
             // Old format (before job levels): backup, then new default file.
             File old = fr.cykalos.cykclasses.config.ConfigFiles.file(plugin, "jobs.yml");
-            File backup = new File(fr.cykalos.cykclasses.config.ConfigFiles.dataFolder(plugin), "sauvegardes/jobs-ancien-" + System.currentTimeMillis() + ".yml");
+            File backup = new File(fr.cykalos.cykclasses.config.ConfigFiles.dataFolder(plugin), fr.cykalos.cykclasses.config.ConfigFiles.backups() + "/jobs-ancien-" + System.currentTimeMillis() + ".yml");
             backup.getParentFile().mkdirs();
             if (old.renameTo(backup)) {
-                plugin.getLogger().warning("jobs.yml mis à jour (niveaux de métier). L'ancien fichier est conservé : " + backup.getName());
+                plugin.getLogger().warning("jobs.yml updated (job levels). The old file is kept: " + backup.getName());
                 jobsConfig = yaml("jobs.yml");
             }
         }
@@ -91,10 +91,10 @@ public final class ContentRegistry {
         loadItemRules(yaml("items.yml"));
         weaknessesConfig = yaml("weaknesses.yml");
         loadWeaknesses(weaknessesConfig);
-        plugin.getLogger().info(races.size() + " races, " + traits.size() + " traits, " + weaknesses.size() + " faiblesses, "
-                + jobs.size() + " métiers, "
-                + trees.size() + " arbres, " + attributes.size() + " attributs, " + kits.size() + " kits, "
-                + itemRules.size() + " restrictions d'objets.");
+        plugin.getLogger().info(races.size() + " races, " + traits.size() + " traits, " + weaknesses.size() + " weaknesses, "
+                + jobs.size() + " jobs, "
+                + trees.size() + " trees, " + attributes.size() + " attributes, " + kits.size() + " kits, "
+                + itemRules.size() + " item restrictions.");
     }
 
     // ------------------------------------------------------------ Chargement
@@ -104,7 +104,7 @@ public final class ContentRegistry {
         for (Map<?, ?> m : raw) {
             Flaw f = Flaw.load(m);
             if (f == null) {
-                plugin.getLogger().warning("Défaut invalide (" + owner + ") : " + m);
+                plugin.getLogger().warning("Invalid flaw (" + owner + "): " + m);
             } else {
                 out.add(f);
             }
@@ -168,7 +168,7 @@ public final class ContentRegistry {
                     ConfigurationSection p = pen.getConfigurationSection(cls);
                     if (p != null) {
                         penalties.put(cls.toLowerCase(Locale.ROOT), new Race.Affinity(
-                                p.getString("description", "Race inadaptée à cette classe"),
+                                p.getString("description", fr.cykalos.cykclasses.config.Lang.tr("Race inadaptée à cette classe", "Race unsuited to this class")),
                                 StatModifier.load(p.getConfigurationSection("stats")),
                                 flaws(p.getMapList("flaws"), "race " + id + "/" + cls)));
                     }
@@ -198,7 +198,7 @@ public final class ContentRegistry {
                 rarity = Trait.Rarity.valueOf(s.getString("rarity", "COMMON").toUpperCase(Locale.ROOT));
                 kind = Trait.Kind.valueOf(s.getString("kind", "POSITIVE").toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("Trait " + id + " : rareté ou type invalide.");
+                plugin.getLogger().warning("Trait " + id + ": invalid rarity or kind.");
                 continue;
             }
             double defWeight = y.getDouble("roll.rarity-weights." + rarity.name(), 10);
@@ -225,7 +225,7 @@ public final class ContentRegistry {
                         lower(s.getStringList("races")), lower(s.getStringList("classes")),
                         lower(s.getStringList("exclude-races")), lower(s.getStringList("exclude-classes")),
                         weights(s.getConfigurationSection("race-weights")), weights(s.getConfigurationSection("class-weights")),
-                        StatModifier.load(s.getConfigurationSection("stats")), flaws(s.getMapList("flaws"), "faiblesse " + id),
+                        StatModifier.load(s.getConfigurationSection("stats")), flaws(s.getMapList("flaws"), "weakness " + id),
                         PermanentEffect.parse(s.getStringList("effects")), lower(s.getStringList("conflicts"))));
             }
         }
@@ -235,7 +235,7 @@ public final class ContentRegistry {
         raceWeaknesses.forEach((race, ids) -> ids.removeIf(w -> {
             boolean unknown = !weaknesses.containsKey(w);
             if (unknown) {
-                plugin.getLogger().warning("races.yml : faiblesse inconnue « " + w + " » (race " + race + ")");
+                plugin.getLogger().warning("races.yml: unknown weakness '" + w + "' (race " + race + ")");
             }
             return unknown;
         }));
@@ -252,7 +252,7 @@ public final class ContentRegistry {
                 if (weaknesses.containsKey(w)) {
                     ids.add(w);
                 } else {
-                    plugin.getLogger().warning("weaknesses.yml : faiblesse imposée inconnue « " + w + " » (" + owner + ")");
+                    plugin.getLogger().warning("weaknesses.yml: unknown imposed weakness '" + w + "' (" + owner + ")");
                 }
             }
             into.computeIfAbsent(owner.toLowerCase(Locale.ROOT), k -> new ArrayList<>()).addAll(ids);
@@ -282,7 +282,7 @@ public final class ContentRegistry {
                             double xp = m.get("xp") instanceof Number n ? n.doubleValue() : 1;
                             sources.add(new Job.XpSource(action, patterns(PermanentEffect.strings(m, "targets")), xp));
                         } catch (IllegalArgumentException e) {
-                            plugin.getLogger().warning("Source d'XP invalide (métier " + id + ") : " + m);
+                            plugin.getLogger().warning("Invalid XP source (job " + id + "): " + m);
                         }
                     }
                     Map<String, Job.Specialization> specs = new LinkedHashMap<>();
@@ -325,7 +325,7 @@ public final class ContentRegistry {
                 String display = m.containsKey("display") ? String.valueOf(m.get("display")) : null;
                 jobRules.add(new JobRule(action, patterns(PermanentEffect.strings(m, "targets")), jobsAllowed, message, minLevel, display));
             } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("Restriction de métier invalide : " + m);
+                plugin.getLogger().warning("Invalid job restriction: " + m);
             }
         }
     }
@@ -506,7 +506,7 @@ public final class ContentRegistry {
             if (w != null) {
                 out.add(w);
             } else if (warnedClassWeaknesses.add(id)) {
-                plugin.getLogger().warning("classes.yml : faiblesse inconnue « " + id + " »");
+                plugin.getLogger().warning("classes.yml: unknown weakness '" + id + "'");
             }
         }
         return out;

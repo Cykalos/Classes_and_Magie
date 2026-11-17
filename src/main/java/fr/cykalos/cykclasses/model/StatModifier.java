@@ -110,20 +110,20 @@ public final class StatModifier {
     /** Short description for menus, e.g. "+4 health, +10% Melee, -5% Damage taken". */
     public java.util.List<String> describe() {
         java.util.List<String> out = new java.util.ArrayList<>();
-        addLine(out, health, "PV", false);
-        addLine(out, healthPerLevel, "PV/niv.", false);
+        addLine(out, health, fr.cykalos.cykclasses.config.Lang.tr("PV", "Health"), false);
+        addLine(out, healthPerLevel, fr.cykalos.cykclasses.config.Lang.tr("PV/niv.", "Health/lv."), false);
         addLine(out, mana, "Mana", false);
-        addLine(out, manaPerLevel, "Mana/niv.", false);
-        addLine(out, manaRegen, "Régén. mana/s", false);
-        addLine(out, armor, "Armure", false);
-        addPct(out, speed, "Vitesse");
-        addPct(out, attackSpeed, "Vitesse d'attaque");
-        addPct(out, critChance, "Critique");
-        addLine(out, critMultiplier, "Mult. critique", false);
-        addMult(out, meleeDamage, "Mêlée", false);
-        addMult(out, rangedDamage, "Distance", false);
-        addMult(out, magicDamage, "Magie", false);
-        addMult(out, damageTaken, "Dégâts subis", true);
+        addLine(out, manaPerLevel, fr.cykalos.cykclasses.config.Lang.tr("Mana/niv.", "Mana/lv."), false);
+        addLine(out, manaRegen, fr.cykalos.cykclasses.config.Lang.tr("Régén. mana/s", "Mana regen/s"), false);
+        addLine(out, armor, fr.cykalos.cykclasses.config.Lang.tr("Armure", "Armor"), false);
+        addPct(out, speed, fr.cykalos.cykclasses.config.Lang.tr("Vitesse", "Speed"));
+        addPct(out, attackSpeed, fr.cykalos.cykclasses.config.Lang.tr("Vitesse d'attaque", "Attack speed"));
+        addPct(out, critChance, fr.cykalos.cykclasses.config.Lang.tr("Critique", "Critical"));
+        addLine(out, critMultiplier, fr.cykalos.cykclasses.config.Lang.tr("Mult. critique", "Crit. multiplier"), false);
+        addMult(out, meleeDamage, fr.cykalos.cykclasses.config.Lang.tr("Mêlée", "Melee"), false);
+        addMult(out, rangedDamage, fr.cykalos.cykclasses.config.Lang.tr("Distance", "Ranged"), false);
+        addMult(out, magicDamage, fr.cykalos.cykclasses.config.Lang.tr("Magie", "Magic"), false);
+        addMult(out, damageTaken, fr.cykalos.cykclasses.config.Lang.tr("Dégâts subis", "Damage taken"), true);
         return out;
     }
 

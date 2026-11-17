@@ -24,8 +24,9 @@ public final class ConfigDefaults {
     }
 
     /** @return the number of keys added */
-    public static int fill(JavaPlugin plugin, YamlConfiguration target, String resource, Set<String> userMaps) {
-        InputStream stream = plugin.getResource(resource);
+    /** @param name logical file name (e.g. "messages.yml"); the default comes from the plugin language. */
+    public static int fill(JavaPlugin plugin, YamlConfiguration target, String name, Set<String> userMaps) {
+        InputStream stream = Lang.open(plugin, name);
         if (stream == null) {
             return 0;
         }

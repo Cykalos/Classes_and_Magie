@@ -92,7 +92,7 @@ public final class GearService {
         YamlConfiguration y = fr.cykalos.cykclasses.config.ConfigFiles.load(plugin, name);
         // Keys added in a new version: the plugin's default values.
         // Lists (gems, rarities, unique items…) are only filled when they are missing.
-        fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, y, fr.cykalos.cykclasses.config.ConfigFiles.path(name), java.util.Set.of(
+        fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, y, name, java.util.Set.of(
                 "gems", "uniques", "rarities", "refining.rarities", "crafters", "stat-pool",
                 "refining.always-pure", "drops.targets", "drops.jobs", "refining.jobs"));
         return y;
@@ -250,7 +250,7 @@ public final class GearService {
         try {
             y.save(uniquesFile);
         } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Sauvegarde impossible de forge-uniques.yml", e);
+            plugin.getLogger().log(Level.WARNING, "Could not save forge-uniques.yml", e);
         }
         uniqueTaken.put(templateId, uid);
     }
@@ -660,7 +660,7 @@ public final class GearService {
                     }
                     lore.add(Text.item(gems.getString("socket-filled", "<white>◆ ") + desc));
                 } else {
-                    lore.add(Text.item(gems.getString("socket-empty", "<dark_gray>◇ Emplacement de gemme libre")));
+                    lore.add(Text.item(gems.getString("socket-empty", fr.cykalos.cykclasses.config.Lang.tr("<dark_gray>◇ Emplacement de gemme libre", "<dark_gray>◇ Empty gem socket"))));
                 }
             }
         }
@@ -729,7 +729,7 @@ public final class GearService {
     public ItemStack createRawGem(Gem gem, int amount) {
         ItemStack it = new ItemStack(gem.material(), Math.max(1, amount));
         ItemMeta meta = it.getItemMeta();
-        meta.displayName(Text.item(gems.getString("raw-name", "<gray><gem> brut").replace("<gem>", Text.plain(gem.name()))));
+        meta.displayName(Text.item(gems.getString("raw-name", fr.cykalos.cykclasses.config.Lang.tr("<gray><gem> brut", "<gray>Raw <gem>")).replace("<gem>", Text.plain(gem.name()))));
         List<Component> lore = new ArrayList<>(Text.itemLore(gem.description()));
         lore.add(Component.empty());
         lore.add(plugin.messages().item("gems.raw-line"));

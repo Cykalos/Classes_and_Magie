@@ -1,0 +1,194 @@
+# Example class quests — two quests per class (subclasses included)
+# Full quest format: see the top of tutorial.yml
+# A quest reserved for another class is hidden in the journal (config.yml → quests.hide-other-classes).
+
+quests:
+  # ─────────────────────────────── Warrior
+  warrior_shield_wall:
+    name: "<red>The Shield Wall"
+    category: CLASS
+    start: OFFER
+    level: 3
+    icon: IRON_AXE
+    description: ["<gray>Hold the line and strike hard."]
+    requirements:
+      classes: [warrior]
+      level: 3
+    stages:
+      - objectives:
+          - {type: DAMAGE, amount: 300, conditions: {holding: ["*_SWORD", "*_AXE", "MACE"]}, display: "Deal melee damage"}
+          - {type: SKILL, targets: [whirlwind], amount: 5, display: "Use Whirlwind"}
+    rewards:
+      xp: 250
+      attribute-points: 1
+
+  warrior_rank_breaker:
+    name: "<red>Rank Breaker"
+    category: CLASS
+    start: OFFER
+    level: 15
+    icon: MACE
+    description: ["<gray>No beast stops a charging warrior."]
+    requirements:
+      classes: [warrior]
+      level: 15
+      quests: [warrior_shield_wall]
+    stages:
+      - objectives:
+          - {type: SKILL, targets: [charge], amount: 15, display: "Use Charge"}
+          - {type: KILL, targets: [RAVAGER], amount: 1, display: "Take down a ravager"}
+    rewards:
+      xp: 1200
+      skill-points: 1
+
+  # ─────────────────────────────── Mage
+  mage_sparks:
+    name: "<light_purple>Sparks"
+    category: CLASS
+    start: OFFER
+    level: 3
+    icon: SLIME_BALL
+    description: ["<gray>A shield first, spells next."]
+    requirements:
+      classes: [mage]
+      level: 3
+    stages:
+      - objectives:
+          - {type: SKILL, targets: [mana_shield], amount: 5, display: "Use Mana Shield"}
+          - {type: KILL, targets: [SLIME, MAGMA_CUBE], amount: 6, display: "Kill slimes"}
+    rewards:
+      xp: 250
+      attribute-points: 1
+
+  mage_forbidden_knowledge:
+    name: "<light_purple>Forbidden Knowledge"
+    category: CLASS
+    start: OFFER
+    level: 15
+    icon: ENCHANTING_TABLE
+    description: ["<gray>Enchantments hide secrets."]
+    requirements:
+      classes: [mage]
+      level: 15
+      quests: [mage_sparks]
+    stages:
+      - objectives:
+          - {type: ENCHANT, amount: 5, display: "Enchant items"}
+          - {type: SKILL, targets: [arcane_bolt], amount: 40, display: "Cast Arcane Bolt"}
+    rewards:
+      xp: 1200
+      skill-points: 1
+
+  # ─────────────────────────────── Archer
+  archer_precision_shot:
+    name: "<green>Precision Shot"
+    category: CLASS
+    start: OFFER
+    level: 3
+    icon: TARGET
+    description: ["<gray>A good archer steps back before shooting."]
+    requirements:
+      classes: [archer]
+      level: 3
+    stages:
+      - objectives:
+          - {type: KILL, targets: [SKELETON, STRAY, BOGGED], amount: 8, conditions: {holding: [BOW, CROSSBOW]}, display: "Take down skeletons at range"}
+          - {type: SKILL, targets: [disengage], amount: 5, display: "Use Disengage"}
+    rewards:
+      xp: 250
+      attribute-points: 1
+
+  archer_burning_hunt:
+    name: "<green>Burning Hunt"
+    category: CLASS
+    start: OFFER
+    level: 15
+    icon: BLAZE_POWDER
+    description: ["<gray>Even flames have a weak spot."]
+    requirements:
+      classes: [archer]
+      level: 15
+      quests: [archer_precision_shot]
+    stages:
+      - objectives:
+          - {type: KILL, targets: [BLAZE], amount: 5, conditions: {holding: [BOW, CROSSBOW]}, display: "Take down blazes at range"}
+          - {type: SKILL, targets: [piercing_arrow], amount: 20, display: "Use Piercing Arrow"}
+    rewards:
+      xp: 1200
+      skill-points: 1
+
+  # ─────────────────────────────── Assassin
+  assassin_night_blade:
+    name: "<dark_gray>Night Blade"
+    category: CLASS
+    start: OFFER
+    level: 3
+    icon: SPIDER_EYE
+    description: ["<gray>Poison does the rest."]
+    requirements:
+      classes: [assassin]
+      level: 3
+    stages:
+      - objectives:
+          - {type: KILL, targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH], amount: 10, conditions: {time: NIGHT}, display: "Kill monsters at night"}
+          - {type: SKILL, targets: [poison_blade], amount: 5, display: "Use Poison Blade"}
+    rewards:
+      xp: 250
+      attribute-points: 1
+
+  assassin_phantom:
+    name: "<dark_gray>Phantom"
+    category: CLASS
+    start: OFFER
+    level: 15
+    icon: GRAY_DYE
+    description: ["<gray>Appear, strike, vanish."]
+    requirements:
+      classes: [assassin]
+      level: 15
+      quests: [assassin_night_blade]
+    stages:
+      - objectives:
+          - {type: KILL, targets: [WITCH], amount: 5, conditions: {sneaking: true}, display: "Kill witches while sneaking"}
+          - {type: SKILL, targets: [shadow_step], amount: 15, display: "Use Shadow Step"}
+    rewards:
+      xp: 1200
+      skill-points: 1
+
+  # ─────────────────────────────── Cleric
+  cleric_first_aid:
+    name: "<yellow>First Aid"
+    category: CLASS
+    start: OFFER
+    level: 3
+    icon: GLISTERING_MELON_SLICE
+    description: ["<gray>Protect others before yourself."]
+    requirements:
+      classes: [cleric]
+      level: 3
+    stages:
+      - objectives:
+          - {type: SKILL, targets: [blessing], amount: 8, display: "Use Blessing"}
+          - {type: KILL, targets: [SKELETON, STRAY], amount: 8, display: "Kill skeletons"}
+    rewards:
+      xp: 250
+      attribute-points: 1
+
+  cleric_holy_light:
+    name: "<yellow>Holy Light"
+    category: CLASS
+    start: OFFER
+    level: 15
+    icon: BEACON
+    description: ["<gray>Carry the light into the Nether."]
+    requirements:
+      classes: [cleric]
+      level: 15
+      quests: [cleric_first_aid]
+    stages:
+      - objectives:
+          - {type: SKILL, targets: [heal], amount: 40, display: "Use Heal"}
+          - {type: KILL, targets: [WITHER_SKELETON], amount: 5, display: "Kill wither skeletons"}
+    rewards:
+      xp: 1200
+      skill-points: 1

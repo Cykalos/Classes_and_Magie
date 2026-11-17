@@ -165,9 +165,9 @@ public final class ClassSelectGui extends Gui {
         var race = plugin.content().race(p.getRaceId());
         var job = plugin.content().job(p.getJobId());
         var spec = plugin.jobs().spec(p);
-        lore.add(Text.item("<gray>Classe : " + (rc == null ? "<dark_gray>-" : rc.name) + " <gray>Niv. <white>" + p.getLevel()));
-        lore.add(Text.item("<gray>Race : " + (race == null ? "<dark_gray>-" : race.name())));
-        lore.add(Text.item("<gray>Métier : " + (job == null ? "<dark_gray>-" : job.name() + " <gray>Niv. <white>" + plugin.jobs().level(p))
+        lore.add(Text.item("<gray>" + fr.cykalos.cykclasses.config.Lang.tr("Classe : ", "Class: ") + (rc == null ? "<dark_gray>-" : rc.name) + " <gray>" + fr.cykalos.cykclasses.config.Lang.tr("Niv.", "Lv.") + " <white>" + p.getLevel()));
+        lore.add(Text.item("<gray>Race" + fr.cykalos.cykclasses.config.Lang.tr(" : ", ": ") + (race == null ? "<dark_gray>-" : race.name())));
+        lore.add(Text.item("<gray>" + fr.cykalos.cykclasses.config.Lang.tr("Métier : ", "Job: ") + (job == null ? "<dark_gray>-" : job.name() + " <gray>" + fr.cykalos.cykclasses.config.Lang.tr("Niv.", "Lv.") + " <white>" + plugin.jobs().level(p))
                 + (spec == null ? "" : " <dark_gray>(" + Text.plain(spec.name()) + ")")));
         java.util.List<String> traitNames = new java.util.ArrayList<>();
         for (String id : p.getTraits()) {
@@ -177,12 +177,12 @@ public final class ClassSelectGui extends Gui {
             }
         }
         if (!traitNames.isEmpty()) {
-            lore.add(Text.item("<gray>Traits : " + String.join("<gray>, ", traitNames)));
+            lore.add(Text.item("<gray>Traits" + fr.cykalos.cykclasses.config.Lang.tr(" : ", ": ") + String.join("<gray>, ", traitNames)));
         }
         lore.add(net.kyori.adventure.text.Component.empty());
-        lore.add(Text.item("<gray>Mana : <aqua>" + (int) p.getMana() + "/" + (int) plugin.stats().maxMana(p)));
-        lore.add(Text.item("<gray>Points d'arbre : <green>" + plugin.stats().availableSkillPoints(p)
-                + " <gray>· Attributs : <yellow>" + plugin.stats().availableAttributePoints(p)));
+        lore.add(Text.item("<gray>Mana" + fr.cykalos.cykclasses.config.Lang.tr(" : ", ": ") + "<aqua>" + (int) p.getMana() + "/" + (int) plugin.stats().maxMana(p)));
+        lore.add(Text.item("<gray>" + fr.cykalos.cykclasses.config.Lang.tr("Points d'arbre : ", "Tree points: ") + "<green>" + plugin.stats().availableSkillPoints(p)
+                + " <gray>· " + fr.cykalos.cykclasses.config.Lang.tr("Attributs : ", "Attributes: ") + "<yellow>" + plugin.stats().availableAttributePoints(p)));
         meta.lore(lore);
         head.setItemMeta(meta);
         return head;

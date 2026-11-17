@@ -24,9 +24,9 @@ public final class Messages {
         File file = ConfigFiles.file(plugin, "messages.yml");
         yaml = ConfigFiles.load(plugin, "messages.yml");
         // Keys added in a new version: the plugin's default text.
-        int added = ConfigDefaults.fill(plugin, yaml, ConfigFiles.path("messages.yml"), java.util.Set.of());
+        int added = ConfigDefaults.fill(plugin, yaml, "messages.yml", java.util.Set.of());
         if (added > 0) {
-            plugin.getLogger().info(added + " message(s) absent(s) de messages.yml : texte par défaut utilisé.");
+            plugin.getLogger().info(added + " message(s) missing from messages.yml: default text used.");
         }
         // Old default texts replaced in a new version (if the admin did not change them)
         if ("<red>Défauts :".equals(yaml.getString("gui.flaws-header"))) {

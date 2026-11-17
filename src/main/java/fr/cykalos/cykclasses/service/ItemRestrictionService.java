@@ -174,10 +174,10 @@ public final class ItemRestrictionService implements Listener {
                 Job job = plugin.content().job(j);
                 names.add(job == null ? j : Text.plain(job.name()));
             }
-            parts.add("métier " + String.join("/", names));
+            parts.add(fr.cykalos.cykclasses.config.Lang.tr("métier ", "job ") + String.join("/", names));
         }
         if (rule.minLevel() > 0) {
-            parts.add("niv. " + rule.minLevel());
+            parts.add(fr.cykalos.cykclasses.config.Lang.tr("niv. ", "lv. ") + rule.minLevel());
         }
         rule.minAttributes().forEach((k, v) -> {
             AttributeDef a = plugin.content().attribute(k);
