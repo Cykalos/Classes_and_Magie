@@ -8,18 +8,18 @@
 
 > This wiki is generated automatically from the `docs/wiki` folder of the repository. Corrections and additions can be proposed by pull request on that folder.
 >
-> The default content (names, menus, messages) and the commands are in French, with English aliases for the main commands. Every text can be translated in `messages.yml`.
+> The plugin is available in **English** and **French** (`language` in `config.yml`, see [Installation](EN-Installation.md#language)). This English wiki uses the English commands and folder names; every command also has a French name. Every text can be changed in `messages.yml`.
 
 ## A player's journey
 
-1. **Class** (`/classe`): Warrior, Mage, Archer, Assassin, Cleric → starter kit. Once the class is chosen, `/classe` opens the character menu (class, race, traits, weaknesses, job, skill tree, attributes, titles, quests).
+1. **Class** (`/class`): Warrior, Mage, Archer, Assassin, Cleric → starter kit. Once the class is chosen, `/class` opens the character menu (class, race, traits, weaknesses, job, skill tree, attributes, titles, quests).
 2. **Race** (`/race`): bonuses, weaknesses, and penalties when the race does not suit the class.
 3. **Traits** (`/traits`): 3 randomly rolled traits, limited rerolls, unique traits.
-4. **Weaknesses** (`/faiblesses`): imposed by the race or class, or rolled randomly depending on them.
-5. **Job** (`/metier`): a single job, which unlocks actions and recipes by level.
-6. Progression: class levels, **subclass**, **skill tree** (`/arbre`), **attributes** (`/stats`), job **specialization** at level 20.
-7. **Titles** (`/titres`) unlocked by the player's actions, shown above the head, with or without effects.
-8. **Quests** (`/quetes`), all optional: tutorial offered at the end of creation, main story, class quests, side and secret quests.
+4. **Weaknesses** (`/weaknesses`): imposed by the race or class, or rolled randomly depending on them.
+5. **Job** (`/job`): a single job, which unlocks actions and recipes by level.
+6. Progression: class levels, **subclass**, **skill tree** (`/tree`), **attributes** (`/stats`), job **specialization** at level 20.
+7. **Titles** (`/titles`) unlocked by the player's actions, shown above the head, with or without effects.
+8. **Quests** (`/quests`), all optional: tutorial offered at the end of creation, main story, class quests, side and secret quests.
 
 Creation steps cannot be skipped by closing the menu (it opens again), and rolled traits and weaknesses still have to be confirmed after a disconnect. Closing the job menu means "choose later". A player who dies during creation gets the current step back on respawn. Can be disabled with `force-class-selection: false`.
 

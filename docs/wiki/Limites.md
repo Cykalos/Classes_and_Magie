@@ -40,3 +40,4 @@ Ce que Classes and Magie **ne fait pas** (ou pas encore), pour éviter les mauva
 - Le panneau latéral (groupe et quêtes) utilise le scoreboard et peut entrer en conflit avec un autre plugin de scoreboard.
 - Les groupes ne survivent pas à un redémarrage.
 - Les nouvelles mécaniques de compétence demandent du Java ou MythicMobs.
+- Deux langues sont fournies (français et anglais). Changer `language` sur un serveur existant ne traduit pas les fichiers déjà créés : il faut les supprimer ou les renommer pour qu'ils soient régénérés. Les identifiants (classes, races, métiers, quêtes…) restent les mêmes dans les deux langues.

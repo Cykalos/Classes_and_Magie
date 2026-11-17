@@ -1,5 +1,5 @@
 # ╔══════════════════════════════════════════════╗
-# ║           CykClasses - weaknesses.yml        ║
+# ║      Classes and Magie - weaknesses.yml      ║
 # ╚══════════════════════════════════════════════╝
 # Faiblesses du personnage. Pour le joueur, tout est une « faiblesse » : celles écrites directement dans
 # classes.yml / races.yml / traits.yml (clé flaws) et celles de ce fichier, réutilisables partout.

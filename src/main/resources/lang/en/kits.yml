@@ -1,28 +1,28 @@
 # ╔══════════════════════════════════════════════╗
-# ║              CykClasses - kits.yml           ║
+# ║         Classes and Magie - kits.yml         ║
 # ╚══════════════════════════════════════════════╝
-# Kit donné au choix d'une classe (et d'une sous-classe si un kit porte son id).
+# Kit given when choosing a class (and a subclass if a kit has its id).
 #
-# item :
-#   "minecraft:iron_sword"            objet vanilla
-#   "craftengine:monpack:epee"         objet CraftEngine
-#   "executableitems:mon_epee"         objet ExecutableItems
-#   "mythic:EpeeRecrue"                objet MythicMobs / MythicCrucible
+# item:
+#   "minecraft:iron_sword"            vanilla item
+#   "craftengine:mypack:sword"        CraftEngine item
+#   "executableitems:my_sword"        ExecutableItems item
+#   "mythic:RecruitSword"             MythicMobs / MythicCrucible item
 #   "itemsadder:ns:id", "oraxen:id", "nexo:id", "mmoitems:TYPE:ID"...
-#   (la liste des préfixes reconnus est affichée dans la console au démarrage)
-# Options : amount, slot (HEAD, CHEST, LEGS, FEET, OFFHAND ou numéro 0-35), name, lore,
-#           enchants {sharpness: 1}, unbreakable, item-model (vanilla uniquement)
-# commands : commandes console, %player% = nom du joueur
+#   (the list of recognised prefixes is shown in the console on startup)
+# Options: amount, slot (HEAD, CHEST, LEGS, FEET, OFFHAND or number 0-35), name, lore,
+#          enchants {sharpness: 1}, unbreakable, item-model (vanilla only)
+# commands: console commands, %player% = player name
 
-# Le kit n'est donné qu'une fois par classe (même après un reset)
+# The kit is only given once per class (even after a reset)
 give-once: true
 
 kits:
   guerrier:
     items:
       - item: "minecraft:iron_sword"
-        name: "<red>Épée de recrue"
-        lore: ["<gray>Fidèle compagne des premiers combats."]
+        name: "<red>Recruit's sword"
+        lore: ["<gray>Faithful companion of the first battles."]
         slot: 0
       - item: "minecraft:shield"
         slot: OFFHAND
@@ -35,19 +35,19 @@ kits:
   mage:
     items:
       - item: "minecraft:blaze_rod"
-        name: "<light_purple>Bâton d'apprenti"
-        lore: ["<gray>Un simple bâton... pour l'instant."]
+        name: "<light_purple>Apprentice's staff"
+        lore: ["<gray>A simple staff... for now."]
         enchants: {knockback: 1}
         slot: 0
       - item: "minecraft:leather_chestplate"
-        name: "<light_purple>Robe d'apprenti"
+        name: "<light_purple>Apprentice's robe"
         slot: CHEST
       - item: "minecraft:bread"
         amount: 16
   archer:
     items:
       - item: "minecraft:bow"
-        name: "<green>Arc de chasse"
+        name: "<green>Hunting bow"
         enchants: {infinity: 1}
         slot: 0
       - item: "minecraft:arrow"
@@ -61,7 +61,7 @@ kits:
   assassin:
     items:
       - item: "minecraft:iron_sword"
-        name: "<dark_gray>Dague effilée"
+        name: "<dark_gray>Sharpened dagger"
         slot: 0
       - item: "minecraft:leather_chestplate"
         slot: CHEST
@@ -72,7 +72,7 @@ kits:
   clerc:
     items:
       - item: "minecraft:golden_shovel"
-        name: "<yellow>Masse cérémonielle"
+        name: "<yellow>Ceremonial mace"
         slot: 0
       - item: "minecraft:golden_chestplate"
         slot: CHEST
@@ -81,11 +81,11 @@ kits:
       - item: "minecraft:bread"
         amount: 16
 
-  # Exemple de kit de sous-classe avec objets custom (décommente et adapte) :
+  # Example of a subclass kit with custom items (uncomment and adapt):
   # pyromancien:
   #   items:
-  #     - item: "craftengine:monpack:baton_de_feu"
-  #     - item: "mythic:RobeDeFeu"
+  #     - item: "craftengine:mypack:fire_staff"
+  #     - item: "mythic:FireRobe"
   #       slot: CHEST
   #   commands:
-  #     - "ei give %player% grimoire_feu 1"
+  #     - "ei give %player% fire_grimoire 1"

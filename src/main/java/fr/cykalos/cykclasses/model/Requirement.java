@@ -50,14 +50,20 @@ public final class Requirement {
         return new Requirement(type, target, amount, description);
     }
 
+    private static String L(String key) {
+        return fr.cykalos.cykclasses.config.Messages.text(key);
+    }
+
     private static String defaultDescription(Type type, String target, double amount) {
         long a = (long) amount;
         return switch (type) {
-            case LEVEL -> "Atteindre le niveau " + a;
-            case KILLS -> "Tuer " + a + " " + ("any".equals(target) ? "créatures" : target);
-            case SKILL_USES -> "Utiliser " + ("any".equals(target) ? "des compétences" : target) + " " + a + " fois";
-            case COUNTER -> target + " : " + a;
-            case PERMISSION -> "Permission requise";
+            case LEVEL -> L("labels.req-level").replace("<amount>", String.valueOf(a));
+            case KILLS -> L("labels.req-kills").replace("<amount>", String.valueOf(a))
+                    .replace("<target>", "any".equals(target) ? L("labels.any-creatures") : target);
+            case SKILL_USES -> L("labels.req-skill-uses").replace("<amount>", String.valueOf(a))
+                    .replace("<target>", "any".equals(target) ? L("labels.any-skills") : target);
+            case COUNTER -> target + ": " + a;
+            case PERMISSION -> L("labels.req-permission");
         };
     }
 

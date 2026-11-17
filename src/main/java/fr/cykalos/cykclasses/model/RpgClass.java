@@ -53,7 +53,7 @@ public final class RpgClass {
         for (Map<?, ?> raw : s.getMapList("flaws")) {
             Flaw f = Flaw.load(raw);
             if (f == null) {
-                log.warning("Défaut invalide dans la classe " + id + " : " + raw);
+                log.warning("Invalid flaw in class " + id + ": " + raw);
             } else {
                 flaws.add(f);
             }
@@ -75,7 +75,7 @@ public final class RpgClass {
         for (Map<?, ?> raw : s.getMapList("requirements")) {
             Requirement r = Requirement.load(raw);
             if (r == null) {
-                log.warning("Condition invalide dans la classe " + id + " : " + raw);
+                log.warning("Invalid condition in class " + id + ": " + raw);
             } else {
                 reqs.add(r);
             }

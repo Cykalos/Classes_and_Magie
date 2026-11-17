@@ -54,7 +54,7 @@ public final class ClasseCommand implements TabExecutor {
                     new ClassSelectGui(plugin, player).open();
                     return true;
                 }
-                RpgClass rc = plugin.classes().get(args[1]);
+                RpgClass rc = plugin.classes().find(String.join(" ", java.util.Arrays.copyOfRange(args, 1, args.length)));
                 if (rc == null || rc.isSubclass()) {
                     plugin.messages().send(sender, "unknown-class", Text.ph("class", args[1]));
                     return true;
@@ -69,7 +69,7 @@ public final class ClasseCommand implements TabExecutor {
                     return true;
                 }
                 if (args.length >= 2) {
-                    RpgClass rc = plugin.classes().get(args[1]);
+                    RpgClass rc = plugin.classes().find(String.join(" ", java.util.Arrays.copyOfRange(args, 1, args.length)));
                     if (rc == null || !rc.isSubclass()) {
                         plugin.messages().send(sender, "unknown-class", Text.ph("class", args[1]));
                         return true;
@@ -144,8 +144,8 @@ public final class ClasseCommand implements TabExecutor {
         RpgClass sub = plugin.classes().get(profile.getSubclassId());
         ClassStats s = plugin.stats().stats(profile);
         sender.sendMessage(plugin.messages().get("info-header", Text.ph("player", target.getName())));
-        sender.sendMessage(plugin.messages().get("info-class", Text.ph("class", base == null ? "<gray>Aucune" : base.name)));
-        sender.sendMessage(plugin.messages().get("info-subclass", Text.ph("subclass", sub == null ? "<gray>Aucune" : sub.name)));
+        sender.sendMessage(plugin.messages().get("info-class", Text.ph("class", base == null ? "<gray>" + plugin.messages().raw("labels.none") : base.name)));
+        sender.sendMessage(plugin.messages().get("info-subclass", Text.ph("subclass", sub == null ? "<gray>" + plugin.messages().raw("labels.none") : sub.name)));
         sender.sendMessage(plugin.messages().get("info-level",
                 Text.ph("level", profile.getLevel()),
                 Text.ph("xp", Text.format(Math.floor(profile.getXp()))),
@@ -161,6 +161,29 @@ public final class ClasseCommand implements TabExecutor {
                 Text.ph("taken", Text.percent(s.damageTaken))));
     }
 
+    /** English names of the admin actions → internal name. */
+    static String adminAlias(String action) {
+        String a = action.toLowerCase(Locale.ROOT);
+        return switch (a) {
+            case "weakness" -> "faiblesse";
+            case "gem" -> "gemme";
+            case "releaseunique" -> "libererunique";
+            case "quest", "quests", "quetes" -> "quete";
+            case "title", "titles", "titres" -> "titre";
+            default -> a;
+        };
+    }
+
+    /** Name suggested by tab completion: the displayed name (without spaces) in English, the id in French. */
+    private static String completionName(RpgClass c) {
+        String plain = Text.plain(c.name).toLowerCase(Locale.ROOT);
+        return fr() || plain.contains(" ") ? c.id : plain;
+    }
+
+    private static boolean fr() {
+        return fr.cykalos.cykclasses.config.ConfigFiles.french();
+    }
+
     private void admin(CommandSender sender, String[] args) {
         if (!sender.hasPermission("cykclasses.admin")) {
             plugin.messages().send(sender, "no-permission");
@@ -170,7 +193,8 @@ public final class ClasseCommand implements TabExecutor {
             plugin.messages().sendList(sender, "admin-help");
             return;
         }
-        String action = args[1].toLowerCase(Locale.ROOT);
+        args[1] = adminAlias(args[1]);
+        String action = args[1];
         // /classe admin quete <player> <start|complete|reset|resetall> [id]
         if (action.equals("quete") || action.equals("quetes")) {
             new QuetesCommand(plugin).admin(sender, java.util.Arrays.copyOfRange(args, 1, args.length));
@@ -283,7 +307,7 @@ public final class ClasseCommand implements TabExecutor {
                 plugin.messages().send(sender, "admin-done");
             }
             case "addpoints" -> {
-                // /classe admin addpoints <player> <competence|stats> <n>
+                // /classe admin addpoints <player> <competences|skills|stats> <n>
                 String type = args.length > 3 ? args[3].toLowerCase(Locale.ROOT) : "";
                 int n = parseInt(args, 4, 1);
                 if (type.startsWith("comp") || type.startsWith("skill") || type.startsWith("arbre")) {
@@ -380,6 +404,10 @@ public final class ClasseCommand implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> options = new ArrayList<>();
         String first = args[0].toLowerCase(Locale.ROOT);
+        if (args.length >= 2 && first.equals("admin")) {
+            args = args.clone();
+            args[1] = adminAlias(args[1]);
+        }
         if (args.length >= 2 && List.of("quetes", "quests", "quete").contains(first)) {
             return new QuetesCommand(plugin).onTabComplete(sender, command, alias, java.util.Arrays.copyOfRange(args, 1, args.length));
         }
@@ -393,24 +421,25 @@ public final class ClasseCommand implements TabExecutor {
             return new TitresCommand(plugin).adminTab(java.util.Arrays.copyOfRange(args, 1, args.length));
         }
         if (args.length == 1) {
-            options.addAll(List.of("aide", "info", "choisir", "sous-classe", "competences", "reset"));
+            options.addAll(fr() ? List.of("aide", "info", "choisir", "sous-classe", "competences", "reset")
+                    : List.of("help", "info", "choose", "subclass", "skills", "reset"));
             if (plugin.modules().quests()) {
-                options.add("quetes");
+                options.add(fr() ? "quetes" : "quests");
             }
             if (plugin.modules().titles()) {
-                options.add("titres");
+                options.add(fr() ? "titres" : "titles");
             }
             if (sender.hasPermission("cykclasses.admin")) {
                 options.add("admin");
             }
         } else if (args.length == 2) {
             switch (args[0].toLowerCase(Locale.ROOT)) {
-                case "choisir", "choose" -> plugin.classes().baseClasses().forEach(c -> options.add(c.id));
+                case "choisir", "choose" -> plugin.classes().baseClasses().forEach(c -> options.add(completionName(c)));
                 case "sous-classe", "subclass", "evolution" -> {
                     if (sender instanceof Player p) {
                         RpgClass base = plugin.classes().get(plugin.profiles().get(p).getClassId());
                         if (base != null) {
-                            options.addAll(base.subclasses().keySet());
+                            base.subclasses().values().forEach(c -> options.add(completionName(c)));
                         }
                     }
                 }
@@ -418,8 +447,10 @@ public final class ClasseCommand implements TabExecutor {
                 case "admin" -> {
                     if (sender.hasPermission("cykclasses.admin")) {
                         options.addAll(List.of("setlevel", "addxp", "setclass", "reset", "mana", "reload", "setrace",
-                                "resetrace", "resettraits", "setjob", "addpoints", "resettree", "resetstats", "kit", "gemme", "forge",
-                                "jobxp", "setjoblevel", "resetspec", "libererunique", "faiblesse", "quete", "titre"));
+                                "resetrace", "resettraits", "setjob", "addpoints", "resettree", "resetstats", "kit", "forge",
+                                "jobxp", "setjoblevel", "resetspec"));
+                        options.addAll(fr() ? List.of("gemme", "libererunique", "faiblesse", "quete", "titre")
+                                : List.of("gem", "releaseunique", "weakness", "quest", "title"));
                     }
                 }
                 default -> {
@@ -436,7 +467,7 @@ public final class ClasseCommand implements TabExecutor {
                 case "setclass", "kit" -> plugin.classes().all().forEach(c -> options.add(c.id));
                 case "setrace" -> plugin.content().races().forEach(r -> options.add(r.id()));
                 case "setjob" -> plugin.content().jobs().forEach(j -> options.add(j.id()));
-                case "addpoints" -> options.addAll(List.of("competences", "stats"));
+                case "addpoints" -> options.addAll(List.of(fr() ? "competences" : "skills", "stats"));
                 case "gemme" -> options.addAll(plugin.gear().gems().keySet());
                 case "forge" -> plugin.gear().rarities().forEach(r -> options.add(r.id().toLowerCase(Locale.ROOT)));
                 case "faiblesse" -> options.addAll(List.of("reset", "add", "remove"));

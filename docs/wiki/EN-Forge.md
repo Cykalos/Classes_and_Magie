@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Forge.md) · 🇬🇧 English
 
-File: `metiers/forge.yml`.
+File: `jobs/forge.yml`.
 
 ## Principle
 
@@ -67,11 +67,11 @@ uniques:
     stats: {melee-damage: 1.2, crit-chance: 0.1, health: 4}
 ```
 
-The history is stored in `forge-uniques.yml` (who forged it, when). `/classe admin libererunique <id>` makes it available again (for example if the item was destroyed). The old copy, if it still exists, **loses its power**: it breaks as soon as it is in a player's inventory. So there are never two active copies.
+The history is stored in `forge-uniques.yml` (who forged it, when). `/class admin releaseunique <id>` makes it available again (for example if the item was destroyed). The old copy, if it still exists, **loses its power**: it breaks as soon as it is in a player's inventory. So there are never two active copies.
 
 A forged item upgraded to netherite at the smithing table keeps its rarity, stats and gems, and its name is updated.
 
-Admin: `/classe admin forge <player> <rarity>` applies a rarity to the item held in hand (for testing).
+Admin: `/class admin forge <player> <rarity>` applies a rarity to the item held in hand (for testing).
 
 ## What cannot be done
 

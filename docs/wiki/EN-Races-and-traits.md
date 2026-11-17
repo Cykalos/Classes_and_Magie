@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Races-et-traits.md) · 🇬🇧 English
 
-## Races (`personnage/races.yml`)
+## Races (`character/races.yml`)
 
 Chosen right after the class. Default races: **Human** (Humain), **Elf** (Elfe), **Dwarf** (Nain), **Orc**, **Tiefling** (Tieffelin), **Felys** (Félys).
 
@@ -33,7 +33,7 @@ races:
 
 `config.yml → character.race-can-change`: allows `/race` afterwards or not. `reset.keep-race`: keep the race on a class reset.
 
-## Traits (`personnage/traits.yml`)
+## Traits (`character/traits.yml`)
 
 After the race, **3 traits** are rolled randomly (positive, negative or mixed).
 
@@ -43,7 +43,7 @@ roll:
   max-negative: 1
   min-positive: 1
   unique-chance: 0.01   # chance to get a free unique trait IN ADDITION
-  rerolls: 3            # rerolls per player (/traits relancer)
+  rerolls: 3            # rerolls per player (/traits reroll)
   rarity-weights: {COMMON: 60, UNCOMMON: 25, RARE: 10, EPIC: 3}
 ```
 
@@ -54,7 +54,7 @@ A trait has: `rarity`, `kind` (`POSITIVE`, `NEGATIVE`, `MIXED`), `stats`, `flaws
 `rarity: UNIQUE`: **a single player on the whole server** can carry this trait. There can be as many as wanted (default: *Chosen of the gods*, *Legendary weapon master*, *Cursed immortal*). Each one has its own owner.
 
 - A unique trait already taken is never rolled again.
-- It becomes free again if its owner loses it (`/classe admin resettraits <player>`).
+- It becomes free again if its owner loses it (`/class admin resettraits <player>`).
 
 ## What cannot be done
 

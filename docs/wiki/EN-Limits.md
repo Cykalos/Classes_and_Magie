@@ -18,7 +18,7 @@ What Classes and Magie **does not do** (or not yet), to avoid bad surprises.
 - Restrictions and forge on **vanilla** materials only.
 - Once forged, an item keeps its rarity and stats; only gems can be added.
 - A socketed gem is final; no fusion or recutting.
-- A destroyed unique item (lava, cactus…) is not released automatically: `/classe admin libererunique <id>`.
+- A destroyed unique item (lava, cactus…) is not released automatically: `/class admin releaseunique <id>`.
 
 ## Quests
 
@@ -40,4 +40,4 @@ What Classes and Magie **does not do** (or not yet), to avoid bad surprises.
 - The sidebar (party and quests) uses the scoreboard and can conflict with another scoreboard plugin.
 - Parties do not survive a restart.
 - New skill mechanics require Java or MythicMobs.
-- Default content, menus and commands are in French (every text can be translated in `messages.yml`).
+- Two languages are included (English and French). Changing `language` on an existing server does not translate the files already created: they must be deleted or renamed to be regenerated. Ids (classes, races, jobs, quests…) stay the same in both languages.

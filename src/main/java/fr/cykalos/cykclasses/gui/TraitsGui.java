@@ -58,7 +58,7 @@ public final class TraitsGui extends Gui {
                 case MIXED -> Material.ORANGE_DYE;
             };
             ItemBuilder b = new ItemBuilder(icon).name(t.name()).glow(t.unique() || t.rarity() == Trait.Rarity.EPIC)
-                    .lore(t.rarity().label).lore(Text.itemLore(t.description()));
+                    .lore(t.rarity().label()).lore(Text.itemLore(t.description()));
             List<String> mods = t.modifiers().describe();
             if (!mods.isEmpty() || !t.flaws().isEmpty() || !t.effects().isEmpty()) {
                 b.lore("");

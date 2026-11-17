@@ -6,7 +6,7 @@
 
 **Classes and Magie** is an RPG class plugin for **Paper 26.x** (Minecraft Java Edition): classes, unlockable subclasses, unique skills, stats, weaknesses and mana.
 
-> The default content (class names, menus, messages) and the commands are in French, with English aliases for the main commands. Every text can be translated in `messages.yml`, and every class, race, job or item can be renamed in the YAML files.
+> **Available in English and French.** New servers start in English (`language: en` in `config.yml`); set `language: fr` for French. Every text can still be changed in `messages.yml`, and every class, race, job or item can be renamed in the YAML files. Commands have English names (`/class`, `/skill`, `/party`, `/quests`, `/titles`…) next to the French ones.
 
 ## Features
 
@@ -44,33 +44,33 @@ Hotbar items are saved while in skill mode (even after a crash or a death). The 
 
 Icons can be customised per skill in `classes.yml`: `icon`, `icon-model` (resource pack model) or `custom-model-data`.
 
-Alternatives: `/competence <id|number>` (alias `/skill`) or a click in `/classe competences`.
+Alternatives: `/skill <id|number>` or a click in `/class skills`.
 
 ## Parties
 
-`/groupe` (alias `/party`) opens the creation menu, where the **party rules** are set (they cannot be changed afterwards):
+`/party` opens the creation menu, where the **party rules** are set (they cannot be changed afterwards):
 
 - **XP**: *shared* (split between nearby members, +10% per member) or *equal* (everyone gets the full XP of the kill).
 - **Friendly fire**: enabled (offensive skills such as Charge and hits also affect allies) or disabled.
 
 Heals and buffs (Heal, Blessing, War cry, Holy shield…) **only affect party members** (or the caster alone without a party). A side board shows the members' health.
 
-`/groupe inviter|accepter|refuser|quitter|expulser|chef|dissoudre|info` (invite, accept, decline, leave, kick, leader, disband, info), `/gc <message>` for party chat.
+`/party invite|accept|deny|leave|kick|lead|disband|info`, `/gc <message>` for party chat.
 
 ## Character creation
 
 Class → **race** → **traits** → **weaknesses** → **job**, each step opens automatically.
 
 - **Races** (`races.yml`): Human, Elf, Dwarf, Orc, Tiefling, Felys. Bonuses, weaknesses, permanent effects, and **penalties when the race does not suit the class** (e.g. Dwarf mage, Orc priest).
-- **Traits** (`traits.yml`): 3 randomly rolled traits, positive, negative or mixed, with rarity. **Unique traits**: a single player on the server can get each of them (1% chance). Limited rerolls (3 by default), `/traits relancer`.
-- **Weaknesses** (`weaknesses.yml`): a single `/faiblesses` menu (alias `/weaknesses`) groups every weakness of the character (class, race, traits). Reusable weaknesses can be imposed on a race or a class (`weaknesses: [id]`), or rolled randomly with odds specific to each race and class. Vulnerabilities (fire, fall, undead…), penalties at night, in the rain, in some biomes or at low health, periodic damage.
+- **Traits** (`traits.yml`): 3 randomly rolled traits, positive, negative or mixed, with rarity. **Unique traits**: a single player on the server can get each of them (1% chance). Limited rerolls (3 by default), `/traits reroll`.
+- **Weaknesses** (`weaknesses.yml`): a single `/weaknesses` menu groups every weakness of the character (class, race, traits). Reusable weaknesses can be imposed on a race or a class (`weaknesses: [id]`), or rolled randomly with odds specific to each race and class. Vulnerabilities (fire, fall, undead…), penalties at night, in the rain, in some biomes or at low health, periodic damage.
 - **Job** (`jobs.yml`): one per player (Miner, Blacksmith, Jeweler, Lumberjack, Farmer, Alchemist, Enchanter, Fisher, Tamer). Some actions are reserved: mining diamonds, crafting armor, using the brewing stand or the anvil, fishing…
 
 ## Progression
 
-- **Skill tree** (`/arbre`, `skilltree.yml`): one tree per class with branches reserved to each subclass, plus a common tree. Nodes improve stats or a specific skill (power, cooldown, mana cost).
+- **Skill tree** (`/tree`, `skilltree.yml`): one tree per class with branches reserved to each subclass, plus a common tree. Nodes improve stats or a specific skill (power, cooldown, mana cost).
 - **Attributes** (`/stats`, `attributes.yml`): Strength, Dexterity, Intelligence, Vitality, Wisdom, Agility, Endurance. Points earned at each level.
-- Free reset every 24 h (`/arbre reset`, `/stats reset`).
+- Free reset every 24 h (`/tree reset`, `/stats reset`).
 
 ## Jobs, forge and gems
 
@@ -83,18 +83,18 @@ Class → **race** → **traits** → **weaknesses** → **job**, each step open
 
 ## Quests
 
-`/quetes` (alias `/quests`) opens the **journal**: quests in progress, available, locked and completed, by category. Every quest is **optional**.
+`/quests` opens the **journal**: quests in progress, available, locked and completed, by category. Every quest is **optional**.
 
 - **Tutorial** offered at the end of character creation (accept or decline, can be started later from the journal).
 - **Example main story** in 6 ranks (*The Adventurers' Guild*), **2 quests per class**, **side quests** (some repeatable) and **secret quests** discovered under specific conditions (at night, in a biome, fishing in a storm…).
-- **Sidebar** tracking the objectives, shared with the party board (`/quetes panneau` to hide it).
+- **Sidebar** tracking the objectives, shared with the party board (`/quests tracker` to hide it).
 - Objectives: kill, gather, craft, fish, cast a skill, collect items, explore a biome, reach a place or a level… with conditions (at night, sword in hand, sneaking…).
 - Rewards: class and job XP, skill tree and attribute points, money (Vault), items (custom items included), commands.
-- `quetes/` folder: every `.yml` file is read; the full format is documented at the top of `tutoriel.yml` and on the [wiki](https://github.com/Cykalos/Classes_and_Magie/wiki/EN-Quests). The included quest texts are in French.
+- `quests/` folder: every `.yml` file is read; the full format is documented at the top of `tutorial.yml` and on the [wiki](https://github.com/Cykalos/Classes_and_Magie/wiki/EN-Quests).
 
 ## Titles
 
-`/titres` (alias `/titles`) opens the title collection. One title is equipped at a time: it is shown **above the head** and **in chat**, and can give **effects** (stats, potion effects, conditional bonuses) or stay honorary.
+`/titles` opens the title collection. One title is equipped at a time: it is shown **above the head** and **in chat**, and can give **effects** (stats, potion effects, conditional bonuses) or stay honorary.
 
 - **31 included titles**: progression, combat, one per class, jobs and exploration, story, **unique** (a single player on the server) and **secret** (hidden conditions).
 - Unlocked by: level, kills, skills cast, mined blocks, damage taken, healing, Minecraft statistics (deaths, distance, fish…), advancements, playtime, completed quests… Totals also count what the player has already done.
@@ -127,20 +127,22 @@ Class → **race** → **traits** → **weaknesses** → **job**, each step open
 
 | Command | Description |
 |---|---|
-| `/classe` (`/class`) | Class menu |
-| `/classe info [player]` | Profile (class, level, mana, stats) |
-| `/classe choisir <class>` | Choose a class |
-| `/classe sous-classe [id]` | Subclass menu / choice |
-| `/classe competences` | Skill list |
-| `/classe reset` | Reset the class (configurable delay) |
-| `/arbre` · `/stats` | Skill tree · attributes |
-| `/race` · `/traits [relancer]` · `/faiblesses [relancer]` · `/metier` (`/job`) | Character |
-| `/groupe` (`/party`) · `/gc` · `/global` | Party and chat |
-| `/quetes` (`/quests`) `[commencer\|abandonner\|suivre\|panneau\|tutoriel]` | Quest journal and tracking |
-| `/titres` (`/titles`) `[equiper <id>\|retirer]` | Titles |
-| `/competence <id\|n°>` (`/skill`) | Cast a skill |
-| `/classe admin …` | Administration (full list on the [wiki](https://github.com/Cykalos/Classes_and_Magie/wiki/EN-Commands)) |
-| `/classe admin reload` | Reload the configuration |
+| `/class` | Class menu (character menu once the class is chosen) |
+| `/class info [player]` | Profile (class, level, mana, stats) |
+| `/class choose <class>` | Choose a class |
+| `/class subclass [id]` | Subclass menu / choice |
+| `/class skills` | Skill list |
+| `/class reset` | Reset the class (configurable delay) |
+| `/tree` · `/stats` | Skill tree · attributes |
+| `/race` · `/traits [reroll]` · `/weaknesses [reroll]` · `/job` | Character |
+| `/party` · `/gc` · `/global` | Party and chat |
+| `/quests` (`/class quests`) `[start\|abandon\|track\|tracker\|tutorial]` | Quest journal and tracking |
+| `/titles` (`/class titles`) `[equip <id>\|unequip]` | Titles |
+| `/skill <id\|number>` | Cast a skill |
+| `/class admin …` | Administration (full list on the [wiki](https://github.com/Cykalos/Classes_and_Magie/wiki/EN-Commands)) |
+| `/class admin reload` | Reload the configuration |
+
+Every command also has a French name (`/classe`, `/competence`, `/groupe`, `/quetes`, `/titres`, `/arbre`, `/metier`, `/faiblesses`), and subcommands accept both languages.
 
 Permissions: `cykclasses.use`, `cykclasses.reset` (everyone), `cykclasses.admin` (op).
 
@@ -152,14 +154,16 @@ Permissions: `cykclasses.use`, `cykclasses.reset` (everyone), `cykclasses.admin`
 
 Files organised by theme in `plugins/Classes_and_Magie/` (files from an older version are moved automatically):
 
-- `config.yml` — **modules** (enable or disable races, traits, weaknesses, jobs, skill tree, attributes, parties, forge, gems, kits, restrictions, quests, titles), storage, XP curve, XP per monster, mana, skill mode, HUD, reset, quests.
+- `config.yml` — **language** (`en` or `fr`), **modules** (enable or disable races, traits, weaknesses, jobs, skill tree, attributes, parties, forge, gems, kits, restrictions, quests, titles), storage, XP curve, XP per monster, mana, skill mode, HUD, reset, quests.
 - `classes/` — `classes.yml` (classes, subclasses, stats, weaknesses, conditions and skills; the top of the file documents every type), `skilltree.yml`, `attributes.yml`.
-- `personnage/` — `races.yml`, `traits.yml`, `weaknesses.yml`, `titles.yml`.
-- `metiers/` — `jobs.yml`, `forge.yml`, `gems.yml`.
-- `objets/` — `kits.yml`, `items.yml`.
-- `affichage/` — `hud.yml` (XP gained, floating damage, target health, party and quest sidebar), `messages.yml` (every text, in [MiniMessage](https://docs.advntr.dev/minimessage/format.html) format).
-- `quetes/` — quests (every `.yml` file in the folder).
-- `donnees/` — player and server data (do not edit by hand).
+- `character/` — `races.yml`, `traits.yml`, `weaknesses.yml`, `titles.yml`.
+- `jobs/` — `jobs.yml`, `forge.yml`, `gems.yml`.
+- `items/` — `kits.yml`, `items.yml`.
+- `display/` — `hud.yml` (XP gained, floating damage, target health, party and quest sidebar), `messages.yml` (every text, in [MiniMessage](https://docs.advntr.dev/minimessage/format.html) format).
+- `quests/` — quests (every `.yml` file in the folder).
+- `data/` — player and server data (do not edit by hand).
+
+With `language: fr`, the files are created in French, in French-named folders (`personnage/`, `metiers/`, `objets/`, `affichage/`, `quetes/`, `donnees/`). An existing folder always keeps its name, and existing files are never replaced: to switch the texts of a running server to another language, delete or rename the files to regenerate, then restart. Ids (classes, races, jobs, skills, quests, titles) are the same in both languages, so player data is not affected.
 
 ## API
 
@@ -185,7 +189,7 @@ Java 25 required.
 # -> build/libs/Classes_and_Magie-<version>.jar
 ```
 
-Source code comments are in English; in-game texts and configuration files are in French (translatable in `messages.yml`).
+Source code comments are in English. Default files are in `src/main/resources/lang/<language>/`.
 
 ## Releases
 

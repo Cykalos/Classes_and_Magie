@@ -106,11 +106,11 @@ public final class PartyManager {
                 Text.ph("xp_mode", modeName(party.xpMode())),
                 Text.ph("friendly_fire", ffName(party.friendlyFire())));
         Component accept = plugin.messages().get("party.button-accept")
-                .clickEvent(ClickEvent.runCommand("/groupe accepter " + inviter.getName()))
-                .hoverEvent(HoverEvent.showText(Text.mm("<green>/groupe accepter " + inviter.getName())));
+                .clickEvent(ClickEvent.runCommand(plugin.messages().raw("party.command-accept") + " " + inviter.getName()))
+                .hoverEvent(HoverEvent.showText(Text.mm("<green>" + plugin.messages().raw("party.command-accept") + " " + inviter.getName())));
         Component deny = plugin.messages().get("party.button-deny")
-                .clickEvent(ClickEvent.runCommand("/groupe refuser " + inviter.getName()))
-                .hoverEvent(HoverEvent.showText(Text.mm("<red>/groupe refuser " + inviter.getName())));
+                .clickEvent(ClickEvent.runCommand(plugin.messages().raw("party.command-deny") + " " + inviter.getName()))
+                .hoverEvent(HoverEvent.showText(Text.mm("<red>" + plugin.messages().raw("party.command-deny") + " " + inviter.getName())));
         target.sendMessage(Component.text("   ").append(accept).append(Component.text("  ")).append(deny));
     }
 

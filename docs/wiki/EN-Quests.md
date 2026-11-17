@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Quêtes.md) · 🇬🇧 English
 
-Folder: `quetes/` (every `.yml` file in the folder and its subfolders is read). Command: `/quetes` (aliases `/quests`, `/journal`).
+Folder: `quests/` (every `.yml` file in the folder and its subfolders is read). Command: `/quests` (alias `/journal`).
 
 **Every quest is optional**: a player can play without ever doing one.
 
@@ -16,18 +16,18 @@ Folder: `quetes/` (every `.yml` file in the folder and its subfolders is read). 
 | `SIDE` | Side quests, some repeatable | 5 (gathering, fishing contest, night patrol, mapping…) |
 | `SECRET` | Invisible until discovered | 4 (sunken treasure, stormy night, secret garden, song of the bees) |
 
-Included files: `tutoriel.yml`, `principale.yml`, `de-classe.yml`, `annexes.yml`, `secretes.yml`. They are only created if the `quetes/` folder does not exist: a deleted file does not come back. The included quest texts are in French and can be rewritten freely.
+Included files: `tutorial.yml`, `main.yml`, `class.yml`, `side.yml`, `secret.yml` (in French: `tutoriel.yml`, `principale.yml`, `de-classe.yml`, `annexes.yml`, `secretes.yml` in `quetes/`). They are only created if the quest folder does not exist: a deleted file does not come back. The included texts can be rewritten freely; quest ids (`tutoriel`, `guilde_recrue`…) are the same in both languages.
 
 ## For players
 
 - **Tutorial**: at the end of character creation, a chat message offers to start it (`[Commencer]` / `[Plus tard]`). It stays available in the journal.
 - **Offered quests**: when a story or class quest becomes available, it is offered in chat with `[Accepter]` / `[Plus tard]` (accept / later). Nothing starts without the player's consent, except secret quests, which trigger when they are discovered.
-- **Journal** (`/quetes` or `/classe quetes`, or the quest journal button of the `/classe` menu): one tab per category, plus an "In progress" tab. Each quest shows its level, description, state (in progress, available, locked, completed), objectives with progress, missing requirements and rewards.
+- **Journal** (`/quests` or `/class quests`, or the quest journal button of the `/class` menu): one tab per category, plus an "In progress" tab. Each quest shows its level, description, state (in progress, available, locked, completed), objectives with progress, missing requirements and rewards.
   - Click an available quest: start it.
   - Click a quest in progress: track it (or stop tracking it) in the sidebar.
   - Shift + right click a quest in progress: abandon it. An abandoned quest does not start again on its own: it stays available in the journal.
   - A quest removed from the sidebar does not come back on its own; when the tracked quest ends, another quest in progress takes its place.
-- **Sidebar**: tracked quests and their objectives, updated live. In a party, the tracked quest is shown below the party members. `/quetes panneau` shows or hides it.
+- **Sidebar**: tracked quests and their objectives, updated live. In a party, the tracked quest is shown below the party members. `/quests tracker` shows or hides it.
 - **Secret quests**: they appear in the journal once discovered. The tab shows how many are left to discover.
 
 ## Quest format
@@ -193,10 +193,10 @@ The sidebar is set in `hud.yml → quest-tracker` (title, lines, symbols, party 
 
 ## Administration
 
-- `/classe admin quete <player> start <id>`: starts a quest (without checking requirements).
-- `/classe admin quete <player> complete <id>`: completes it immediately, rewards included.
-- `/classe admin quete <player> reset <id>`: erases it (in progress and completed).
-- `/classe admin quete <player> resetall`: erases all of the player's quests and offers the tutorial again.
+- `/class admin quest <player> start <id>`: starts a quest (without checking requirements).
+- `/class admin quest <player> complete <id>`: completes it immediately, rewards included.
+- `/class admin quest <player> reset <id>`: erases it (in progress and completed).
+- `/class admin quest <player> resetall`: erases all of the player's quests and offers the tutorial again.
 - Placeholders: `%cykclasses_quests_completed%`, `%cykclasses_quests_active%`, `%cykclasses_quests_total%`, `%cykclasses_quest_tracked%`.
 
 ## What cannot be done
@@ -204,4 +204,4 @@ The sidebar is set in `hud.yml → quest-tracker` (title, lines, symbols, party 
 - No built-in NPCs: dialogues are shown in chat. An NPC from another plugin can be used as a target (`INTERACT_ENTITY` with `name`).
 - No dialogue choices with several answers (use `not-quests` for branches).
 - Objective types are predefined (about forty), but they combine with conditions.
-- The sidebar replaces another plugin's scoreboard while quests are tracked (hide it with `/quetes panneau` or `quest-tracker.enabled: false`).
+- The sidebar replaces another plugin's scoreboard while quests are tracked (hide it with `/quests tracker` or `quest-tracker.enabled: false`).

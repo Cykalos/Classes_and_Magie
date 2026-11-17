@@ -110,20 +110,20 @@ public final class StatModifier {
     /** Short description for menus, e.g. "+4 health, +10% Melee, -5% Damage taken". */
     public java.util.List<String> describe() {
         java.util.List<String> out = new java.util.ArrayList<>();
-        addLine(out, health, "PV", false);
-        addLine(out, healthPerLevel, "PV/niv.", false);
-        addLine(out, mana, "Mana", false);
-        addLine(out, manaPerLevel, "Mana/niv.", false);
-        addLine(out, manaRegen, "Régén. mana/s", false);
-        addLine(out, armor, "Armure", false);
+        addLine(out, health, fr.cykalos.cykclasses.config.Messages.text("labels.health"), false);
+        addLine(out, healthPerLevel, fr.cykalos.cykclasses.config.Messages.text("labels.health-per-level"), false);
+        addLine(out, mana, fr.cykalos.cykclasses.config.Messages.text("labels.mana"), false);
+        addLine(out, manaPerLevel, fr.cykalos.cykclasses.config.Messages.text("labels.mana-per-level"), false);
+        addLine(out, manaRegen, fr.cykalos.cykclasses.config.Messages.text("labels.mana-regen"), false);
+        addLine(out, armor, fr.cykalos.cykclasses.config.Messages.text("labels.armor"), false);
         addPct(out, speed, "Vitesse");
         addPct(out, attackSpeed, "Vitesse d'attaque");
         addPct(out, critChance, "Critique");
-        addLine(out, critMultiplier, "Mult. critique", false);
-        addMult(out, meleeDamage, "Mêlée", false);
-        addMult(out, rangedDamage, "Distance", false);
-        addMult(out, magicDamage, "Magie", false);
-        addMult(out, damageTaken, "Dégâts subis", true);
+        addLine(out, critMultiplier, fr.cykalos.cykclasses.config.Messages.text("labels.crit-multiplier"), false);
+        addMult(out, meleeDamage, fr.cykalos.cykclasses.config.Messages.text("labels.melee"), false);
+        addMult(out, rangedDamage, fr.cykalos.cykclasses.config.Messages.text("labels.ranged"), false);
+        addMult(out, magicDamage, fr.cykalos.cykclasses.config.Messages.text("labels.magic"), false);
+        addMult(out, damageTaken, fr.cykalos.cykclasses.config.Messages.text("labels.damage-taken"), true);
         return out;
     }
 

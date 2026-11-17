@@ -1,11 +1,11 @@
 # ╔══════════════════════════════════════════════╗
-# ║              CykClasses - forge.yml          ║
+# ║        Classes and Magie - forge.yml         ║
 # ╚══════════════════════════════════════════════╝
-# Objets de qualité : quand un joueur ayant un de ces métiers fabrique un objet listé,
-# l'objet reçoit une rareté, des stats aléatoires (positives ou négatives) et des emplacements de gemmes.
-# Plus le niveau du métier est élevé, plus les raretés hautes sont probables.
-# Les stats s'appliquent quand l'objet est équipé (arme en main, armure portée, bouclier en main secondaire).
-# Les objets de qualité se fabriquent un par un (pas de Maj + clic).
+# Quality items: when a player with one of these jobs crafts a listed item,
+# the item gets a rarity, random stats (positive or negative) and gem sockets.
+# The higher the job level, the more likely the high rarities.
+# Stats apply while the item is equipped (weapon in hand, armor worn, shield in off hand).
+# Quality items are crafted one at a time (no Shift + click).
 
 crafters:
   forgeron:
@@ -15,18 +15,18 @@ crafters:
       - "CROSSBOW"
       - "BOW"
       - "MACE"
-  # Exemple : un "archer-artisan" qui fabriquerait les arcs
-  # facteur_d_arcs:
+  # Example: a "bowyer" job that would craft bows
+  # bowyer:
   #   targets: ["BOW", "CROSSBOW"]
 
-# Raretés, de la plus commune à la plus rare.
-#   weight / weight-per-level / min-weight : chance relative = max(min-weight, weight + weight-per-level × niveau du métier)
-#   min-job-level : niveau de métier minimum pour pouvoir l'obtenir
-#   stats [min, max] : nombre de stats aléatoires · sockets : emplacements de gemmes
-#   power : multiplicateur de la force des stats · negative-chance : chance qu'une stat soit négative
+# Rarities, from the most common to the rarest.
+#   weight / weight-per-level / min-weight: relative chance = max(min-weight, weight + weight-per-level × job level)
+#   min-job-level: minimum job level to get it
+#   stats [min, max]: number of random stats · sockets: gem sockets
+#   power: stat strength multiplier · negative-chance: chance that a stat is negative
 rarities:
   COMMON:
-    name: "<white>Commun"
+    name: "<white>Common"
     color: "<white>"
     weight: 100
     weight-per-level: -1.8
@@ -36,7 +36,7 @@ rarities:
     power: 0.6
     negative-chance: 0.5
   UNCOMMON:
-    name: "<green>Peu commun"
+    name: "<green>Uncommon"
     color: "<green>"
     weight: 35
     weight-per-level: 0.3
@@ -55,7 +55,7 @@ rarities:
     power: 1.0
     negative-chance: 0.25
   EPIC:
-    name: "<light_purple>Épique"
+    name: "<light_purple>Epic"
     color: "<light_purple>"
     weight: 2
     weight-per-level: 0.35
@@ -65,7 +65,7 @@ rarities:
     power: 1.25
     negative-chance: 0.15
   LEGENDARY:
-    name: "<gold>Légendaire"
+    name: "<gold>Legendary"
     color: "<gold>"
     weight: 0.3
     weight-per-level: 0.12
@@ -74,8 +74,8 @@ rarities:
     sockets: 3
     power: 1.5
     negative-chance: 0.05
-  # UNIQUE : donne un des objets uniques ci-dessous encore jamais forgé (un seul exemplaire sur tout le serveur).
-  # S'il n'en reste plus pour ce type d'objet, l'objet devient Légendaire.
+  # UNIQUE: gives one of the unique items below that has never been forged (a single copy on the whole server).
+  # If none is left for this type of item, the item becomes Legendary.
   UNIQUE:
     name: "<gold><bold>UNIQUE</bold>"
     color: "<gold>"
@@ -83,11 +83,11 @@ rarities:
     weight-per-level: 0.02
     min-job-level: 30
 
-# Une stat négative vaut (valeur tirée × negative-scale) en moins
+# A negative stat is worth (rolled value × negative-scale) less
 negative-scale: 0.6
 
-# Stats possibles par type d'objet : [min, max] avant le multiplicateur "power" de la rareté.
-# Pourcentages : 0.05 = 5 %. damage-taken positif = moins de dégâts subis.
+# Possible stats per item type: [min, max] before the rarity "power" multiplier.
+# Percentages: 0.05 = 5%. Positive damage-taken = less damage taken.
 stat-pool:
   weapon:
     melee-damage: [0.02, 0.08]
@@ -112,32 +112,32 @@ stat-pool:
     speed: [0.01, 0.03]
     magic-damage: [0.01, 0.04]
 
-# Objets uniques : chacun ne peut être forgé qu'UNE SEULE FOIS sur tout le serveur.
-# materials : objets de base sur lesquels il peut apparaître. Stats fixes (même format que classes.yml).
-# Historique dans forge-uniques.yml · /classe admin libererunique <id> pour le rendre de nouveau disponible :
-# l'ancien exemplaire perd alors son pouvoir (il se brise dès qu'il est dans l'inventaire d'un joueur).
+# Unique items: each one can only be forged ONCE on the whole server.
+# materials: base items it can appear on. Fixed stats (same format as classes.yml).
+# History in forge-uniques.yml · /class admin releaseunique <id> to make it available again:
+# the old copy then loses its power (it breaks as soon as it is in a player's inventory).
 uniques:
   excalibur:
     name: "<gold><bold>Excalibur"
     materials: ["*_SWORD"]
-    lore: ["<gray>L'épée du roi légendaire.", "<gray>Elle ne répond qu'aux plus dignes."]
+    lore: ["<gray>The sword of the legendary king.", "<gray>It only answers to the worthiest."]
     sockets: 3
     stats: {melee-damage: 1.2, crit-chance: 0.1, health: 4}
   briseur_de_montagnes:
-    name: "<gold><bold>Briseur de montagnes"
+    name: "<gold><bold>Mountain Breaker"
     materials: ["*_AXE", "MACE"]
-    lore: ["<gray>Forgé dans le cœur d'un volcan."]
+    lore: ["<gray>Forged in the heart of a volcano."]
     sockets: 3
     stats: {melee-damage: 1.25, crit-multiplier: 0.5, speed: -0.03}
   aegis:
-    name: "<gold><bold>Égide"
+    name: "<gold><bold>Aegis"
     materials: ["SHIELD", "*_CHESTPLATE"]
-    lore: ["<gray>Aucun coup ne la traverse."]
+    lore: ["<gray>No blow goes through it."]
     sockets: 3
     stats: {damage-taken: 0.85, health: 6, armor: 3}
   murmure_du_vent:
-    name: "<gold><bold>Murmure du vent"
+    name: "<gold><bold>Whisper of the Wind"
     materials: ["BOW", "CROSSBOW"]
-    lore: ["<gray>Ses flèches ne font aucun bruit."]
+    lore: ["<gray>Its arrows make no sound."]
     sockets: 3
     stats: {ranged-damage: 1.25, crit-chance: 0.08, speed: 0.04}

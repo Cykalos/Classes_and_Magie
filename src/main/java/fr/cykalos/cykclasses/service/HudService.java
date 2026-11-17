@@ -87,7 +87,7 @@ public final class HudService {
 
     public void load() {
         cfg = fr.cykalos.cykclasses.config.ConfigFiles.load(plugin, "hud.yml");
-        fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, cfg, fr.cykalos.cykclasses.config.ConfigFiles.path("hud.yml"), java.util.Set.of());
+        fr.cykalos.cykclasses.config.ConfigDefaults.fill(plugin, cfg, fr.cykalos.cykclasses.config.ConfigFiles.resource("hud.yml"), java.util.Set.of());
     }
 
     public YamlConfiguration config() {
@@ -264,7 +264,7 @@ public final class HudService {
         boolean combo = st.until >= now;
         st.combo = combo ? st.combo + amount : amount;
         st.until = now + (long) (cfg.getDouble("job-xp-display.duration-seconds", 4) * 1000);
-        Component title = Text.mm(cfg.getString("job-xp-display.format", "<gold>+<xp> XP <job> Niv. <level>"),
+        Component title = Text.mm(cfg.getString("job-xp-display.format", "<gold>+<xp> XP <job> Lv. <level>"),
                 Text.ph("xp", Text.format(Math.round(st.combo * 10) / 10.0)), Text.ph("job", job.name()),
                 Text.ph("level", level), Text.ph("percent", (int) Math.floor(progress * 100)));
         if (st.bar == null) {
@@ -608,7 +608,7 @@ public final class HudService {
         ConfigurationSection pb = cfg.getConfigurationSection("party-board");
         if (party != null && pb != null && pb.getBoolean("enabled", true)) {
             lines.addAll(partyLines(party, pb));
-            title = Text.mm(pb.getString("title", "Groupe"));
+            title = Text.mm(pb.getString("title", "Party"));
         }
         ConfigurationSection qt = cfg.getConfigurationSection("quest-tracker");
         if (plugin.quests() != null && qt != null && qt.getBoolean("enabled", true)) {
@@ -624,7 +624,7 @@ public final class HudService {
                             lines.add(Text.mm(sep));
                         }
                     } else {
-                        title = Text.mm(qt.getString("title", "Quêtes"));
+                        title = Text.mm(qt.getString("title", "Quests"));
                     }
                     lines.addAll(q);
                 }

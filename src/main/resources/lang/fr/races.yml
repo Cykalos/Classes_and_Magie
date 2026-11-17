@@ -1,5 +1,5 @@
 # ╔══════════════════════════════════════════════╗
-# ║              CykClasses - races.yml          ║
+# ║        Classes and Magie - races.yml         ║
 # ╚══════════════════════════════════════════════╝
 # Choisie après la classe. Chaque race a :
 #   stats       : modificateurs (mêmes clés que classes.yml ; les dégâts sont des multiplicateurs, 1.1 = +10 %)

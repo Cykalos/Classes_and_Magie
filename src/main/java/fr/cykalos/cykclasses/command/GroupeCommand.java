@@ -90,7 +90,7 @@ public final class GroupeCommand implements TabExecutor {
                 plugin.parties().invite(player, target);
             }
             case "accepter", "accept" -> plugin.parties().accept(player, args.length > 1 ? args[1] : null);
-            case "refuser", "deny" -> plugin.parties().deny(player, args.length > 1 ? args[1] : null);
+            case "refuser", "deny", "decline" -> plugin.parties().deny(player, args.length > 1 ? args[1] : null);
             case "quitter", "leave" -> plugin.parties().leave(player);
             case "expulser", "kick" -> {
                 if (args.length < 2) {
@@ -137,7 +137,7 @@ public final class GroupeCommand implements TabExecutor {
                 hp = " <red>" + (int) Math.ceil(p.getHealth()) + "/" + (max == null ? 20 : (int) max.getValue()) + "❤";
                 var rc = plugin.classes().effective(plugin.profiles().get(p));
                 if (rc != null) {
-                    hp += " <gray>· </gray>" + rc.name + " <gray>niv. " + plugin.profiles().get(p).getLevel();
+                    hp += " <gray>· </gray>" + rc.name + " <gray>" + plugin.messages().raw("labels.level-short").toLowerCase(java.util.Locale.ROOT) + " " + plugin.profiles().get(p).getLevel();
                 }
             }
             player.sendMessage(Text.mm((party.isLeader(uuid) ? "<gold>★ " : "<gray>• ") + "<white>" + name + hp));
@@ -151,17 +151,19 @@ public final class GroupeCommand implements TabExecutor {
         }
         List<String> options = new ArrayList<>();
         if (args.length == 1) {
-            options.addAll(List.of("creer", "inviter", "accepter", "refuser", "quitter", "expulser", "chef", "dissoudre", "info", "chat"));
+            options.addAll(fr.cykalos.cykclasses.config.ConfigFiles.french()
+                    ? List.of("creer", "inviter", "accepter", "refuser", "quitter", "expulser", "chef", "dissoudre", "info", "chat")
+                    : List.of("create", "invite", "accept", "deny", "leave", "kick", "lead", "disband", "info", "chat"));
         } else if (args.length == 2) {
             switch (args[0].toLowerCase(Locale.ROOT)) {
-                case "creer", "create" -> options.addAll(List.of("partage", "egal"));
-                case "inviter", "invite", "accepter", "refuser", "expulser", "chef" ->
+                case "creer", "create" -> options.addAll(fr.cykalos.cykclasses.config.ConfigFiles.french() ? List.of("partage", "egal") : List.of("shared", "equal"));
+                case "inviter", "invite", "accepter", "accept", "refuser", "deny", "expulser", "kick", "chef", "lead" ->
                         Bukkit.getOnlinePlayers().forEach(p -> options.add(p.getName()));
                 default -> {
                 }
             }
-        } else if (args.length == 3 && args[0].equalsIgnoreCase("creer")) {
-            options.addAll(List.of("oui", "non"));
+        } else if (args.length == 3 && (args[0].equalsIgnoreCase("creer") || args[0].equalsIgnoreCase("create"))) {
+            options.addAll(fr.cykalos.cykclasses.config.ConfigFiles.french() ? List.of("oui", "non") : List.of("yes", "no"));
         }
         String last = args[args.length - 1].toLowerCase(Locale.ROOT);
         return options.stream().filter(o -> o.toLowerCase(Locale.ROOT).startsWith(last)).collect(Collectors.toList());

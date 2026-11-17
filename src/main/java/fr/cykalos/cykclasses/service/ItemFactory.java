@@ -29,7 +29,7 @@ public final class ItemFactory {
             plugin.getLogger().info("Objets custom (UniItem) : " + String.join(", ", uni.types()));
         } catch (Throwable t) {
             uni = null;
-            plugin.getLogger().log(Level.WARNING, "UniItem indisponible : seuls les objets vanilla et MythicMobs sont gérés.", t);
+            plugin.getLogger().log(Level.WARNING, "UniItem unavailable: only vanilla and MythicMobs items are supported.", t);
         }
     }
 

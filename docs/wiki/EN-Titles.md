@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Titres.md) · 🇬🇧 English
 
-File: `personnage/titles.yml`. Command: `/classe titres` or `/titres` (alias `/titles`), or the Titles button of the `/classe` menu.
+File: `character/titles.yml`. Command: `/class titles` or `/titles`, or the Titles button of the `/class` menu.
 
 Titles are **unlocked by the player's actions**: level reached, monsters killed, quests completed, distance travelled, Minecraft advancements… Only one title is equipped at a time. It is shown **above the head** and **in chat**, and can give **effects**. Some titles are purely honorary.
 
@@ -19,15 +19,15 @@ Rarities are set in `titles.yml → rarities` (name, announcement, unique, secre
 
 ## Included titles
 
-31 titles: progression (Novice, Veteran, Living legend…), combat (Hunter, Bane of the dead, Dragon slayer…), one title per class (Honed blade, Archmage, Lynx eye, Silent shadow, Hand of light), jobs and exploration (Relentless miner, Traveller, Explorer of worlds…), story (Guild member, Guild legend), 2 unique and 4 secret titles. The included texts are in French and can be renamed freely.
+31 titles: progression (Novice, Veteran, Living Legend…), combat (Hunter, Bane of the Dead, Dragonslayer…), one title per class (Sharpened Blade, Archmage, Lynx Eye, Silent Shadow, Hand of Light), jobs and exploration (Relentless Miner, Traveller, World Explorer…), story (Guild Member, Guild Legend), 2 unique and 4 secret titles. The included texts can be renamed freely.
 
 Titles based on totals (kills, mined blocks, statistics, advancements, playtime…) count **everything the player has already done**: a long-time player can unlock several of them right after the update.
 
 ## For players
 
-- **Menu** `/titres`: every title, filtered by "Unlocked" / "To unlock". Each title shows its rarity, its effects (or "honorary title"), and for those still locked, the conditions with progress.
+- **Menu** `/titles`: every title, filtered by "Unlocked" / "To unlock". Each title shows its rarity, its effects (or "honorary title"), and for those still locked, the conditions with progress.
 - Click an unlocked title: **equip** it; click again: **remove** it.
-- `/titres equiper <id>` · `/titres retirer`.
+- `/titles equip <id>` · `/titles unequip`.
 - The first unlocked title is equipped automatically (`auto-equip-first`).
 
 ## Title format
@@ -95,12 +95,12 @@ chat:
 
 ## Administration
 
-- `/classe admin titre <player> give <id>`: gives a title.
-- `/classe admin titre <player> take <id>`: removes a title (a unique title becomes available again).
-- `/classe admin titre <player> reset`: removes all of the player's titles.
-- `/classe admin titre liberer <id>`: releases a unique title; the former owner loses it (on their next login if offline).
+- `/class admin title <player> give <id>`: gives a title.
+- `/class admin title <player> take <id>`: removes a title (a unique title becomes available again).
+- `/class admin title <player> reset`: removes all of the player's titles.
+- `/class admin title release <id>`: releases a unique title; the former owner loses it (on their next login if offline).
 - Placeholders: `%cykclasses_title%`, `%cykclasses_title_id%`, `%cykclasses_titles_count%`, `%cykclasses_titles_total%`.
-- Unique title owners are stored in `donnees/titres-uniques.yml`.
+- Unique title owners are stored in `data/title-uniques.yml`.
 - The module is disabled with `modules.titles: false`.
 
 ## What cannot be done

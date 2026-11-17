@@ -28,7 +28,7 @@ Les fichiers sont rangés par thème dans `plugins/Classes_and_Magie/` :
 
 | Dossier / fichier | Rôle |
 |---|---|
-| `config.yml` | Modules, stockage (`YAML`, `JSON`, `SQLITE`), courbe d'XP, XP par monstre, mana, mode compétences, chat, groupes, quêtes |
+| `config.yml` | Langue, modules, stockage (`YAML`, `JSON`, `SQLITE`), courbe d'XP, XP par monstre, mana, mode compétences, chat, groupes, quêtes |
 | `classes/classes.yml` | Classes, sous-classes, stats, faiblesses, conditions, compétences |
 | `classes/skilltree.yml` · `classes/attributes.yml` | Arbre de compétences et attributs |
 | `personnage/races.yml` · `personnage/traits.yml` | Races et traits |
@@ -42,6 +42,20 @@ Les fichiers sont rangés par thème dans `plugins/Classes_and_Magie/` :
 | `affichage/messages.yml` | Tous les textes ([MiniMessage](https://docs.advntr.dev/minimessage/format.html)) |
 | `quetes/` | [Quêtes](Quêtes.md) : tous les fichiers `.yml` du dossier sont lus |
 | `donnees/` | Données des joueurs (`joueurs/` ou `data.db`), objets, traits et titres uniques, sauvegardes. À ne pas modifier à la main. |
+
+## Langue
+
+```yaml
+# config.yml
+language: fr   # fr (français) ou en (anglais)
+```
+
+- La langue décide des **fichiers créés par le plugin** (textes, classes, races, quêtes, titres…) et de la valeur par défaut des clés absentes de ces fichiers.
+- Un **nouveau serveur** démarre en anglais : mettre `language: fr` puis redémarrer **avant** que les fichiers soient créés, ou supprimer les fichiers générés en anglais. Un serveur installé avec une version antérieure à la 1.12 reçoit automatiquement `language: fr` et reste en français.
+- Les noms de dossiers ci-dessus sont ceux d'un serveur en français ; en anglais : `character/`, `jobs/`, `items/`, `display/`, `quests/` et `data/`. Un dossier qui existe déjà **garde toujours son nom**.
+- Les fichiers existants ne sont **jamais remplacés**. Pour passer un serveur dans l'autre langue : changer `language`, supprimer ou renommer les fichiers à régénérer (par exemple `affichage/messages.yml`), puis redémarrer. Les fichiers personnalisés peuvent être gardés : seules les clés absentes prennent la nouvelle langue.
+- Les identifiants (classes, races, métiers, compétences, quêtes, titres) sont **les mêmes dans les deux langues** : les données des joueurs et les commandes continuent de fonctionner.
+- Les commandes fonctionnent dans les deux langues (`/classe` ou `/class`, `/quetes` ou `/quests`…), voir [Commandes](Commandes.md).
 
 ## Modules
 

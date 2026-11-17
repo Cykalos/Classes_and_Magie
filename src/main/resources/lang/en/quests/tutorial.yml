@@ -1,0 +1,128 @@
+# ╔══════════════════════════════════════════════╗
+# ║          Classes and Magie - Quests          ║
+# ╚══════════════════════════════════════════════╝
+#
+# Every .yml file in the quests/ folder (and its subfolders) is read: files can be added,
+# renamed or deleted. Every quest is optional.
+# After a change: /class admin reload
+# Quest ids (tutoriel, guilde_recrue…) are the same in every language; only the texts are translated.
+#
+# ─── Quest format ──────────────────────────────────────────────────────────────
+# quests:
+#   my_id:
+#     name: "<gold>Displayed name"
+#     category: MAIN          # TUTORIAL, MAIN (story), CLASS, SIDE, SECRET
+#     level: 10               # indicative level shown in the journal
+#     icon: BOOK
+#     description: ["<gray>Journal text"]
+#     start: MANUAL           # MANUAL (from the journal), OFFER (offered in chat as soon as it is available),
+#                             # AUTO (starts on its own; also offered if config.yml → quests.ask-before-start: true)
+#     hidden: false           # true = invisible until discovered (default for SECRET)
+#     repeatable: false
+#     cooldown-hours: 0       # delay before it can be done again (repeatable quest)
+#     abandonable: true
+#     requirements:           # conditions for it to be available (all optional)
+#       level: 5
+#       max-level: 30
+#       classes: [guerrier]   # class or subclass
+#       races: [nain]
+#       jobs: [mineur]
+#       job-level: 10
+#       quests: [other_quest]       # quests that must be completed
+#       not-quests: [opposite_path] # quests that must not be done (exclusive choices)
+#       permission: "server.chapter2"
+#       titles: [tueur_de_dragons]  # titles that must be unlocked
+#       checks:                     # "state" objectives to meet (statistics, advancements, totals…)
+#         - {type: ADVANCEMENT, targets: ["minecraft:story/enter_the_nether"]}
+#     conditions: {time: NIGHT}     # context to start (same conditions as weaknesses)
+#     trigger:                      # starts the quest when this action happens (secret quests)
+#       type: KILL
+#       targets: [WITCH]
+#       conditions: {chance: 0.1}
+#     stages:                 # stages, in order
+#       - text: ["<gray>Text shown at the start of the stage"]
+#         objectives:
+#           - {type: KILL, targets: [ZOMBIE, HUSK], amount: 10, display: "Kill undead"}
+#     rewards:
+#       xp: 200
+#       job-xp: 100
+#       skill-points: 1
+#       attribute-points: 1
+#       money: 100            # requires Vault and an economy plugin
+#       items:                # same format as kits.yml (custom items included)
+#         - {item: "minecraft:diamond", amount: 2}
+#       titles: [my_title]    # unlocked titles (character/titles.yml)
+#       commands: ["say %player% completed a quest!"]
+#       text: ["<gray>Extra line in the reward list"]
+#     complete-text: ["<gray>Text shown at the end"]
+#
+# ─── Objective types ───────────────────────────────────────────────────────────
+# Actions (counted):
+#   KILL, BREAK, PLACE, CRAFT, SMELT, FISH, BREED, TAME, ENCHANT, BREW, REFINE (cut gems),
+#   CONSUME (eat/drink), SKILL (skill cast: targets = ids), INTERACT_ENTITY (right click on
+#   an entity, name: "text of the name"), INTERACT_BLOCK, COMMAND (targets = main command names without /,
+#   aliases count too), DAMAGE (damage dealt)
+# States (checked every second):
+#   LEVEL, JOB_LEVEL, CLASS, SUBCLASS, RACE, JOB, SPECIALIZATION, COLLECT (items in the inventory,
+#   take: true to remove them), REACH (world, x, y, z, radius), BIOME (targets = biomes), CONDITION
+#   (conditions block), TREE_POINTS, ATTRIBUTE_POINTS, QUEST (completed quests), TITLES (unlocked titles),
+#   KILLS_TOTAL, SKILL_USES_TOTAL, COUNTER, STATISTIC (Minecraft statistics), ADVANCEMENT, PLAYTIME (hours)
+# Common options:
+#   targets     list of targets, * = wildcard ("*_LOG"), "mythic:InternalName" for a MythicMobs mob
+#   amount      quantity (1 by default)
+#   display     displayed text (otherwise an automatic text)
+#   conditions  context of the action: {time: NIGHT}, {holding: ["*_SWORD"]}, {sneaking: true}…
+#   module      required module (skill-tree, attributes, jobs, parties…): met automatically if it is disabled
+
+quests:
+  tutoriel:
+    name: "<white>First steps"
+    category: TUTORIAL
+    level: 1
+    icon: BOOK
+    start: OFFER
+    description:
+      - "<gray>The basics of the game: menus, skills,"
+      - "<gray>combat and progression."
+    stages:
+      - text:
+          - "<gold>✦ <white>Tutorial <dark_gray>— <gray>stage 1"
+          - "<gray>Your character is managed from <white>/class</white>: profile, skills, race, traits, job."
+          - "<gray>Quests are followed in the <white>journal</white> and in the sidebar on the right of the screen."
+        objectives:
+          - {type: COMMAND, targets: [classe], display: "Open your class menu (/class)"}
+          - {type: COMMAND, targets: [quetes], display: "Open the quest journal (/quests)"}
+      - text:
+          - "<gold>✦ <white>Tutorial <dark_gray>— <gray>stage 2"
+          - "<gray>Press <white>F</white>: the hotbar shows your skills. Keys <white>1 to 8</white> cast them."
+          - "<gray>Press <white>F</white> again to get your normal hotbar back."
+        objectives:
+          - {type: SKILL, amount: 2, display: "Cast 2 skills (F, then 1 to 8)"}
+      - text:
+          - "<gold>✦ <white>Tutorial <dark_gray>— <gray>stage 3"
+          - "<gray>Monsters give class XP. Each level gives points to spend."
+        objectives:
+          - type: KILL
+            targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, SILVERFISH]
+            amount: 3
+            display: "Kill 3 monsters"
+      - text:
+          - "<gold>✦ <white>Tutorial <dark_gray>— <gray>stage 4"
+          - "<gray>Spend your points in the <white>skill tree</white> and <white>attributes</white>, and choose a <white>job</white>."
+        objectives:
+          - {type: COMMAND, targets: [arbre], module: skill-tree, display: "Open the skill tree (/tree)"}
+          - {type: COMMAND, targets: [stats], module: attributes, display: "Open the attributes (/stats)"}
+          - {type: COMMAND, targets: [metier], module: jobs, display: "Look at the jobs (/job)"}
+      - text:
+          - "<gold>✦ <white>Tutorial <dark_gray>— <gray>stage 5"
+          - "<gray>It is safer together: a <white>party</white> shares XP and heals."
+        objectives:
+          - {type: COMMAND, targets: [groupe], module: parties, display: "Discover parties (/party)"}
+    rewards:
+      xp: 150
+      attribute-points: 1
+      items:
+        - {item: "minecraft:bread", amount: 16}
+        - {item: "minecraft:torch", amount: 16}
+    complete-text:
+      - "<gray>You know the basics. The Adventurers' Guild and the class quests are waiting for you in the journal."

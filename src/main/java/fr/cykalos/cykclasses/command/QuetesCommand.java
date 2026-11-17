@@ -44,7 +44,7 @@ public final class QuetesCommand implements TabExecutor {
         }
         String sub = args[0].toLowerCase(Locale.ROOT);
         switch (sub) {
-            case "panneau", "tracker" -> {
+            case "panneau", "tracker", "panel" -> {
                 PlayerProfile p = plugin.profiles().get(player);
                 p.setQuestTrackerHidden(!p.isQuestTrackerHidden());
                 plugin.messages().send(player, p.isQuestTrackerHidden() ? "quests.tracker-hidden" : "quests.tracker-shown");
@@ -90,7 +90,7 @@ public final class QuetesCommand implements TabExecutor {
             return true;
         }
         if (args.length < 3) {
-            sender.sendMessage(Text.mm("<gray>/classe admin quete <joueur> <start|complete|reset|resetall> [id]"));
+            plugin.messages().send(sender, "quests.admin-usage");
             return true;
         }
         Player target = Bukkit.getPlayerExact(args[1]);
@@ -105,7 +105,7 @@ public final class QuetesCommand implements TabExecutor {
                 p.resetQuest(q.id);
             }
             p.setTutorialOffered(false);
-            sender.sendMessage(Text.mm("<green>Quêtes de " + target.getName() + " remises à zéro."));
+            plugin.messages().send(sender, "quests.admin-reset", Text.ph("player", target.getName()));
             return true;
         }
         Quest q = args.length > 3 ? plugin.quests().get(args[3]) : null;
@@ -118,11 +118,11 @@ public final class QuetesCommand implements TabExecutor {
             case "complete" -> plugin.quests().forceComplete(target, q);
             case "reset" -> p.resetQuest(q.id);
             default -> {
-                sender.sendMessage(Text.mm("<red>Action inconnue : start, complete, reset, resetall"));
+                plugin.messages().send(sender, "quests.admin-usage");
                 return true;
             }
         }
-        sender.sendMessage(Text.mm("<green>OK : " + action + " " + q.id + " pour " + target.getName()));
+        plugin.messages().send(sender, "admin-done");
         return true;
     }
 
@@ -145,7 +145,9 @@ public final class QuetesCommand implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> out = new ArrayList<>();
         if (args.length == 1) {
-            out.addAll(List.of("commencer", "abandonner", "suivre", "panneau", "tutoriel"));
+            out.addAll(fr.cykalos.cykclasses.config.ConfigFiles.french()
+                    ? List.of("commencer", "abandonner", "suivre", "panneau", "tutoriel")
+                    : List.of("start", "abandon", "track", "tracker", "tutorial"));
         } else if (args.length == 2 && sender instanceof Player player) {
             PlayerProfile p = plugin.profiles().get(player);
             for (Quest q : plugin.quests().all()) {

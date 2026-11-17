@@ -1,5 +1,5 @@
 # ╔══════════════════════════════════════════════╗
-# ║           CykClasses - attributes.yml        ║
+# ║      Classes and Magie - attributes.yml      ║
 # ╚══════════════════════════════════════════════╝
 # Points d'attributs (/stats) : gagnés en montant de niveau (config.yml → progression).
 # per-point : effet de CHAQUE point (les multiplicateurs se cumulent : 1.01 = +1 % par point).

@@ -7,6 +7,8 @@
 **Classes and Magie** est un plugin **Paper 26.x** (Java 25) de jeu de rôle : classes, sous-classes, compétences et mana, races, traits, arbre de compétences, attributs, métiers avec spécialisations, forge à raretés, gemmes à tailler et incruster, groupes, quêtes, titres, HUD.
 
 > Ce wiki est généré automatiquement depuis le dossier `docs/wiki` du dépôt. Les corrections et ajouts se proposent par pull request sur ce dossier.
+>
+> Le plugin est disponible en **français** et en **anglais** (`language` dans `config.yml`, voir [Installation](Installation.md#langue)). Ce wiki utilise les commandes et les noms de dossiers français ; chaque commande a aussi un nom anglais.
 
 ## Parcours d'un joueur
 

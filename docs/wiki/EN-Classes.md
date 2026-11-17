@@ -14,7 +14,7 @@ File: `classes/classes.yml`. The top of the file documents every available key.
 | **Assassin** | Shadow step, Vanish, Poison blade | **Shadow** · **Duelist** |
 | **Cleric** (Clerc) | Heal, Blessing, Purify | **Priest** (1,500 health healed) · **Druid** |
 
-A subclass keeps the skills of its class and adds 2 or 3. Choosing a subclass is final (except with `/classe reset`).
+A subclass keeps the skills of its class and adds 2 or 3. Choosing a subclass is final (except with `/class reset`).
 
 ## Stats
 
@@ -76,7 +76,7 @@ Available conditions: `time`, `weather`, `dimensions`, `worlds`, `biomes`, `ligh
 | `COUNTER` | `target`: `blocks_mined`, `damage_dealt`, `damage_taken`, `healing_done`, `mana_spent` |
 | `PERMISSION` | `target`: permission node |
 
-The `/classe sous-classe` menu shows the progress of each condition.
+The `/class subclass` menu shows the progress of each condition.
 
 ## Example: adding a class
 

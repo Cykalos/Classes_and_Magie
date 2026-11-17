@@ -188,9 +188,9 @@ public final class SkillBar {
                 }
                 int held = pdc.getOrDefault(savedSlotKey, PersistentDataType.INTEGER, 0);
                 restore(player, new Saved(hotbar, held));
-                plugin.getLogger().info("Barre d'objets de " + player.getName() + " restaurée après un arrêt imprévu.");
+                plugin.getLogger().info("Hotbar of " + player.getName() + " restored after an unexpected shutdown.");
             } catch (Exception e) {
-                plugin.getLogger().log(Level.SEVERE, "Restauration impossible de la barre de " + player.getName(), e);
+                plugin.getLogger().log(Level.SEVERE, "Could not restore the hotbar of " + player.getName(), e);
             }
             clearPersisted(player);
         }
@@ -390,7 +390,7 @@ public final class SkillBar {
             player.getPersistentDataContainer().set(savedKey, PersistentDataType.BYTE_ARRAY, bytes);
             player.getPersistentDataContainer().set(savedSlotKey, PersistentDataType.INTEGER, s.heldSlot());
         } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Sauvegarde de secours de la barre impossible pour " + player.getName(), e);
+            plugin.getLogger().log(Level.WARNING, "Could not back up the hotbar of " + player.getName(), e);
         }
     }
 

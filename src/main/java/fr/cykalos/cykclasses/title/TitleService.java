@@ -84,7 +84,7 @@ public final class TitleService implements Listener {
         titles.clear();
         rarities.clear();
         cfg = ConfigFiles.load(plugin, "titles.yml");
-        ConfigDefaults.fill(plugin, cfg, ConfigFiles.path("titles.yml"), Set.of("titles", "rarities"));
+        ConfigDefaults.fill(plugin, cfg, ConfigFiles.resource("titles.yml"), Set.of("titles", "rarities"));
         ConfigurationSection rs = cfg.getConfigurationSection("rarities");
         int order = 0;
         if (rs != null) {
@@ -99,7 +99,7 @@ public final class TitleService implements Listener {
             }
         }
         if (rarities.isEmpty()) {
-            rarities.put("COMMON", new Rarity("COMMON", "<gray>Commun", 0, false, false, false));
+            rarities.put("COMMON", new Rarity("COMMON", "<gray>Common", 0, false, false, false));
         }
         List<PlayerTitle> loaded = new ArrayList<>();
         ConfigurationSection ts = cfg.getConfigurationSection("titles");
@@ -113,14 +113,14 @@ public final class TitleService implements Listener {
                 try {
                     loaded.add(parse(id.toLowerCase(Locale.ROOT), s, order++));
                 } catch (Exception e) {
-                    plugin.getLogger().warning("Titre ignoré (" + id + ") : " + e.getMessage());
+                    plugin.getLogger().warning("Title ignored (" + id + "): " + e.getMessage());
                 }
             }
         }
         loaded.sort(Comparator.comparingInt((PlayerTitle t) -> rarity(t).order()).thenComparingInt(PlayerTitle::order));
         loaded.forEach(t -> titles.put(t.id(), t));
         loadUniques();
-        plugin.getLogger().info(titles.size() + " titres chargés.");
+        plugin.getLogger().info(titles.size() + " titles loaded.");
     }
 
     private PlayerTitle parse(String id, ConfigurationSection s, int order) {
@@ -128,7 +128,7 @@ public final class TitleService implements Listener {
         Rarity rarity = rarities.getOrDefault(rarityId, rarities.values().iterator().next());
         List<Objective> unlock = new ArrayList<>();
         for (Map<?, ?> m : s.getMapList("unlock")) {
-            unlock.add(Objective.load(m, "titre " + id));
+            unlock.add(Objective.load(m, "title " + id));
         }
         List<Flaw> flaws = new ArrayList<>();
         for (Map<?, ?> m : s.getMapList("flaws")) {
@@ -170,7 +170,7 @@ public final class TitleService implements Listener {
         try {
             y.save(uniquesFile);
         } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Sauvegarde impossible de titres-uniques.yml", e);
+            plugin.getLogger().log(Level.WARNING, "Could not save the unique titles file", e);
         }
     }
 

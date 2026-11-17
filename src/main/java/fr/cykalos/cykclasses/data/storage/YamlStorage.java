@@ -15,13 +15,13 @@ public final class YamlStorage implements Storage {
     private final File folder;
 
     public YamlStorage(File dataFolder) {
-        this.folder = new File(dataFolder, "joueurs");
+        this.folder = fr.cykalos.cykclasses.config.ConfigFiles.playersFolder(dataFolder);
     }
 
     @Override
     public void init() {
         if (!folder.exists() && !folder.mkdirs()) {
-            throw new IllegalStateException("Impossible de créer " + folder);
+            throw new IllegalStateException("Could not create " + folder);
         }
     }
 

@@ -1,3 +1,8 @@
+# Langue des fichiers créés par le plugin et des textes par défaut : en (English) ou fr (Français).
+# Les fichiers déjà présents ne sont pas modifiés : pour changer de langue, supprimez ou renommez
+# les fichiers à régénérer (messages.yml, classes.yml…), puis redémarrez le serveur.
+language: fr
+
 # ╔══════════════════════════════════════════════╗
 # ║           Classes and Magie - config         ║
 # ╚══════════════════════════════════════════════╝
@@ -61,7 +66,7 @@ leveling:
     wither: 1500
   # Les animaux ne donnent pas d'XP de classe
   ignore-passive-mobs: true
-  # PV max gagnés tous les X niveaux (en plus des gains de la classe)
+  # Soigner complètement le joueur quand il monte de niveau
   level-up-heal: true
 
 # Mana
@@ -72,7 +77,6 @@ mana:
   regen-in-combat: true
   combat-regen-multiplier: 0.5
 
-# Lancement des compétences
 # Combat
 combat:
   # Les flèches tirées à l'arc par un joueur touchent même si la cible vient de subir des dégâts.
@@ -80,6 +84,7 @@ combat:
   # L'arbalète garde le comportement de Minecraft.
   bow-ignores-hit-delay: true
 
+# Lancement des compétences
 casting:
   # Appuyer sur F (échange de main) active le mode compétences :
   # la barre d'objets affiche les icônes des compétences (slots 1 à 8),

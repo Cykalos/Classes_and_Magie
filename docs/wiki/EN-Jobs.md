@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Métiers.md) · 🇬🇧 English
 
-File: `metiers/jobs.yml`. Menu: `/metier` (alias `/job`).
+File: `jobs/jobs.yml`. Menu: `/job`.
 
 ## Principle
 
@@ -46,7 +46,7 @@ restrictions:
     targets: ["DIAMOND_(SWORD|AXE|PICKAXE|SHOVEL|HOE|HELMET|CHESTPLATE|LEGGINGS|BOOTS)", "MACE"]
     jobs: [forgeron]
     min-level: 15                       # recipe unlocked at level 15
-    display: "Diamond gear, mace"       # short text in /metier
+    display: "Diamond gear, mace"       # short text in /job
     message: "<red>Only a skilled blacksmith can do that."   # optional
 ```
 
@@ -64,7 +64,7 @@ Permission `cykclasses.bypass.jobs`: ignores the restrictions.
 
 ## Specializations (sub-jobs)
 
-At the configured level (20 by default), the player chooses **one specialization** for their job, from the button in the `/metier` menu. The choice is **final** for that job (admin: `resetspec`).
+At the configured level (20 by default), the player chooses **one specialization** for their job, from the button in the `/job` menu. The choice is **final** for that job (admin: `resetspec`).
 
 | Job | Specialization | Bonus |
 |---|---|---|

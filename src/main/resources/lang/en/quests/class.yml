@@ -1,0 +1,194 @@
+# Example class quests — two quests per class (subclasses included)
+# Full quest format: see the top of tutorial.yml
+# A quest reserved to another class is hidden in the journal (config.yml → quests.hide-other-classes).
+
+quests:
+  # ─────────────────────────────── Warrior
+  guerrier_mur_de_boucliers:
+    name: "<red>The Shield Wall"
+    category: CLASS
+    start: OFFER
+    level: 3
+    icon: IRON_AXE
+    description: ["<gray>Hold the line and strike hard."]
+    requirements:
+      classes: [guerrier]
+      level: 3
+    stages:
+      - objectives:
+          - {type: DAMAGE, amount: 300, conditions: {holding: ["*_SWORD", "*_AXE", "MACE"]}, display: "Deal melee damage"}
+          - {type: SKILL, targets: [tourbillon], amount: 5, display: "Use Whirlwind"}
+    rewards:
+      xp: 250
+      attribute-points: 1
+
+  guerrier_briseur_de_rangs:
+    name: "<red>Rank Breaker"
+    category: CLASS
+    start: OFFER
+    level: 15
+    icon: MACE
+    description: ["<gray>No beast stops a charging warrior."]
+    requirements:
+      classes: [guerrier]
+      level: 15
+      quests: [guerrier_mur_de_boucliers]
+    stages:
+      - objectives:
+          - {type: SKILL, targets: [charge], amount: 15, display: "Use Charge"}
+          - {type: KILL, targets: [RAVAGER], amount: 1, display: "Bring down a ravager"}
+    rewards:
+      xp: 1200
+      skill-points: 1
+
+  # ─────────────────────────────── Mage
+  mage_etincelles:
+    name: "<light_purple>Sparks"
+    category: CLASS
+    start: OFFER
+    level: 3
+    icon: SLIME_BALL
+    description: ["<gray>A shield first, spells next."]
+    requirements:
+      classes: [mage]
+      level: 3
+    stages:
+      - objectives:
+          - {type: SKILL, targets: [bouclier_de_mana], amount: 5, display: "Use Mana shield"}
+          - {type: KILL, targets: [SLIME, MAGMA_CUBE], amount: 6, display: "Kill slimes"}
+    rewards:
+      xp: 250
+      attribute-points: 1
+
+  mage_savoir_interdit:
+    name: "<light_purple>Forbidden Knowledge"
+    category: CLASS
+    start: OFFER
+    level: 15
+    icon: ENCHANTING_TABLE
+    description: ["<gray>Enchantments hide secrets."]
+    requirements:
+      classes: [mage]
+      level: 15
+      quests: [mage_etincelles]
+    stages:
+      - objectives:
+          - {type: ENCHANT, amount: 5, display: "Enchant items"}
+          - {type: SKILL, targets: [projectile_arcanique], amount: 40, display: "Cast Arcane missile"}
+    rewards:
+      xp: 1200
+      skill-points: 1
+
+  # ─────────────────────────────── Archer
+  archer_tir_de_precision:
+    name: "<green>Precision Shot"
+    category: CLASS
+    start: OFFER
+    level: 3
+    icon: TARGET
+    description: ["<gray>A good archer steps back before shooting."]
+    requirements:
+      classes: [archer]
+      level: 3
+    stages:
+      - objectives:
+          - {type: KILL, targets: [SKELETON, STRAY, BOGGED], amount: 8, conditions: {holding: [BOW, CROSSBOW]}, display: "Shoot down skeletons from a distance"}
+          - {type: SKILL, targets: [bond_arriere], amount: 5, display: "Use Backflip"}
+    rewards:
+      xp: 250
+      attribute-points: 1
+
+  archer_traque_ardente:
+    name: "<green>Burning Hunt"
+    category: CLASS
+    start: OFFER
+    level: 15
+    icon: BLAZE_POWDER
+    description: ["<gray>Even flames have a weak spot."]
+    requirements:
+      classes: [archer]
+      level: 15
+      quests: [archer_tir_de_precision]
+    stages:
+      - objectives:
+          - {type: KILL, targets: [BLAZE], amount: 5, conditions: {holding: [BOW, CROSSBOW]}, display: "Shoot down blazes from a distance"}
+          - {type: SKILL, targets: [fleche_percante], amount: 20, display: "Use Piercing arrow"}
+    rewards:
+      xp: 1200
+      skill-points: 1
+
+  # ─────────────────────────────── Assassin
+  assassin_lame_nocturne:
+    name: "<dark_gray>Night Blade"
+    category: CLASS
+    start: OFFER
+    level: 3
+    icon: SPIDER_EYE
+    description: ["<gray>Poison does the rest."]
+    requirements:
+      classes: [assassin]
+      level: 3
+    stages:
+      - objectives:
+          - {type: KILL, targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH], amount: 10, conditions: {time: NIGHT}, display: "Kill monsters at night"}
+          - {type: SKILL, targets: [lame_empoisonnee], amount: 5, display: "Use Poisoned blade"}
+    rewards:
+      xp: 250
+      attribute-points: 1
+
+  assassin_fantome:
+    name: "<dark_gray>Phantom"
+    category: CLASS
+    start: OFFER
+    level: 15
+    icon: GRAY_DYE
+    description: ["<gray>Appear, strike, vanish."]
+    requirements:
+      classes: [assassin]
+      level: 15
+      quests: [assassin_lame_nocturne]
+    stages:
+      - objectives:
+          - {type: KILL, targets: [WITCH], amount: 5, conditions: {sneaking: true}, display: "Kill witches while sneaking"}
+          - {type: SKILL, targets: [pas_de_l_ombre], amount: 15, display: "Use Shadow step"}
+    rewards:
+      xp: 1200
+      skill-points: 1
+
+  # ─────────────────────────────── Cleric
+  clerc_premiers_soins:
+    name: "<yellow>First Aid"
+    category: CLASS
+    start: OFFER
+    level: 3
+    icon: GLISTERING_MELON_SLICE
+    description: ["<gray>Protect others before yourself."]
+    requirements:
+      classes: [clerc]
+      level: 3
+    stages:
+      - objectives:
+          - {type: SKILL, targets: [benediction], amount: 8, display: "Use Blessing"}
+          - {type: KILL, targets: [SKELETON, STRAY], amount: 8, display: "Kill skeletons"}
+    rewards:
+      xp: 250
+      attribute-points: 1
+
+  clerc_lumiere_sacree:
+    name: "<yellow>Sacred Light"
+    category: CLASS
+    start: OFFER
+    level: 15
+    icon: BEACON
+    description: ["<gray>Carry the light into the Nether."]
+    requirements:
+      classes: [clerc]
+      level: 15
+      quests: [clerc_premiers_soins]
+    stages:
+      - objectives:
+          - {type: SKILL, targets: [soin], amount: 40, display: "Use Heal"}
+          - {type: KILL, targets: [WITHER_SKELETON], amount: 5, display: "Kill wither skeletons"}
+    rewards:
+      xp: 1200
+      skill-points: 1

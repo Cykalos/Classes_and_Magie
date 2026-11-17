@@ -14,13 +14,11 @@ public record Trait(String id, String name, List<String> description, Rarity rar
     public enum Kind { POSITIVE, NEGATIVE, MIXED }
 
     public enum Rarity {
-        COMMON("<white>Commun"), UNCOMMON("<green>Peu commun"), RARE("<aqua>Rare"), EPIC("<light_purple>Épique"),
-        UNIQUE("<gold><bold>UNIQUE</bold>");
+        COMMON, UNCOMMON, RARE, EPIC, UNIQUE;
 
-        public final String label;
-
-        Rarity(String label) {
-            this.label = label;
+        /** Display name from messages.yml → labels.rarity.*. */
+        public String label() {
+            return fr.cykalos.cykclasses.config.Messages.text("labels.rarity." + name().toLowerCase(java.util.Locale.ROOT));
         }
     }
 

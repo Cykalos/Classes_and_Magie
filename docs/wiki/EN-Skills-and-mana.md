@@ -12,7 +12,7 @@ Slots without a skill are filled with a grey square (`casting.empty-slot-icon`),
 
 Hotbar items are saved while in skill mode, even after a death or a crash.
 
-Other ways: `/competence <id|number>` (alias `/skill`), or a click in `/classe competences`.
+Other ways: `/skill <id|number>`, or a click in `/class skills`.
 
 Settings in `config.yml → casting`: `swap-hands-toggle`, `require-sneak` (F while sneaking), `timeout-seconds`, `locked-icon`, `pvp`.
 

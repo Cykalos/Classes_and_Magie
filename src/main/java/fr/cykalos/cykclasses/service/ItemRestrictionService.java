@@ -166,7 +166,7 @@ public final class ItemRestrictionService implements Listener {
                 Race race = plugin.content().race(r);
                 names.add(race == null ? r : Text.plain(race.name()));
             }
-            parts.add("race " + String.join("/", names));
+            parts.add(plugin.messages().raw("labels.race").toLowerCase(java.util.Locale.ROOT) + " " + String.join("/", names));
         }
         if (!rule.jobs().isEmpty()) {
             List<String> names = new ArrayList<>();
@@ -174,10 +174,10 @@ public final class ItemRestrictionService implements Listener {
                 Job job = plugin.content().job(j);
                 names.add(job == null ? j : Text.plain(job.name()));
             }
-            parts.add("métier " + String.join("/", names));
+            parts.add(plugin.messages().raw("labels.job").toLowerCase(java.util.Locale.ROOT) + " " + String.join("/", names));
         }
         if (rule.minLevel() > 0) {
-            parts.add("niv. " + rule.minLevel());
+            parts.add(plugin.messages().raw("labels.level-short").toLowerCase(java.util.Locale.ROOT) + " " + rule.minLevel());
         }
         rule.minAttributes().forEach((k, v) -> {
             AttributeDef a = plugin.content().attribute(k);

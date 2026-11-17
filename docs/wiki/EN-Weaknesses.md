@@ -2,9 +2,9 @@
 
 [🇫🇷 Français](Faiblesses.md) · 🇬🇧 English
 
-File: `personnage/weaknesses.yml`. Command: `/faiblesses` (alias `/weaknesses`).
+File: `character/weaknesses.yml`. Command: `/weaknesses`.
 
-For players, everything that penalises their character is a **weakness**. The `/faiblesses` menu groups them all, with their origin:
+For players, everything that penalises their character is a **weakness**. The `/weaknesses` menu groups them all, with their origin:
 
 - **Class**, **race** and **traits**: written directly in `classes.yml`, `races.yml` or `traits.yml` (`flaws` key).
 - **Imposed**: weaknesses from `weaknesses.yml` always applied to a race, a class or a subclass.
@@ -19,7 +19,7 @@ roll:
   enabled: true      # false = imposed weaknesses only
   min: 1             # random number between min and max
   max: 2
-  rerolls: 1         # rerolls per player (/faiblesses relancer)
+  rerolls: 1         # rerolls per player (/weaknesses reroll)
   show-step: true    # menu during character creation (false = silent roll)
 ```
 
@@ -144,8 +144,8 @@ flaws:
 
 ## Administration
 
-- `/classe admin faiblesse <player> reset`: new roll next time.
-- `/classe admin faiblesse <player> add <id>` / `remove <id>`: add or remove a specific weakness.
+- `/class admin weakness <player> reset`: new roll next time.
+- `/class admin weakness <player> add <id>` / `remove <id>`: add or remove a specific weakness.
 - Placeholders: `%cykclasses_weaknesses%` (every weakness: class, race, traits, imposed, rolled) and `%cykclasses_weaknesses_count%`.
 
 ## What cannot be done

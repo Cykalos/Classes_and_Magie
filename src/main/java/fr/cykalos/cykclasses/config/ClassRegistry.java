@@ -32,7 +32,7 @@ public final class ClassRegistry {
         YamlConfiguration yaml = ConfigFiles.load(plugin, "classes.yml");
         ConfigurationSection root = yaml.getConfigurationSection("classes");
         if (root == null) {
-            plugin.getLogger().severe("classes.yml ne contient aucune section 'classes' !");
+            plugin.getLogger().severe("classes.yml has no 'classes' section!");
             return;
         }
         for (String key : root.getKeys(false)) {
@@ -45,7 +45,7 @@ public final class ClassRegistry {
             allClasses.put(rc.id, rc);
             for (RpgClass sub : rc.subclasses().values()) {
                 if (allClasses.containsKey(sub.id)) {
-                    plugin.getLogger().warning("Identifiant de sous-classe en double : " + sub.id);
+                    plugin.getLogger().warning("Duplicate subclass id: " + sub.id);
                 }
                 allClasses.put(sub.id, sub);
             }
@@ -54,7 +54,7 @@ public final class ClassRegistry {
         for (RpgClass rc : allClasses.values()) {
             for (SkillDefinition def : rc.ownSkills().values()) {
                 if (!plugin.skills().hasType(def.type)) {
-                    plugin.getLogger().warning("Compétence '" + def.id + "' (" + rc.id + ") : type inconnu " + def.type);
+                    plugin.getLogger().warning("Skill '" + def.id + "' (" + rc.id + "): unknown type " + def.type);
                 }
             }
         }
@@ -62,6 +62,26 @@ public final class ClassRegistry {
 
     public RpgClass get(String id) {
         return id == null ? null : allClasses.get(id.toLowerCase(Locale.ROOT));
+    }
+
+    /** Class by id or by displayed name ("guerrier" or "Warrior"), ignoring case and accents. */
+    public RpgClass find(String input) {
+        RpgClass rc = get(input);
+        if (rc != null || input == null) {
+            return rc;
+        }
+        String wanted = fold(input);
+        for (RpgClass c : allClasses.values()) {
+            if (fold(fr.cykalos.cykclasses.util.Text.plain(c.name)).equals(wanted)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    private static String fold(String s) {
+        return java.text.Normalizer.normalize(s, java.text.Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "").replace('_', ' ').trim().toLowerCase(Locale.ROOT);
     }
 
     public Collection<RpgClass> baseClasses() {

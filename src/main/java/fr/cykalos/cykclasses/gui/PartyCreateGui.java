@@ -55,7 +55,7 @@ public final class PartyCreateGui extends Gui {
         set(15, new ItemBuilder(Material.LIME_CONCRETE)
                 .name(plugin.messages().raw("party.gui-create"))
                 .lore(plugin.messages().raw("party.gui-create-desc"))
-                .lore(Text.item("<gray>Max. <white>" + plugin.parties().maxSize() + "</white> joueurs"))
+                .lore(Text.item(plugin.messages().raw("party.gui-max-size").replace("<max>", String.valueOf(plugin.parties().maxSize()))))
                 .build(), e -> {
             viewer.closeInventory();
             plugin.parties().create(viewer, mode, friendlyFire);

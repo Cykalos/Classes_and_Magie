@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Gemmes-et-joaillerie.md) · 🇬🇧 English
 
-File: `metiers/gems.yml`.
+File: `jobs/gems.yml`.
 
 ## A gem's journey
 
@@ -99,8 +99,8 @@ Default gems: Ruby (Rubis), Sapphire (Saphir), Emerald (Émeraude), Topaz (Topaz
 
 ## Admin commands
 
-- `/classe admin gemme <player> <id> [amount]`: **raw** gem.
-- `/classe admin gemme <player> <id> <amount> <rarity> [purity]`: **cut** gem.
+- `/class admin gem <player> <id> [amount]`: **raw** gem.
+- `/class admin gem <player> <id> <amount> <rarity> [purity]`: **cut** gem.
 
 ## What cannot be done
 

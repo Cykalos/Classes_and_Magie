@@ -6,6 +6,8 @@
 
 **Classes and Magie** est un plugin **Paper 26.x** (Minecraft Java Edition) de classes RPG : classes, sous-classes à débloquer, compétences uniques, statistiques, faiblesses et mana.
 
+> **Disponible en français et en anglais.** Un nouveau serveur démarre en anglais : mettre `language: fr` dans `config.yml` pour le français (les serveurs déjà installés restent en français). Les commandes existent dans les deux langues (`/classe` ou `/class`, `/quetes` ou `/quests`…).
+
 ## Fonctionnalités
 
 - **5 classes** jouables, chacune avec ses statistiques, ses faiblesses et 3 compétences :
@@ -150,7 +152,7 @@ Permissions : `cykclasses.use`, `cykclasses.reset` (tout le monde), `cykclasses.
 
 Fichiers rangés par thème dans `plugins/Classes_and_Magie/` (ceux d'une ancienne version sont déplacés automatiquement) :
 
-- `config.yml` — **modules** (activer ou désactiver races, traits, faiblesses, métiers, arbre, attributs, groupes, forge, gemmes, kits, restrictions, quêtes, titres), stockage, courbe d'XP, XP par monstre, mana, mode compétences, HUD, reset, quêtes.
+- `config.yml` — **langue** (`en` ou `fr`), **modules** (activer ou désactiver races, traits, faiblesses, métiers, arbre, attributs, groupes, forge, gemmes, kits, restrictions, quêtes, titres), stockage, courbe d'XP, XP par monstre, mana, mode compétences, HUD, reset, quêtes.
 - `classes/` — `classes.yml` (classes, sous-classes, stats, faiblesses, conditions et compétences ; le haut du fichier documente tous les types), `skilltree.yml`, `attributes.yml`.
 - `personnage/` — `races.yml`, `traits.yml`, `weaknesses.yml`, `titles.yml`.
 - `metiers/` — `jobs.yml`, `forge.yml`, `gems.yml`.
@@ -158,6 +160,8 @@ Fichiers rangés par thème dans `plugins/Classes_and_Magie/` (ceux d'une ancien
 - `affichage/` — `hud.yml` (XP gagnée, dégâts flottants, PV des cibles, panneau du groupe et des quêtes), `messages.yml` (tous les textes au format [MiniMessage](https://docs.advntr.dev/minimessage/format.html)).
 - `quetes/` — les quêtes (tous les fichiers `.yml` du dossier).
 - `donnees/` — données des joueurs et du serveur (à ne pas modifier à la main).
+
+Ces noms de dossiers sont ceux d'un serveur en français ; en anglais, les dossiers s'appellent `character/`, `jobs/`, `items/`, `display/`, `quests/` et `data/`. Un dossier existant garde toujours son nom, et les fichiers existants ne sont jamais remplacés : pour passer les textes d'un serveur dans l'autre langue, supprimer ou renommer les fichiers à régénérer, puis redémarrer. Les identifiants (classes, races, métiers, compétences, quêtes, titres) sont les mêmes dans les deux langues : les données des joueurs ne sont pas touchées.
 
 ## API
 
@@ -183,7 +187,7 @@ Java 25 requis.
 # -> build/libs/Classes_and_Magie-<version>.jar
 ```
 
-Les commentaires du code source sont en anglais ; les textes affichés en jeu et les fichiers de configuration sont en français (traduisibles dans `messages.yml`).
+Les commentaires du code source sont en anglais. Les fichiers par défaut se trouvent dans `src/main/resources/lang/<langue>/`.
 
 ## Releases
 

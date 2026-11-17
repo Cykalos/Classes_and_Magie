@@ -1,0 +1,79 @@
+# Example side quests — optional, some repeatable
+# Full quest format: see the top of tutorial.yml
+
+quests:
+  le_boulanger:
+    name: "<aqua>The Baker"
+    category: SIDE
+    level: 1
+    icon: WHEAT
+    description: ["<gray>The village oven needs wheat."]
+    stages:
+      - objectives:
+          - {type: COLLECT, targets: [WHEAT], amount: 32, take: true, display: "Bring back wheat"}
+    rewards:
+      xp: 80
+      money: 40
+      items:
+        - {item: "minecraft:bread", amount: 12}
+
+  bois_pour_l_hiver:
+    name: "<aqua>Wood for the winter"
+    category: SIDE
+    level: 2
+    icon: OAK_LOG
+    description: ["<gray>The nights are going to be cold."]
+    stages:
+      - objectives:
+          - {type: COLLECT, targets: [OAK_LOG, BIRCH_LOG, SPRUCE_LOG], amount: 32, take: true, display: "Bring back logs"}
+    rewards:
+      xp: 120
+      job-xp: 100
+
+  concours_de_peche:
+    name: "<aqua>Fishing contest"
+    category: SIDE
+    level: 3
+    icon: COD
+    repeatable: true
+    cooldown-hours: 24
+    description: ["<gray>Repeatable every day."]
+    stages:
+      - objectives:
+          - {type: FISH, amount: 10, display: "Fish 10 times"}
+    rewards:
+      xp: 150
+      money: 50
+
+  patrouille_de_nuit:
+    name: "<aqua>Night patrol"
+    category: SIDE
+    level: 5
+    icon: LANTERN
+    repeatable: true
+    cooldown-hours: 24
+    description: ["<gray>Repeatable every day."]
+    stages:
+      - objectives:
+          - {type: KILL, targets: [ZOMBIE, HUSK, DROWNED, ZOMBIE_VILLAGER, SKELETON, STRAY, BOGGED, SPIDER, CAVE_SPIDER, CREEPER, WITCH, SLIME, ENDERMAN, PHANTOM, PILLAGER, VINDICATOR, SILVERFISH], amount: 20, conditions: {time: NIGHT}, display: "Kill 20 monsters at night"}
+    rewards:
+      xp: 350
+      money: 100
+
+  le_cartographe:
+    name: "<aqua>The Cartographer"
+    category: SIDE
+    level: 8
+    icon: COMPASS
+    description: ["<gray>Maps to complete, lands to describe."]
+    stages:
+      - objectives:
+          - {type: BIOME, targets: ["*SAVANNA*"], display: "Explore a savanna"}
+          - {type: BIOME, targets: ["*TAIGA*"], display: "Explore a taiga"}
+          - {type: BIOME, targets: ["*BIRCH*"], display: "Explore a birch forest"}
+          - {type: BIOME, targets: ["*BEACH*"], display: "Walk along a beach"}
+    rewards:
+      xp: 700
+      money: 150
+      items:
+        - {item: "minecraft:map", amount: 4}

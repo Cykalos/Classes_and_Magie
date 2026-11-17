@@ -53,13 +53,13 @@ public final class PlaceholderHook extends PlaceholderExpansion {
         RpgClass base = plugin.classes().get(profile.getClassId());
         RpgClass effective = plugin.classes().effective(profile);
         return switch (params.toLowerCase()) {
-            case "class" -> base == null ? "Aucune" : Text.plain(base.name);
+            case "class" -> base == null ? Text.plain(fr.cykalos.cykclasses.config.Messages.text("labels.none")) : Text.plain(base.name);
             case "class_id" -> base == null ? "" : base.id;
             case "subclass" -> {
                 RpgClass sub = plugin.classes().get(profile.getSubclassId());
                 yield sub == null ? "" : Text.plain(sub.name);
             }
-            case "display" -> effective == null ? "Aucune" : Text.plain(effective.name);
+            case "display" -> effective == null ? Text.plain(fr.cykalos.cykclasses.config.Messages.text("labels.none")) : Text.plain(effective.name);
             case "level" -> String.valueOf(profile.getLevel());
             case "xp" -> String.valueOf((long) profile.getXp());
             case "xp_required" -> String.valueOf((long) plugin.levels().xpRequired(profile.getLevel()));

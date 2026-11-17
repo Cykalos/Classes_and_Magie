@@ -16,17 +16,25 @@ public final class Messages {
     private YamlConfiguration yaml;
     private String prefix = "";
 
+    private static Messages instance;
+
     public Messages(CykClasses plugin) {
         this.plugin = plugin;
+        instance = this;
+    }
+
+    /** Text of a key from anywhere (labels used by models and menus). */
+    public static String text(String key) {
+        return instance == null ? key : instance.raw(key);
     }
 
     public void load() {
         File file = ConfigFiles.file(plugin, "messages.yml");
         yaml = ConfigFiles.load(plugin, "messages.yml");
         // Keys added in a new version: the plugin's default text.
-        int added = ConfigDefaults.fill(plugin, yaml, ConfigFiles.path("messages.yml"), java.util.Set.of());
+        int added = ConfigDefaults.fill(plugin, yaml, ConfigFiles.resource("messages.yml"), java.util.Set.of());
         if (added > 0) {
-            plugin.getLogger().info(added + " message(s) absent(s) de messages.yml : texte par défaut utilisé.");
+            plugin.getLogger().info(added + " message(s) missing from messages.yml: default text used.");
         }
         // Old default texts replaced in a new version (if the admin did not change them)
         if ("<red>Défauts :".equals(yaml.getString("gui.flaws-header"))) {
@@ -37,7 +45,7 @@ public final class Messages {
 
     public String raw(String key) {
         String value = yaml.getString(key);
-        return value != null ? value : "<red>[message manquant : " + key + "]";
+        return value != null ? value : "<red>[missing message: " + key + "]";
     }
 
     public List<String> rawList(String key) {

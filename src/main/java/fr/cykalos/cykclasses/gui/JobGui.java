@@ -59,7 +59,7 @@ public final class JobGui extends Gui {
             if (!rules.isEmpty()) {
                 b.lore("").lore(plugin.messages().raw("job.exclusive").replace("<count>", String.valueOf(rules.size())));
                 rules.stream().limit(8).forEach(r -> {
-                    String lvl = r.minLevel() > 1 ? (level >= r.minLevel() ? " <green>(niv. " : " <red>(niv. ") + r.minLevel() + ")" : "";
+                    String lvl = r.minLevel() > 1 ? (level >= r.minLevel() ? " <green>(" : " <red>(") + plugin.messages().raw("labels.level-short").toLowerCase(java.util.Locale.ROOT) + " " + r.minLevel() + ")" : "";
                     b.lore("<gray>• " + plugin.jobDescriptions().describe(r) + lvl);
                 });
             }

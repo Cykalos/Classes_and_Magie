@@ -43,6 +43,22 @@ Titres : `/classe admin titre <joueur> <give|take|reset> [id]` et `/classe admin
 
 Quêtes : `/classe admin quete <joueur> <start|complete|reset> <id>` et `/classe admin quete <joueur> resetall` (voir [Quêtes](Quêtes.md#administration)).
 
+## Noms anglais des commandes
+
+Chaque commande a aussi un nom anglais, utilisable quelle que soit la langue choisie dans `config.yml` :
+
+| Français | Anglais |
+|---|---|
+| `/classe` · `choisir` · `sous-classe` · `competences` · `quetes` · `titres` | `/class` · `choose` · `subclass` · `skills` · `quests` · `titles` |
+| `/competence` · `/groupe` · `/metier` · `/arbre` · `/faiblesses` | `/skill` · `/party` · `/job` · `/tree` · `/weaknesses` |
+| `/quetes` `commencer` · `abandonner` · `suivre` · `panneau` · `tutoriel` | `/quests` `start` · `abandon` · `track` · `tracker` · `tutorial` |
+| `/titres` `equiper` · `retirer` | `/titles` `equip` · `unequip` |
+| `/groupe` `creer` · `inviter` · `accepter` · `refuser` · `quitter` · `expulser` · `chef` · `dissoudre` | `/party` `create` · `invite` · `accept` · `deny` · `leave` · `kick` · `lead` · `disband` |
+| `relancer` | `reroll` |
+| admin `faiblesse` · `gemme` · `libererunique` · `quete` · `titre liberer` | `weakness` · `gem` · `releaseunique` · `quest` · `title release` |
+
+`/classe choisir` accepte aussi le nom affiché de la classe (`/classe choisir Guerrier`).
+
 ## Permissions
 
 | Permission | Par défaut |

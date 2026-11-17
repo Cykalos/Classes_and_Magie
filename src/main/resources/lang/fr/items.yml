@@ -1,5 +1,5 @@
 # ╔══════════════════════════════════════════════╗
-# ║             CykClasses - items.yml           ║
+# ║        Classes and Magie - items.yml         ║
 # ╚══════════════════════════════════════════════╝
 # Conditions d'utilisation des objets. Les stats des objets eux-mêmes se gèrent dans
 # CraftEngine / MythicCrucible / ExecutableItems ; ici on décide QUI peut s'en servir.

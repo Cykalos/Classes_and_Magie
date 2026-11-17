@@ -97,7 +97,7 @@ public final class CharacterCommand implements TabExecutor {
         for (String id : p.getTraits()) {
             Trait t = plugin.content().trait(id);
             if (t != null) {
-                player.sendMessage(Text.mm("<gray>• </gray>" + t.name() + " <dark_gray>(" + Text.plain(t.rarity().label) + ")"));
+                player.sendMessage(Text.mm("<gray>• </gray>" + t.name() + " <dark_gray>(" + Text.plain(t.rarity().label()) + ")"));
             }
         }
     }
@@ -108,7 +108,7 @@ public final class CharacterCommand implements TabExecutor {
             return List.of();
         }
         return switch (command.getName().toLowerCase(Locale.ROOT)) {
-            case "traits", "faiblesses" -> List.of("relancer");
+            case "traits", "faiblesses" -> List.of(fr.cykalos.cykclasses.config.ConfigFiles.french() ? "relancer" : "reroll");
             case "arbre", "stats" -> List.of("reset");
             default -> List.of();
         };

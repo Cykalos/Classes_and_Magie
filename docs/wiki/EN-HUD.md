@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](HUD.md) · 🇬🇧 English
 
-File: `affichage/hud.yml` (+ `config.yml → hud` for the action bar).
+File: `display/hud.yml` (+ `config.yml → hud` for the action bar).
 
 ## Action bar
 
@@ -64,7 +64,7 @@ quest-tracker:
   objective-line: " <status> <white><objective> <gray><progress>"
 ```
 
-Minecraft only shows one sidebar: the party and the tracked quests share it. `/quetes panneau` hides it for a player. Details on the [Quests](EN-Quests.md) page.
+Minecraft only shows one sidebar: the party and the tracked quests share it. `/quests tracker` hides it for a player. Details on the [Quests](EN-Quests.md) page.
 
 ## Party board
 

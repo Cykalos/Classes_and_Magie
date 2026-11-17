@@ -49,7 +49,7 @@ public final class ChatListener implements Listener {
                 Set<UUID> members = party.members();
                 event.viewers().removeIf(a -> a instanceof Player v && !members.contains(v.getUniqueId())
                         && !v.hasPermission("cykclasses.chat.spy"));
-                Component prefixSpy = Text.mm(plugin.getConfig().getString("chat.spy-prefix", "<dark_gray>[Espion] "));
+                Component prefixSpy = Text.mm(plugin.getConfig().getString("chat.spy-prefix", "<dark_gray>[Spy] "));
                 event.renderer((source, displayName, message, viewer) -> {
                     Component line = format("chat.party-format", source, displayName, message);
                     if (viewer instanceof Player v && !members.contains(v.getUniqueId())) {
@@ -91,7 +91,7 @@ public final class ChatListener implements Listener {
         for (Player p : party.onlineMembers()) {
             p.sendMessage(line);
         }
-        Component spy = Text.mm(plugin.getConfig().getString("chat.spy-prefix", "<dark_gray>[Espion] ")).append(line);
+        Component spy = Text.mm(plugin.getConfig().getString("chat.spy-prefix", "<dark_gray>[Spy] ")).append(line);
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!party.contains(p.getUniqueId()) && p.hasPermission("cykclasses.chat.spy")) {
                 p.sendMessage(spy);

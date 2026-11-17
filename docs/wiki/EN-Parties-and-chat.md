@@ -4,7 +4,7 @@
 
 ## Creating a party
 
-`/groupe` (alias `/party`) opens the creation menu, where the leader sets the **rules** (they cannot be changed afterwards):
+`/party` opens the creation menu, where the leader sets the **rules** (they cannot be changed afterwards):
 
 | Rule | Choices |
 |---|---|
@@ -15,7 +15,7 @@ Heals and buffs **only affect party members** (or yourself without a party), wha
 
 ## Commands
 
-`/groupe inviter|accepter|refuser|quitter|expulser|chef|dissoudre|info` (invite, accept, decline, leave, kick, leader, disband, info)
+`/party invite|accept|deny|leave|kick|lead|disband|info`
 
 With `disband-when-alone: true` (default), a party with a single member left is disbanded: kicking the only other member therefore disbands the party.
 

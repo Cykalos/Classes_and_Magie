@@ -60,13 +60,13 @@ public final class TitresCommand implements TabExecutor {
             plugin.messages().send(sender, "no-permission");
             return true;
         }
-        if (args.length >= 3 && args[1].equalsIgnoreCase("liberer")) {
+        if (args.length >= 3 && (args[1].equalsIgnoreCase("liberer") || args[1].equalsIgnoreCase("release"))) {
             boolean ok = plugin.titles().release(args[2]);
-            sender.sendMessage(Text.mm(ok ? "<green>Titre unique libéré : " + args[2] : "<red>Titre unique introuvable : " + args[2]));
+            plugin.messages().send(sender, ok ? "titles.admin-released" : "titles.admin-release-unknown", Text.ph("title", args[2]));
             return true;
         }
         if (args.length < 3) {
-            sender.sendMessage(Text.mm("<gray>/classe admin titre <joueur> <give|take|reset> [id] · /classe admin titre liberer <id>"));
+            plugin.messages().send(sender, "titles.admin-usage");
             return true;
         }
         Player target = Bukkit.getPlayerExact(args[1]);
@@ -80,28 +80,28 @@ public final class TitresCommand implements TabExecutor {
             for (String id : new ArrayList<>(p.titles().keySet())) {
                 plugin.titles().revoke(target, id);
             }
-            sender.sendMessage(Text.mm("<green>Titres de " + target.getName() + " remis à zéro."));
+            plugin.messages().send(sender, "titles.admin-reset", Text.ph("player", target.getName()));
             return true;
         }
         PlayerTitle t = args.length > 3 ? plugin.titles().get(args[3]) : null;
         if (t == null) {
-            sender.sendMessage(Text.mm("<red>Titre introuvable."));
+            plugin.messages().send(sender, "titles.admin-unknown");
             return true;
         }
         switch (action) {
             case "give" -> {
                 if (!plugin.titles().unlock(target, t.id(), true)) {
-                    sender.sendMessage(Text.mm("<red>Impossible : titre déjà possédé, ou titre unique appartenant à un autre joueur."));
+                    plugin.messages().send(sender, "titles.admin-impossible");
                     return true;
                 }
             }
             case "take" -> plugin.titles().revoke(target, t.id());
             default -> {
-                sender.sendMessage(Text.mm("<red>Action inconnue : give, take, reset"));
+                plugin.messages().send(sender, "titles.admin-usage");
                 return true;
             }
         }
-        sender.sendMessage(Text.mm("<green>OK : " + action + " " + t.id() + " pour " + target.getName()));
+        plugin.messages().send(sender, "admin-done");
         return true;
     }
 
@@ -109,9 +109,9 @@ public final class TitresCommand implements TabExecutor {
     public List<String> adminTab(String[] args) {
         List<String> out = new ArrayList<>();
         if (args.length == 2) {
-            out.add("liberer");
+            out.add(fr.cykalos.cykclasses.config.ConfigFiles.french() ? "liberer" : "release");
             Bukkit.getOnlinePlayers().forEach(p -> out.add(p.getName()));
-        } else if (args.length == 3 && args[1].equalsIgnoreCase("liberer")) {
+        } else if (args.length == 3 && (args[1].equalsIgnoreCase("liberer") || args[1].equalsIgnoreCase("release"))) {
             plugin.titles().all().stream().filter(PlayerTitle::unique).forEach(t -> out.add(t.id()));
         } else if (args.length == 3) {
             out.addAll(List.of("give", "take", "reset"));
@@ -127,8 +127,8 @@ public final class TitresCommand implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> out = new ArrayList<>();
         if (args.length == 1) {
-            out.addAll(List.of("equiper", "retirer"));
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("equiper") && sender instanceof Player player) {
+            out.addAll(fr.cykalos.cykclasses.config.ConfigFiles.french() ? List.of("equiper", "retirer") : List.of("equip", "unequip"));
+        } else if (args.length == 2 && (args[0].equalsIgnoreCase("equiper") || args[0].equalsIgnoreCase("equip")) && sender instanceof Player player) {
             out.addAll(plugin.profiles().get(player).titles().keySet());
         }
         String last = args.length == 0 ? "" : args[args.length - 1].toLowerCase(Locale.ROOT);

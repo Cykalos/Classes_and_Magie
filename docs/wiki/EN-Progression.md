@@ -2,7 +2,7 @@
 
 [🇫🇷 Français](Progression.md) · 🇬🇧 English
 
-## Skill tree (`/arbre`, `classes/skilltree.yml`)
+## Skill tree (`/tree`, `classes/skilltree.yml`)
 
 One tree per base class + a **common** tree. Branches can be reserved to a subclass.
 
@@ -54,7 +54,7 @@ progression:
   attribute-reset-cooldown-hours: 24
 ```
 
-`/arbre reset` and `/stats reset` give back every point (free, once per delay). Admin: `addpoints`, `resettree`, `resetstats`.
+`/tree reset` and `/stats reset` give back every point (free, once per delay). Admin: `addpoints`, `resettree`, `resetstats`.
 
 ## What cannot be done
 

@@ -165,9 +165,10 @@ public final class ClassSelectGui extends Gui {
         var race = plugin.content().race(p.getRaceId());
         var job = plugin.content().job(p.getJobId());
         var spec = plugin.jobs().spec(p);
-        lore.add(Text.item("<gray>Classe : " + (rc == null ? "<dark_gray>-" : rc.name) + " <gray>Niv. <white>" + p.getLevel()));
-        lore.add(Text.item("<gray>Race : " + (race == null ? "<dark_gray>-" : race.name())));
-        lore.add(Text.item("<gray>Métier : " + (job == null ? "<dark_gray>-" : job.name() + " <gray>Niv. <white>" + plugin.jobs().level(p))
+        String lv = " <gray>" + L("labels.level-short") + " <white>";
+        lore.add(Text.item("<gray>" + L("labels.class") + ": " + (rc == null ? "<dark_gray>-" : rc.name) + lv + p.getLevel()));
+        lore.add(Text.item("<gray>" + L("labels.race") + ": " + (race == null ? "<dark_gray>-" : race.name())));
+        lore.add(Text.item("<gray>" + L("labels.job") + ": " + (job == null ? "<dark_gray>-" : job.name() + lv + plugin.jobs().level(p))
                 + (spec == null ? "" : " <dark_gray>(" + Text.plain(spec.name()) + ")")));
         java.util.List<String> traitNames = new java.util.ArrayList<>();
         for (String id : p.getTraits()) {
@@ -177,12 +178,12 @@ public final class ClassSelectGui extends Gui {
             }
         }
         if (!traitNames.isEmpty()) {
-            lore.add(Text.item("<gray>Traits : " + String.join("<gray>, ", traitNames)));
+            lore.add(Text.item("<gray>" + L("labels.traits") + ": " + String.join("<gray>, ", traitNames)));
         }
         lore.add(net.kyori.adventure.text.Component.empty());
-        lore.add(Text.item("<gray>Mana : <aqua>" + (int) p.getMana() + "/" + (int) plugin.stats().maxMana(p)));
-        lore.add(Text.item("<gray>Points d'arbre : <green>" + plugin.stats().availableSkillPoints(p)
-                + " <gray>· Attributs : <yellow>" + plugin.stats().availableAttributePoints(p)));
+        lore.add(Text.item("<gray>" + L("labels.mana") + ": <aqua>" + (int) p.getMana() + "/" + (int) plugin.stats().maxMana(p)));
+        lore.add(Text.item("<gray>" + L("labels.tree-points") + ": <green>" + plugin.stats().availableSkillPoints(p)
+                + " <gray>· " + L("labels.attributes") + ": <yellow>" + plugin.stats().availableAttributePoints(p)));
         meta.lore(lore);
         head.setItemMeta(meta);
         return head;
@@ -203,5 +204,9 @@ public final class ClassSelectGui extends Gui {
             remaining -= inRow;
         }
         return out.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    private static String L(String key) {
+        return fr.cykalos.cykclasses.config.Messages.text(key);
     }
 }
