@@ -3,6 +3,35 @@
 Each version is described in English first, then in French (🇫🇷 En français).
 Chaque version est décrite en anglais, puis en français (🇫🇷 En français).
 
+## [1.12.0](https://github.com/Cykalos/Classes_and_Magie/compare/v1.11.2...v1.12.0) (2026-11-17)
+
+### ✨ New features
+
+- English language with a language option, English commands ([`3ff9557`](https://github.com/Cykalos/Classes_and_Magie/commit/3ff95572f19f4f35c7c9946e14334f124707ef7d))
+  - New language option in config.yml: en (English) or fr (French). New servers start in English; servers installed with an older version get language: fr and stay in French
+  - Every default file is translated: messages, classes and skills, races, traits, weaknesses, jobs, forge, gems, kits, items, skill tree, attributes, titles, quests and the HUD
+  - Texts that were still written in the code (stat labels in the menus, subclass conditions, trait rarities, admin messages…) are now in messages.yml
+  - In English, the files are created in English-named folders (character/, jobs/, items/, display/, quests/, data/); an existing folder always keeps its name and existing files are never replaced
+  - Ids (classes, races, jobs, skills, quests, titles) are the same in both languages, so player data and commands keep working
+  - Every command and subcommand has an English name (/class choose, /skill, /party invite, /job, /tree, /weaknesses reroll, /quests track, /titles equip, /class admin weakness…), and tab completion follows the language
+  - /class choose also accepts the displayed name of the class
+  - Console messages are in English
+
+### 🇫🇷 En français
+
+#### ✨ Nouveautés
+
+- langue anglaise avec une option de langue, commandes en anglais
+  - Nouvelle option de langue dans config.yml : en (anglais) ou fr (français). Un nouveau serveur démarre en anglais ; un serveur installé avec une version précédente reçoit language: fr et reste en français
+  - Tous les fichiers par défaut sont traduits : messages, classes et compétences, races, traits, faiblesses, métiers, forge, gemmes, kits, objets, arbre de compétences, attributs, titres, quêtes et HUD
+  - Les textes encore écrits dans le code (libellés des stats dans les menus, conditions des sous-classes, raretés des traits, messages d'administration…) sont maintenant dans messages.yml
+  - En anglais, les fichiers sont créés dans des dossiers aux noms anglais (character/, jobs/, items/, display/, quests/, data/) ; un dossier existant garde toujours son nom et les fichiers existants ne sont jamais remplacés
+  - Les identifiants (classes, races, métiers, compétences, quêtes, titres) sont les mêmes dans les deux langues : les données des joueurs et les commandes continuent de fonctionner
+  - Chaque commande et sous-commande a un nom anglais (/class choose, /skill, /party invite, /job, /tree, /weaknesses reroll, /quests track, /titles equip, /class admin weakness…), et l'autocomplétion suit la langue
+  - /classe choisir accepte aussi le nom affiché de la classe
+  - Les messages de la console sont en anglais
+
+
 ## [1.11.2](https://github.com/Cykalos/Classes_and_Magie/compare/v1.11.1...v1.11.2) (2026-10-22)
 
 ### 🐛 Fixes
